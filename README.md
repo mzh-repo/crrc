@@ -1,4 +1,4 @@
-# vue-cli3.0
+# CRRC
 
 ## Project setup
 ```
