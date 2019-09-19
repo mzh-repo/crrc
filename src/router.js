@@ -9,14 +9,25 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/dashboard',
+      component: () => import(/* webpackChunkName: "dashboard" */ './views/dashboard'),
+      children: [
+        {
+          path: '/modelTraning',
+          name: '模型训练',
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/traning'),
+        },
+        {
+          path: '/modelApplication',
+          name: '模型应用',
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/application/index.vue'),
+        },
+      ],
+    },
+    {
       path: '/',
       name: 'login',
       component: Login,
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: import(/* webpackChunkName: "dashboard" */ './views/dashboard/index.vue'),
     },
   ],
 });
