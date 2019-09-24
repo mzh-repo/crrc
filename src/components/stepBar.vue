@@ -32,7 +32,7 @@ export default {
     },
     active: {
       type: Number,
-      default: 4,
+      default: 0,
     },
   },
   data() {

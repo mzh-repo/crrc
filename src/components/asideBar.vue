@@ -22,6 +22,7 @@
 export default {
   data() {
     return {
+      selectItem: '',
       routerList: this.$router.options.routes[0].children,
     };
   },
@@ -40,6 +41,7 @@ export default {
   methods: {
     handleSelect(e) {
       this.selectItem = e;
+      this.$router.replace(e);
     },
   },
 };

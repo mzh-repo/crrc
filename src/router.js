@@ -19,16 +19,33 @@ export default new Router({
           component: () => import(/* webpackChunkName: "dashboard" */ './views/dashboard'),
         },
         {
-          path: '/modelTraning',
+          path: '/chooseData',
           name: '创建训练',
           selectIcon: '创建训练-选中',
           component: () => import(/* webpackChunkName: "traning" */ './views/traning'),
+          children: [
+            {
+              path: '/chooseData',
+              name: '数据选择',
+              component: () => import('./views/traning/createTraning/chooseData'),
+            },
+            {
+              path: '/config',
+              name: '参数配置',
+              component: () => import('./views/traning/createTraning/config'),
+            },
+            {
+              path: '/model',
+              name: '训练模型',
+              component: () => import('./views/traning/createTraning/model'),
+            },
+          ],
         },
         {
           path: '/modelPublish',
           name: '模型部署',
           selectIcon: '模型部署-选中',
-          component: () => import(/* webpackChunkName: "publish" */ './views/publish'),
+          component: () => import(/* webpackChunkName: "modelPublish" */ './views/publish'),
         },
         {
           path: '/importData',
@@ -51,7 +68,7 @@ export default new Router({
     },
     {
       path: '/test',
-      component: () => import(/* webpackChunkName: "modelCenter" */ './components/stepBar'),
+      component: () => import(/* webpackChunkName: "modelCenter" */ './components/footerBar'),
     },
   ],
 });

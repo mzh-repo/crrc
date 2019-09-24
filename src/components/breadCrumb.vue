@@ -1,12 +1,14 @@
 <template>
-  <el-breadcrumb separator-class="el-icon-arrow-right">
-    <template v-for="(item,index) in $route.matched">
-      <el-breadcrumb-item :key="index"
-                          :to="{path: item.path}">
-        <span>{{ item.name }}</span>
-      </el-breadcrumb-item>
-    </template>
-  </el-breadcrumb>
+  <el-container>
+    <el-breadcrumb separator=">">
+      <template v-for="(item,index) in $route.matched">
+        <el-breadcrumb-item :key="index"
+                            :to="{path: item.path}">
+          <span>{{ item.name }}</span>
+        </el-breadcrumb-item>
+      </template>
+    </el-breadcrumb>
+  </el-container>
 </template>
 
 <script>
@@ -19,7 +21,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-breadcrumb__item:first-child {
-  visibility: hidden;
+.el-container {
+  height: 39px;
+  margin: 17px auto 70px 20px;
+}
+
+.el-breadcrumb {
+  font-size: 28px;
+}
+.el-breadcrumb__item {
+  &:first-child {
+    visibility: hidden;
+  }
 }
 </style>
