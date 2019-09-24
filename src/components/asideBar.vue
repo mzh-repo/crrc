@@ -1,38 +1,20 @@
 <template>
   <el-container>
-    <el-row>
-      <img src="https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg" />
+    <el-row class="logo">
+      <svg-icon icon-class="中车"></svg-icon>
+      <svg-icon icon-class="浙江大学"></svg-icon>
     </el-row>
     <el-menu router
-             :collapse="isCollapse"
-             :collapse-transition="false"
-             :default-active="activeMenu">
+             :default-active="activeMenu"
+             @select="handleSelect">
       <template v-for="menu in routerList">
-        <template v-if="menu.children">
-          <el-submenu :index="menu.path"
+        <el-menu-item :index="menu.path"
                       :key="menu.name">
-            <template slot="title">
-              <svg-icon :icon-class="menu.icon"></svg-icon>
-              <span>{{menu.name}}</span>
-            </template>
-            <template v-for="submenu in menu.children">
-              <el-menu-item :index="menu.path + '/' +submenu.path"
-                            :key="submenu.name">
-                {{submenu.name}}
-              </el-menu-item>
-            </template>
-          </el-submenu>
-        </template>
-        <template v-else>
-          <el-menu-item :index="menu.path"
-                        :key="menu.name">
-            <svg-icon :icon-class="menu.icon"></svg-icon>
-            <span slot="title">{{menu.name}}</span>
-          </el-menu-item>
-        </template>
+          <svg-icon :icon-class="selectItem === menu.path ? menu.selectIcon: menu.name"></svg-icon>
+        </el-menu-item>
       </template>
     </el-menu>
-    <el-button @click="logout">退出登录</el-button>
+
   </el-container>
 </template>
 
@@ -53,14 +35,11 @@ export default {
       }
       return path;
     },
-    isCollapse() {
-      return this.$store.state.isCollapse;
-    },
   },
   mounted() {},
   methods: {
-    logout() {
-      this.$router.push('/');
+    handleSelect(e) {
+      this.selectItem = e;
     },
   },
 };
@@ -69,20 +48,42 @@ export default {
 <style lang="scss" scoped>
 .el-container {
   height: 100%;
-  background-color: $primary-color;
-  display: flex;
-  flex-direction: column;
+  background-color: #242424;
+  @include flex-column;
+  justify-content: center;
+  position: relative;
+}
 
-  img {
-    width: 30px;
-    height: 40px;
-    padding: 30px;
+.logo {
+  @include flex-column;
+  position: absolute;
+  top: 16px;
+  width: 100%;
+
+  svg {
+    margin: auto;
+
+    &:first-child {
+      margin-bottom: 20px;
+    }
   }
 }
 
 .el-menu {
-  background-color: $primary-color;
+  background-color: #242424;
   border-right: 0;
+
+  .el-menu-item {
+    padding: 0 !important;
+
+    &:hover,
+    &:focus {
+      background-color: #242424;
+    }
+    svg {
+      @include set-size(48px);
+    }
+  }
 }
 
 span {

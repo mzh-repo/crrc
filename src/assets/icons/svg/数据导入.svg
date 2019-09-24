@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>数据导入-未选</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-8.000000, -566.000000)">
+            <rect id="矩形-copy" fill="#242424" x="0" y="0" width="63" height="1096"></rect>
+            <g id="数据导入-未选" transform="translate(8.000000, 566.000000)">
+                <rect id="矩形复制-26-copy-9" fill="#242424" x="0" y="0" width="48" height="48" rx="3"></rect>
+                <g id="Group-3" transform="translate(12.000000, 12.000000)" stroke="#979797" stroke-width="1.8">
+                    <path d="M7.52652262,23.1 L23.1,17.7793247 L23.1,3 C23.1,1.84020203 22.159798,0.9 21,0.9 L3,0.9 C1.84020203,0.9 0.9,1.84020203 0.9,3 L0.9,21 C0.9,22.159798 1.84020203,23.1 3,23.1 L7.52652262,23.1 Z" id="路径-copy"></path>
+                    <path d="M2,6.5 L21.9822642,6.5" id="路径-19-copy" stroke-linecap="round"></path>
+                    <polyline id="路径-20-copy" stroke-linecap="round" stroke-linejoin="round" points="23 22.5048305 13 22.5048305 15.90306 19"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
