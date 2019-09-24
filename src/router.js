@@ -49,5 +49,9 @@ export default new Router({
       name: 'login',
       component: Login,
     },
+    {
+      path: '/test',
+      component: () => import(/* webpackChunkName: "modelCenter" */ './components/stepBar'),
+    },
   ],
 });

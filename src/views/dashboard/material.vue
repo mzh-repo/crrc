@@ -5,7 +5,6 @@
     </el-aside>
     <el-container class="main-continer">
       <el-main>
-        <bread-crumb />
         <router-view />
       </el-main>
     </el-container>
@@ -14,10 +13,9 @@
 
 <script>
 import AsideBar from '../../components/asideBar.vue';
-import BreadCrumb from '../../components/breadCrumb.vue';
 
 export default {
-  components: { AsideBar, BreadCrumb },
+  components: { AsideBar },
   data() {
     return {};
   },
