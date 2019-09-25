@@ -1,24 +1,73 @@
 <template>
-  <el-card shadow="hover">
+  <el-card shadow="hover"
+           :style="chose?'height:116px;':'height:148px;'">
     <el-row type="flex"
             justify="space-between">
       <el-col class="title left">{{title}}</el-col>
-      <el-col :class="[settled ? 'settled' : 'unsettled', 'status']">{{status}}</el-col>
+      <el-col :class="['status',statusTag.class]">{{statusTag.text}}
+
+      </el-col>
     </el-row>
-    <el-row type="flex"
-            class="loss-row">
-      <el-col class="loss">最近实例Loss</el-col>
-      <el-col class="loss">平均实例Loss</el-col>
-    </el-row>
-    <el-row type="flex">
-      <el-col class="lately">{{lately}}</el-col>
-      <el-col class="average">{{average}}</el-col>
+    <div v-if="!chose">
+      <el-row type="flex"
+              class="loss-row">
+        <el-col :span="10"
+                class="loss">
+          最近实例Loss
+        </el-col>
+        <el-col :span="10"
+                class="loss">
+          平均实例Loss
+        </el-col>
+      </el-row>
+      <el-row type="flex">
+        <el-col :span="10"
+                class="lately">
+          {{lately}}
+        </el-col>
+        <el-col :span="10"
+                class="average">
+          {{average}}
+        </el-col>
+      </el-row>
+    </div>
+    <el-row v-else
+            type="flex">
+      <el-col :span="7"
+              class="loss-inline">
+        最高Loss：{{lately}}
+      </el-col>
+      <el-col :span="7"
+              class="loss-inline">
+        平均Loss：{{average}}
+      </el-col>
     </el-row>
     <el-row type="flex"
             class="bottom"
             justify="space-between">
-      <el-col class="left">训练时长：{{traning}}</el-col>
-      <el-col class="right">预计部署时长：{{estimate}}</el-col>
+      <el-col class="left traning">
+        训练时长：{{traning}}
+      </el-col>
+      <el-col v-if="!chose"
+              class="right">
+        预计部署时长：{{estimate}}
+      </el-col>
+      <el-col v-else>
+        <el-row class="button-row"
+                type="flex"
+                justify="end">
+          <el-col v-if="status===1"
+                  class="button1">下线</el-col>
+          <el-col v-if="status===2"
+                  class="button2">部署</el-col>
+          <el-col v-if="status===2"
+                  class="button3">再次训练</el-col>
+          <el-col v-if="status===3"
+                  class="button3">重新部署</el-col>
+          <el-col v-if="status===4"
+                  class="button1">终止训练</el-col>
+        </el-row>
+      </el-col>
     </el-row>
   </el-card>
 </template>
@@ -30,9 +79,13 @@ export default {
       type: String,
       default: '第一次实例-1908231122',
     },
-    settled: {
+    chose: {
       type: Boolean,
       default: true,
+    },
+    status: {
+      type: Number,
+      default: 1,
     },
     lately: {
       type: Number,
@@ -52,8 +105,22 @@ export default {
     },
   },
   computed: {
-    status() {
-      return this.settled ? '已部署' : '待部署';
+    statusTag() {
+      const tag = { text: '', class: '' };
+      if (this.status === 1) {
+        tag.text = '已部署';
+        tag.class = 'status1';
+      } else if (this.status === 2) {
+        tag.text = '待部署';
+        tag.class = 'status2';
+      } else if (this.status === 3) {
+        tag.text = '部署失败';
+        tag.class = 'status3';
+      } else if (this.status === 4) {
+        tag.text = '训练中';
+        tag.class = 'status4';
+      }
+      return tag;
     },
   },
 };
@@ -61,7 +128,6 @@ export default {
 
 <style scoped lang="scss">
 .el-card {
-  height: 148px;
   width: 414px;
   background-color: #fff;
   border-radius: 6px;
@@ -101,17 +167,33 @@ export default {
   text-align: center;
 }
 
-.settled {
+.status1 {
   background: #70b40f;
 }
 
-.unsettled {
+.status2 {
   background: #ffc25d;
+}
+
+.status3 {
+  background: #ff2b2b;
+  width: 65px;
+}
+
+.status4 {
+  background: #54a8f7;
 }
 
 .loss {
   font-size: 14px;
   color: #333;
+  text-align: left;
+}
+
+.loss-inline {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
   text-align: left;
 }
 
@@ -133,8 +215,41 @@ export default {
 .bottom {
   width: 390px;
   position: absolute;
-  bottom: 12px;
+  bottom: 0;
   font-size: 12px;
   color: #999;
+  bottom: 12px;
+}
+
+.traning {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.button-row /deep/ .el-col {
+  line-height: 24px;
+  width: 78px;
+  height: 26px;
+  border-radius: 6px;
+  margin-left: 9px;
+}
+
+.button1 {
+  color: #979797;
+  background: #fff;
+  border: solid 1px #979797;
+}
+
+.button2 {
+  color: #fff;
+  background: #00c4c0;
+  border: solid 1px #00c4c0;
+}
+
+.button3 {
+  color: #fff;
+  background: #8fd866;
+  border: solid 1px #8fd866;
 }
 </style>
