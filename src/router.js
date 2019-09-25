@@ -45,7 +45,29 @@ export default new Router({
           path: '/modelPublish',
           name: '模型部署',
           selectIcon: '模型部署-选中',
-          component: () => import(/* webpackChunkName: "modelPublish" */ './views/publish'),
+          component: () => import(/* webpackChunkName: "publish" */ './views/publish'),
+          children: [
+            {
+              path: '',
+              name: '选择数据集',
+              component: () => import('./views/publish/selectData'),
+            },
+            {
+              path: 'selectModel',
+              name: '模型选择',
+              component: () => import('./views/publish/selectModel'),
+            },
+            {
+              path: 'modelPublishForecast',
+              name: '模型部署与预测',
+              component: () => import('./views/publish/modelPublishForecast'),
+            },
+            {
+              path: 'modelSelect',
+              name: '实例选择',
+              component: () => import('./views/publish/modelSelect'),
+            },
+          ],
         },
         {
           path: '/importData',

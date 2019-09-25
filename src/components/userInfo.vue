@@ -19,7 +19,9 @@
     </el-row>
     <el-row>
       <el-row class="tips">流程步骤说明</el-row>
-      <el-row class="step-box"></el-row>
+      <el-row class="step-box">
+        <mzh-step />
+      </el-row>
     </el-row>
     <el-row>
       <el-row class="tips">历史操作</el-row>
@@ -35,7 +37,10 @@
 </template>
 
 <script>
+import Mzhstep from './step.vue';
+
 export default {
+  components: { 'mzh-step': Mzhstep },
   data() {
     return {
       userName: 'Admin',
@@ -123,7 +128,7 @@ img {
 .step-box {
   width: 80%;
   height: 310px;
-  background: rgba(216, 216, 216, 1);
+  // background: rgba(216, 216, 216, 1);
   margin-left: 20px;
   margin-bottom: 22px;
 }

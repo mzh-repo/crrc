@@ -25,8 +25,8 @@
         <el-col :span="24"
                 class="features">
           <el-row>
-            <div>特征值</div>
-            <div>{{data.features}}</div>
+            <span>特征值 </span>
+            <span> {{data.features}}</span>
           </el-row>
           <img v-if="data.choiced"
                src="@/assets/images/choiced.png"

@@ -1,11 +1,9 @@
 <template>
   <div class="model-contrain">
-    <div v-for="(item,index) in modelList"
-         :key="index"
-         class="continer">
-      <el-row class="title">{{item.title}}</el-row>
+    <div class="continer">
+      <el-row class="title">{{modelList.title}}</el-row>
       <el-tag size="small">推荐配置</el-tag>
-      <div v-if="item.newTab"
+      <div v-if="modelList.newTab"
            class="tab">新</div>
       <el-row>
         <el-col :span="24"
@@ -13,25 +11,25 @@
           <el-row>
             <div>轮次</div>
             <div>
-              <span>{{item.rotation}}</span>次
+              <span>{{modelList.rotation}}</span>次
             </div>
           </el-row>
           <el-row>
             <div>内存</div>
             <div>
-              <span>{{item.memory}}</span>M
+              <span>{{modelList.memory}}</span>M
             </div>
           </el-row>
           <el-row>
             <div>CPU</div>
             <div>
-              <span>{{item.CPU}}</span>个
+              <span>{{modelList.CPU}}</span>个
             </div>
           </el-row>
           <el-row>
             <div>GPU</div>
             <div>
-              <span>{{item.GPU}}</span>M
+              <span>{{modelList.GPU}}</span>M
             </div>
           </el-row>
         </el-col>
@@ -42,17 +40,17 @@
           <el-row>
             <div>数据量</div>
             <div>
-              <span>{{item.dataVolume}}</span>M
+              <span>{{modelList.dataVolume}}</span>M
             </div>
           </el-row>
           <el-row>
             <div>大小</div>
             <div>
-              <span>{{(item.size).toFixed(1)}}</span>M
+              <span>{{(modelList.size).toFixed(1)}}</span>M
             </div>
           </el-row>
           <el-row>
-            {{item.founder}}
+            {{modelList.founder}}
           </el-row>
         </el-col>
       </el-row>
@@ -64,19 +62,8 @@
 export default {
   props: {
     modelList: {
-      type: Array,
-      default: () => [
-        {
-          title: '车载储能系统性能劣化条件下的列车运行控制模型',
-          rotation: 8,
-          memory: 12,
-          CPU: 3,
-          GPU: 24,
-          dataVolume: 123,
-          founder: '12',
-          size: 2,
-        },
-      ],
+      type: Object,
+      default: () => {},
     },
   },
   data() {

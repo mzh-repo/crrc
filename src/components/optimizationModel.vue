@@ -1,24 +1,22 @@
 <template>
   <div class="optimziation-continue">
-    <div v-for="(item,index) in optimziationList"
-         :key="index"
-         class="optimization-continue">
+    <div class="optimization-continue">
       <div class="tag">
-        <img :src="item.img"
+        <img :src="optimziationList.img"
              alt="">
       </div>
-      <el-row class="title">{{item.title}}</el-row>
-      <el-row class="describe">{{item.describe}}</el-row>
+      <el-row class="title">{{optimziationList.title}}</el-row>
+      <el-row class="describe">{{optimziationList.describe}}</el-row>
       <el-row>
         <el-col :span="8"
                 class="example">
           <div>最近实例Loss</div>
-          <div>{{(item.lately_loss).toFixed(1)}}</div>
+          <div>{{(optimziationList.lately_loss).toFixed(1)}}</div>
         </el-col>
         <el-col :span="16"
                 class="example">
           <div>平均实例Loss</div>
-          <div>{{(item.average_loss).toFixed(1)}}</div>
+          <div>{{(optimziationList.average_loss).toFixed(1)}}</div>
         </el-col>
       </el-row>
       <el-row>
@@ -26,11 +24,11 @@
                 class="content">
           <el-row>
             <div>实例个数</div>
-            <div>{{item.exampleNum}}个</div>
+            <div>{{optimziationList.exampleNum}}个</div>
           </el-row>
           <el-row>
             <div>大小</div>
-            <div>{{(item.size).toFixed(1)}}MB</div>
+            <div>{{(optimziationList.size).toFixed(1)}}MB</div>
           </el-row>
         </el-col>
       </el-row>
@@ -42,8 +40,8 @@
 export default {
   props: {
     optimziationList: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -119,6 +117,12 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 4px;
+  }
+  .el-row:nth-child(2) {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    justify-content: flex-end;
   }
   .el-row div:first-child {
     margin-right: 22px;

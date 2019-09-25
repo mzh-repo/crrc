@@ -6,8 +6,10 @@ import echart from 'echarts';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import axios from './libs/api';
 import './assets/icons';
 
+Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 Vue.prototype.$echart = echart;
 Vue.use(ElementUI);
