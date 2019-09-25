@@ -9,7 +9,13 @@
     </el-row>
     <router-view />
     <el-row>
-      <footer-bar />
+      <footer-bar :pre="showPre"
+                  :type="footerType"
+                  @handle-pre="handlePre"
+                  @handle-finish="handleFinish"
+                  @next="next"
+                  @commit="commit"
+                  @come-back="comeBack" />
     </el-row>
   </el-container>
 
@@ -24,19 +30,42 @@ export default {
   components: { BreadCrumb, StepBar, FooterBar },
   data() {
     return {
-      active: '1',
+      active: 1,
       stepList: ['数据选择', '参数配置', '训练模型'],
+      showPre: false,
+      footerType: 'next',
     };
+  },
+  methods: {
+    next() {
+      if (this.active === 1) {
+        this.$router.push('/config');
+        this.footerType = 'commit';
+      }
+      this.active += 1;
+    },
+    commit() {
+      this.$router.push('/model');
+      this.footerType = 'return';
+      this.active += 1;
+    },
+    handlePre() {
+      this.$router.push('/chooseData');
+      this.footerType = 'next';
+      this.active = 1;
+    },
+    // TODO: 回到模型训练中心
+    handleFinish() {},
+    comeBack() {},
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .traning-container {
-  // margin: -20px;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
 }
+
 .step {
   width: 90%;
   margin: auto;

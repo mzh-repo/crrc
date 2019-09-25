@@ -53,7 +53,7 @@ export default {
     // 展示下一步, 接收4个参数: next,commit,return,complete
     type: {
       type: String,
-      default: 'commit',
+      default: 'next',
     },
   },
   methods: {
@@ -67,7 +67,7 @@ export default {
       this.$emit('next');
     },
     commit() {
-      this.$emit('next');
+      this.$emit('commit');
     },
     comeBack() {
       this.$emit('come-back');

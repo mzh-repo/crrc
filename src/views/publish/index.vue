@@ -1,7 +1,7 @@
 <template>
-  <el-continer>
+  <el-container>
     <bread-crumb />
-  </el-continer>
+  </el-container>
 </template>
 
 <script>

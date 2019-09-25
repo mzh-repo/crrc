@@ -21,11 +21,10 @@
 export default {
   data() {
     return {
-      selectItem: '/dashboard',
+      selectItem: '',
       routerList: this.$router.options.routes[0].children,
     };
   },
-  mounted() {},
   methods: {
     handleSelect(e) {
       this.selectItem = e;
