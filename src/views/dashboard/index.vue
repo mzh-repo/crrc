@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="dashboard">
     <el-col :span="4">
       <user-info />
     </el-col>
@@ -43,6 +43,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dashboard {
+  padding: 20px;
+}
+
 .el-row {
   &:first-child {
     height: 418px;

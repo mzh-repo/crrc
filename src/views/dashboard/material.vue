@@ -27,6 +27,11 @@ export default {
   height: 100%;
   overflow-x: hidden;
 }
+
+.el-main {
+  padding: 0;
+}
+
 .main-continer {
   background-color: rgb(242, 242, 242);
 }

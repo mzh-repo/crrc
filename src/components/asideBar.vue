@@ -1,11 +1,10 @@
 <template>
   <el-container>
     <el-row class="logo">
-      <svg-icon icon-class="中车"></svg-icon>
-      <svg-icon icon-class="浙江大学"></svg-icon>
+      <svg-icon icon-class="中车" />
+      <svg-icon icon-class="浙江大学" />
     </el-row>
     <el-menu router
-             :default-active="activeMenu"
              @select="handleSelect">
       <template v-for="menu in routerList">
         <el-menu-item :index="menu.path"
@@ -22,20 +21,9 @@
 export default {
   data() {
     return {
-      selectItem: '',
+      selectItem: '/dashboard',
       routerList: this.$router.options.routes[0].children,
     };
-  },
-  computed: {
-    activeMenu() {
-      const route = this.$route;
-      const { meta, path } = route;
-      // if set path, the sidebar will highlight the path you set
-      if (meta.activeMenu) {
-        return meta.activeMenu;
-      }
-      return path;
-    },
   },
   mounted() {},
   methods: {

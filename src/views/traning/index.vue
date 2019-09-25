@@ -1,6 +1,8 @@
 <template>
-  <el-continer>
-    <bread-crumb />
+  <el-container class="traning-container">
+    <el-row>
+      <bread-crumb />
+    </el-row>
     <el-row class="step">
       <step-bar :active="active"
                 :stepList="stepList" />
@@ -9,7 +11,7 @@
     <el-row>
       <footer-bar />
     </el-row>
-  </el-continer>
+  </el-container>
 
 </template>
 
@@ -30,6 +32,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.traning-container {
+  // margin: -20px;
+  display: flex;
+  flex-direction: column;
+}
 .step {
   width: 90%;
   margin: auto;
