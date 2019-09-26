@@ -5,7 +5,7 @@ import Login from './views/userAccess/login.vue';
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -54,10 +54,37 @@ export default new Router({
           component: () => import(/* webpackChunkName: "dataImport" */ './views/dataImport'),
         },
         {
-          path: '/modelCenter',
+          path: '/chooseModel',
           name: '模型中心',
           selectIcon: '模型中心-选中',
-          component: () => import(/* webpackChunkName: "modelCenter" */ './views/modelCenter'),
+          component: () => import('./views/modelCenter'),
+          children: [
+            {
+              path: '/chooseModel',
+              name: '模型选择',
+              component: () => import('./views/modelCenter/model/chooseModel'),
+            },
+            {
+              path: '/modelReport',
+              name: '查看模型报告',
+              component: () => import('./views/modelCenter/model/modelReport'),
+            },
+            {
+              path: '/createModel/step1',
+              name: '新建模型',
+              component: () => import('./views/modelCenter/newModel/create1'),
+            },
+            {
+              path: '/createModel/step2',
+              name: '新建模型',
+              component: () => import('./views/modelCenter/newModel/create2'),
+            },
+            {
+              path: '/createModel/step3',
+              name: '新建模型',
+              component: () => import('./views/modelCenter/newModel/create3'),
+            },
+          ],
         },
       ],
     },
@@ -68,7 +95,7 @@ export default new Router({
     },
     {
       path: '/test',
-      component: () => import(/* webpackChunkName: "modelCenter" */ './components/footerBar'),
+      component: () => import(/* webpackChunkName: "modelCenter" */ './components/barChart'),
     },
   ],
 });

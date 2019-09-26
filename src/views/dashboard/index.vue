@@ -14,10 +14,16 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <div class="box"></div>
+          <div class="box">
+            <bar-chart :height="chartHeight" />
+          </div>
         </el-col>
         <el-col :span="12">
-          <div class="box"></div>
+          <div class="box">
+            <bar-chart title="近期应用"
+                       :colors="colors"
+                       :height="chartHeight" />
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
@@ -33,11 +39,15 @@
 
 <script>
 import UserInfo from '../../components/userInfo.vue';
+import BarChart from '@/components/barChart.vue';
 
 export default {
-  components: { UserInfo },
+  components: { UserInfo, BarChart },
   data() {
-    return {};
+    return {
+      colors: ['#00C4C0', '#8FD866'],
+      chartHeight: '326px',
+    };
   },
   methods: {},
 };

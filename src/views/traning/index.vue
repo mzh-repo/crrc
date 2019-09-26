@@ -15,7 +15,7 @@
                   @handle-finish="handleFinish"
                   @next="next"
                   @commit="commit"
-                  @come-back="comeBack" />
+                  @complete="complete" />
     </el-row>
   </el-container>
 

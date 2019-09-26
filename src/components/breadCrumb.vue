@@ -29,6 +29,7 @@ export default {
 .el-breadcrumb {
   font-size: 28px;
 }
+
 .el-breadcrumb__item {
   &:first-child {
     visibility: hidden;

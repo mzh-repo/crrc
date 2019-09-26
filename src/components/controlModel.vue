@@ -65,7 +65,18 @@ export default {
   props: {
     modelList: {
       type: Array,
-      default: () => [],
+      default: () => [
+        {
+          title: '车载储能系统性能劣化条件下的列车运行控制模型',
+          rotation: 8,
+          memory: 12,
+          CPU: 3,
+          GPU: 24,
+          dataVolume: 123,
+          founder: '12',
+          size: 2,
+        },
+      ],
     },
   },
   data() {
