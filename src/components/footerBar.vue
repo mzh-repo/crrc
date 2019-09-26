@@ -91,6 +91,7 @@ export default {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   padding: 0 30px;
+  z-index: 2000;
   // font-size: 22px;
 }
 

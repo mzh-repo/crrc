@@ -74,9 +74,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.model-contrain {
-  display: flex;
-}
 .continer {
   position: relative;
   width: 508px;
