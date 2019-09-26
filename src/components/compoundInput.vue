@@ -3,6 +3,7 @@
     <div class="title">{{title}}</div>
     <el-select v-model="value"
                placeholder=""
+               :multiple="multiple"
                @change="selected">
       <el-option v-for="item in options"
                  :value="item"
@@ -24,6 +25,10 @@ export default {
       type: Array,
       default: () => ['111', '222', '333', '444'],
     },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return { value: '' };
@@ -32,7 +37,7 @@ export default {
     this.value = this.select;
   },
   methods: {
-    selected(e) {
+    selected() {
       this.$emit('selected', {
         index: this.index,
         select: this.value,

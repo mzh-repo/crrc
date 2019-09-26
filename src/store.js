@@ -19,6 +19,7 @@ export default new Vuex.Store({
     dataSelected: '',
     exampleSelected: '',
     publishActive: '',
+    newModel: {},
   },
   mutations: {
     updateImportData(state, payload) {

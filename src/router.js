@@ -134,7 +134,7 @@ export default new Router({
     },
     {
       path: '/test',
-      component: () => import(/* webpackChunkName: "modelCenter" */ './components/barChart'),
+      component: () => import(/* webpackChunkName: "modelCenter" */ './components/optimizationModel'),
     },
   ],
 });

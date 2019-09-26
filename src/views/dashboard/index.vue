@@ -15,7 +15,8 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <div class="box">
-            <bar-chart :height="chartHeight" />
+            <bar-chart title="近期训练"
+                       :height="chartHeight" />
           </div>
         </el-col>
         <el-col :span="12">
@@ -56,12 +57,20 @@ export default {
     return {
       colors: ['#00C4C0', '#8FD866'],
       chartHeight: '326px',
+      appData: {},
+      trainData: {},
     };
   },
   methods: {
     toModel() {
       this.$router.push({ path: '/chooseModel' });
     },
+  },
+  mounted() {
+    this.$axios.get('/form/recent?type=train').then((res) => {
+      this.appData = res.application;
+      this.trainData = res.train;
+    });
   },
 };
 </script>

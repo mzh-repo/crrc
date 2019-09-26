@@ -47,7 +47,6 @@
                       :key="item"
                       :index="index"
                       :options="arrayOptions"
-                      :select="sqlSettings[index]"
                       @selected="handleSelectChange" />
     </div>
     <el-row v-if="fileStatus===1"

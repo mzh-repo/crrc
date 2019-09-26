@@ -10,9 +10,9 @@ export default {
     dataSet: {
       type: Object,
       default: () => ({
-        column1: [0.1, 0.3, 0.6, 0.2, 0.5, 0.7, 1.0, 0.2, 0.4],
-        column2: [0.2, 0.5, 0.7, 0.6, 0.2, 1.0, 0.1, 0.3, 0.6],
-        column3: [10, 20, 30, 40, 50, 60, 70, 80, 90],
+        data_list: [0.1, 0.3, 0.6, 0.2, 0.5, 0.7, 1.0, 0.2, 0.4],
+        predict_data_list: [0.2, 0.5, 0.7, 0.6, 0.2, 1.0, 0.1, 0.3, 0.6],
+        id_list: [10, 20, 30, 40, 50, 60, 70, 80, 90],
       }),
     },
     // 柱形配色
@@ -25,15 +25,15 @@ export default {
       type: String,
       default: '296px',
     },
-    // 是否展示 x 轴坐标,对应 column3的值
+    // 是否展示 x 轴坐标,对应 id_list的值
     showXAxis: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     // 标题内容
     title: {
       type: String,
-      default: '近期训练',
+      // default: '近期训练',
     },
   },
   data() {
@@ -70,7 +70,7 @@ export default {
         xAxis: {
           type: 'category',
           show: this.showXAxis,
-          data: data.column3,
+          data: data.id_list,
           axisLine: { show: false },
           axisTick: { show: false },
         },
@@ -82,14 +82,14 @@ export default {
         series: [
           {
             type: 'bar',
-            data: data.column1,
+            data: data.data_list,
             color: colors[0],
             barGap: 0,
             barWidth: '20%',
           },
           {
             type: 'bar',
-            data: data.column2,
+            data: data.predict_data_list,
             color: colors[1],
             barWidth: '20%',
           },

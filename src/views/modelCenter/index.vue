@@ -3,19 +3,23 @@
     <el-row>
       <bread-crumb />
     </el-row>
-    <el-row class="step"
-            :class="newModel? 'create': ''">
-      <step-bar :active="active"
-                :stepList="stepList" />
-    </el-row>
-    <router-view />
-    <el-row v-if="newModel">
-      <footer-bar :pre="showPre"
-                  :type="footerType"
-                  @handle-pre="handlePre"
-                  @next="next"
-                  @complete="complete" />
-    </el-row>
+    <div class="scroll">
+      <el-row class="step"
+              :class="newModel? 'create': ''">
+        <step-bar :active="active"
+                  :stepList="stepList" />
+      </el-row>
+      <div class="layout">
+        <router-view ref="model" />
+      </div>
+    </div>
+    <footer-bar v-if="newModel"
+                :pre="showPre"
+                :type="footerType"
+                @handle-pre="handlePre"
+                @next="next"
+                @complete="complete" />
+
   </el-container>
 </template>
 
@@ -32,7 +36,7 @@ export default {
   computed: {
     active() {
       const path = this.$route.fullPath;
-      if (path.indexOf('step2') > -1) {
+      if (path.indexOf('step2') > -1 || path.indexOf('Report') > -1) {
         return 2;
       }
       if (path.indexOf('step3') > -1) {
@@ -81,13 +85,16 @@ export default {
       }
     },
     next() {
+      // console.log('ews', this.$refs.model);
       if (this.active === 1) {
         this.$router.push('/createModel/step2');
       } else if (this.active === 2) {
         this.$router.push('/createModel/step3');
       }
     },
-    complete() {},
+    complete() {
+      this.$router.push('/chooseModel');
+    },
   },
 };
 </script>
@@ -95,6 +102,7 @@ export default {
 <style lang="scss" scoped>
 .model-container {
   @include flex-column;
+  position: relative;
 }
 
 .step {
@@ -104,5 +112,14 @@ export default {
 
 .create {
   width: 90%;
+}
+
+.scroll {
+  width: 100%;
+  overflow-y: auto;
+}
+
+.layout {
+  padding: 42px 70px 100px 70px;
 }
 </style>
