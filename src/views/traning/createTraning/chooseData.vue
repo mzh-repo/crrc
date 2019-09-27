@@ -6,7 +6,7 @@
            :key="index"
            :class="{active:index==isActive }"
            @click="check(index)">
-        <div>{{data}}</div>
+        <div>{{data.name}}</div>
       </div>
       <div class="totalNum">共{{totalNum}}条</div>
     </el-row>
@@ -22,7 +22,7 @@
             <span>共{{item.num}}组</span>
 
           </template>
-          <el-col v-for="histogram in 2"
+          <el-col v-for="histogram in 5"
                   :span="7"
                   :key="histogram"
                   class="echarts">
@@ -30,6 +30,7 @@
           </el-col>
           <img v-if="item.selected"
                src="@/assets/images/choiced.png"
+               class="stamp"
                @click="setSelect(index)">
           <div v-else
                class="select"
@@ -47,7 +48,7 @@ export default {
   components: { Histogram },
   data() {
     return {
-      dataList: ['间歇式供电列车数据', '储能系统优化训练数据'],
+      dataList: [],
       model: true,
       isActive: 0,
       totalNum: 129,
@@ -60,6 +61,9 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.getDataList();
+  },
   methods: {
     check(index) {
       this.isActive = index;
@@ -70,7 +74,17 @@ export default {
       }
     },
     setSelect(index) {
-      this.collapseList[index].selected = !this.collapseList[index].selected;
+      this.collapseList.forEach((item, i) => {
+        this.collapseList[i].selected = false;
+        if (index === i) {
+          this.collapseList[i].selected = true;
+        }
+      });
+    },
+    getDataList() {
+      this.$axios.get('/database/list').then((res) => {
+        this.dataList = res;
+      });
     },
   },
 };
@@ -80,7 +94,6 @@ export default {
 .container {
   @include flex-column;
   width: 100%;
-  overflow-y: auto;
   height: auto;
   justify-content: flex-start;
   align-items: flex-start;

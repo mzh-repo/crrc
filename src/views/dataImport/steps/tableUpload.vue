@@ -120,7 +120,6 @@ export default {
         settingsComplete: this.settingsComplete,
       };
       this.$store.dispatch('setImportData', data);
-      console.log(data);
     },
     handleSelectChange(payload) {
       this.sqlSettings[payload.index] = payload.select;

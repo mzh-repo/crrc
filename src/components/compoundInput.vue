@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     selected(e) {
-      console.log(e);
       this.$emit('selected', {
         index: this.index,
         select: this.value,

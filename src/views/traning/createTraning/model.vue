@@ -6,7 +6,7 @@
            :key="index"
            :class="{active:index==isActive }"
            @click="check(index)">
-        <div>{{data}}</div>
+        <div>{{data.name}}</div>
       </div>
       <div class="total-num">共{{totalNum}}条</div>
     </el-row>
@@ -17,7 +17,7 @@
       <li>GPU Memory：{{item.needGpuMemory}}M/{{item.surplusGpuMemory}}M（所需/剩余）</li>
     </ul>
     <el-row class="examples">
-      <bar />
+      <bar :lineData="lineData" />
     </el-row>
   </el-container>
 </template>
@@ -29,7 +29,8 @@ export default {
   components: { Bar },
   data() {
     return {
-      dataList: ['间歇式供电列车数据', '储能系统优化训练数据'],
+      dataList: [],
+      lineData: {},
       isActive: 0,
       totalNum: 129,
       resource: [
@@ -44,9 +45,23 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.getDataList();
+    this.getLineData();
+  },
   methods: {
     check(index) {
       this.isActive = index;
+    },
+    getDataList() {
+      this.$axios.get('/database/list').then((res) => {
+        this.dataList = res;
+      });
+    },
+    getLineData() {
+      this.$axios.get('/form/train?id=222').then((res) => {
+        this.lineData = res.train;
+      });
     },
   },
 };
@@ -55,10 +70,11 @@ export default {
 <style lang="scss" scoped>
 .container {
   @include flex-column;
+  width: 100%;
   height: auto;
   justify-content: flex-start;
   align-items: flex-start;
-  margin: 33px 103px 0 70px;
+  padding: 33px 103px 0 70px;
   font-size: 22px;
   line-height: 30px;
   box-sizing: border-box;

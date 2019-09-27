@@ -6,7 +6,7 @@
            :key="index"
            :class="{active:index==isActive }"
            @click="check(index)">
-        <div>{{data}}</div>
+        <div>{{data.name}}</div>
       </div>
       <div class="total-num">共{{totalNum}}条</div>
     </el-row>
@@ -16,17 +16,19 @@
       <li>CPU Memory：{{item.needCpuMemory}}M/{{item.surplusCpuMemory}}M（所需/剩余）</li>
       <li>GPU Memory：{{item.needGpuMemory}}M/{{item.surplusGpuMemory}}M（所需/剩余）</li>
     </ul>
-    <el-row class="model-case">
-      <el-col :span="8">
+    <div class="model-case">
+      <div class="model-data">
         <control-model :modelList="modelData" />
         <configuration class="configuration" />
-      </el-col>
-      <el-col v-for="index in 4"
-              :span="8"
-              :key="index">
-        <control-model :modelList="modelData" />
-      </el-col>
-    </el-row>
+      </div>
+      <div v-for="(item,index) in modelDataList"
+           :key="index"
+           class="model-data"
+           :class="item.selected? 'select-data':'control-data'"
+           @click="setSelect(index)">
+        <control-model :modelList="item" />
+      </div>
+    </div>
   </el-container>
 </template>
 
@@ -39,7 +41,7 @@ export default {
 
   data() {
     return {
-      dataList: ['间歇式供电列车数据', '储能系统优化训练数据'],
+      dataList: [],
       model: true,
       isActive: 0,
       totalNum: 129,
@@ -53,21 +55,57 @@ export default {
           surplusGpuMemory: 178,
         },
       ],
-      modelData: {
-        title: '车载储能系统性能劣化条件下的列车运行控制模型',
-        rotation: 8,
-        memory: 12,
-        CPU: 3,
-        GPU: 24,
-        dataVolume: 100,
-        size: 100.0,
-        founder: 'liHua',
-      },
+      tabId: 0,
+      modelData: {},
+      modelDataList: [
+        // {
+        //   id: 1,
+        //   name: 'test',
+        //   data: {
+        //     total_data: 100,
+        //     physical_size: 100,
+        //   },
+        //   model_configuration: {
+        //     rounds: 8,
+        //     ram: 12,
+        //     cpu: 3,
+        //     gpu: 4,
+        //   },
+        //   algorithm: {
+        //     name: 'test',
+        //   },
+        // },
+      ],
     };
+  },
+  created() {
+    this.getDataList();
+    this.getModelDataList();
   },
   methods: {
     check(index) {
       this.isActive = index;
+      this.tabId = index;
+      this.getModelDataList();
+    },
+    setSelect(index) {
+      this.modelDataList.forEach((item, i) => {
+        this.modelDataList[i].selected = false;
+        if (index === i) {
+          this.modelDataList[i].selected = true;
+        }
+      });
+    },
+    getDataList() {
+      this.$axios.get('/database/list').then((res) => {
+        this.dataList = res;
+      });
+    },
+    getModelDataList() {
+      this.$axios.get('/model/list').then((res) => {
+        this.modelDataList = res[this.tabId].model_info_list;
+        [this.modelData] = this.modelDataList;
+      });
     },
   },
 };
@@ -77,7 +115,6 @@ export default {
 .container {
   @include flex-column;
   height: auto;
-  overflow-y: auto;
   justify-content: flex-start;
   align-items: flex-start;
   padding: 33px 103px 0 70px;
@@ -124,10 +161,19 @@ ul {
 .model-case {
   width: 100%;
   margin-bottom: 107px;
+  .model-data {
+    float: left;
+  }
 }
 .configuration {
   padding: 27px 20px 20px 20px;
   border-top: 1px solid #f2f2f2;
   border-radius: 0 0 8px 8px;
+}
+.control-data {
+  opacity: 0.8;
+}
+.select-data {
+  opacity: 1;
 }
 </style>

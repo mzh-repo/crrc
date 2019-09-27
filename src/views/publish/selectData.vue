@@ -178,6 +178,7 @@ export default {
 }
 
 .model-area {
+  width: 100%;
   div {
     float: left;
   }

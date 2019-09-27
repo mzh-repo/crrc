@@ -3,20 +3,22 @@
     <el-row>
       <bread-crumb />
     </el-row>
-    <el-row class="step">
-      <step-bar :active="active"
-                :stepList="stepList" />
-    </el-row>
-    <router-view />
-    <el-row>
-      <footer-bar :pre="showPre"
-                  :type="footerType"
-                  @handle-pre="handlePre"
-                  @handle-finish="handleFinish"
-                  @next="next"
-                  @commit="commit"
-                  @complete="complete" />
-    </el-row>
+    <div class="scroll">
+      <el-row class="step">
+        <step-bar :active="active"
+                  :stepList="stepList" />
+      </el-row>
+      <router-view />
+    </div>
+
+    <footer-bar :pre="showPre"
+                :type="footerType"
+                @handle-pre="handlePre"
+                @handle-finish="handleFinish"
+                @next="next"
+                @commit="commit"
+                @complete="complete" />
+
   </el-container>
 
 </template>
@@ -55,8 +57,10 @@ export default {
       this.active = 1;
     },
     // TODO: 回到模型训练中心
-    handleFinish() {},
-    comeBack() {},
+    handleFinish() {
+      this.$router.push('/chooseModel');
+    },
+    complete() {},
   },
 };
 </script>
@@ -64,10 +68,17 @@ export default {
 <style lang="scss" scoped>
 .traning-container {
   @include flex-column;
+  position: relative;
 }
 
 .step {
-  width: 90%;
   margin: auto;
+  width: 90%;
+}
+
+.scroll {
+  overflow-y: auto;
+  box-sizing: border-box;
+  width: 100%;
 }
 </style>

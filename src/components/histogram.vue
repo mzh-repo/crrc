@@ -63,7 +63,7 @@ export default {
           text: this.title,
         },
         tooltip: {
-          trigger: 'axis',
+          // trigger: 'axis',
           axisPointer: {
             type: 'shadow',
           },
@@ -96,6 +96,7 @@ export default {
           {
             name: '直接访问',
             type: 'bar',
+            barWidth: '50%',
             data: [0.2, 0.35, 0.5, 0.65, 0.8, 0.5, 0.6, 0.25, 0.18, 0.2],
           },
         ],

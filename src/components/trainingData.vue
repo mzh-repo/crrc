@@ -67,6 +67,7 @@ export default {
   padding: 15px 20px;
   border-radius: 8px;
   width: 364px;
+  height: 160px;
 }
 .title {
   font-size: 20px;

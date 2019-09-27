@@ -84,7 +84,6 @@ export default {
 
 <style lang="scss" scoped>
 .traning-container {
-  // margin: -20px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -97,7 +96,6 @@ export default {
 .scroll {
   width: 100%;
   box-sizing: border-box;
-  // height: auto;
   overflow-y: auto;
 }
 </style>

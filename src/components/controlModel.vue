@@ -1,56 +1,58 @@
 <template>
   <div class="model-contrain">
     <div class="continer">
-      <el-row class="title">{{modelList.title}}</el-row>
+      <el-row class="title">{{modelList.name}}</el-row>
       <el-tag size="small">推荐配置</el-tag>
       <div v-if="modelList.newTab"
            class="tab">新</div>
       <el-row>
-        <el-col :span="24"
+        <el-col v-if="modelList.model_configuration"
+                :span="24"
                 class="configuration">
           <el-row>
             <div>轮次</div>
             <div>
-              <span>{{modelList.rotation}}</span>次
+              <span>{{modelList.model_configuration.rounds}}</span>次
             </div>
           </el-row>
           <el-row>
             <div>内存</div>
             <div>
-              <span>{{modelList.memory}}</span>M
+              <span>{{modelList.model_configuration.ram}}</span>M
             </div>
           </el-row>
           <el-row>
             <div>CPU</div>
             <div>
-              <span>{{modelList.CPU}}</span>个
+              <span>{{modelList.model_configuration.cpu}}</span>个
             </div>
           </el-row>
           <el-row>
             <div>GPU</div>
             <div>
-              <span>{{modelList.GPU}}</span>M
+              <span>{{modelList.model_configuration.gpu}}</span>M
             </div>
           </el-row>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="24"
+        <el-col v-if="modelList.data"
+                :span="24"
                 class="content">
           <el-row>
             <div>数据量</div>
             <div>
-              <span>{{modelList.dataVolume}}</span>M
+              <span>{{modelList.data.total_data}}</span>M
             </div>
           </el-row>
           <el-row>
             <div>大小</div>
             <div>
-              <span>{{(modelList.size).toFixed(1)}}</span>M
+              <span>{{(modelList.data.physical_size).toFixed(1)}}</span>M
             </div>
           </el-row>
           <el-row>
-            {{modelList.founder}}
+            {{modelList.algorithm.name}}
           </el-row>
         </el-col>
       </el-row>
@@ -77,7 +79,7 @@ export default {
 .continer {
   position: relative;
   width: 508px;
-  margin: 16px 16px 0 0;
+  margin: 16px 6px 0 0;
   padding: 20px;
   border-radius: 5px;
   background: #fff;

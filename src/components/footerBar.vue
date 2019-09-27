@@ -71,6 +71,7 @@ export default {
     },
     comeBack() {
       this.$emit('come-back');
+      this.$router.push('/chooseModel');
     },
     complete() {
       this.$emit('complete');
