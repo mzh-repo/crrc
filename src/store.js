@@ -15,10 +15,26 @@ export default new Vuex.Store({
       sqlName: '',
       model: '',
     },
+    modelSelected: '',
+    dataSelected: '',
+    exampleSelected: '',
+    publishActive: '',
   },
   mutations: {
     updateImportData(state, payload) {
       state.importData = payload;
+    },
+    selectModel(state, value) {
+      state.modelSelected = value;
+    },
+    selectData(state, value) {
+      state.dataSelected = value;
+    },
+    selectExample(state, value) {
+      state.exampleSelected = value;
+    },
+    setPublishActive(state, value) {
+      state.publishActive = value;
     },
   },
   actions: {

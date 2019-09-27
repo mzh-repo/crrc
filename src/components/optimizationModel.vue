@@ -2,21 +2,21 @@
   <div class="optimziation-continue">
     <div class="optimization-continue">
       <div class="tag">
-        <img :src="optimziationList.img"
+        <img :src="getUrl(optimziationList.algorithm.id)"
              alt="">
       </div>
-      <el-row class="title">{{optimziationList.title}}</el-row>
-      <el-row class="describe">{{optimziationList.describe}}</el-row>
+      <el-row class="title">{{optimziationList.data.name}}</el-row>
+      <el-row class="describe">适用数据集：{{describe}}</el-row>
       <el-row>
         <el-col :span="8"
                 class="example">
           <div>最近实例Loss</div>
-          <div>{{(optimziationList.lately_loss).toFixed(1)}}</div>
+          <div>{{(optimziationList.latest_loss)}}</div>
         </el-col>
         <el-col :span="16"
                 class="example">
           <div>平均实例Loss</div>
-          <div>{{(optimziationList.average_loss).toFixed(1)}}</div>
+          <div>{{(optimziationList.average_loss)}}</div>
         </el-col>
       </el-row>
       <el-row>
@@ -24,11 +24,11 @@
                 class="content">
           <el-row>
             <div>实例个数</div>
-            <div>{{optimziationList.exampleNum}}个</div>
+            <div>{{optimziationList.instance_number}}个</div>
           </el-row>
           <el-row>
             <div>大小</div>
-            <div>{{(optimziationList.size).toFixed(1)}}MB</div>
+            <div>{{(optimziationList.data.physical_size)}}MB</div>
           </el-row>
         </el-col>
       </el-row>
@@ -37,17 +37,37 @@
 </template>
 
 <script>
+const img = new Map();
+const imgUrl = [
+  /* eslint-disable */
+  require('../assets/images/tensorflow.png'),
+  require('../assets/images/keras.png'),
+  require('../assets/images/mklearn.png')
+  /* eslint-enable */
+];
+
+imgUrl.forEach((item, index) => {
+  img.set(index, item);
+});
 export default {
   props: {
     optimziationList: {
       type: Object,
       default: () => {},
     },
+    describe: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    getUrl(type) {
+      return img.get(type);
+    },
+  },
 };
 </script>
 

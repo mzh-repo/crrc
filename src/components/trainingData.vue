@@ -1,23 +1,21 @@
 <template>
   <div class="content">
-    <div v-for="(data,index) in dataList"
-         :key="index"
-         class="training-data">
+    <div class="training-data">
       <!-- {{data}} -->
-      <el-row class="title">{{data.title}}</el-row>
+      <el-row class="title">{{dataList.name}}</el-row>
       <el-row>
         <el-col :span="8"
                 class="training-continue">
           <div>数据总量</div>
           <div>
-            <span>{{data.totalNum}}</span>K
+            <span>{{dataList.total_data}}</span>K
           </div>
         </el-col>
         <el-col :span="16"
                 class="training-continue">
           <div>物理大小</div>
           <div>
-            <span>{{data.size}}</span>MB
+            <span>{{dataList.physical_size}}</span>MB
           </div>
         </el-col>
       </el-row>
@@ -25,15 +23,15 @@
         <el-col :span="24"
                 class="features">
           <el-row>
-            <span>特征值 </span>
-            <span> {{data.features}}</span>
+            <span>特征值: </span>
+            <span> {{dataList.dataset}}</span>
           </el-row>
-          <img v-if="data.choiced"
+          <img v-if="this.$store.state.dataSelected===dataList.id"
                src="@/assets/images/choiced.png"
-               @click="setChoice(index)">
+               @click="setChoice(dataList.id)">
           <div v-else
                class="choice"
-               @click="setChoice(index)"></div>
+               @click="setChoice(dataList.id)"></div>
         </el-col>
       </el-row>
     </div>
@@ -44,8 +42,8 @@
 export default {
   props: {
     dataList: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -68,7 +66,7 @@ export default {
   margin: 16px 16px 0 0;
   padding: 15px 20px;
   border-radius: 8px;
-  width: 374px;
+  width: 364px;
 }
 .title {
   font-size: 20px;

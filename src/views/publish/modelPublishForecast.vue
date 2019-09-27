@@ -19,17 +19,20 @@
             class="line-area">
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.force" />
+          <Mzh-line :lineData="lineData.force"
+                    :title="'推荐牵引力 KN'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.speed" />
+          <Mzh-line :lineData="lineData.speed"
+                    :title="'推荐速度 km/h'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.power" />
+          <Mzh-line :lineData="lineData.power"
+                    :title="'推荐功率 kW'" />
         </div>
       </el-col>
     </el-row>

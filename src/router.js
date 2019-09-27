@@ -63,9 +63,9 @@ export default new Router({
               component: () => import('./views/publish/modelPublishForecast'),
             },
             {
-              path: 'modelSelect',
+              path: 'exampleSelect',
               name: '实例选择',
-              component: () => import('./views/publish/modelSelect'),
+              component: () => import('./views/publish/exampleSelect'),
             },
           ],
         },

@@ -32,12 +32,25 @@ export default {
       pre: false,
     };
   },
+  mounted() {
+    if (this.$route.path === '/modelPublish') {
+      this.active = 1;
+    } else if (this.$route.path === '/modelPublish/exampleSelect') {
+      this.active = 3;
+    } else if (this.$route.path === '/modelPublish/selectModel') {
+      this.active = 2;
+    } else if (this.$route.path === '/modelPublish/modelPublishForecast') {
+      this.active = 4;
+    }
+  },
   methods: {
     next() {
       this.active += 1;
+      this.$store.commit('setPublishActive', this.active);
     },
     prev() {
       this.active -= 1;
+      this.$store.commit('setPublishActive', this.active);
     },
   },
   watch: {
@@ -51,14 +64,19 @@ export default {
         this.pre = true;
         this.type = 'next';
       } else if (this.active === 3) {
-        this.$router.push({ path: '/modelPublish/modelSelect' });
+        this.$router.push({ path: '/modelPublish/exampleSelect' });
         this.pre = true;
         this.type = 'next';
       } else if (this.active === 4) {
         this.$router.push({ path: '/modelPublish/modelPublishForecast' });
         this.pre = true;
-        this.type = 'return';
+        this.type = 'complate';
       }
+    },
+    '$store.state.publishActive': {
+      handler() {
+        this.active = this.$store.state.publishActive;
+      },
     },
   },
 };

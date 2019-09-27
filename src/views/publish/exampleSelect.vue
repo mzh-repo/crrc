@@ -7,17 +7,21 @@
       <div class="title-right">
       </div>
     </div>
-    <el-row :gutter="16">
+    <div class="model-area">
       <template v-for="(item,index) in modelList">
-        <el-col :span="6"
-                :key="item.title">
-          <div @click="showDialog(index)">
-            <mzh-instance :chose="false"
-                          :status="item.status" />
-          </div>
-        </el-col>
+        <div :key="item.title"
+             @click="showDialog(index)"
+             class="model-box">
+          <mzh-instance :chose="false"
+                        :status="item.status"
+                        :title="item.name"
+                        :lately="item.loss"
+                        :traning="item.training_time"
+                        :estimate="item.estimated_deployment_time" />
+
+        </div>
       </template>
-    </el-row>
+    </div>
     <mzh-dialog ref="dialog"
                 @publish-success="publishSuccess" />
   </el-container>
@@ -31,41 +35,39 @@ export default {
   components: { 'mzh-instance': Mzhinstance, 'mzh-dialog': Mzhdialog },
   data() {
     return {
-      modelList: [
-        {
-          title: '12312',
-          status: 2,
-        },
-        {
-          title: '121',
-          status: 2,
-        },
-        {
-          title: '324',
-          status: 2,
-        },
-        {
-          title: '345',
-          status: 2,
-        },
-        {
-          title: '567',
-          status: 2,
-        },
-        {
-          title: '678',
-          status: 2,
-        },
-      ],
+      modelList: [],
       dialogVisible: false,
     };
   },
+  mounted() {
+    if (this.$store.state.exampleSelected) {
+      this.modelList[this.$store.state.exampleSelected].status = 1;
+    }
+    this.getdata();
+  },
   methods: {
+    getdata() {
+      this.$axios
+        .get(
+          `model/instance/list?model_id=${this.$store.state.modelSelected || 1}`,
+        )
+        .then((res) => {
+          this.modelList = res;
+        });
+    },
     showDialog(val) {
-      this.$refs.dialog.showDialog(val);
+      if (this.modelList[val].status === 1) {
+        this.$store.commit('setPublishActive', 4);
+      } else {
+        this.$refs.dialog.showDialog(val);
+      }
     },
     publishSuccess(val) {
       this.modelList[val.index].status = val.status;
+      if (val.status === 1) {
+        this.$store.commit('setPublishActive', 4);
+        this.$store.commit('selectExample', val.index);
+      }
     },
   },
 };
@@ -108,5 +110,13 @@ export default {
 
 /deep/.el-col-6 {
   margin: 16px 0 0 0;
+}
+.model-box {
+  box-sizing: border-box;
+  margin: 20px 10px 0 0;
+  float: left;
+}
+.model-area {
+  width: 100%;
 }
 </style>

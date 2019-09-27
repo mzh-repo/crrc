@@ -7,34 +7,36 @@
     </div>
     <div class="title">
       <div class="title-left">
-        <span>面向非接触供电列车的大数据运用模型</span>
+        <span>{{datebase[0]||'间歇式供电列车数据'}}</span>
       </div>
     </div>
-    <el-row>
-      <template v-for="item in modelList">
-        <el-col :span="7"
-                :key="item.index">
-          <div>
-            <mzh-optimizationModel :optimziationList="item" />
-          </div>
-        </el-col>
+    <div class="model-area">
+      <template v-for="(item,index) in allList[0]">
+        <div :span="7"
+             :key="item.index"
+             :class="index===choosed?'model-box active':'model-box'"
+             @click="next(index)">
+          <mzh-optimizationModel :optimziationList="item"
+                                 :describe="datebase[0]" />
+        </div>
       </template>
-    </el-row>
+    </div>
     <div class="title">
       <div class="title-left">
-        <span>面向非接触供电列车的大数据运用模型</span>
+        <span>{{datebase[1]||'间歇式供电列车数据'}}</span>
       </div>
     </div>
-    <el-row>
-      <template v-for="item in modelList">
-        <el-col :span="7"
-                :key="item.index">
-          <div>
-            <mzh-optimizationModel :optimziationList="item" />
-          </div>
-        </el-col>
+    <div class="model-area">
+      <template v-for="(item,index) in allList[1]">
+        <div :span="7"
+             :key="item.index"
+             :class="index===choosed?'model-box active':'model-box'"
+             @click="next(index)">
+          <mzh-optimizationModel :optimziationList="item"
+                                 :describe="datebase[1]" />
+        </div>
       </template>
-    </el-row>
+    </div>
   </el-container>
 </template>
 
@@ -45,59 +47,30 @@ export default {
   components: { 'mzh-optimizationModel': MzhoptimizationModel },
   data() {
     return {
-      modelList: [
-        {
-          title: '储能系统优化模型',
-          describe: '适用数据集：间歇式供电列车行车数据集',
-          lately_loss: 0.1,
-          average_loss: 0.1,
-          exampleNum: '80',
-          size: 34.2,
-        },
-        {
-          title: '储能系统优化模型',
-          describe: '适用数据集：间歇式供电列车行车数据集',
-          lately_loss: 0.1,
-          average_loss: 0.1,
-          exampleNum: '80',
-          size: 34.2,
-        },
-        {
-          title: '储能系统优化模型',
-          describe: '适用数据集：间歇式供电列车行车数据集',
-          lately_loss: 0.1,
-          average_loss: 0.1,
-          exampleNum: '80',
-          size: 34.2,
-        },
-        {
-          title: '储能系统优化模型',
-          describe: '适用数据集：间歇式供电列车行车数据集',
-          lately_loss: 0.1,
-          average_loss: 0.1,
-          exampleNum: '80',
-          size: 34.2,
-        },
-        {
-          title: '储能系统优化模型',
-          describe: '适用数据集：间歇式供电列车行车数据集',
-          lately_loss: 0.1,
-          average_loss: 0.1,
-          exampleNum: '80',
-          size: 34.2,
-        },
-        {
-          title: '储能系统优化模型',
-          describe: '适用数据集：间歇式供电列车行车数据集',
-          lately_loss: 0.1,
-          average_loss: 0.1,
-          exampleNum: '80',
-          size: 34.2,
-        },
-      ],
+      modelList: [],
+      datebase: [],
+      allList: [],
+      choosed: 0,
     };
   },
-  methods: {},
+  mounted() {
+    if (this.$store.state.modelSelected) {
+      this.choosed = this.$store.state.modelSelected;
+    }
+    this.getdata();
+  },
+  methods: {
+    getdata() {
+      this.$axios.get('model/detail/list').then((res) => {
+        this.datebase.push(res[0].name, res[1].name);
+        this.allList.push(res[0].model_info_list, res[1].model_info_list);
+      });
+    },
+    next(index) {
+      this.choosed = index;
+      this.$store.commit('selectModel', index);
+    },
+  },
 };
 </script>
 
@@ -153,5 +126,17 @@ export default {
 
 /deep/.el-row {
   width: 100%;
+}
+
+.model-area {
+  .model-box {
+    float: left;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  .active {
+    opacity: 1;
+    box-shadow: 0px 6px 8px 0px rgba(0, 0, 0, 0.04);
+  }
 }
 </style>

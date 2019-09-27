@@ -7,33 +7,28 @@
     </div>
     <div class="title">
       <div class="title-left">
-        <span>间歇式供电列车数据</span>
+        <span :class="tab===1?'active':''"
+              @click.stop="tab=1">{{datebase[0].name||'间歇式供电列车数据'}}</span>
+        <span :class="tab===1?'':'active'"
+              @click.stop="tab=2">{{datebase[1].name||'非接触式间歇式供电列车数据'}}</span>
       </div>
     </div>
-    <el-row :gutter="16">
-      <!-- <template v-for="(item,index) in modelList"> -->
-      <el-col>
-        <div>
-          <mzh-trainingData :dataList="modelList"
+    <div class="model-area">
+      <template v-for="(item,index) in modelList">
+        <div :key="index"
+             :span="6"
+             @click="choose(item.id)">
+          <mzh-trainingData :dataList="item"
                             @set-choice="choose" />
         </div>
-      </el-col>
-      <!-- </template> -->
-    </el-row>
-    <div class="title">
-      <div class="title-left">
-        <span>间歇式供电列车数据</span>
+      </template>
+    </div>
+    <div class="title-second">
+      <div class="title-right">
+        <span>新建</span>
+        <div @click="toAddData"><img src="@/assets/images/add.png" />新建数据集</div>
       </div>
     </div>
-    <el-row :gutter="16">
-      <!-- <template v-for="(item,index) in modelList"> -->
-      <el-col>
-        <div>
-          <mzh-trainingData :dataList="modelList" />
-        </div>
-      </el-col>
-      <!-- </template> -->
-    </el-row>
   </el-container>
 </template>
 
@@ -44,42 +39,54 @@ export default {
   components: { 'mzh-trainingData': MzhtrainingData },
   data() {
     return {
-      modelList: [
-        {
-          title: '非接触供电系统优化训练数据',
-          totalNum: '777',
-          size: '2222',
-          features: 'xxx,xxx',
-          choiced: false,
-        },
-        {
-          title: '非接触供电系统优化训练数据',
-          totalNum: '777',
-          size: '2222',
-          features: 'xxx,xxx',
-          choiced: false,
-        },
-        {
-          title: '非接触供电系统优化训练数据',
-          totalNum: '777',
-          size: '2222',
-          features: 'xxx,xxx',
-          choiced: false,
-        },
-        {
-          title: '非接触供电系统优化训练数据',
-          totalNum: '777',
-          size: '2222',
-          features: 'xxx,xxx',
-          choiced: false,
-        },
-      ],
+      modelList: [],
+      datebase: [{ name: '' }, { name: '' }],
+      allList: [],
       dialogVisible: false,
+      tab: 1,
     };
   },
+  mounted() {
+    if (this.$store.state.dataSelected) {
+      this.modelList.forEach((item, num) => {
+        if (this.$store.state.dataSelected === item.id) {
+          this.modelList[num].choiced = true;
+        }
+      });
+    }
+    this.getDatebase();
+    this.getdata();
+  },
   methods: {
+    getDatebase() {
+      this.$axios.get('database/list').then((res) => {
+        this.datebase = res;
+      });
+    },
+    getdata() {
+      this.$axios.get('data/list').then((res) => {
+        this.modelList = res[0].data_info_list;
+        this.allList.push(res[0].data_info_list, res[1].data_info_list);
+      });
+    },
     choose(index) {
-      this.modelList[index].choiced = !this.modelList[index].choiced;
+      this.modelList.forEach((item) => {
+        if (index === item.id) {
+          this.$store.commit('selectData', index);
+        }
+      });
+    },
+    toAddData() {
+      this.$router.push({ path: '/importData' });
+    },
+  },
+  watch: {
+    tab() {
+      if (this.tab === 1) {
+        [this.modelList] = this.allList;
+      } else if (this.tab === 2) {
+        [, this.modelList] = this.allList;
+      }
     },
   },
 };
@@ -99,7 +106,8 @@ export default {
 }
 
 .title,
-.title-first {
+.title-first,
+.title-second {
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -110,28 +118,76 @@ export default {
   margin: 20px 0 0;
 }
 
-// .title-left {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: flex-start;
-// }
+.title-first,
+.title-second {
+  color: rgba(102, 102, 102, 1);
+}
 
-.title-left span:nth-child(1) {
-  font-size: 27px;
-  font-weight: 500;
+.title-left span {
+  font-size: 22px;
+  font-weight: 400;
   color: rgba(51, 51, 51, 1);
+  line-height: 33px;
+  margin: 0 20px 0 0;
+  cursor: pointer;
+}
+
+.title-left .active {
+  font-size: 28px;
+  font-weight: 600;
   line-height: 40px;
 }
 
-.title-right span:nth-child(1) {
-  font-size: 24px;
-  font-weight: 400;
-  color: rgba(102, 102, 102, 1);
-  line-height: 33px;
+.title-second {
+  margin: 20px 0;
+}
+
+.title-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  div {
+    width: 235px;
+    height: 66px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(102, 102, 102, 1);
+    cursor: pointer;
+  }
+
+  span {
+    margin: 0 0 20px;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    margin: 0 5px 0 0;
+  }
 }
 
 /deep/.el-col-6 {
   margin: 16px 0 0 0;
+}
+
+.model-area {
+  div {
+    float: left;
+  }
+  .test {
+    background: #fff;
+    margin: 16px 16px 0 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    width: 364px;
+    height: 390px;
+  }
 }
 </style>
