@@ -74,6 +74,23 @@ export default new Router({
           name: '数据导入',
           selectIcon: '数据导入-选中',
           component: () => import(/* webpackChunkName: "dataImport" */ './views/dataImport'),
+          children: [
+            {
+              path: '/importData',
+              name: '表格上传',
+              component: () => import('./views/dataImport/steps/tableUpload'),
+            },
+            {
+              path: '/analyze',
+              name: '分析报告',
+              component: () => import('./views/dataImport/steps/analyze'),
+            },
+            {
+              path: '/recommend',
+              name: '模型推荐',
+              component: () => import('./views/dataImport/steps/recommend'),
+            },
+          ],
         },
         {
           path: '/chooseModel',

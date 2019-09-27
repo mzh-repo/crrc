@@ -11,23 +11,13 @@
     <div v-if="!chose">
       <el-row type="flex"
               class="loss-row">
-        <el-col :span="10"
-                class="loss">
-          最近实例Loss
-        </el-col>
-        <el-col :span="10"
-                class="loss">
-          平均实例Loss
+        <el-col class="loss">
+          该实例Loss
         </el-col>
       </el-row>
       <el-row type="flex">
-        <el-col :span="10"
-                class="lately">
+        <el-col class="lately">
           {{lately}}
-        </el-col>
-        <el-col :span="10"
-                class="average">
-          {{average}}
         </el-col>
       </el-row>
     </div>
@@ -57,15 +47,20 @@
                 type="flex"
                 justify="end">
           <el-col v-if="status===1"
-                  class="button1">下线</el-col>
+                  class="button1"
+                  @click="outline">下线</el-col>
           <el-col v-if="status===2"
-                  class="button2">部署</el-col>
+                  class="button2"
+                  @click="settle">部署</el-col>
           <el-col v-if="status===2"
-                  class="button3">再次训练</el-col>
+                  class="button3"
+                  @click="trainAgain">再次训练</el-col>
           <el-col v-if="status===3"
-                  class="button3">重新部署</el-col>
+                  class="button3"
+                  @click="settleAgain">重新部署</el-col>
           <el-col v-if="status===4"
-                  class="button1">终止训练</el-col>
+                  class="button1"
+                  @click="trainStop">终止训练</el-col>
         </el-row>
       </el-col>
     </el-row>
@@ -75,6 +70,10 @@
 <script>
 export default {
   props: {
+    id: {
+      type: Number,
+      default: -1,
+    },
     title: {
       type: String,
       default: '第一次实例-1908231122',
@@ -121,6 +120,23 @@ export default {
         tag.class = 'status4';
       }
       return tag;
+    },
+  },
+  methods: {
+    outline() {
+      this.$emit('outline', this.id);
+    },
+    settle() {
+      this.$emit('settle', this.id);
+    },
+    trainAgain() {
+      this.$emit('trainAgain', this.id);
+    },
+    settleAgain() {
+      this.$emit('settleAgain', this.id);
+    },
+    trainStop() {
+      this.$emit('trainStop', this.id);
     },
   },
 };

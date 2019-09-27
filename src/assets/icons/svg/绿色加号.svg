@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>Group Copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-736.000000, -114.000000)">
+            <g id="Group-Copy" transform="translate(736.000000, 114.000000)">
+                <circle id="椭圆形" fill="#00C4C0" cx="12" cy="12" r="12"></circle>
+                <path d="M6,6 L17.6240226,17.6240226" id="路径-26" stroke="#FFFFFF" stroke-linecap="round" transform="translate(11.812011, 11.812011) rotate(-315.000000) translate(-11.812011, -11.812011) "></path>
+                <path d="M6,6 L17.6240226,17.6240226" id="路径-26" stroke="#FFFFFF" stroke-linecap="round" transform="translate(11.812011, 11.812011) rotate(-225.000000) translate(-11.812011, -11.812011) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -26,15 +26,18 @@ export default {
       type: String,
       default: '配置',
     },
-  },
-  data() {
-    return {
-      sliderList: [
+    sliderList: {
+      type: Array,
+      default: () => [
         { title: '轮次', value: 0, maxValue: 100 },
         { title: '内存', value: 0, maxValue: 200 },
         { title: 'CPU', value: 0, maxValue: 300 },
         { title: 'GPU', value: 0, maxValue: 400 },
       ],
+    },
+  },
+  data() {
+    return {
       value1: 0,
       value2: 0,
       value3: 0,
@@ -54,7 +57,6 @@ export default {
 
 .title {
   text-align: start;
-  padding-left: 5px;
   font-size: 16px;
   font-family: '微软雅黑', 'PingFangSC-Regular', 'PingFangSC';
   font-weight: 400;
