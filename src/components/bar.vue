@@ -17,6 +17,10 @@ export default {
         validation_list: [],
       }),
     },
+    colors: {
+      type: Array,
+      default: () => ['#ff0000', '#00C4C0'],
+    },
   },
   data() {
     return {
@@ -60,22 +64,7 @@ export default {
           right: '50px',
         },
         dataset: {
-          source: [
-            // ['product', '0', '20', '40', '60', '80', '100', '120'],
-            // ['train', 0.6, 0.4, 0.6, 0.5, 0.48, 0.3, 0.2],
-            // ['valldation', 1.0, 0.8, 0.4, 0.35, 0.32, 0.22, 0.2],
-            // {
-            //   name: 'data',
-            //   data: this.lineData.data_list,
-            //   symbol: 'none',
-            // },
-            // {
-            //   name: 'validation',
-            //   type: 'line',
-            //   data: this.lineData.validation_list,
-            //   symbol: 'none',
-            // },
-          ],
+          source: [],
         },
         xAxis: {
           type: 'category',
@@ -104,6 +93,7 @@ export default {
         series: [
           {
             type: 'line',
+            color: this.colors[0],
             name: 'data',
             data: this.lineData.data_list,
             smooth: true,
@@ -119,6 +109,7 @@ export default {
           },
           {
             type: 'line',
+            color: this.colors[1],
             name: 'validation',
             smooth: true,
             data: this.lineData.validation_list,

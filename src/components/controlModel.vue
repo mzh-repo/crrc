@@ -42,13 +42,13 @@
           <el-row>
             <div>数据量</div>
             <div>
-              <span>{{modelList.data.total_data}}</span>M
+              <span>{{modelList.data.line}}</span>M
             </div>
           </el-row>
           <el-row>
             <div>大小</div>
             <div>
-              <span>{{(modelList.data.physical_size).toFixed(1)}}</span>M
+              <span>{{(modelList.data.size).toFixed(1)}}</span>M
             </div>
           </el-row>
           <el-row>

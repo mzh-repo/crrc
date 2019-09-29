@@ -4,7 +4,7 @@
     <el-row class="data-choice">
       <div v-for="(data,index) in dataList"
            :key="index"
-           :class="{active:index==isActive }"
+           :class="{active:index==(isActive-1) }"
            @click="check(index)">
         <div>{{data.name}}</div>
       </div>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Bar from './bar.vue';
+import Bar from '../../../components/bar.vue';
 
 export default {
   components: { Bar },
@@ -31,7 +31,7 @@ export default {
     return {
       dataList: [],
       lineData: {},
-      isActive: 0,
+      isActive: 1,
       totalNum: 129,
       resource: [
         {
@@ -51,7 +51,8 @@ export default {
   },
   methods: {
     check(index) {
-      this.isActive = index;
+      this.isActive = index + 1;
+      this.getLineData();
     },
     getDataList() {
       this.$axios.get('/database/list').then((res) => {
@@ -59,7 +60,7 @@ export default {
       });
     },
     getLineData() {
-      this.$axios.get('/form/train?id=222').then((res) => {
+      this.$axios.get(`/form/train?id=${this.isActive}`).then((res) => {
         this.lineData = res.train;
       });
     },

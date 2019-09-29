@@ -26,6 +26,17 @@ export default {
       type: String,
       default: '',
     },
+    lineData: {
+      type: Object,
+      default: () => ({
+        bars: [],
+        data: [],
+      }),
+    },
+    colors: {
+      type: String,
+      default: '#8FD866',
+    },
   },
   data() {
     return {
@@ -47,7 +58,7 @@ export default {
   },
   methods: {
     drawChart() {
-      this.initChart();
+      this.initChart(this.lineData);
       this.resizeHandler = () => {
         if (this.chart) {
           this.chart.resize();
@@ -55,7 +66,7 @@ export default {
       };
       window.addEventListener('resize', this.resizeHandler);
     },
-    initChart() {
+    initChart(data) {
       this.chart = echarts.init(this.$el);
 
       this.chart.setOption({
@@ -70,7 +81,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+          data: data.bins,
           axisTick: {
             alignWithLabel: true,
             show: false,
@@ -95,12 +106,18 @@ export default {
         series: [
           {
             name: '直接访问',
+            color: this.colors,
             type: 'bar',
             barWidth: '50%',
-            data: [0.2, 0.35, 0.5, 0.65, 0.8, 0.5, 0.6, 0.25, 0.18, 0.2],
+            data: data.data,
           },
         ],
       });
+    },
+  },
+  watch: {
+    lineData() {
+      this.drawChart();
     },
   },
 };

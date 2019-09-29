@@ -6,7 +6,11 @@
     <el-col :span="20">
       <el-row :gutter="20">
         <el-col :span="16">
-          <div class="box"></div>
+          <div class="box model-prediction">
+            <div>实时训练</div>
+            <div>车载储能系列性能劣化条件下的列车运动控制模型预测</div>
+            <bar :lineData="lineData" />
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="box">
@@ -75,6 +79,7 @@ import UserInfo from '../../components/userInfo.vue';
 import BarChart from '@/components/barChart.vue';
 import ModelTrain from '@/components/modelTrain.vue';
 import CircleProgress from '@/components/circleProgress.vue';
+import Bar from '@/components/bar.vue';
 
 export default {
   components: {
@@ -82,6 +87,7 @@ export default {
     BarChart,
     ModelTrain,
     CircleProgress,
+    Bar,
   },
   data() {
     return {
@@ -115,8 +121,12 @@ export default {
       chartHeight: '326px',
       appData: {},
       trainData: {},
+      lineData: {},
     };
   },
+  // mounted() {
+  //   this.getLineData();
+  // },
   methods: {
     toModel() {
       this.$router.push({ path: '/chooseModel' });
@@ -124,8 +134,14 @@ export default {
     toModelReport() {
       this.$router.push({ path: '/modelReport' });
     },
+    getLineData() {
+      this.$axios.get('/form/train?id=1').then((res) => {
+        this.lineData = res.train;
+      });
+    },
   },
   mounted() {
+    this.getLineData();
     this.$axios.get('/form/recent?type=train').then((res) => {
       this.appData = res.application;
       this.trainData = res.train;
@@ -221,6 +237,20 @@ export default {
   border-radius: 8px;
   height: 100%;
   cursor: pointer;
+}
+.model-prediction {
+  text-align: left;
+  div:nth-child(1) {
+    padding: 18px 0 9px 25px;
+    font-size: 24px;
+    line-height: 33pz;
+  }
+  div:nth-child(2) {
+    padding-left: 25px;
+    color: #666;
+    font-size: 16px;
+    line-height: 22pz;
+  }
 }
 
 .moder-area {

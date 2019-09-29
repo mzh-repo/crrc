@@ -38,6 +38,15 @@ export default {
       footerType: 'next',
     };
   },
+  mounted() {
+    if (this.$route.path === '/chooseData') {
+      this.active = 1;
+    } else if (this.$route.path === '/config') {
+      this.active = 2;
+    } else if (this.$route.path === '/model') {
+      this.active = 3;
+    }
+  },
   methods: {
     next() {
       if (this.active === 1) {
@@ -45,22 +54,44 @@ export default {
         this.footerType = 'commit';
       }
       this.active += 1;
+      this.$store.commit('setPublishActive', this.active);
     },
     commit() {
       this.$router.push('/model');
       this.footerType = 'return';
       this.active += 1;
+      this.$store.commit('setPublishActive', this.active);
     },
     handlePre() {
       this.$router.push('/chooseData');
       this.footerType = 'next';
       this.active = 1;
+      this.$store.commit('setPublishActive', this.active);
     },
     // TODO: 回到模型训练中心
     handleFinish() {
       this.$router.push('/chooseModel');
     },
     complete() {},
+  },
+  watch: {
+    active() {
+      if (this.active === 1) {
+        this.$router.push({ path: '/chooseData' });
+        this.footerType = 'next';
+      } else if (this.active === 2) {
+        this.$router.push({ path: '/config' });
+        this.footerType = 'commit';
+      } else if (this.active === 3) {
+        this.$router.push({ path: '/model' });
+        this.footerType = 'return';
+      }
+    },
+    '$store.state.publishActive': {
+      handler() {
+        this.active = this.$store.state.publishActive;
+      },
+    },
   },
 };
 </script>

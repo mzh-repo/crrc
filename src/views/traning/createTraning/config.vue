@@ -4,7 +4,7 @@
     <el-row class="data-choice">
       <div v-for="(data,index) in dataList"
            :key="index"
-           :class="{active:index==isActive }"
+           :class="{active:index==(isActive-1) }"
            @click="check(index)">
         <div>{{data.name}}</div>
       </div>
@@ -43,7 +43,7 @@ export default {
     return {
       dataList: [],
       model: true,
-      isActive: 0,
+      isActive: 1,
       totalNum: 129,
       resource: [
         {
@@ -57,25 +57,7 @@ export default {
       ],
       tabId: 0,
       modelData: {},
-      modelDataList: [
-        // {
-        //   id: 1,
-        //   name: 'test',
-        //   data: {
-        //     total_data: 100,
-        //     physical_size: 100,
-        //   },
-        //   model_configuration: {
-        //     rounds: 8,
-        //     ram: 12,
-        //     cpu: 3,
-        //     gpu: 4,
-        //   },
-        //   algorithm: {
-        //     name: 'test',
-        //   },
-        // },
-      ],
+      modelDataList: [],
     };
   },
   created() {
@@ -84,7 +66,7 @@ export default {
   },
   methods: {
     check(index) {
-      this.isActive = index;
+      this.isActive = index + 1;
       this.tabId = index;
       this.getModelDataList();
     },
@@ -102,8 +84,8 @@ export default {
       });
     },
     getModelDataList() {
-      this.$axios.get('/model/list').then((res) => {
-        this.modelDataList = res[this.tabId].model_info_list;
+      this.$axios.get(`/model/list?database_id=${this.isActive}`).then((res) => {
+        this.modelDataList = res;
         [this.modelData] = this.modelDataList;
       });
     },

@@ -4,7 +4,7 @@
     <el-row class="data-choice">
       <div v-for="(data,index) in dataList"
            :key="index"
-           :class="{active:index==isActive }"
+           :class="{active:index==(isActive-1) }"
            @click="check(index)">
         <div>{{data.name}}</div>
       </div>
@@ -20,13 +20,14 @@
             <div>{{item.title}}
             </div>
             <span>共{{item.num}}组</span>
-
           </template>
-          <el-col v-for="histogram in 5"
-                  :span="7"
-                  :key="histogram"
+          <el-col v-for="(histogramList, index) in lineDataList"
+                  :span="8"
+                  :key="index"
                   class="echarts">
-            <histogram />
+            <histogram :colors="colors[index]"
+                       :lineData="histogramList.lineData" />
+
           </el-col>
           <img v-if="item.selected"
                src="@/assets/images/choiced.png"
@@ -49,8 +50,8 @@ export default {
   data() {
     return {
       dataList: [],
-      model: true,
-      isActive: 0,
+      colors: ['#8FD866', '#00C4C0'],
+      isActive: 1,
       totalNum: 129,
       activeName: 0,
       collapseList: [
@@ -59,19 +60,18 @@ export default {
         { title: '非接触供电系统优化训练数据', num: 256, selected: false },
         { title: '非接触供电系统优化训练数据', num: 256, selected: false },
       ],
+      lineDataList: [{ lineData: {} }, { lineData: {} }],
     };
   },
   mounted() {
+    this.collapseList[0].selected = true;
     this.getDataList();
+    this.getlineDataList();
   },
   methods: {
     check(index) {
-      this.isActive = index;
-      if (index === 1) {
-        this.model = false;
-      } else {
-        this.model = true;
-      }
+      this.isActive = index + 1;
+      this.getlineDataList();
     },
     setSelect(index) {
       this.collapseList.forEach((item, i) => {
@@ -80,6 +80,18 @@ export default {
           this.collapseList[i].selected = true;
         }
       });
+    },
+    getlineDataList() {
+      this.$axios
+        .get(`/dataset/graph?database_id=${this.isActive}`)
+        .then((res) => {
+          const temp = JSON.parse(JSON.stringify(this.lineDataList));
+          for (let i = 0; i < res.length; i += 1) {
+            temp[i].lineData.data = [...JSON.parse(res[i]).data];
+            temp[i].lineData.bins = [...JSON.parse(res[i]).bins];
+          }
+          this.lineDataList = temp;
+        });
     },
     getDataList() {
       this.$axios.get('/database/list').then((res) => {
