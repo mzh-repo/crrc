@@ -20,6 +20,7 @@
                    v-for="item in circleList"
                    :key="item.title">
                 <circle-progress class="circle-progress"
+                                 :size="size"
                                  :color="item.color"
                                  :show="item.show"
                                  :total="item.total"
@@ -122,11 +123,17 @@ export default {
       appData: {},
       trainData: {},
       lineData: {},
+      screenWidth: document.body.clientWidth,
     };
   },
   // mounted() {
   //   this.getLineData();
   // },
+  computed: {
+    size() {
+      return this.screenWidth * 0.0667;
+    },
+  },
   methods: {
     toModel() {
       this.$router.push({ path: '/chooseModel' });
@@ -146,6 +153,10 @@ export default {
       this.appData = res.application;
       this.trainData = res.train;
     });
+    window.onresize = () => {
+      window.screenWidth = document.body.clientWidth;
+      this.screenWidth = window.screenWidth;
+    };
   },
 };
 </script>

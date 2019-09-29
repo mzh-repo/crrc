@@ -1,29 +1,31 @@
 <template>
-  <div class="box-wrap">
-    <el-container class="detail-wrap">
+  <div class="box-wrap"
+       :style="dynamicSize">
+    <el-container class="detail-wrap"
+                  :style="dynamicSize">
       <el-row type="flex"
               align="bottom">
         <el-col class="detail-number">{{number}}</el-col>
         <el-col class="detail-unit">{{unit}}</el-col>
       </el-row>
     </el-container>
-    <svg width="130"
-         height="130"
-         viewbox-wrap="0 0 130 130">
-      <circle cx="65.5"
-              cy="65.5"
-              r="60.5"
+    <svg :width="size"
+         :height="size"
+         :viewbox-wrap="wrap">
+      <circle :cx="size/2"
+              :cy="size/2"
+              :r="size/2.14876"
               stroke-width="5"
               stroke="#F3F3F3"
               fill="none">
       </circle>
-      <circle cx="65.5"
-              cy="65.5"
-              r="60.5"
+      <circle :cx="size/2"
+              :cy="size/2"
+              :r="size/2.14876"
               stroke-width="5"
               :stroke="color"
               fill="none"
-              transform="matrix(0,-1,1,0,0,130)"
+              :transform="transform"
               :stroke-dasharray="stroke">
       </circle>
     </svg>
@@ -41,6 +43,10 @@ export default {
     show: {
       type: Number,
       default: 500,
+    },
+    size: {
+      type: Number,
+      default: 130,
     },
     total: {
       type: Number,
@@ -60,6 +66,17 @@ export default {
       stroke: '0 1000',
     };
   },
+  computed: {
+    dynamicSize() {
+      return `height:${this.size}px;width:${this.size}px;`;
+    },
+    wrap() {
+      return `0 0 ${this.size} ${this.size}`;
+    },
+    transform() {
+      return `matrix(0,-1,1,0,0,${this.size})`;
+    },
+  },
   mounted() {
     const percent = this.show / this.total;
     const perimeter = Math.PI * 2 * 60.5;
@@ -71,8 +88,6 @@ export default {
 <style lang="scss" scoped>
 .box-wrap {
   background-color: #fff;
-  height: 130px;
-  width: 130px;
   position: relative;
 }
 
@@ -83,8 +98,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 130px;
-  width: 130px;
 }
 
 .detail-number {
