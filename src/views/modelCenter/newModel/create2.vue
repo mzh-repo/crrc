@@ -29,12 +29,12 @@
       </el-col>
       <div v-if="item.id === algorithmId"
            class="choose"
-           @click="setChoice(item.id)">
+           @click="setChoice(item)">
         <img src="@/assets/images/choiced.png">
       </div>
       <div v-else
            class="choose"
-           @click="setChoice(item.id)">
+           @click="setChoice(item)">
       </div>
     </el-row>
   </div>
@@ -57,8 +57,15 @@ export default {
     });
   },
   methods: {
-    setChoice(id) {
-      this.algorithmId = id;
+    setChoice(item) {
+      this.algorithmId = item.id;
+      this.$store.commit('setAlgorithmData', {
+        id: item.id,
+        name: item.name,
+        model_name: item.model_name,
+        suit: item.applicable_problem,
+        frame: item.frame_name,
+      });
     },
   },
 };

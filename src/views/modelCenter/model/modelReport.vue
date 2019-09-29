@@ -1,17 +1,17 @@
 <template>
   <el-container class="report-container">
     <el-row class="main-title">
-      车载储能系统性能劣化条件下的列车运行控制模型
+      {{reportData.name}}
     </el-row>
     <el-row class="basic-container">
       <el-col :span="6">
         适用场景: {{reportData.scene}}
       </el-col>
       <el-col :span="6">
-        适用数据集: {{reportData.suitDataSet}}
+        适用数据集: {{reportData.dateSetName}}
       </el-col>
       <el-col :span="6">
-        部署实例总次数: {{reportData.example}} 次
+        部署实例总次数: {{reportData.total}} 次
       </el-col>
     </el-row>
     <el-row class="describe">
@@ -61,19 +61,19 @@
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="17">
-      <el-col :span="6">
-        <instance />
-      </el-col>
-      <el-col :span="6">
-        <instance />
-      </el-col>
-      <el-col :span="6">
-        <instance />
-      </el-col>
-      <el-col :span="6">
-        <instance />
-      </el-col>
+    <el-row>
+      <template v-for="(item,index) in modelList">
+        <div :key="index"
+             class="model-box">
+          <instance :chose="false"
+                    :status="item.status"
+                    :title="item.name"
+                    :lately="item.loss"
+                    :traning="item.training_time"
+                    :estimate="item.estimated_deployment_time" />
+
+        </div>
+      </template>
     </el-row>
   </el-container>
 </template>
@@ -88,46 +88,47 @@ export default {
     return {
       appData: {},
       trainData: {},
-      reportData: {
-        scene: '列车运行控制',
-        suitDataSet: '间歇式供电列车行车数据集',
-        example: '188',
-        describe:
-          '对非接触供电列车的储能系统、供电系统、牵引系统、制动系统等进行建模，对相应各系统的容量配置、关键部件选型、关键参数进行优化。',
-      },
+      reportData: this.$store.state.reportData,
       colors: ['#00C4C0', '#8FD866'],
       configList: [
         {
           name: '轮次',
-          value: 8,
+          value: this.$store.state.reportData.config.rounds,
           unit: '次',
         },
         {
           name: '内存',
-          value: 12,
+          value: this.$store.state.reportData.config.ram,
           unit: 'M',
         },
         {
           name: 'CPU',
-          value: 3,
+          value: this.$store.state.reportData.config.cpu,
           unit: '个',
         },
         {
           name: 'GPU',
-          value: 24,
+          value: this.$store.state.reportData.config.gpu,
           unit: 'M',
         },
       ],
       total: 100,
       size: 34.2,
       frame: 'keras',
+      modelList: [],
     };
   },
   mounted() {
-    this.$axios.get('/form/recent?type=train').then((res) => {
-      this.appData = res.application;
-      this.trainData = res.train;
-    });
+    this.getdata();
+  },
+  methods: {
+    getdata() {
+      this.$axios
+        .get(`model/instance/list?model_id=${this.$store.state.reportId || 1}`)
+        .then((res) => {
+          this.modelList = res;
+        });
+    },
   },
 };
 </script>

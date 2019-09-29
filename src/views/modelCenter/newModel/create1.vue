@@ -53,7 +53,7 @@
              :span="6"
              @click="chooseModel(item.id)">
           <training :dataList="item"
-                    @set-choice="choose" />
+                    @set-choice="choose(item)" />
         </div>
       </template>
     </div>
@@ -116,10 +116,13 @@ export default {
           this.modelList = res.data_list;
         });
     },
-    choose(index) {
+    choose(val) {
       this.modelList.forEach((item) => {
-        if (index === item.id) {
-          this.$store.commit('selectData', index);
+        if (val.id === item.id) {
+          this.$store.commit('setBasic', {
+            datasetId: val.id,
+            datasetName: val.name,
+          });
         }
       });
     },

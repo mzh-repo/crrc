@@ -65,13 +65,13 @@ export default {
       modelList: [
         { name: '模型名称', value: this.$store.state.basic.name },
         { name: '适用场景', value: this.$store.state.basic.scene },
-        { name: '数 据 集', value: '' },
+        { name: '数 据 集', value: this.$store.state.basic.datasetName },
         { name: '简介', value: this.$store.state.basic.describe },
       ],
-      algorithm: '深度全链接神经网络',
-      model: 'Fully Connected Neural Network',
-      suit: '系统优化',
-      frame: 'keras/ttn',
+      algorithm: this.$store.state.algorithm.name,
+      model: this.$store.state.algorithm.model_name,
+      suit: this.$store.state.algorithm.suit,
+      frame: this.$store.state.algorithm.frame,
       sliderList: [
         { title: '轮次', value: 8, maxValue: 100 },
         { title: '内存', value: 12, maxValue: 200 },

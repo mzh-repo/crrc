@@ -78,7 +78,6 @@ export default {
 
   mounted() {
     // 初始化选择数据集
-    this.$store.commit('selectData', '');
   },
 
   methods: {
@@ -102,7 +101,7 @@ export default {
             message: '请输入适用场景',
             type: 'warning',
           });
-        } else if (this.$store.state.dataSelected === '') {
+        } else if (this.$store.state.basic.datasetId === '') {
           this.$message({
             message: '请选择数据集',
             type: 'warning',
@@ -124,13 +123,12 @@ export default {
           this.$router.push('/createModel/step2');
         }
       } else if (this.active === 2) {
-        if (data.algorithmId === '') {
+        if (this.$store.state.algorithm.id === '') {
           this.$message({
             message: '请选择算法',
             type: 'warning',
           });
         } else {
-          this.$store.commit('setAlgorithm', data.algorithmId);
           this.$router.push('/createModel/step3');
         }
       }
@@ -141,8 +139,8 @@ export default {
         name: this.$store.state.basic.name,
         applicable_scene: this.$store.state.basic.scene,
         introduction: this.$store.state.basic.describe,
-        dataset_id: this.$store.state.dataSelected,
-        algorithm_id: this.$store.state.algorithm,
+        dataset_id: this.$store.state.basic.datasetId,
+        algorithm_id: this.$store.state.algorithm.id,
         model_configuration: {
           rounds: data.sliderList[0].value,
           ram: data.sliderList[1].value,
@@ -154,6 +152,15 @@ export default {
         this.$message({
           message: '创建成功',
           type: 'success',
+        });
+        this.$store.commit('setBasic', {
+          name: '',
+          scene: '',
+          describe: '',
+          datasetId: '',
+          datasetName: '',
+          input: '',
+          output: '',
         });
         this.$router.push('/chooseModel');
       });

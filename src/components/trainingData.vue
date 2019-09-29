@@ -29,7 +29,8 @@
                     `${item}${index+1===dataList.header_mappings.length?'':','}`
                     }}</span> -->
           </el-row>
-          <img v-if="this.$store.state.dataSelected===dataList.id"
+          <img v-if="this.$store.state.dataSelected===dataList.id
+                    || this.$store.state.basic.datasetId === dataList.id"
                src="@/assets/images/choiced.png"
                @click="setChoice(dataList.id)">
           <div v-else

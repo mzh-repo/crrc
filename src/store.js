@@ -28,12 +28,32 @@ export default new Vuex.Store({
       name: '',
       scene: '',
       describe: '',
-      dataChoose: '',
+      datasetId: '',
+      datasetName: '',
       input: '',
       output: '',
     },
-    algorithm: '',
+    algorithm: {
+      id: '',
+      name: '',
+      model_name: '',
+      suit: '',
+      frame: '',
+    },
     config: '',
+    reportData: {
+      name: '',
+      scene: '',
+      describe: '',
+      dateSetName: '',
+      total: '',
+      config: {
+        rounds: '',
+        ram: '',
+        cpu: '',
+        gpu: '',
+      },
+    },
   },
   mutations: {
     updateImportData(state, payload) {
@@ -58,10 +78,13 @@ export default new Vuex.Store({
       state.username = value;
     },
     setBasic(state, value) {
-      state.basic = value;
+      state.basic = Object.assign(state.basic, value);
     },
-    setAlgorithm(state, value) {
-      state.algorithm = value;
+    setAlgorithmData(state, value) {
+      state.algorithm = Object.assign(state.algorithm, value);
+    },
+    setReportData(state, value) {
+      state.reportData = Object.assign(state.reportData, value);
     },
   },
   actions: {

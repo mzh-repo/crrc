@@ -34,7 +34,7 @@
         </div>
         <div v-for="(item,index) in modelData"
              :key="index">
-          <span @click="modelReport(item.id)">
+          <span @click="modelReport(item)">
             <model :modelList="item" />
           </span>
         </div>
@@ -73,7 +73,17 @@ export default {
     newModel() {
       this.$router.push('/createModel/step1');
     },
-    modelReport() {
+    modelReport(item) {
+      // eslint-disable-next-line
+      console.log('item', item);
+      this.$store.commit('setReportData', {
+        name: item.name,
+        scene: item.applicable_scene,
+        describe: item.introduction,
+        total: item.deploy_number,
+        dateSetName: item.dataset.name,
+        config: item.model_configuration,
+      });
       this.$router.push('/modelReport');
     },
     chooseDatabase(id) {
