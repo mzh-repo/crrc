@@ -30,7 +30,7 @@
           </el-row>
           <el-row v-if="optimziationList.dataset">
             <div>大小</div>
-            <div>{{(optimziationList.dataset.size)}}MB</div>
+            <div>{{unitConvert(optimziationList.dataset.size)}}MB</div>
           </el-row>
         </el-col>
       </el-row>
@@ -44,7 +44,7 @@ const imgUrl = [
   /* eslint-disable */
   require('../assets/images/tensorflow.png'),
   require('../assets/images/keras.png'),
-  require('../assets/images/mklearn.png')
+  require('../assets/images/mklearn.png'),
   /* eslint-enable */
 ];
 
@@ -68,6 +68,9 @@ export default {
   methods: {
     getUrl(type) {
       return img.get(type);
+    },
+    unitConvert(data) {
+      return (data / 1024 / 1024).toFixed(1);
     },
   },
 };

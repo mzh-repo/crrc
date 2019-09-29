@@ -4,7 +4,7 @@
       <div class="title">数据集名称</div>
       <div class="data-line">
         <div class="data-left">总记录数量：{{total}} 条</div>
-        <div>物理大小：{{size}}B</div>
+        <div>物理大小：{{unitConvert(size)}}MB</div>
       </div>
     </div>
     <el-row class="charts-title">
@@ -99,7 +99,8 @@ export default {
       };
       this.$axios.put('/dataset', data).then((res) => {
         this.total = res.line;
-        this.size = this.formatDataSize(res.size, true);
+        // this.size = this.formatDataSize(res.size, true);
+        this.size = res.size;
         const tempList = res.previews;
         const listBeforeT = [];
         listBeforeT[0] = this.importData.options;
@@ -112,26 +113,29 @@ export default {
         this.outList = listBeforeT;
       });
     },
-    formatDataSize(val, isData) {
-      let unit = 1000;
-      if (isData) {
-        unit = 1024;
-      }
-      let data = val;
-      let flag = 0;
-      while (data / unit >= 1) {
-        data /= unit;
-        flag += 1;
-      }
-      if (flag === 1) {
-        data = `${data.toFixed(1)}K`;
-      } else if (flag === 2) {
-        data = `${data.toFixed(1)}M`;
-      } else if (flag === 3) {
-        data = `${data.toFixed(1)}G`;
-      }
-      return data;
+    unitConvert(data) {
+      return (data / 1024 / 1024).toFixed(1);
     },
+    // formatDataSize(val, isData) {
+    //   let unit = 1000;
+    //   if (isData) {
+    //     unit = 1024;
+    //   }
+    //   let data = val;
+    //   let flag = 0;
+    //   while (data / unit >= 1) {
+    //     data /= unit;
+    //     flag += 1;
+    //   }
+    //   if (flag === 1) {
+    //     data = `${data.toFixed(1)}K`;
+    //   } else if (flag === 2) {
+    //     data = `${data.toFixed(1)}M`;
+    //   } else if (flag === 3) {
+    //     data = `${data.toFixed(1)}G`;
+    //   }
+    //   return data;
+    // },
   },
 };
 </script>

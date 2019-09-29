@@ -15,7 +15,7 @@
                 class="training-continue">
           <div>物理大小</div>
           <div>
-            <span>{{dataList.size}}</span>MB
+            <span>{{unitConvert(dataList.size)}}</span>MB
           </div>
         </el-col>
       </el-row>
@@ -56,6 +56,9 @@ export default {
   methods: {
     setChoice(index) {
       this.$emit('set-choice', index);
+    },
+    unitConvert(data) {
+      return (data / 1024 / 1024).toFixed(1);
     },
   },
 };

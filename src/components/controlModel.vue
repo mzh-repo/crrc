@@ -49,7 +49,7 @@
           <el-row>
             <div>大小</div>
             <div>
-              <span>{{(modelList.dataset.size).toFixed(1)}}</span>M
+              <span>{{unitConvert(modelList.dataset.size)}}</span>M
             </div>
           </el-row>
           <el-row>
@@ -88,6 +88,9 @@ export default {
   methods: {
     setChoice(index) {
       this.$emit('set-choice', index);
+    },
+    unitConvert(data) {
+      return (data / 1024 / 1024).toFixed(1);
     },
   },
 };
