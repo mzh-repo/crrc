@@ -76,6 +76,11 @@ export default {
     },
   },
 
+  mounted() {
+    // 初始化选择数据集
+    this.$store.commit('selectData', '');
+  },
+
   methods: {
     handlePre() {
       if (this.footerType === 'complete') {
@@ -85,15 +90,73 @@ export default {
       }
     },
     next() {
-      // console.log('ews', this.$refs.model);
+      const data = this.$refs.model;
       if (this.active === 1) {
-        this.$router.push('/createModel/step2');
+        if (data.name === '') {
+          this.$message({
+            message: '请输入模型名称',
+            type: 'warning',
+          });
+        } else if (data.scene === '') {
+          this.$message({
+            message: '请输入适用场景',
+            type: 'warning',
+          });
+        } else if (this.$store.state.dataSelected === '') {
+          this.$message({
+            message: '请选择数据集',
+            type: 'warning',
+          });
+        } else if (data.input.length === 0) {
+          this.$message({
+            message: '请选择输入',
+            type: 'warning',
+          });
+        } else {
+          this.$store.commit('setBasic', {
+            name: data.name,
+            scene: data.scene,
+            describe: data.describe,
+            dataChoose: this.$store.state.dataSelected,
+            input: data.input,
+            output: data.output,
+          });
+          this.$router.push('/createModel/step2');
+        }
       } else if (this.active === 2) {
-        this.$router.push('/createModel/step3');
+        if (data.algorithmId === '') {
+          this.$message({
+            message: '请选择算法',
+            type: 'warning',
+          });
+        } else {
+          this.$store.commit('setAlgorithm', data.algorithmId);
+          this.$router.push('/createModel/step3');
+        }
       }
     },
     complete() {
-      this.$router.push('/chooseModel');
+      const data = this.$refs.model;
+      const modelData = {
+        name: this.$store.state.basic.name,
+        applicable_scene: this.$store.state.basic.scene,
+        introduction: this.$store.state.basic.describe,
+        dataset_id: this.$store.state.dataSelected,
+        algorithm_id: this.$store.state.algorithm,
+        model_configuration: {
+          rounds: data.sliderList[0].value,
+          ram: data.sliderList[1].value,
+          cpu: data.sliderList[2].value,
+          gpu: data.sliderList[3].value,
+        },
+      };
+      this.$axios.post('/model', modelData).then(() => {
+        this.$message({
+          message: '创建成功',
+          type: 'success',
+        });
+        this.$router.push('/chooseModel');
+      });
     },
   },
 };

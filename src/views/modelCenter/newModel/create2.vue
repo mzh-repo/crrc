@@ -9,9 +9,9 @@
       <el-col :span="9"
               class="box">
         <el-row>{{item.name}}</el-row>
-        <el-row>模型: {{item.model}}</el-row>
-        <el-row>适用问题: {{item.suit}}</el-row>
-        <el-row>使用框架: {{item.frame}}</el-row>
+        <el-row>模型: {{item.model_name}}</el-row>
+        <el-row>适用问题: {{item.applicable_problem}}</el-row>
+        <el-row>使用框架: {{item.frame_name}}</el-row>
       </el-col>
       <el-col :span="12"
               class="model">
@@ -19,7 +19,7 @@
           相关模型
         </el-row>
         <el-row :gutter="16">
-          <el-col v-for="obj in item.modelList"
+          <el-col v-for="obj in item.model_list"
                   :key="obj"
                   :span="12">
             <optimize :optimziationList="obj"
@@ -27,11 +27,15 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col class="choose"
-              @click.native="setChoice(index)">
-        <img v-if="item.choiced"
-             src="@/assets/images/choiced.png">
-      </el-col>
+      <div v-if="item.id === algorithmId"
+           class="choose"
+           @click="setChoice(item.id)">
+        <img src="@/assets/images/choiced.png">
+      </div>
+      <div v-else
+           class="choose"
+           @click="setChoice(item.id)">
+      </div>
     </el-row>
   </div>
 </template>
@@ -43,64 +47,18 @@ export default {
   components: { Optimize },
   data() {
     return {
-      algorithmList: [
-        {
-          choiced: false,
-          name: '深度全链接神经网络',
-          model: 'Fully Connected Neural Network',
-          suit: '系统优化',
-          frame: 'keras/ttn',
-          modelList: [
-            {
-              title: '储能系统优化模型',
-              describe: '适用数据集：间歇式供电列车行车数据集',
-              lately_loss: '0.1',
-              average_loss: '0.3',
-              exampleNum: 80,
-              size: 34.2,
-            },
-            {
-              title: '储能系统优化模型',
-              describe: '适用数据集：间歇式供电列车行车数据集',
-              lately_loss: '0.1',
-              average_loss: '0.3',
-              exampleNum: 80,
-              size: 34.2,
-            },
-          ],
-        },
-        {
-          choiced: false,
-          name: '深度全链接神经网络',
-          model: 'Fully Connected Neural Network',
-          suit: '系统优化',
-          frame: 'keras/ttn',
-          modelList: [
-            {
-              title: '储能系统优化模型',
-              describe: '适用数据集：间歇式供电列车行车数据集',
-              lately_loss: '0.1',
-              average_loss: '0.3',
-              exampleNum: 80,
-              size: 34.2,
-            },
-            {
-              title: '储能系统优化模型',
-              describe: '适用数据集：间歇式供电列车行车数据集',
-              lately_loss: '0.1',
-              average_loss: '0.3',
-              exampleNum: 80,
-              size: 34.2,
-            },
-          ],
-        },
-      ],
+      algorithmId: '',
+      algorithmList: [],
     };
   },
+  mounted() {
+    this.$axios.get('/algorithm/list').then((res) => {
+      this.algorithmList = res;
+    });
+  },
   methods: {
-    setChoice(index) {
-      this.algorithmList[`${index}`].choiced = !this.algorithmList[`${index}`]
-        .choiced;
+    setChoice(id) {
+      this.algorithmId = id;
     },
   },
 };
@@ -159,6 +117,10 @@ export default {
 .model-example {
   border-radius: 8px;
   border: 1px solid rgba(216, 216, 216, 1);
+
+  /deep/ .optimization-continue {
+    margin: 0;
+  }
 }
 
 .choose {

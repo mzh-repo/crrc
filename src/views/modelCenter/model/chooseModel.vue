@@ -84,7 +84,7 @@ export default {
       this.$axios
         .get(`/model/list?database_id=${this.databaseId}`)
         .then((res) => {
-          this.modelData = res[0].model_info_list;
+          this.modelData = res;
         });
     },
   },

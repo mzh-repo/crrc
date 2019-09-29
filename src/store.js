@@ -22,9 +22,18 @@ export default new Vuex.Store({
     dataSelected: '',
     exampleSelected: '',
     publishActive: '',
-    newModel: {},
     show: true,
     username: '',
+    basic: {
+      name: '',
+      scene: '',
+      describe: '',
+      dataChoose: '',
+      input: '',
+      output: '',
+    },
+    algorithm: '',
+    config: '',
   },
   mutations: {
     updateImportData(state, payload) {
@@ -47,6 +56,12 @@ export default new Vuex.Store({
     },
     setUsername(state, value) {
       state.username = value;
+    },
+    setBasic(state, value) {
+      state.basic = value;
+    },
+    setAlgorithm(state, value) {
+      state.algorithm = value;
     },
   },
   actions: {

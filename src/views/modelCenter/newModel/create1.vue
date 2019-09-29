@@ -79,10 +79,16 @@ export default {
   data() {
     return {
       dataBaseList: [],
+      modelList: [],
       databaseId: '',
       dataActive: true,
       inputList: ['输入', '输出'],
-      arrayOptions: ['123', '432'],
+      arrayOptions: [],
+      name: this.$store.state.basic.name || '',
+      scene: this.$store.state.basic.scene || '',
+      describe: this.$store.state.basic.describe || '',
+      input: [],
+      output: '',
     };
   },
   mounted() {
@@ -98,22 +104,28 @@ export default {
       this.getData();
     },
     handleSelectChange(e) {
-      // eslint-disable-next-line
-      console.log(e);
+      this.input = e.select;
     },
     upload() {
       this.$router.push('/importData');
     },
     getData() {
-      this.$axios.get(`model/list?database_id=${this.databaseId}`).then((res) => {
-        this.modelList = res[0].data_info_list;
-      });
+      this.$axios
+        .get(`dataset/list?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.modelList = res.data_list;
+        });
     },
-    chooseModel(index) {
+    choose(index) {
       this.modelList.forEach((item) => {
         if (index === item.id) {
           this.$store.commit('selectData', index);
         }
+      });
+    },
+    chooseModel(id) {
+      this.$axios.get(`/dataset/headers?dataset_id=${id}`).then((res) => {
+        this.arrayOptions = res;
       });
     },
   },

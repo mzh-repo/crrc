@@ -12,7 +12,8 @@
         </el-col>
       </el-row>
       <div class="line"></div>
-      <config title="自选配置" />
+      <config title="自选配置"
+              :sliderList="sliderList" />
     </div>
     <div class="config model">
       <el-row v-for="item in modelList"
@@ -62,15 +63,21 @@ export default {
         },
       ],
       modelList: [
-        { name: '模型名称', value: 'xxx' },
-        { name: '适用场景', value: 'xxx' },
-        { name: '数 据 集', value: 'xxx' },
-        { name: '简介', value: 'xxx' },
+        { name: '模型名称', value: this.$store.state.basic.name },
+        { name: '适用场景', value: this.$store.state.basic.scene },
+        { name: '数 据 集', value: '' },
+        { name: '简介', value: this.$store.state.basic.describe },
       ],
       algorithm: '深度全链接神经网络',
       model: 'Fully Connected Neural Network',
       suit: '系统优化',
       frame: 'keras/ttn',
+      sliderList: [
+        { title: '轮次', value: 8, maxValue: 100 },
+        { title: '内存', value: 12, maxValue: 200 },
+        { title: 'CPU', value: 3, maxValue: 300 },
+        { title: 'GPU', value: 24, maxValue: 400 },
+      ],
     };
   },
 };
