@@ -22,12 +22,12 @@
       <el-row>
         <el-col :span="24"
                 class="features">
-          <el-row>
-            <span>特征值: </span>
-            <span v-for="(item,index) in dataList.header_mappings"
+          <el-row class="header-mappings">
+            <!-- <span>特征值: </span> -->
+            <!-- <span v-for="(item,index) in dataList.header_mappings"
                   :key="index"> {{
                     `${item}${index+1===dataList.header_mappings.length?'':','}`
-                    }}</span>
+                    }}</span> -->
           </el-row>
           <img v-if="this.$store.state.dataSelected===dataList.id"
                src="@/assets/images/choiced.png"
@@ -93,7 +93,7 @@ export default {
   div:nth-child(2) {
     font-size: 18px;
     line-height: 25px;
-    margin-bottom: 19px;
+    margin-bottom: 15px;
   }
 }
 .choice {
@@ -111,5 +111,12 @@ export default {
 img {
   width: 32px;
   height: 32px;
+}
+
+.header-mappings {
+  max-width: 320px;
+  span {
+    float: left;
+  }
 }
 </style>

@@ -57,17 +57,18 @@
       </el-row>
       <el-row class="moder-area"
               :gutter="20">
-        <el-col span="24">
+        <el-col :span="24">
           <span class="model-title">模型中心</span>
           <span class="model-more"
                 @click.stop="toModel">更多</span>
         </el-col>
-        <el-col v-for="item in 3"
-                :key="item"
+        <el-col v-for="(item,index) in modelList"
+                :key="index"
                 :span="8">
           <div class="box"
                @click="toModelReport">
-            <ModelTrain />
+            <ModelTrain :modelData='item'
+                        :number="index+1" />
           </div>
         </el-col>
       </el-row>
@@ -124,6 +125,7 @@ export default {
       trainData: {},
       lineData: {},
       screenWidth: document.body.clientWidth,
+      modelList: [],
     };
   },
   // mounted() {
@@ -146,6 +148,11 @@ export default {
         this.lineData = res.train;
       });
     },
+    getModelList() {
+      this.$axios.get('model/latest/list').then((res) => {
+        this.modelList = res;
+      });
+    },
   },
   mounted() {
     this.getLineData();
@@ -157,6 +164,7 @@ export default {
       window.screenWidth = document.body.clientWidth;
       this.screenWidth = window.screenWidth;
     };
+    this.getModelList();
   },
 };
 </script>

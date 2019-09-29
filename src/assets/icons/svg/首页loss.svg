@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="178px" height="164px" viewBox="0 0 178 164" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>首页loss</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M0,0 L170,0 C174.418278,-8.11624501e-16 178,3.581722 178,8 L178,156 C178,160.418278 174.418278,164 170,164 L0,164 L0,0 Z" id="path-1"></path>
+        <path d="M-59,103.558793 C-52.7865626,120.478181 -44.8569191,124.708028 -35.2110694,116.248334 C-20.7422949,103.558793 -10.7551595,96.5896236 1.02814259,96.5896236 C12.8114447,96.5896236 19.2647313,101.570531 24.5947467,108.909433 C29.9247621,116.248334 31.7228445,124.507833 38.7575897,116.248334 C43.4474198,110.742001 48.8062553,91.4511898 54.8340963,58.3758998 C58.1098913,44.3290799 62.3656154,41.3458045 67.6012684,49.4260734 C75.454748,61.5464768 84.3837521,133.086102 101.938462,127.568556 C113.641603,123.890193 124.307937,104.696124 133.937466,69.9863502 C139.984782,57.1835648 146.508913,55.4346451 153.50986,64.7395911 C160.510808,74.0445371 168.674187,92.7367482 178,120.816224 L178,186 L-59,186 L-59,103.558793 Z" id="path-3"></path>
+        <filter x="-3.6%" y="-3.2%" width="107.2%" height="112.8%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.188235294   0 0 0 0 0.180392157   0 0 0 0 0.564705882  0 0 0 0.353665865 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <path d="M-59,104.356256 C-52.7865626,121.506056 -44.8569191,125.793505 -35.2110694,117.218606 C-20.7422949,104.356256 -10.7551595,97.2921796 1.02814259,97.2921796 C12.8114447,97.2921796 19.2647313,102.340918 24.5947467,109.779762 C29.9247621,117.218606 31.7228445,125.590584 38.7575897,117.218606 C43.4474198,111.637287 48.8062553,92.0837698 54.8340963,58.558055 C58.1098913,44.3199432 62.3656154,41.296041 67.6012684,49.4863484 C75.454748,61.7718095 84.3837521,134.285673 101.938462,128.692988 C113.641603,124.964532 124.307937,105.509076 133.937466,70.3266184 C139.984782,57.3494826 146.508913,55.5767459 153.50986,65.0084081 C160.510808,74.4400704 168.674187,93.3868351 178,121.848702" id="path-5"></path>
+        <filter x="-3.9%" y="-6.0%" width="107.8%" height="121.5%" filterUnits="objectBoundingBox" id="filter-6">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="4" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="4" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.376470588   0 0 0 0 0.682352941   0 0 0 0 0.968627451  0 0 0 0.587603802 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-272.000000, -614.000000)">
+            <g id="首页loss" transform="translate(272.000000, 614.000000)">
+                <g id="路径-14">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="蒙版" fill-opacity="0.327223558" fill="#D4F0EF" xlink:href="#path-1"></use>
+                    <g mask="url(#mask-2)">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <use fill-opacity="0.142018138" fill="#00C4C0" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    </g>
+                    <g mask="url(#mask-2)">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                        <use stroke="#00C4C0" stroke-width="2" xlink:href="#path-5"></use>
+                    </g>
+                </g>
+                <circle id="椭圆形" fill-opacity="0.1" fill="#00C4C0" cx="63" cy="46" r="13"></circle>
+                <circle id="椭圆形" stroke="#00C4C0" stroke-width="3" fill="#FFFFFF" cx="63" cy="46" r="8"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

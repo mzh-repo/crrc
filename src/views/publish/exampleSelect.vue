@@ -10,7 +10,7 @@
     <div class="model-area">
       <template v-for="(item,index) in modelList">
         <div :key="item.title"
-             @click="showDialog(index)"
+             @click="showDialog(index,item.id)"
              class="model-box">
           <mzh-instance :chose="false"
                         :status="item.status"
@@ -55,18 +55,22 @@ export default {
           this.modelList = res;
         });
     },
-    showDialog(val) {
+    showDialog(val, id) {
       if (this.modelList[val].status === 1) {
         this.$store.commit('setPublishActive', 4);
       } else {
-        this.$refs.dialog.showDialog(val);
+        this.$refs.dialog.showDialog({ index: val, id });
       }
     },
     publishSuccess(val) {
       this.modelList[val.index].status = val.status;
       if (val.status === 1) {
-        this.$store.commit('setPublishActive', 4);
-        this.$store.commit('selectExample', val.index);
+        this.$axios
+          .put(`model/instance/${val.id}/status`, { status: 1 })
+          .then(() => {
+            this.$store.commit('setPublishActive', 4);
+            this.$store.commit('selectExample', val.index);
+          });
       }
     },
   },

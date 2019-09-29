@@ -38,6 +38,7 @@ export default {
       dialogVisible: false,
       reseitime: false,
       index: '',
+      id: '',
     };
   },
   mounted() {
@@ -54,10 +55,18 @@ export default {
             setTimeout(() => {
               if (this.random(1, 100) < 40) {
                 this.tips = '部署失败';
-                this.$emit('publish-success', { index: this.index, status: 3 });
+                this.$emit('publish-success', {
+                  index: this.index,
+                  status: 3,
+                  id: this.id,
+                });
               } else {
                 this.tips = '部署成功';
-                this.$emit('publish-success', { index: this.index, status: 1 });
+                this.$emit('publish-success', {
+                  index: this.index,
+                  status: 1,
+                  id: this.id,
+                });
               }
             }, 500);
           }
@@ -75,7 +84,8 @@ export default {
     showDialog(val) {
       this.reseitime = false;
       this.dialogVisible = true;
-      this.index = val;
+      this.index = val.index;
+      this.id = val.id;
       this.tips = '模型部署中...';
       this.b();
     },

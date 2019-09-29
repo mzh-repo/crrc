@@ -4,8 +4,10 @@
       <el-carousel-item v-for="item in imgList"
                         :key="item.title">
         <span class="title">{{item.title}}</span>
-        <img :src="item.url"
-             alt="3333">
+        <!-- <img :src="item.url"
+             alt="3333"> -->
+        <svg-icon :icon-class="item.url"
+                  class="img" />
       </el-carousel-item>
     </el-carousel>
   </el-container>
@@ -18,19 +20,19 @@ export default {
       imgList: [
         /* eslint-disable */
         {
-          url: require('../assets/images/新建模型.png'),
+          url: 'step1',
           title: '新建模型操作步骤'
         },
         {
-          url: require('../assets/images/创建训练.png'),
+          url: 'step2',
           title: '创建训练操作步骤'
         },
         {
-          url: require('../assets/images/模型选择.png'),
+          url: 'step4',
           title: '模型选择操作步骤'
         },
         {
-          url: require('../assets/images/数据导入.png'),
+          url: 'step3',
           title: '数据导入操作步骤'
         }
         /* eslint-enable */
@@ -65,7 +67,7 @@ export default {
   display: none;
 }
 
-img {
+.img {
   width: 242px;
   height: 242px;
 }

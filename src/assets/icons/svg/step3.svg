@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="242px" height="242px" viewBox="0 0 242 242" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>数据导入</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-924.000000, -250.000000)">
+            <rect id="Rectangle-Copy-2" fill="#F2F2F2" x="923" y="216" width="243" height="310"></rect>
+            <g id="数据导入" transform="translate(925.000000, 251.000000)">
+                <circle id="椭圆形-copy-12" stroke="#54A8F7" stroke-width="2.1808269" cx="119" cy="119" r="40"></circle>
+                <circle id="椭圆形-copy-13" stroke="#54A8F7" opacity="0.5" cx="119" cy="119" r="83"></circle>
+                <path d="M120,240 C186.27417,240 240,186.27417 240,120 C240,53.72583 186.27417,0 120,0 C53.72583,0 0,53.72583 0,120 C0,186.27417 53.72583,240 120,240 Z" id="椭圆形-copy-14" stroke="#54A8F7" opacity="0.300000012" stroke-dasharray="3.096774301411193"></path>
+                <g id="Group-5-Copy-4" transform="translate(85.000000, 34.000000)">
+                    <rect id="矩形" fill="#FFFFFF" x="0" y="0" width="69" height="26" rx="2.6"></rect>
+                    <polygon id="路径-21" fill="#FFFFFF" points="32.2941176 25.9411765 34.3822046 28.6474529 36.5873619 25.9411765"></polygon>
+                    <text id="数据导入" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
+                        <tspan x="10.8235294" y="17.5882353">数据导入</tspan>
+                    </text>
+                </g>
+                <g id="Group-5-Copy-5" transform="translate(119.000000, 189.500000) rotate(-180.000000) translate(-119.000000, -189.500000) translate(84.000000, 175.000000)" fill="#FFFFFF">
+                    <rect id="矩形" x="0" y="0" width="70" height="26" rx="3"></rect>
+                    <polygon id="路径-21" points="32 25 34.7305753 28.5389769 37.6142425 25"></polygon>
+                </g>
+                <g id="Group-5-Copy-6" transform="translate(163.000000, 102.000000)">
+                    <rect id="矩形" fill="#FFFFFF" x="3" y="0" width="70" height="26" rx="3"></rect>
+                    <polygon id="路径-21" fill="#FFFFFF" transform="translate(1.807121, 12.769488) rotate(-270.000000) translate(-1.807121, -12.769488) " points="-1 11 1.73057526 14.5389769 4.61424249 11"></polygon>
+                    <text id="表格上传" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
+                        <tspan x="14" y="18">表格上传</tspan>
+                    </text>
+                </g>
+                <g id="Group-5-Copy-7" transform="translate(36.500000, 119.000000) rotate(-180.000000) translate(-36.500000, -119.000000) translate(0.000000, 106.000000)" fill="#FFFFFF">
+                    <rect id="矩形" x="3" y="0" width="70" height="26" rx="3"></rect>
+                    <polygon id="路径-21" transform="translate(1.769488, 14.807121) rotate(-270.000000) translate(-1.769488, -14.807121) " points="-1.03763281 13.0376328 1.69294245 16.5766097 4.57660968 13.0376328"></polygon>
+                </g>
+                <text id="模型推荐" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
+                    <tspan x="11" y="124">模型推荐</tspan>
+                </text>
+                <text id="分析报告" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
+                    <tspan x="95" y="196">分析报告</tspan>
+                </text>
+                <circle id="Oval-Copy-4" fill-opacity="0.2" fill="#54A8F7" cx="40" cy="216" r="10"></circle>
+                <circle id="Oval-Copy-5" fill-opacity="0.4" fill="#54A8F7" cx="37" cy="206" r="13"></circle>
+                <circle id="Oval-Copy-6" fill-opacity="0.6" fill="#54A8F7" cx="192" cy="25" r="10"></circle>
+                <circle id="Oval-Copy-7" fill-opacity="0.8" fill="#54A8F7" cx="197" cy="15" r="5"></circle>
+                <path d="" id="Path-2-Copy" stroke="#979797"></path>
+                <path d="M195,96.9096104 C201.056456,99.6151355 199.085863,100.652579 201,94 L195,96.9096104 Z" id="Path-Copy-4" stroke="#54A8F7" stroke-width="1.68126458" fill="#54A8F7" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M157.40168,189.783205 C165.476954,193.029836 162.849497,194.274768 165.40168,186.291673 L157.40168,189.783205 Z" id="Path-Copy-5" stroke="#54A8F7" stroke-width="2.0175175" fill="#54A8F7" stroke-linecap="round" stroke-linejoin="round" transform="translate(161.401680, 189.291673) rotate(84.000000) translate(-161.401680, -189.291673) "></path>
+                <path d="M35.246246,139.82874 C43.3215205,143.07537 40.6940639,144.320302 43.246246,136.337207 L35.246246,139.82874 Z" id="Path-Copy-6" stroke="#54A8F7" stroke-width="2.07986653" fill="#54A8F7" stroke-linecap="round" stroke-linejoin="round" transform="translate(39.246246, 139.337207) rotate(185.000000) translate(-39.246246, -139.337207) "></path>
+                <path d="M74.4651158,47.8273251 C82.5403904,51.0739553 79.9129337,52.3188877 82.4651158,44.3357926 L74.4651158,47.8273251 Z" id="Path-Copy-7" stroke="#54A8F7" stroke-width="2.07986653" fill="#54A8F7" stroke-linecap="round" stroke-linejoin="round" transform="translate(78.465116, 47.335793) rotate(263.000000) translate(-78.465116, -47.335793) "></path>
+                <g id="shujudaoru" transform="translate(103.000000, 105.000000)" fill="#999999">
+                    <path d="M3.19830641,1.56039938 C2.31407242,1.56039938 1.6009805,2.25572543 1.6009805,3.11533853 L1.6009805,20.2246053 C1.6009805,21.0842621 2.31754875,21.7797192 3.19830641,21.7797192 L28.7804791,21.7797192 C29.6647131,21.7797192 30.377805,21.0842621 30.377805,20.2246053 L30.377805,3.11533853 C30.377805,2.70311388 30.2101393,2.30809984 29.9106852,2.01460218 C29.6110529,1.7245117 29.2047242,1.56039938 28.7804791,1.56039938 L3.19830641,1.56039938 Z M11.1920223,26.4483807 L11.1920223,23.3382839 L3.19830641,23.3382839 C1.43331476,23.3382839 0,21.9438752 0,20.2281872 L0,3.11533853 C0,1.39606864 1.43331476,0.00524180967 3.19830641,0.00524180967 L28.7804791,0.00524180967 C30.5452479,0.00524180967 31.9786072,1.39965055 31.9786072,3.11533853 L31.9786072,20.2246053 C31.9786072,21.9438752 30.5452479,23.334702 28.7804791,23.334702 L20.7830641,23.334702 L20.7830641,26.4449735 L27.1794986,26.4449735 L27.1794986,27.9999563 L4.79563231,27.9999563 L4.79563231,26.4449735 L11.1920223,26.4449735 L11.1920223,26.4483807 Z" id="Fill-1"></path>
+                    <path d="M24.25488,18.375 L27.5555556,18.375 L27.5555556,9.04286377 L24.25488,9.04286377 L24.25488,18.375 Z M17.650201,18.375 L20.9506942,18.375 L20.9506942,4.375 L17.650201,4.375 L17.650201,18.375 Z M11.0491234,18.375 L14.349571,18.375 L14.349571,12.1536054 L11.0491234,12.1536054 L11.0491234,18.375 Z M4.44444444,18.375 L7.74489206,18.375 L7.74489206,13.7071362 L4.44444444,13.7071362 L4.44444444,18.375 Z" id="Fill-4"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

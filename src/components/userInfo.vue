@@ -29,8 +29,8 @@
       <el-row v-for="(item,index) in historyList"
               :key="index"
               class="history-box">
-        <el-col>{{item.name}}</el-col>
-        <el-col>{{item.time}}</el-col>
+        <el-col>{{item.type===2?'添加模型':'添加训练'}}</el-col>
+        <el-col>{{item.time}}天前</el-col>
       </el-row>
     </el-row>
   </el-container>
@@ -75,6 +75,7 @@ export default {
   },
   mounted() {
     this.getStatistics();
+    this.getHistoryList();
   },
   methods: {
     getStatistics() {
@@ -82,6 +83,11 @@ export default {
         this.staticData[0].number = res.training_number;
         this.staticData[1].number = res.deployment_number;
         this.staticData[2].number = res.model_number;
+      });
+    },
+    getHistoryList() {
+      this.$axios.get('log/list').then((res) => {
+        this.historyList = res;
       });
     },
   },

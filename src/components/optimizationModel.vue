@@ -1,12 +1,14 @@
 <template>
   <div class="optimziation-continue">
     <div class="optimization-continue">
-      <div class="tag">
+      <div v-if="optimziationList.algorithm"
+           class="tag">
         <img :src="getUrl(optimziationList.algorithm.id)"
              alt="">
       </div>
-      <el-row class="title">{{optimziationList.data.name}}</el-row>
-      <el-row class="describe">适用数据集：{{describe}}</el-row>
+      <el-row class="title">{{optimziationList.name}}</el-row>
+      <el-row v-if="optimziationList.dataset"
+              class="describe">适用数据集：{{optimziationList.dataset.name}}</el-row>
       <el-row>
         <el-col :span="8"
                 class="example">
@@ -26,9 +28,9 @@
             <div>实例个数</div>
             <div>{{optimziationList.instance_number}}个</div>
           </el-row>
-          <el-row>
+          <el-row v-if="optimziationList.dataset">
             <div>大小</div>
-            <div>{{(optimziationList.data.physical_size)}}MB</div>
+            <div>{{(optimziationList.dataset.size)}}MB</div>
           </el-row>
         </el-col>
       </el-row>
@@ -42,7 +44,7 @@ const imgUrl = [
   /* eslint-disable */
   require('../assets/images/tensorflow.png'),
   require('../assets/images/keras.png'),
-  require('../assets/images/mklearn.png'),
+  require('../assets/images/mklearn.png')
   /* eslint-enable */
 ];
 

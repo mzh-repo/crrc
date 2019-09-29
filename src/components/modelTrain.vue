@@ -1,29 +1,30 @@
 <template>
   <el-container class="model-train">
     <div>
-      <span class="title">面向间歇式供电列车的模型训练</span>
-      <span class="number">Loss 1</span>
+      <span class="title">{{modelData.name||'面向间歇式供电列车的模型训练'}}</span>
+      <span class="number">Loss {{number||'1'}}</span>
     </div>
-    <img src="../assets/images/首页loss.png"
-         alt=""
-         srcset="">
+    <svg-icon icon-class="首页loss"
+              class="img" />
   </el-container>
 </template>
 
 <script>
 export default {
   props: {
-    title: {
-      type: String,
-      default: '车载储能系统性能劣化条件下的列车运行控制模型预测',
+    number: {
+      type: Number,
+      default: 0,
+    },
+    modelData: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
     return {};
   },
-  mounted() {
-    // this.b();
-  },
+  mounted() {},
   methods: {},
 };
 </script>
@@ -61,7 +62,7 @@ export default {
   line-height: 25px;
 }
 
-img {
+.img {
   width: 178px;
   height: 164px;
 }
