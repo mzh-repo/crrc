@@ -57,9 +57,12 @@ export default {
       this.$store.commit('setPublishActive', this.active);
     },
     commit() {
-      this.$router.push('/model');
       this.footerType = 'return';
       this.active += 1;
+      const data = this.$store.state.record;
+      this.$axios.post('/form/train', data).then(() => {
+        this.$router.push('./model');
+      });
       this.$store.commit('setPublishActive', this.active);
     },
     handlePre() {

@@ -79,7 +79,6 @@ export default {
           },
         },
         yAxis: {
-          min: 0.2,
           gridIndex: 0,
           splitLine: { show: false },
           axisTick: {

@@ -2,7 +2,8 @@
   <div class="model-contrain">
     <div class="container">
       <el-row class="title">{{modelList.name}}</el-row>
-      <el-tag size="small">推荐配置</el-tag>
+      <el-tag v-if="modelList"
+              size="small">推荐配置</el-tag>
       <div v-if="modelList.newTab"
            class="tab">新</div>
       <el-row>
@@ -52,9 +53,18 @@
             </div>
           </el-row>
           <el-row>
-            {{modelList.algorithm.name}}
+            {{modelList.algorithm.frame_name}}
           </el-row>
         </el-col>
+
+      </el-row>
+      <el-row class="features">
+        <img v-if="this.$store.state.trainSelected===modelList.id"
+             src="@/assets/images/choiced.png"
+             @click="setChoice(modelList.id)">
+        <div v-else
+             class="choice"
+             @click="setChoice(modelList.id)"></div>
       </el-row>
     </div>
   </div>
@@ -71,7 +81,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    setChoice(index) {
+      this.$emit('set-choice', index);
+    },
+  },
 };
 </script>
 
@@ -133,5 +147,22 @@ export default {
       margin-right: 16px;
     }
   }
+}
+.choice {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(227, 227, 227, 1);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+img {
+  width: 32px;
+  height: 32px;
+}
+.features {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2002;
 }
 </style>

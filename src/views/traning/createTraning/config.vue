@@ -17,16 +17,17 @@
       <li>GPU Memory：{{item.needGpuMemory}}M/{{item.surplusGpuMemory}}M（所需/剩余）</li>
     </ul>
     <div class="model-case">
-      <div class="model-data">
-        <control-model :modelList="modelData" />
-        <configuration class="configuration" />
-      </div>
       <div v-for="(item,index) in modelDataList"
            :key="index"
            class="model-data"
-           :class="item.selected? 'select-data':'control-data'"
-           @click="setSelect(index)">
-        <control-model :modelList="item" />
+           :class="item.selected? 'select-data':'control-data'">
+        <control-model :modelList="item"
+                       @set-choice="(index) => choose(index, item)" />
+        <div v-if="item.id===choiced"
+             class="model-data">
+          <configuration class="configuration"
+                         :sliderList="sliderList" />
+        </div>
       </div>
     </div>
   </el-container>
@@ -55,28 +56,53 @@ export default {
           surplusGpuMemory: 178,
         },
       ],
+      sliderList: [],
       tabId: 0,
-      modelData: {},
       modelDataList: [],
+      choiced: 0,
+      record: {},
     };
   },
-  created() {
+
+  mounted() {
+    if (this.$store.state.dataSelected) {
+      this.dataList.forEach((item, num) => {
+        if (this.$store.state.dataSelected === item.id) {
+          this.dataList[num].choiced = true;
+        }
+      });
+    }
     this.getDataList();
     this.getModelDataList();
   },
   methods: {
+    choose(index, item) {
+      this.sliderList = [
+        {
+          title: '轮次',
+          value: item.model_configuration.rounds,
+          maxValue: 100,
+        },
+        { title: '内存', value: item.model_configuration.ram, maxValue: 200 },
+        { title: 'CPU', value: item.model_configuration.cpu, maxValue: 300 },
+        { title: 'GPU', value: item.model_configuration.gpu, maxValue: 400 },
+      ];
+      if (this.$store.state.trainSelected !== index) {
+        this.$store.commit('setRecord', {
+          model_id: item.id,
+          model_configuration: item.model_configuration,
+        });
+        this.$store.commit('setTrain', index);
+        this.choiced = index;
+      } else {
+        this.$store.commit('setTrain', 0);
+        this.choiced = 0;
+      }
+    },
     check(index) {
       this.isActive = index + 1;
       this.tabId = index;
       this.getModelDataList();
-    },
-    setSelect(index) {
-      this.modelDataList.forEach((item, i) => {
-        this.modelDataList[i].selected = false;
-        if (index === i) {
-          this.modelDataList[i].selected = true;
-        }
-      });
     },
     getDataList() {
       this.$axios.get('/database/list').then((res) => {
@@ -86,7 +112,13 @@ export default {
     getModelDataList() {
       this.$axios.get(`/model/list?database_id=${this.isActive}`).then((res) => {
         this.modelDataList = res;
-        [this.modelData] = this.modelDataList;
+        if (this.modelDataList.length !== 0) {
+          this.$store.commit('setRecord', {
+            model_id: this.modelDataList[0].id,
+            model_configuration: this.modelDataList[0].model_configuration,
+          });
+        }
+        // [this.modelData] = this.modelDataList;
       });
     },
   },
@@ -145,9 +177,15 @@ ul {
   margin-bottom: 107px;
   .model-data {
     float: left;
+    word-wrap: break-word;
+    word-break: normal;
+    position: relative;
+    opacity: 1;
   }
 }
 .configuration {
+  position: absolute;
+  z-index: 9999999;
   padding: 27px 20px 20px 20px;
   border-top: 1px solid #f2f2f2;
   border-radius: 0 0 8px 8px;

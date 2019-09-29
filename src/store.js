@@ -53,9 +53,14 @@ export default new Vuex.Store({
         cpu: '',
         gpu: '',
       },
+      trainSelected: '',
+      record: {},
     },
   },
   mutations: {
+    setRecord(state, value) {
+      state.record = value;
+    },
     updateImportData(state, payload) {
       state.importData = payload;
     },
@@ -85,6 +90,9 @@ export default new Vuex.Store({
     },
     setReportData(state, value) {
       state.reportData = Object.assign(state.reportData, value);
+    },
+    setTrain(state, value) {
+      state.trainSelected = value;
     },
   },
   actions: {
