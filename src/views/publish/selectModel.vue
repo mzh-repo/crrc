@@ -16,12 +16,14 @@
     </div>
     <div class="model-area">
       <template v-for="(item) in modelList">
-        <div :span="7"
-             :key="item.id.index"
-             :class="item.id===choosed?'model-box active':'model-box'"
+        <div :key="item.id.index"
+             :class="'model-box'"
              @click="next(item.id)">
-          <mzh-optimizationModel :optimziationList="item"
-                                 :describe="datebase[0]" />
+          <div :class="item.id===choosed?'active':'noactive'">
+            <mzh-optimizationModel :optimziationList="item"
+                                   :describe="datebase[0]" />
+          </div>
+
         </div>
       </template>
     </div>
@@ -126,11 +128,11 @@ export default {
 //   line-height: 33px;
 // }
 
-.title-right span:nth-child(1) {
-  font-size: 28px;
-  font-weight: 600;
-  color: rgba(51, 51, 51, 1);
-  line-height: 40px;
+.title-right span {
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(102, 102, 102, 1);
+  line-height: 33px;
 }
 
 /deep/.el-col-6 {
@@ -142,9 +144,14 @@ export default {
 }
 
 .model-area {
+  width: 100%;
+
   .model-box {
+    margin: 16px 16px 0 0;
     float: left;
     cursor: pointer;
+  }
+  .noactive {
     opacity: 0.6;
   }
   .active {

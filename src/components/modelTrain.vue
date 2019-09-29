@@ -35,7 +35,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 164px;
-  width: 488px;
+  width: 100%;
 
   div {
     padding: 19px 24px;

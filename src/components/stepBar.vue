@@ -90,6 +90,14 @@ export default {
   top: 21px;
 }
 
+.step-container {
+  margin: 0 0 0 -32px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .step-main {
   text-align: left;
   font-size: 18px;

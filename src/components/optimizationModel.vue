@@ -81,7 +81,6 @@ export default {
   position: relative;
   background: #fff;
   border-radius: 8px;
-  margin: 16px 16px 0 0;
   padding: 15px 20px;
   width: 428px;
 }

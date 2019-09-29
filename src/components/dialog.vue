@@ -53,7 +53,7 @@ export default {
             this.b();
           } else {
             setTimeout(() => {
-              if (this.random(1, 100) < 40) {
+              if (this.random(1, 100) < 10) {
                 this.tips = '部署失败';
                 this.$emit('publish-success', {
                   index: this.index,

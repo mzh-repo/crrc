@@ -160,10 +160,14 @@ export default {
     font-weight: 400;
     color: rgba(102, 102, 102, 1);
     cursor: pointer;
+    margin: 20px 0 0;
   }
 
   span {
-    margin: 0 0 20px;
+    font-size: 24px;
+    font-weight: 400;
+    color: rgba(102, 102, 102, 1);
+    line-height: 33px;
   }
 
   img {

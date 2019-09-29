@@ -1,5 +1,6 @@
 <template>
-  <div :class="className"
+  <div v-if="lineData.date_list"
+       :class="className"
        :style="{height:height,width:width}" />
 </template>
 

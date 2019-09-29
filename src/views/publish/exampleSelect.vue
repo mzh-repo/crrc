@@ -106,10 +106,10 @@ export default {
 }
 
 .title-left span:nth-child(1) {
-  font-size: 28px;
-  font-weight: 600;
-  color: rgba(51, 51, 51, 1);
-  line-height: 40px;
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(102, 102, 102, 1);
+  line-height: 33px;
 }
 
 /deep/.el-col-6 {

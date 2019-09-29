@@ -23,7 +23,7 @@ export default {
 <style scoped lang="scss">
 .el-container {
   height: 39px;
-  margin: 37px auto 70px 40px;
+  margin: 37px auto 45px 40px;
 }
 
 .el-breadcrumb {
