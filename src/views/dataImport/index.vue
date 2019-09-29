@@ -37,6 +37,14 @@ export default {
       footerType: 'next',
     };
   },
+  beforeRouteEnter(to, from, next) {
+    if (from.path === '/createModel/step1') {
+      localStorage.setItem('return', true);
+    } else {
+      localStorage.setItem('return', false);
+    }
+    next();
+  },
   created() {
     this.$router.push('/importData');
   },
@@ -49,9 +57,13 @@ export default {
           && this.$refs.route.value !== ''
           && this.$refs.route.DBName !== ''
         ) {
-          this.$router.push('/analyze');
-          this.showPre = true;
-          this.footerType = 'next';
+          if (localStorage.getItem('return') === 'true') {
+            this.$router.push('/createModel/step1');
+          } else {
+            this.$router.push('/analyze');
+            this.showPre = true;
+            this.footerType = 'next';
+          }
         } else {
           this.$message({
             message: '请先完成本页内容',

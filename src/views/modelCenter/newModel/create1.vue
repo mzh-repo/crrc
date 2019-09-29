@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-row class="input-box">
           <el-col :span="4">
-            请输入模型名称
+            模型名称
           </el-col>
           <el-col :span="18">
             <el-input v-model="name"
@@ -14,7 +14,7 @@
         </el-row>
         <el-row class="input-box">
           <el-col :span="4">
-            输入适用场景
+            适用场景
           </el-col>
           <el-col :span="18">
             <el-input v-model="scene"
@@ -26,7 +26,7 @@
       <el-col :span="12">
         <el-col :span="4"
                 class="text-title">
-          输入简介
+          模型简介
         </el-col>
         <el-col :span="18">
           <el-input type="textarea"
@@ -91,14 +91,35 @@ export default {
       output: '',
     };
   },
+  beforeRouteEnter(to, from, next) {
+    if (from.path === '/importData') {
+      localStorage.setItem('getDataSet', true);
+    } else {
+      localStorage.setItem('getDataSet', false);
+    }
+    next();
+  },
   mounted() {
-    this.$axios.get('/database/list').then((res) => {
-      this.dataBaseList = res;
-      this.databaseId = res[0].id;
-      this.getData();
-    });
+    // 上传数据集回退更新
+    this.initData();
   },
   methods: {
+    initData() {
+      if (localStorage.getItem('getDataSet') === 'true') {
+        const data = {
+          header_mappings: this.$store.state.importData.sqlSettings,
+          name: this.$store.state.importData.sqlName,
+          database_id: this.$store.state.importData.sql,
+          id: this.$store.state.importData.id,
+        };
+        this.$axios.put('/dataset', data);
+      }
+      this.$axios.get('/database/list').then((res) => {
+        this.dataBaseList = res;
+        this.databaseId = res[0].id;
+        this.getData();
+      });
+    },
     chooseDatabase(id) {
       this.databaseId = id;
       this.getData();
@@ -107,6 +128,11 @@ export default {
       this.input = e.select;
     },
     upload() {
+      this.$store.commit('setBasic', {
+        name: this.name,
+        scene: this.scene,
+        describe: this.describe,
+      });
       this.$router.push('/importData');
     },
     getData() {

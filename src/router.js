@@ -19,6 +19,39 @@ export default new Router({
           component: () => import(/* webpackChunkName: "dashboard" */ './views/dashboard'),
         },
         {
+          path: '/chooseModel',
+          name: '模型中心',
+          selectIcon: '模型中心-选中',
+          component: () => import('./views/modelCenter'),
+          children: [
+            {
+              path: '/chooseModel',
+              name: '模型选择',
+              component: () => import('./views/modelCenter/model/chooseModel'),
+            },
+            {
+              path: '/modelReport',
+              name: '查看模型报告',
+              component: () => import('./views/modelCenter/model/modelReport'),
+            },
+            {
+              path: '/createModel/step1',
+              name: '新建模型',
+              component: () => import('./views/modelCenter/newModel/create1'),
+            },
+            {
+              path: '/createModel/step2',
+              name: '新建模型',
+              component: () => import('./views/modelCenter/newModel/create2'),
+            },
+            {
+              path: '/createModel/step3',
+              name: '新建模型',
+              component: () => import('./views/modelCenter/newModel/create3'),
+            },
+          ],
+        },
+        {
           path: '/chooseData',
           name: '创建训练',
           selectIcon: '创建训练-选中',
@@ -89,39 +122,6 @@ export default new Router({
               path: '/recommend',
               name: '模型推荐',
               component: () => import('./views/dataImport/steps/recommend'),
-            },
-          ],
-        },
-        {
-          path: '/chooseModel',
-          name: '模型中心',
-          selectIcon: '模型中心-选中',
-          component: () => import('./views/modelCenter'),
-          children: [
-            {
-              path: '/chooseModel',
-              name: '模型选择',
-              component: () => import('./views/modelCenter/model/chooseModel'),
-            },
-            {
-              path: '/modelReport',
-              name: '查看模型报告',
-              component: () => import('./views/modelCenter/model/modelReport'),
-            },
-            {
-              path: '/createModel/step1',
-              name: '新建模型',
-              component: () => import('./views/modelCenter/newModel/create1'),
-            },
-            {
-              path: '/createModel/step2',
-              name: '新建模型',
-              component: () => import('./views/modelCenter/newModel/create2'),
-            },
-            {
-              path: '/createModel/step3',
-              name: '新建模型',
-              component: () => import('./views/modelCenter/newModel/create3'),
             },
           ],
         },

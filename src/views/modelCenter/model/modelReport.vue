@@ -21,12 +21,13 @@
             class="chart-report">
       <el-col :span="10">
         <div class="chart">
-          <bar-chart />
+          <bar-chart title="近期训练" />
         </div>
       </el-col>
       <el-col :span="10">
         <div class="chart">
-          <bar-chart :colors="colors" />
+          <bar-chart title="近期应用"
+                     :colors="colors" />
         </div>
       </el-col>
       <el-col :span="4">
@@ -61,7 +62,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row class="model-control">
       <template v-for="(item,index) in modelList">
         <div :key="index"
              class="model-box">
@@ -213,5 +214,16 @@ export default {
   font-weight: 400;
   display: flex;
   justify-content: space-between;
+}
+
+.model-control {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.model-box {
+  box-sizing: border-box;
+  margin: 20px 10px 0 0;
+  float: left;
 }
 </style>
