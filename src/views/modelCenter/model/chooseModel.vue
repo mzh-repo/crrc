@@ -35,7 +35,8 @@
         <div v-for="(item,index) in modelData"
              :key="index">
           <span @click="modelReport(item)">
-            <model :modelList="item" />
+            <model :modelList="item"
+                   :showChoice="false" />
           </span>
         </div>
       </div>

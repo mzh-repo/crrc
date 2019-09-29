@@ -63,7 +63,7 @@
              src="@/assets/images/choiced.png"
              @click="setChoice(modelList.id)">
         <div v-else
-             class="choice"
+             :class="showChoice?'choice':''"
              @click="setChoice(modelList.id)"></div>
       </el-row>
     </div>
@@ -76,6 +76,10 @@ export default {
     modelList: {
       type: Object,
       default: () => {},
+    },
+    showChoice: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

@@ -53,9 +53,9 @@ export default new Vuex.Store({
         cpu: '',
         gpu: '',
       },
-      trainSelected: '',
-      record: {},
     },
+    trainSelected: '',
+    record: {},
   },
   mutations: {
     setRecord(state, value) {
