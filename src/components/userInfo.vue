@@ -4,7 +4,7 @@
       <img :src="avatarUrl" />
     </el-row>
     <el-row class="user">
-      {{userName}}
+      {{this.$store.state.username||'admin'}}
     </el-row>
     <el-row class="login-time">
       上次登录: {{loginTime}}
@@ -72,6 +72,18 @@ export default {
         },
       ],
     };
+  },
+  mounted() {
+    this.getStatistics();
+  },
+  methods: {
+    getStatistics() {
+      this.$axios.get('statistics').then((res) => {
+        this.staticData[0].number = res.training_number;
+        this.staticData[1].number = res.deployment_number;
+        this.staticData[2].number = res.model_number;
+      });
+    },
   },
 };
 </script>

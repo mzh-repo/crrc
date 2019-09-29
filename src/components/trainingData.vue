@@ -8,14 +8,14 @@
                 class="training-continue">
           <div>数据总量</div>
           <div>
-            <span>{{dataList.total_data}}</span>K
+            <span>{{dataList.line}}</span>K
           </div>
         </el-col>
         <el-col :span="16"
                 class="training-continue">
           <div>物理大小</div>
           <div>
-            <span>{{dataList.physical_size}}</span>MB
+            <span>{{dataList.size}}</span>MB
           </div>
         </el-col>
       </el-row>
@@ -24,7 +24,10 @@
                 class="features">
           <el-row>
             <span>特征值: </span>
-            <span> {{dataList.dataset}}</span>
+            <span v-for="(item,index) in dataList.header_mappings"
+                  :key="index"> {{
+                    `${item}${index+1===dataList.header_mappings.length?'':','}`
+                    }}</span>
           </el-row>
           <img v-if="this.$store.state.dataSelected===dataList.id"
                src="@/assets/images/choiced.png"

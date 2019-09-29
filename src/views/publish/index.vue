@@ -10,7 +10,8 @@
       </el-row>
       <router-view />
     </div>
-    <footer-bar :type="type"
+    <footer-bar v-if="active!==4"
+                :type="type"
                 :pre="pre"
                 @next="next"
                 @handle-pre="prev" />
@@ -34,6 +35,9 @@ export default {
   },
   mounted() {
     if (this.$route.path === '/modelPublish') {
+      this.$store.commit('selectData', '');
+      this.$store.commit('selectModel', '');
+      this.$store.commit('selectExample', '');
       this.active = 1;
     } else if (this.$route.path === '/modelPublish/exampleSelect') {
       this.active = 3;
@@ -45,8 +49,17 @@ export default {
   },
   methods: {
     next() {
-      this.active += 1;
-      this.$store.commit('setPublishActive', this.active);
+      if (
+        (this.$route.path === '/modelPublish'
+          && this.$store.state.dataSelected)
+        || (this.$route.path === '/modelPublish/exampleSelect'
+          && this.$store.state.exampleSelected)
+        || (this.$route.path === '/modelPublish/selectModel'
+          && this.$store.state.modelSelected)
+      ) {
+        this.active += 1;
+        this.$store.commit('setPublishActive', this.active);
+      }
     },
     prev() {
       this.active -= 1;

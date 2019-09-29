@@ -55,7 +55,7 @@ export default {
       });
     }
     this.getDatebase();
-    this.getdata();
+    this.getdata(1);
   },
   methods: {
     getDatebase() {
@@ -63,10 +63,10 @@ export default {
         this.datebase = res;
       });
     },
-    getdata() {
-      this.$axios.get('data/list').then((res) => {
-        this.modelList = res[0].data_info_list;
-        this.allList.push(res[0].data_info_list, res[1].data_info_list);
+    getdata(id) {
+      this.$axios.get(`dataset/list?database_id=${id}`).then((res) => {
+        this.modelList = res.data_list;
+        // this.allList.push(res[0].data_info_list, res[1].data_info_list);
       });
     },
     choose(index) {
@@ -83,9 +83,9 @@ export default {
   watch: {
     tab() {
       if (this.tab === 1) {
-        [this.modelList] = this.allList;
+        this.getdata(1);
       } else if (this.tab === 2) {
-        [, this.modelList] = this.allList;
+        this.getdata(2);
       }
     },
   },

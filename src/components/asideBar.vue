@@ -8,7 +8,8 @@
              @select="handleSelect">
       <template v-for="menu in routerList">
         <el-menu-item :index="menu.path"
-                      :key="menu.name">
+                      :key="menu.name"
+                      @click="showMy">
           <svg-icon :icon-class="selectItem === menu.path ? menu.selectIcon: menu.name"></svg-icon>
         </el-menu-item>
       </template>
@@ -25,10 +26,23 @@ export default {
       routerList: this.$router.options.routes[0].children,
     };
   },
+  mounted() {
+    this.selectItem = this.$router.options.routes[0].children[0].path;
+  },
   methods: {
     handleSelect(e) {
       this.selectItem = e;
       this.$router.replace(e);
+    },
+    showMy() {
+      this.$store.commit('setShow');
+    },
+  },
+  watch: {
+    '$route.path': {
+      handler() {
+        this.selectItem = this.$route.matched[1].path;
+      },
     },
   },
 };

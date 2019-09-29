@@ -47,6 +47,7 @@ export default {
     loginIn(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.$store.commit('setUsername', this.formData.name);
           this.$router.push('/dashboard');
         }
       });

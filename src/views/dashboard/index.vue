@@ -60,7 +60,8 @@
         <el-col v-for="item in 3"
                 :key="item"
                 :span="8">
-          <div class="box">
+          <div class="box"
+               @click="toModelReport">
             <ModelTrain />
           </div>
         </el-col>
@@ -119,6 +120,9 @@ export default {
   methods: {
     toModel() {
       this.$router.push({ path: '/chooseModel' });
+    },
+    toModelReport() {
+      this.$router.push({ path: '/modelReport' });
     },
   },
   mounted() {
@@ -216,6 +220,7 @@ export default {
   box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.04);
   border-radius: 8px;
   height: 100%;
+  cursor: pointer;
 }
 
 .moder-area {

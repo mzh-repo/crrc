@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       lineData: {},
+      resettime: false,
     };
   },
   mounted() {
@@ -57,7 +58,7 @@ export default {
   },
   methods: {
     b() {
-      if (!this.reseitime) {
+      if (!this.resettime) {
         setTimeout(() => {
           this.getLineData();
           this.b();
@@ -69,6 +70,9 @@ export default {
         this.lineData = res;
       });
     },
+  },
+  beforeDestroy() {
+    this.resettime = true;
   },
 };
 </script>

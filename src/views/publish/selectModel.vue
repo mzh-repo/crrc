@@ -11,11 +11,11 @@
       </div>
     </div>
     <div class="model-area">
-      <template v-for="(item,index) in allList[0]">
+      <template v-for="(item) in allList[0]">
         <div :span="7"
-             :key="item.index"
-             :class="index===choosed?'model-box active':'model-box'"
-             @click="next(index)">
+             :key="item.id.index"
+             :class="item.id===choosed?'model-box active':'model-box'"
+             @click="next(item.id)">
           <mzh-optimizationModel :optimziationList="item"
                                  :describe="datebase[0]" />
         </div>
@@ -27,11 +27,11 @@
       </div>
     </div>
     <div class="model-area">
-      <template v-for="(item,index) in allList[1]">
+      <template v-for="(item) in allList[1]">
         <div :span="7"
-             :key="item.index"
-             :class="index===choosed?'model-box active':'model-box'"
-             @click="next(index)">
+             :key="item.id"
+             :class="item.id===choosed?'model-box active':'model-box'"
+             @click="next(item.id)">
           <mzh-optimizationModel :optimziationList="item"
                                  :describe="datebase[1]" />
         </div>

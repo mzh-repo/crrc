@@ -23,6 +23,8 @@ export default new Vuex.Store({
     exampleSelected: '',
     publishActive: '',
     newModel: {},
+    show: true,
+    username: '',
   },
   mutations: {
     updateImportData(state, payload) {
@@ -39,6 +41,12 @@ export default new Vuex.Store({
     },
     setPublishActive(state, value) {
       state.publishActive = value;
+    },
+    setShow(state) {
+      state.show = !state.show;
+    },
+    setUsername(state, value) {
+      state.username = value;
     },
   },
   actions: {

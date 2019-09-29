@@ -4,7 +4,7 @@
       <aside-bar />
     </el-aside>
     <el-container class="main-continer">
-      <el-main>
+      <el-main v-if="update">
         <router-view />
       </el-main>
     </el-container>
@@ -17,7 +17,19 @@ import AsideBar from '../../components/asideBar.vue';
 export default {
   components: { AsideBar },
   data() {
-    return {};
+    return {
+      update: true,
+    };
+  },
+  watch: {
+    '$store.state.show': {
+      handler() {
+        this.update = false;
+        this.$nextTick(() => {
+          this.update = true;
+        });
+      },
+    },
   },
 };
 </script>
