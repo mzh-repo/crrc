@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box-wrap">
     <el-container class="detail-wrap">
       <el-row type="flex"
               align="bottom">
@@ -9,7 +9,7 @@
     </el-container>
     <svg width="130"
          height="130"
-         viewbox="0 0 130 130">
+         viewbox-wrap="0 0 130 130">
       <circle cx="65.5"
               cy="65.5"
               r="60.5"
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.box {
+.box-wrap {
   background-color: #fff;
   height: 130px;
   width: 130px;

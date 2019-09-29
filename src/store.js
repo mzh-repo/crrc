@@ -7,13 +7,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     importData: {
-      fileId: '',
       sql: '',
       file: [],
       sqlSettings: [],
+      options: [],
       settingsComplete: false,
       sqlName: '',
       model: '',
+      id: '',
+      total: '',
+      size: '',
     },
     modelSelected: '',
     dataSelected: '',
@@ -44,17 +47,24 @@ export default new Vuex.Store({
       newData = Object.assign(state.importData, payload);
       commit('updateImportData', newData);
     },
-    importComplete({ commit }, payload) {
-      const data = payload;
-
-      axios.post('/data', data).then(res => res);
+    importComplete({ commit }) {
+      const data = {
+        name: this.state.importData.sqlName,
+        dataset_id: this.state.importData.id,
+        database_id: this.state.importData.sql,
+      };
+      axios.post('/dataset', data).then(res => res);
       commit('updateImportData', {
         sql: '',
         file: [],
         sqlSettings: [],
+        options: [],
+        settingsComplete: false,
         sqlName: '',
         model: '',
-        fileId: '',
+        id: '',
+        total: '',
+        size: '',
       });
     },
   },

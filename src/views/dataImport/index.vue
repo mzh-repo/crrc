@@ -40,12 +40,12 @@ export default {
   created() {
     this.$router.push('/importData');
   },
+  beforeDestroy() {},
   methods: {
     next() {
       if (this.active === 1) {
         if (
-          this.$refs.route.fileId !== ''
-          && this.$refs.route.settingsComplete === true
+          this.$refs.route.settingsComplete === true
           && this.$refs.route.value !== ''
           && this.$refs.route.DBName !== ''
         ) {
@@ -80,6 +80,11 @@ export default {
     handleFinish() {},
     complete() {
       this.$store.dispatch('importComplete');
+      this.$message({
+        message: '数据导入完成',
+        type: 'success',
+      });
+      this.$router.push('/dashboard');
     },
     comeBack() {},
   },

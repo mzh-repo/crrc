@@ -97,6 +97,11 @@ export default {
       });
     },
   },
+  watch: {
+    dataSet() {
+      this.drawBar();
+    },
+  },
 };
 </script>
 

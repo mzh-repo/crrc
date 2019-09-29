@@ -27,7 +27,6 @@ export default {
   },
   mounted() {
     this.drawChart();
-    console.log(this.lineData);
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -139,7 +138,6 @@ export default {
   },
   watch: {
     lineData() {
-      console.log(this.lineData);
       this.drawChart();
     },
   },

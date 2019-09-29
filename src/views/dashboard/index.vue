@@ -5,11 +5,34 @@
     </el-col>
     <el-col :span="20">
       <el-row :gutter="20">
-        <el-col :span="18">
+        <el-col :span="16">
           <div class="box"></div>
         </el-col>
-        <el-col :span="6">
-          <div class="box"></div>
+        <el-col :span="8">
+          <div class="box">
+            <div class="server-data">服务器数据</div>
+            <div class="circle-row">
+              <div class="circle-box"
+                   v-for="item in circleList"
+                   :key="item.title">
+                <circle-progress class="circle-progress"
+                                 :color="item.color"
+                                 :show="item.show"
+                                 :total="item.total"
+                                 :number="item.number"
+                                 :unit="item.unit"></circle-progress>
+                <div class="detail">{{item.title}}</div>
+              </div>
+            </div>
+            <div class="detail-column">
+              <div class="server-total"
+                   v-for="item in circleList"
+                   :key="item.title">
+                <div>{{item.title}}</div>
+                <div class="total-unit">{{item.total}}{{item.unit}}</div>
+              </div>
+            </div>
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
@@ -50,12 +73,44 @@
 import UserInfo from '../../components/userInfo.vue';
 import BarChart from '@/components/barChart.vue';
 import ModelTrain from '@/components/modelTrain.vue';
+import CircleProgress from '@/components/circleProgress.vue';
 
 export default {
-  components: { UserInfo, BarChart, ModelTrain },
+  components: {
+    UserInfo,
+    BarChart,
+    ModelTrain,
+    CircleProgress,
+  },
   data() {
     return {
       colors: ['#00C4C0', '#8FD866'],
+      circleList: [
+        {
+          title: 'CPU cores',
+          color: '#8FD867',
+          show: 12,
+          total: 256,
+          number: 12,
+          unit: 'cores',
+        },
+        {
+          title: 'CPU Memory',
+          color: '#54A8F7',
+          show: 156,
+          total: 1440,
+          number: 156,
+          unit: 'M',
+        },
+        {
+          title: 'GPU cores',
+          color: '#FFB539',
+          show: 48,
+          total: 1440,
+          number: 48,
+          unit: 'M',
+        },
+      ],
       chartHeight: '326px',
       appData: {},
       trainData: {},
@@ -78,6 +133,64 @@ export default {
 <style lang="scss" scoped>
 .dashboard {
   padding: 20px;
+}
+
+.circle-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+}
+
+.circle-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.server-data {
+  font-weight: 500;
+  font-size: 24px;
+  text-align: left;
+  color: #333;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.circle-progress {
+  margin: 18px 0;
+}
+
+.detail {
+  color: #333;
+  font-size: 14;
+}
+
+.detail-column {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.server-total {
+  height: 53px;
+  width: 90%;
+  color: #333;
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid 1px #d8d8d8;
+  &:nth-child(3) {
+    border-bottom: none;
+  }
+}
+
+.total-unit {
+  font-size: 14px;
 }
 
 .el-row {

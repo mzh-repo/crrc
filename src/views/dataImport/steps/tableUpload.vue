@@ -69,11 +69,10 @@ export default {
   data() {
     return {
       array: ['ID', '时间', '坡度', '曲线', '速度', '位置', '客流预测'],
-      arrayOptions: ['123', '432'],
+      arrayOptions: [],
       fileStatus: 0,
       file: [],
       options: [],
-      fileId: '',
       sqlSettings: [],
       settingsComplete: false,
       value: '',
@@ -93,15 +92,16 @@ export default {
   },
   methods: {
     initData() {
-      this.$axios.get('/data/list').then((res) => {
+      this.$axios.get('/database/list').then((res) => {
         this.options = res;
       });
       this.settingsComplete = this.importData.settingsComplete;
       this.value = this.importData.sql;
       this.file = this.importData.file;
-      this.fileId = this.importData.fileId;
       this.sqlSettings = this.importData.sqlSettings;
       this.DBName = this.importData.sqlName;
+      this.arrayOptions = this.importData.options;
+      this.id = this.importData.id;
       if (this.file.length !== 0) {
         this.fileStatus = 1;
       }
@@ -115,30 +115,26 @@ export default {
         file: this.file,
         sqlSettings: this.sqlSettings,
         sqlName: this.DBName,
-        fileId: this.fileId,
         settingsComplete: this.settingsComplete,
+        options: this.arrayOptions,
+        id: this.id,
       };
       this.$store.dispatch('setImportData', data);
     },
     handleSelectChange(payload) {
       this.sqlSettings[payload.index] = payload.select;
-      let flag = 0;
-      this.sqlSettings.forEach((item) => {
-        if (item !== '') {
-          flag += 1;
-        }
-      });
-      if (flag === 7) {
+      if (!this.sqlSettings.includes('')) {
         this.settingsComplete = true;
       }
     },
     fileChange(e) {
       const data = new FormData();
       data.append('file', e.target.files[0]);
-      this.$axios.post('/file', data).then((res) => {
-        this.fileId = res.id;
+      this.$axios.post('/dataset', data).then((res) => {
+        this.arrayOptions = res.file_header;
         this.file.push(e.target.files[0]);
         this.fileStatus = 1;
+        this.id = res.id;
       });
     },
     deleteFile() {

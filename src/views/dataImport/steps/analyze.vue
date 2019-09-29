@@ -3,8 +3,8 @@
     <div class="title-line">
       <div class="title">数据集名称</div>
       <div class="data-line">
-        <div class="data-left">总记录数量：100 M </div>
-        <div>物理大小：20 M</div>
+        <div class="data-left">总记录数量：{{total}} </div>
+        <div>物理大小：{{size}}B</div>
       </div>
     </div>
     <el-row class="charts-title">
@@ -15,12 +15,14 @@
       <el-col :span="12">
         <bar-chart title=""
                    :colors="chartsOptions[0].colors"
-                   :dataSet="chartsOptions[0].dataSet" />
+                   :dataSet="chartsOptions[0].dataSet"
+                   showXAxis="true" />
       </el-col>
       <el-col :span="12">
         <bar-chart title=""
                    :colors="chartsOptions[1].colors"
-                   :dataSet="chartsOptions[1].dataSet" />
+                   :dataSet="chartsOptions[1].dataSet"
+                   showXAxis="true" />
       </el-col>
     </el-row>
     <div class="item-title">样例输出</div>
@@ -46,38 +48,90 @@ export default {
           title: '坡度值分布',
           colors: ['#8FD866', '#8FD866'],
           dataSet: {
-            column1: [0.1, 0.3, 0.6, 0.2, 0.5, 0.7, 1.0, 0.2, 0.4],
-            column3: [10, 20, 30, 40, 50, 60, 70, 80, 90],
+            data_list: [],
+            id_list: [],
           },
         },
         {
           title: '速度值分布',
           colors: ['#00C4C0', '#00C4C0'],
           dataSet: {
-            column1: [0.1, 0.3, 0.6, 0.2, 0.5, 0.7, 1.0, 0.2, 0.4],
-            column3: [10, 20, 30, 40, 50, 60, 70, 80, 90],
+            data_list: [],
+            id_list: [],
           },
         },
       ],
-      protoList: [
-        '列名,日期,时间,DCU_5 车电机定子电流有效值(变量 1),DCU_2 车牵引变流器内部空气温度(变量 2),是否异常,异常概率',
-        '09898,2019.6.12,19:00:00,数值[连续浮点型],数值[连续浮点型],数值[离散],0',
-      ],
       outList: [],
+      total: '',
+      size: '',
     };
   },
   mounted() {
-    // TODO
-    // this.$axios.get().then(res => res);
-    const tempList = this.protoList;
-    const listBeforeT = [];
-    let col = 0;
-    tempList.forEach((item) => {
-      const tempArr = item.split(',');
-      listBeforeT[col] = tempArr;
-      col += 1;
-    });
-    this.outList = listBeforeT;
+    this.initData();
+  },
+  beforeDestroy() {
+    const data = {
+      total: this.total,
+      size: this.size,
+    };
+    this.$store.dispatch('setImportData', data);
+  },
+  computed: {
+    importData() {
+      return this.$store.state.importData;
+    },
+  },
+  methods: {
+    initData() {
+      this.$axios.get('/dataset/graph').then((res) => {
+        const temp = JSON.parse(JSON.stringify(this.chartsOptions));
+        for (let i = 0; i < res.length; i += 1) {
+          temp[i].dataSet.data_list = [...JSON.parse(res[i]).data];
+          temp[i].dataSet.id_list = [...JSON.parse(res[i]).bins];
+        }
+        this.chartsOptions = temp;
+      });
+      const data = {
+        header_mappings: this.importData.sqlSettings,
+        name: this.importData.sqlName,
+        database_id: this.importData.sql,
+        id: this.importData.id,
+      };
+      this.$axios.put('/dataset', data).then((res) => {
+        this.total = this.formatDataSize(res.line, false);
+        this.size = this.formatDataSize(res.size, true);
+        const tempList = res.previews;
+        const listBeforeT = [];
+        listBeforeT[0] = this.importData.options;
+        let col = 1;
+        tempList.forEach((item) => {
+          const tempArr = item.split(',');
+          listBeforeT[col] = tempArr;
+          col += 1;
+        });
+        this.outList = listBeforeT;
+      });
+    },
+    formatDataSize(val, isData) {
+      let unit = 1000;
+      if (isData) {
+        unit = 1024;
+      }
+      let data = val;
+      let flag = 0;
+      while (data / unit >= 1) {
+        data /= unit;
+        flag += 1;
+      }
+      if (flag === 1) {
+        data = `${data.toFixed(1)}K`;
+      } else if (flag === 2) {
+        data = `${data.toFixed(1)}M`;
+      } else if (flag === 3) {
+        data = `${data.toFixed(1)}G`;
+      }
+      return data;
+    },
   },
 };
 </script>
