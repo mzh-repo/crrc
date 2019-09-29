@@ -8,7 +8,7 @@
                 class="training-continue">
           <div>数据总量</div>
           <div>
-            <span>{{dataList.line}}</span>K
+            <span>{{dataList.line}}</span>条
           </div>
         </el-col>
         <el-col :span="16"

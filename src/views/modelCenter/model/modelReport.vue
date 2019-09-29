@@ -48,15 +48,15 @@
             <div class="line"></div>
             <div class="data-show">
               <div>数据量</div>
-              <div>{{total}}M</div>
+              <div>{{reportData.line}}条</div>
             </div>
             <div class="data-show">
               <div>大小</div>
-              <div>{{size}}MB</div>
+              <div>{{reportData.size}}M</div>
             </div>
             <div class="data-show">
               <div>使用框架</div>
-              <div>{{frame}}M</div>
+              <div>{{reportData.frame}}M</div>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
     <div class="title-line">
       <div class="title">数据集名称</div>
       <div class="data-line">
-        <div class="data-left">总记录数量：{{total}} </div>
+        <div class="data-left">总记录数量：{{total}} 条</div>
         <div>物理大小：{{size}}B</div>
       </div>
     </div>
@@ -98,7 +98,7 @@ export default {
         id: this.importData.id,
       };
       this.$axios.put('/dataset', data).then((res) => {
-        this.total = this.formatDataSize(res.line, false);
+        this.total = res.line;
         this.size = this.formatDataSize(res.size, true);
         const tempList = res.previews;
         const listBeforeT = [];

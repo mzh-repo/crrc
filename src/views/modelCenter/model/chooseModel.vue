@@ -75,8 +75,6 @@ export default {
       this.$router.push('/createModel/step1');
     },
     modelReport(item) {
-      // eslint-disable-next-line
-      console.log('item', item);
       this.$store.commit('setReportData', {
         name: item.name,
         scene: item.applicable_scene,
@@ -84,6 +82,9 @@ export default {
         total: item.deploy_number,
         dateSetName: item.dataset.name,
         config: item.model_configuration,
+        line: item.dataset.line,
+        size: item.dataset.size,
+        frame: item.algorithm.frame_name,
       });
       this.$router.push('/modelReport');
     },

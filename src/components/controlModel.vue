@@ -43,7 +43,7 @@
           <el-row>
             <div>数据量</div>
             <div>
-              <span>{{modelList.dataset.line}}</span>M
+              <span>{{modelList.dataset.line}}</span>条
             </div>
           </el-row>
           <el-row>
