@@ -123,9 +123,9 @@ export default {
     },
     handleSelectChange(payload) {
       this.sqlSettings[payload.index] = payload.select;
-      if (!this.sqlSettings.includes('')) {
-        this.settingsComplete = true;
-      }
+      this.sqlSettings.forEach((item) => {
+        if (item !== '') this.settingsComplete = true;
+      });
     },
     fileChange(e) {
       const data = new FormData();
