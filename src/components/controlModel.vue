@@ -1,6 +1,6 @@
 <template>
   <div class="model-contrain">
-    <div class="continer">
+    <div class="container">
       <el-row class="title">{{modelList.name}}</el-row>
       <el-tag size="small">推荐配置</el-tag>
       <div v-if="modelList.newTab"
@@ -36,19 +36,19 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col v-if="modelList.data"
+        <el-col v-if="modelList.dataset"
                 :span="24"
                 class="content">
           <el-row>
             <div>数据量</div>
             <div>
-              <span>{{modelList.data.line}}</span>M
+              <span>{{modelList.dataset.line}}</span>M
             </div>
           </el-row>
           <el-row>
             <div>大小</div>
             <div>
-              <span>{{(modelList.data.size).toFixed(1)}}</span>M
+              <span>{{(modelList.dataset.size).toFixed(1)}}</span>M
             </div>
           </el-row>
           <el-row>
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.continer {
+.container {
   position: relative;
   width: 508px;
   margin: 16px 6px 0 0;

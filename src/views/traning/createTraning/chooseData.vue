@@ -8,7 +8,7 @@
            @click="check(index)">
         <div>{{data.name}}</div>
       </div>
-      <div class="totalNum">共{{totalNum}}条</div>
+      <div class="totalNum">共{{dataList[isActive-1].model_number}}条</div>
     </el-row>
     <el-row class="collapse">
       <el-collapse v-for="(item,index) in collapseList"
@@ -17,9 +17,9 @@
                    accordion>
         <el-collapse-item :name="index">
           <template slot="title">
-            <div>{{item.title}}
+            <div>{{item.name}}
             </div>
-            <span>共{{item.num}}组</span>
+            <span>共{{item.line}}条</span>
           </template>
           <el-col v-for="(histogramList, index) in lineDataList"
                   :span="8"
@@ -29,7 +29,7 @@
                        :lineData="histogramList.lineData" />
 
           </el-col>
-          <img v-if="item.selected"
+          <img v-if="selected===index"
                src="@/assets/images/choiced.png"
                class="stamp"
                @click="setSelect(index)">
@@ -49,35 +49,32 @@ export default {
   components: { Histogram },
   data() {
     return {
-      dataList: [],
+      dataList: [{ model_number: '' }],
       colors: ['#8FD866', '#00C4C0'],
       isActive: 1,
       totalNum: 129,
       activeName: 0,
-      collapseList: [
-        { title: '储能系统优化训练数据', num: 123, selected: false },
-        { title: '非接触供电系统优化训练数据', num: 256, selected: false },
-        { title: '非接触供电系统优化训练数据', num: 256, selected: false },
-        { title: '非接触供电系统优化训练数据', num: 256, selected: false },
-      ],
+      collapseList: [],
+      selected: 0,
       lineDataList: [{ lineData: {} }, { lineData: {} }],
     };
   },
   mounted() {
-    this.collapseList[0].selected = true;
     this.getDataList();
     this.getlineDataList();
+    this.getList();
   },
   methods: {
     check(index) {
       this.isActive = index + 1;
       this.getlineDataList();
+      this.getList();
     },
     setSelect(index) {
       this.collapseList.forEach((item, i) => {
         this.collapseList[i].selected = false;
         if (index === i) {
-          this.collapseList[i].selected = true;
+          this.selected = i;
         }
       });
     },
@@ -97,6 +94,13 @@ export default {
       this.$axios.get('/database/list').then((res) => {
         this.dataList = res;
       });
+    },
+    getList() {
+      this.$axios
+        .get(`/dataset/list?database_id=${this.isActive}`)
+        .then((res) => {
+          this.collapseList = res.data_list;
+        });
     },
   },
 };

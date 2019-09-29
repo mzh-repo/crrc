@@ -126,17 +126,23 @@ export default {
       lineData: {},
       screenWidth: document.body.clientWidth,
       modelList: [],
+      resettime: false,
     };
   },
-  // mounted() {
-  //   this.getLineData();
-  // },
   computed: {
     size() {
       return this.screenWidth * 0.0667;
     },
   },
   methods: {
+    b() {
+      if (!this.resettime) {
+        setTimeout(() => {
+          this.getLineData();
+          this.b();
+        }, 30000);
+      }
+    },
     toModel() {
       this.$router.push({ path: '/chooseModel' });
     },
@@ -165,6 +171,10 @@ export default {
       this.screenWidth = window.screenWidth;
     };
     this.getModelList();
+    this.b();
+  },
+  beforeDestroy() {
+    this.resettime = true;
   },
 };
 </script>

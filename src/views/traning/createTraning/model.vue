@@ -29,6 +29,7 @@ export default {
   components: { Bar },
   data() {
     return {
+      resettime: false,
       dataList: [],
       lineData: {},
       isActive: 1,
@@ -48,8 +49,17 @@ export default {
   mounted() {
     this.getDataList();
     this.getLineData();
+    this.b();
   },
   methods: {
+    b() {
+      if (!this.resettime) {
+        setTimeout(() => {
+          this.getLineData();
+          this.b();
+        }, 30000);
+      }
+    },
     check(index) {
       this.isActive = index + 1;
       this.getLineData();
@@ -64,6 +74,9 @@ export default {
         this.lineData = res.train;
       });
     },
+  },
+  beforeDestroy() {
+    this.resettime = true;
   },
 };
 </script>
