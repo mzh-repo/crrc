@@ -2,7 +2,7 @@
   <el-container>
     <el-col class="table-header">
       <span class="header-title">数据展示</span>
-      <span class="header-number">Loss <span class="loss">{{loss}}</span></span>
+      <span class="header-number"></span>
     </el-col>
     <el-col class="table-title">
       <span>监控数据</span>

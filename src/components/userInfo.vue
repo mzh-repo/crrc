@@ -138,14 +138,14 @@ img {
   font-weight: 500;
   font-size: 20px;
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   margin-left: 20px;
   text-align: left;
 }
 
 .step-box {
   width: 80%;
-  height: 310px;
+  height: 320px;
   // background: rgba(216, 216, 216, 1);
   margin-left: 20px;
   margin-bottom: 22px;

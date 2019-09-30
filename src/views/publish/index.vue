@@ -3,11 +3,11 @@
     <el-row>
       <bread-crumb />
     </el-row>
+    <el-row class="step">
+      <step-bar :active="active"
+                :stepList="stepList" />
+    </el-row>
     <div class="scroll">
-      <el-row class="step">
-        <step-bar :active="active"
-                  :stepList="stepList" />
-      </el-row>
       <router-view />
     </div>
     <footer-bar v-if="active!==4"
@@ -53,9 +53,9 @@ export default {
         (this.$route.path === '/modelPublish'
           && this.$store.state.dataSelected)
         || (this.$route.path === '/modelPublish/exampleSelect'
-          && this.$store.state.exampleSelected)
+          && this.$store.state.exampleSelected.index)
         || (this.$route.path === '/modelPublish/selectModel'
-          && this.$store.state.modelSelected)
+          && this.$store.state.modelSelected.index)
       ) {
         this.active += 1;
         this.$store.commit('setPublishActive', this.active);
@@ -103,12 +103,11 @@ export default {
 }
 .step {
   width: 90%;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .scroll {
+  overflow-y: scroll;
   width: 100%;
-  box-sizing: border-box;
-  overflow-y: auto;
 }
 </style>

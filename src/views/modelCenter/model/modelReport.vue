@@ -223,7 +223,7 @@ export default {
 
 .model-box {
   box-sizing: border-box;
-  margin: 20px 10px 0 0;
+  margin: 20px 8px 0 0;
   float: left;
 }
 </style>

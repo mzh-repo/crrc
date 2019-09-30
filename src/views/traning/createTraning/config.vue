@@ -19,8 +19,8 @@
     <div class="model-case">
       <div v-for="(item,index) in modelDataList"
            :key="index"
-           class="model-data"
-           :class="item.selected? 'select-data':'control-data'">
+           :class="(item.id===choiced)&&(index >= modelDataList.length-3)?
+            'select-data model-data':'control-data model-data'">
         <control-model :modelList="item"
                        @set-choice="(index) => choose(index, item)" />
         <div v-if="item.id===choiced"
@@ -132,6 +132,7 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
   padding: 33px 103px 0 70px;
+
   font-size: 22px;
   line-height: 30px;
   box-sizing: border-box;
@@ -195,5 +196,6 @@ ul {
 }
 .select-data {
   opacity: 1;
+  height: 455px;
 }
 </style>

@@ -2,7 +2,8 @@
   <el-container class="choose-model">
     <el-row class="title">
       <el-col>
-        <span @click="chooseModel">
+        <span class="title-header"
+              @click="chooseModel">
           选择模型
         </span>
         <!-- <span :class="!modelActive? 'active': ''"
@@ -75,6 +76,7 @@ export default {
       this.$router.push('/createModel/step1');
     },
     modelReport(item) {
+      // eslint-disable-next-line
       this.$store.commit('setReportData', {
         name: item.name,
         scene: item.applicable_scene,
@@ -121,13 +123,18 @@ export default {
     span {
       margin-right: 40px;
       // cursor: pointer;
+      font-size: 22px;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 33px;
+      margin: 0 20px 0 0;
 
-      &:hover,
-      &.active {
-        font-weight: 600;
-        transform: scale(1.15);
-        transition: all 0.3s;
-      }
+      // &:hover,
+      // &.active {
+      //   font-weight: 600;
+      //   transform: scale(1.15);
+      //   transition: all 0.3s;
+      // }
     }
 
     &:nth-child(2) {
@@ -176,9 +183,10 @@ export default {
 
     // &:hover,
     &.active {
+      font-size: 28px;
       font-weight: 600;
-      transform: scale(1.4);
-      transition: all 0.3s;
+      // transform: scale(1.4);
+      // transition: all 0.3s;
     }
   }
 }

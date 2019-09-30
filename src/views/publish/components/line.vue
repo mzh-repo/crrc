@@ -1,6 +1,5 @@
 <template>
-  <div v-if="lineData.date_list"
-       :class="className"
+  <div :class="className"
        :style="{height:height,width:width}" />
 </template>
 
@@ -17,7 +16,7 @@ export default {
     },
     width: {
       type: String,
-      default: '555px',
+      default: '100%',
     },
     height: {
       type: String,
@@ -26,6 +25,10 @@ export default {
     title: {
       type: String,
       default: '推荐牵引力 kN',
+    },
+    yTitle: {
+      type: String,
+      default: '推荐',
     },
     lineData: {
       type: Object,
@@ -72,7 +75,7 @@ export default {
           trigger: 'axis',
         },
         legend: {
-          data: ['推荐', '实例'],
+          data: [this.yTitle, '实际'],
         },
         xAxis: {
           type: 'category',
@@ -103,13 +106,13 @@ export default {
         },
         series: [
           {
-            name: '推荐',
+            name: this.yTitle,
             type: 'line',
             data: this.lineData.data_list,
             symbol: 'none',
           },
           {
-            name: '实例',
+            name: '实际',
             type: 'line',
             data: this.lineData.predict_data_list,
             symbol: 'none',

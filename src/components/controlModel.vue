@@ -170,6 +170,6 @@ img {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 2002;
+  z-index: 9;
 }
 </style>

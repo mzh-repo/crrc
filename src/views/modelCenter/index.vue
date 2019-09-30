@@ -3,12 +3,12 @@
     <el-row>
       <bread-crumb />
     </el-row>
+    <el-row class="step"
+            :class="newModel? 'create': ''">
+      <step-bar :active="active"
+                :stepList="stepList" />
+    </el-row>
     <div class="scroll">
-      <el-row class="step"
-              :class="newModel? 'create': ''">
-        <step-bar :active="active"
-                  :stepList="stepList" />
-      </el-row>
       <div class="layout">
         <router-view ref="model" />
       </div>
@@ -177,7 +177,7 @@ export default {
 
 .step {
   width: 50%;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .create {
@@ -185,8 +185,8 @@ export default {
 }
 
 .scroll {
-  width: 100%;
   overflow-y: auto;
+  width: 100%;
 }
 
 .layout {

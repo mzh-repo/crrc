@@ -2,7 +2,7 @@
   <el-container class="container">
     <div class="title">
       <div class="title-left">
-        <span>请选择供电系统状态监测及故障预警模型实例</span>
+        <span>请选择实例</span>
       </div>
       <div class="title-right">
       </div>
@@ -10,7 +10,7 @@
     <div class="model-area">
       <template v-for="(item,index) in modelList">
         <div :key="item.title"
-             @click="showDialog(index,item.id)"
+             @click="showDialog(index,item.id,item.name)"
              class="model-box">
           <mzh-instance :chose="false"
                         :status="item.status"
@@ -40,8 +40,8 @@ export default {
     };
   },
   mounted() {
-    if (this.$store.state.exampleSelected) {
-      this.modelList[this.$store.state.exampleSelected].status = 1;
+    if (this.$store.state.exampleSelected.index) {
+      this.modelList[this.$store.state.exampleSelected.index].status = 1;
     }
     this.getdata();
   },
@@ -49,17 +49,19 @@ export default {
     getdata() {
       this.$axios
         .get(
-          `model/instance/list?model_id=${this.$store.state.modelSelected || 1}`,
+          `model/instance/list?model_id=${this.$store.state.modelSelected
+            .index || 1}`,
         )
         .then((res) => {
           this.modelList = res;
         });
     },
-    showDialog(val, id) {
+    showDialog(val, id, name) {
+      this.$store.commit('selectExample', { index: val, id, name });
       if (this.modelList[val].status === 1) {
         this.$store.commit('setPublishActive', 4);
       } else {
-        this.$refs.dialog.showDialog({ index: val, id });
+        this.$refs.dialog.showDialog({ index: val, id, name });
       }
     },
     publishSuccess(val) {
@@ -69,7 +71,10 @@ export default {
           .put(`model/instance/${val.id}/status`, { status: 1 })
           .then(() => {
             this.$store.commit('setPublishActive', 4);
-            this.$store.commit('selectExample', val.index);
+            this.$store.commit('selectExample', {
+              index: val.index,
+              name: val.name,
+            });
           });
       }
     },

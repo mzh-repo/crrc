@@ -55,7 +55,7 @@ export default {
 }
 
 /deep/.el-carousel__container {
-  height: 278px;
+  height: 283px;
 }
 /deep/.el-carousel__indicators .is-active {
   .el-carousel__button {
@@ -66,7 +66,12 @@ export default {
 /deep/.el-carousel__arrow {
   display: none;
 }
-
+/deep/.el-carousel__button {
+  width: 9px;
+  height: 9px;
+  background: rgba(195, 195, 195, 1);
+  border-radius: 50%;
+}
 .img {
   width: 100%;
   height: 242px;

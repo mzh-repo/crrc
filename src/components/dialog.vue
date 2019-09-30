@@ -1,9 +1,9 @@
 <template>
-  <el-dialog :title="title"
+  <el-dialog :title="this.$store.state.modelSelected.name||title"
              :visible.sync="dialogVisible"
              :show-close="false"
              @closed="closeDialog">
-    <span class="no">实例{{no}}</span>
+    <span class="no">实例{{this.$store.state.exampleSelected.name||no}}</span>
     <div class="progress-area">
       <el-progress :text-inside="true"
                    :show-text="false"
@@ -53,7 +53,7 @@ export default {
             this.b();
           } else {
             setTimeout(() => {
-              if (this.random(1, 100) < 10) {
+              if (this.random(1, 100) < 0) {
                 this.tips = '部署失败';
                 this.$emit('publish-success', {
                   index: this.index,

@@ -3,11 +3,12 @@
     <el-row>
       <bread-crumb />
     </el-row>
+    <el-row class="step">
+      <step-bar :active="active"
+                :stepList="stepList" />
+    </el-row>
     <div class="scroll">
-      <el-row class="step">
-        <step-bar :active="active"
-                  :stepList="stepList" />
-      </el-row>
+
       <router-view />
     </div>
 
@@ -106,13 +107,12 @@ export default {
 }
 
 .step {
-  margin: auto;
+  margin: 0 auto;
   width: 90%;
 }
 
 .scroll {
   overflow-y: auto;
-  box-sizing: border-box;
   width: 100%;
 }
 </style>

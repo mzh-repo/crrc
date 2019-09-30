@@ -2,37 +2,37 @@
   <el-container class="container">
     <div class="title">
       <div class="title-left">
-        <span>请选择供电系统状态监测及故障预警模型实例</span>
-        <span>实例{{'1908231434'}}</span>
+        <span>{{this.$store.state.modelSelected.name}}预测</span>
+        <span>实例{{this.$store.state.exampleSelected.name||'1908231434'}}</span>
       </div>
       <div class="title-right">
-        <span>更新时间: {{'2019.09.11'}} {{'19:00:00'}}</span>
-        <span>当前时间: {{'2019.09.11'}} {{'19:00:00'}}</span>
+        <span>更新时间: {{date||'2019.09.11'}} {{time||'19:00:00'}}</span>
+        <span>当前时间: {{date||'2019.09.11'}} {{time||'19:00:00'}}</span>
       </div>
     </div>
     <div class="forecast-data">
-      <span>平均余册时间: {{'1.2'}}s</span>
+      <span>平均预测时间: {{'1'}}s</span>
       <span>预测总次数: {{'128'}}次</span>
       <span>预测总数据大小: {{'128'}}M</span>
     </div>
-    <el-row :gutter="16"
-            class="line-area">
+    <el-row class="line-area">
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.force"
-                    :title="'推荐牵引力 KN'" />
+          <Mzh-line :lineData="lineData.power"
+                    :title="'能耗对比 kW·h'"
+                    :yTitle="'预测'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper">
           <Mzh-line :lineData="lineData.speed"
-                    :title="'推荐速度 km/h'" />
+                    :title="'速度 km/h'" />
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.power"
-                    :title="'推荐功率 kW'" />
+        <div class="chart-wrapper nopadding">
+          <Mzh-line :lineData="lineData.force"
+                    :title="'牵引力 KN'" />
         </div>
       </el-col>
     </el-row>
@@ -50,11 +50,17 @@ export default {
     return {
       lineData: {},
       resettime: false,
+      date: '',
+      time: '',
     };
   },
   mounted() {
     this.getLineData();
     this.b();
+    const nowDate = new Date();
+    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
+      + 1}-${nowDate.getDate()}`;
+    this.time = `${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
   },
   methods: {
     b() {
@@ -150,8 +156,15 @@ export default {
   border-color: rgba(0, 0, 0, 0.05);
   position: relative;
 }
-
+/deep/.el-col-8 {
+  padding: 0 16px 16px 2px;
+}
+/deep/.el-col-8:nth-child(3) {
+  padding: 0 2px 16px 0;
+}
 .line-area {
-  margin-bottom: 22px;
+  width: 100%;
+  margin-bottom: 30px;
+  height: 300px;
 }
 </style>

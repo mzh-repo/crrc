@@ -2,23 +2,23 @@
   <el-container class="container">
     <div class="title-first">
       <div class="title-right">
-        <span>请选择供电系统状态监测及故障预警模型</span>
+        <span>请选择模型</span>
       </div>
     </div>
     <div class="title">
       <div v-if="datebase[0]"
            class="title-left">
         <span :class="tab===1?'active':''"
-              @click.stop="tab=1">{{datebase[0].name||'间歇式供电列车数据'}}</span>
+              @click.stop="tab=1">{{datebase[0]||'间歇式供电列车数据模型'}}</span>
         <span :class="tab===1?'':'active'"
-              @click.stop="tab=2">{{datebase[1].name||'非接触式间歇式供电列车数据'}}</span>
+              @click.stop="tab=2">{{datebase[1]||'非接触式间歇式供电列车数据模型'}}</span>
       </div>
     </div>
     <div class="model-area">
       <template v-for="(item) in modelList">
         <div :key="item.id.index"
              :class="'model-box'"
-             @click="next(item.id)">
+             @click="next(item.id,item.name)">
           <div :class="item.id===choosed?'active':'noactive'">
             <mzh-optimizationModel :optimziationList="item"
                                    :describe="datebase[0]" />
@@ -45,8 +45,8 @@ export default {
     };
   },
   mounted() {
-    if (this.$store.state.modelSelected) {
-      this.choosed = this.$store.state.modelSelected;
+    if (this.$store.state.modelSelected.index) {
+      this.choosed = this.$store.state.modelSelected.index;
     }
     this.getdata();
   },
@@ -54,14 +54,13 @@ export default {
     getdata() {
       this.$axios.get('model/detail/list').then((res) => {
         this.datebase.push(res[0].name, res[1].name);
-
         this.allList.push(res[0].model_info_list, res[1].model_info_list);
         [this.modelList] = this.allList;
       });
     },
-    next(index) {
+    next(index, name) {
       this.choosed = index;
-      this.$store.commit('selectModel', index);
+      this.$store.commit('selectModel', { index, name });
     },
   },
   watch: {
