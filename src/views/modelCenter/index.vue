@@ -176,6 +176,7 @@ export default {
 }
 
 .step {
+  padding: 0 20px;
   width: 50%;
   margin: 0 auto;
 }

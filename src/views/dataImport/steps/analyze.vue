@@ -1,7 +1,7 @@
 <template>
   <el-container class="analyze-container">
     <div class="title-line">
-      <div class="title">数据集名称</div>
+      <div class="title">{{importData.sqlName}}</div>
       <div class="data-line">
         <div class="data-left">总记录数量：{{total}} 条</div>
         <div>物理大小：{{unitConvert(size)}}MB</div>

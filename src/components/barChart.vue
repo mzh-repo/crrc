@@ -35,6 +35,12 @@ export default {
       type: String,
       // default: '近期训练',
     },
+    xName: {
+      type: String,
+    },
+    yName: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -47,7 +53,7 @@ export default {
   },
   methods: {
     drawBar() {
-      const myChart = this.$echart.init(this.$refs.chart);
+      const myChart = this.$echart.init(this.$el);
       this.initChart(myChart, this.dataSet, this.colors);
       // 容器高宽自适应
       window.onresize = () => {
@@ -55,23 +61,19 @@ export default {
       };
     },
     initChart(myChart, data, colors) {
-      myChart.setOption({
+      const options = {
         legend: {},
-        tooltip: {},
+        tooltip: {
+          formatter: {},
+        },
         title: {
           text: this.title || '',
           textStyle: {
-            fontSize: 24,
-            fontWeight: 'bolder',
+            fontSize: '24',
+            fontWeight: 'normal',
           },
           left: 24,
           top: 17,
-        },
-        grid: {
-          x: 70, // 坐标轴左边与边框的距离
-          y: 100, // 坐标轴顶端与边框的距离
-          x2: 70, // 坐标轴右边与边框的距离
-          y2: 50, // 坐标轴底端与边框的距离
         },
         xAxis: {
           type: 'category',
@@ -79,13 +81,13 @@ export default {
           data: data.id_list,
           // axisLine: { show: false },
           axisTick: { show: false },
-          name: 'Id',
+          name: this.xName,
         },
         yAxis: {
           splitLine: { show: false },
           // axisLine: { show: false },
           axisTick: { show: false },
-          name: 'Loss',
+          name: this.yName,
         },
         series: [
           {
@@ -102,7 +104,19 @@ export default {
             barWidth: '20%',
           },
         ],
-      });
+      };
+      // 存在纵坐标, 加边框值
+      if (this.yName) {
+        Object.assign(options, {
+          grid: {
+            x: 70, // 坐标轴左边与边框的距离
+            y: 100, // 坐标轴顶端与边框的距离
+            x2: 70, // 坐标轴右边与边框的距离
+            y2: 50, // 坐标轴底端与边框的距离
+          },
+        });
+      }
+      myChart.setOption(options);
     },
   },
   watch: {

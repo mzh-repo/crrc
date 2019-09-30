@@ -16,7 +16,7 @@
       <el-col :span="12"
               class="model">
         <el-row>
-          相关模型
+          模型实例
         </el-row>
         <el-row :gutter="16">
           <el-col v-for="obj in item.model_list"

@@ -43,23 +43,23 @@ export default {
       configList: [
         {
           name: '轮次',
-          value: 8,
+          value: 2000,
           unit: '次',
         },
         {
           name: '内存',
-          value: 12,
-          unit: 'M',
+          value: 64,
+          unit: 'G',
         },
         {
           name: 'CPU',
-          value: 3,
+          value: 8,
           unit: '个',
         },
         {
           name: 'GPU',
-          value: 24,
-          unit: 'M',
+          value: 16,
+          unit: 'G',
         },
       ],
       modelList: [
@@ -73,10 +73,10 @@ export default {
       suit: this.$store.state.algorithm.suit,
       frame: this.$store.state.algorithm.frame,
       sliderList: [
-        { title: '轮次', value: 8, maxValue: 100 },
-        { title: '内存', value: 12, maxValue: 200 },
-        { title: 'CPU', value: 3, maxValue: 300 },
-        { title: 'GPU', value: 24, maxValue: 400 },
+        { title: '轮次', value: 2000, maxValue: 3000 },
+        { title: '内存', value: 64, maxValue: 128 },
+        { title: 'CPU', value: 8, maxValue: 32 },
+        { title: 'GPU', value: 16, maxValue: 64 },
       ],
     };
   },

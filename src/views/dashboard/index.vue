@@ -44,12 +44,16 @@
         <el-col :span="12">
           <div class="box">
             <bar-chart title="近期训练"
+                       xName="id"
+                       yName="Loss"
                        :height="chartHeight" />
           </div>
         </el-col>
         <el-col :span="12">
           <div class="box">
             <bar-chart title="近期应用"
+                       xName="id"
+                       yName="Loss"
                        :colors="colors"
                        :height="chartHeight" />
           </div>
