@@ -65,6 +65,7 @@ export default {
 
   svg {
     margin: auto;
+    @include set-size(30px);
 
     &:first-child {
       margin-bottom: 20px;
