@@ -52,7 +52,7 @@
             </div>
             <div class="data-show">
               <div>大小</div>
-              <div>{{reportData.size}}M</div>
+              <div>{{unitConvert(reportData.size)}}M</div>
             </div>
             <div class="data-show">
               <div>使用框架</div>
@@ -129,6 +129,9 @@ export default {
         .then((res) => {
           this.modelList = res;
         });
+    },
+    unitConvert(data) {
+      return (data / 1024 / 1024).toFixed(1);
     },
   },
 };

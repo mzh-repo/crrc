@@ -19,7 +19,7 @@
           <el-row>
             <div>内存</div>
             <div>
-              <span>{{modelList.model_configuration.ram}}</span>M
+              <span>{{modelList.model_configuration.ram}}</span>G
             </div>
           </el-row>
           <el-row>
@@ -31,7 +31,7 @@
           <el-row>
             <div>GPU</div>
             <div>
-              <span>{{modelList.model_configuration.gpu}}</span>M
+              <span>{{modelList.model_configuration.gpu}}</span>G
             </div>
           </el-row>
         </el-col>

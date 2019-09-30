@@ -69,13 +69,14 @@ export default {
   components: { CompoundInput },
   data() {
     return {
-      array: ['ID', '时间', '坡度', '曲线', '速度', '位置', '客流预测'],
-      arrayOptions: [],
+      // array: ['ID', '时间', '坡度', '曲线', '速度', '位置', '客流预测'],
+      array: [],
+      arrayOptions: ['String', 'Int', 'Float', 'Date'],
       fileStatus: 0,
       file: [],
       options: [],
       sqlSettings: [],
-      settingsComplete: false,
+      // settingsComplete: false,
       value: '',
       DBName: '',
     };
@@ -96,19 +97,19 @@ export default {
       this.$axios.get('/database/list').then((res) => {
         this.options = res;
       });
-      this.settingsComplete = this.importData.settingsComplete;
+      // this.settingsComplete = this.importData.settingsComplete;
       this.value = this.importData.sql;
       this.file = this.importData.file;
       this.sqlSettings = this.importData.sqlSettings;
       this.DBName = this.importData.sqlName;
-      this.arrayOptions = this.importData.options;
+      this.array = this.importData.options;
       this.id = this.importData.id;
       if (this.file.length !== 0) {
         this.fileStatus = 1;
       }
-      if (this.sqlSettings.length === 0) {
-        this.sqlSettings = new Array(7).fill('');
-      }
+      // if (this.sqlSettings.length === 0) {
+      //   this.sqlSettings = new Array(7).fill('');
+      // }
     },
     saveData() {
       const data = {
@@ -116,8 +117,8 @@ export default {
         file: this.file,
         sqlSettings: this.sqlSettings,
         sqlName: this.DBName,
-        settingsComplete: this.settingsComplete,
-        options: this.arrayOptions,
+        // settingsComplete: this.settingsComplete,
+        options: this.array,
         id: this.id,
       };
       this.$store.dispatch('setImportData', data);
@@ -132,7 +133,10 @@ export default {
       const data = new FormData();
       data.append('file', e.target.files[0]);
       this.$axios.post('/dataset', data).then((res) => {
-        this.arrayOptions = res.file_header;
+        this.array = res.file_header;
+        this.array.forEach(() => {
+          this.sqlSettings.push('String');
+        });
         this.file.push(e.target.files[0]);
         this.fileStatus = 1;
         this.id = res.id;
@@ -151,7 +155,8 @@ export default {
           });
           this.file.pop();
           this.fileStatus = 0;
-          this.sqlSettings = new Array(7);
+          // this.sqlSettings = new Array(7);
+          this.sqlSettings = [];
         })
         .catch(() => {
           this.$message({

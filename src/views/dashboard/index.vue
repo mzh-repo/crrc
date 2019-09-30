@@ -272,6 +272,7 @@ export default {
   height: 100%;
   cursor: pointer;
 }
+
 .model-prediction {
   text-align: left;
   div:nth-child(1) {

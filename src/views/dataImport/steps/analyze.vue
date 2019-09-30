@@ -91,8 +91,9 @@ export default {
         }
         this.chartsOptions = temp;
       });
+
       const data = {
-        header_mappings: this.importData.sqlSettings,
+        header_mappings: this.importData.options,
         name: this.importData.sqlName,
         database_id: this.importData.sql,
         id: this.importData.id,

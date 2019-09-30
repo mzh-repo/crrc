@@ -52,11 +52,7 @@ export default {
   methods: {
     next() {
       if (this.active === 1) {
-        if (
-          this.$refs.route.settingsComplete === true
-          && this.$refs.route.value !== ''
-          && this.$refs.route.DBName !== ''
-        ) {
+        if (this.$refs.route.value !== '' && this.$refs.route.DBName !== '') {
           if (localStorage.getItem('return') === 'true') {
             this.$router.push('/createModel/step1');
           } else {
