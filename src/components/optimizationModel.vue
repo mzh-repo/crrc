@@ -42,9 +42,10 @@
 const img = new Map();
 const imgUrl = [
   /* eslint-disable */
-  require('../assets/images/tensorflow.png'),
-  require('../assets/images/keras.png'),
   require('../assets/images/mklearn.png'),
+  require('../assets/images/keras.png'),
+  require('../assets/images/tensorflow.png'),
+
   /* eslint-enable */
 ];
 
@@ -84,7 +85,7 @@ export default {
   position: relative;
   background: #fff;
   border-radius: 8px;
-  padding: 15px 20px;
+  padding: 15px 10px;
   width: 428px;
 }
 
@@ -103,7 +104,7 @@ export default {
 .title {
   font-size: 20px;
   line-height: 28px;
-  margin-bottom: 4px;
+  margin-bottom: 20px;
 }
 
 .describe {

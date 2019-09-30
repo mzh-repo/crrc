@@ -70,15 +70,15 @@ export default {
       this.chart = echarts.init(this.$el);
 
       this.chart.setOption({
-        title: {
-          text: this.title,
-          padding: [17, 27],
-          textStyle: {
-            fontFamily: 'PingFangSC-Medium,PingFangSC',
-            fontSize: 24,
-            fontWeight: 'bold',
-          },
-        },
+        // title: {
+        //   text: this.title,
+        //   padding: [17, 27],
+        //   textStyle: {
+        //     fontFamily: 'PingFangSC-Medium,PingFangSC',
+        //     fontSize: 24,
+        //     fontWeight: 'bold',
+        //   },
+        // },
         tooltip: {
           // trigger: 'axis',
           axisPointer: {

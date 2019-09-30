@@ -28,7 +28,6 @@
                   :key="i"
                   class="echarts">
             <histogram :colors="colors[i]"
-                       :title="titles[i]"
                        :lineData="histogramList.lineData" />
           </el-col>
           <img v-if="index===selected"
@@ -59,7 +58,7 @@ export default {
       collapseList: [],
       selected: 0,
       lineDataList: [{ lineData: {} }, { lineData: {} }],
-      titles: ['速度值分布', '坡度值分布'],
+      // titles: ['速度值分布', '坡度值分布'],
     };
   },
   mounted() {

@@ -4,14 +4,14 @@
       <!-- {{data}} -->
       <el-row class="title">{{dataList.name}}</el-row>
       <el-row>
-        <el-col :span="8"
+        <el-col :span="10"
                 class="training-continue">
           <div>数据总量</div>
           <div>
             <span>{{dataList.line}}</span>条
           </div>
         </el-col>
-        <el-col :span="16"
+        <el-col :span="14"
                 class="training-continue">
           <div>物理大小</div>
           <div>

@@ -60,7 +60,7 @@
             </div>
             <div class="data-show">
               <div>使用框架</div>
-              <div>{{reportData.frame}}M</div>
+              <div>{{reportData.frame}}</div>
             </div>
           </div>
         </div>

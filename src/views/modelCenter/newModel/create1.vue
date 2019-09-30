@@ -107,7 +107,7 @@ export default {
     initData() {
       if (localStorage.getItem('getDataSet') === 'true') {
         const data = {
-          header_mappings: this.$store.state.importData.sqlSettings,
+          header_mappings: this.$store.state.importData.options,
           name: this.$store.state.importData.sqlName,
           database_id: this.$store.state.importData.sql,
           id: this.$store.state.importData.id,
