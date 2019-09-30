@@ -46,6 +46,7 @@
                       :title="item"
                       :key="item"
                       :index="index"
+                      :select="sqlSettings[index]"
                       :options="arrayOptions"
                       @selected="handleSelectChange" />
     </div>

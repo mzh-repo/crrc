@@ -91,12 +91,19 @@ export default {
     commit() {},
     handleFinish() {},
     complete() {
-      this.$store.dispatch('importComplete');
-      this.$message({
-        message: '数据导入完成',
-        type: 'success',
-      });
-      this.$router.push('/dashboard');
+      if (this.$store.state.importData.model !== -1) {
+        this.$store.dispatch('importComplete');
+        this.$message({
+          message: '数据导入完成',
+          type: 'success',
+        });
+        this.$router.push('/dashboard');
+      } else {
+        this.$message({
+          message: '请先选择模型',
+          type: 'warning',
+        });
+      }
     },
     comeBack() {},
   },

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from './libs/api';
 
 Vue.use(Vuex);
 
@@ -13,7 +12,7 @@ export default new Vuex.Store({
       options: [],
       settingsComplete: false,
       sqlName: '',
-      model: '',
+      model: -1,
       id: '',
       total: '',
       size: '',
@@ -105,12 +104,6 @@ export default new Vuex.Store({
       commit('updateImportData', newData);
     },
     importComplete({ commit }) {
-      const data = {
-        name: this.state.importData.sqlName,
-        dataset_id: this.state.importData.id,
-        database_id: this.state.importData.sql,
-      };
-      axios.post('/dataset', data).then(res => res);
       commit('updateImportData', {
         sql: '',
         file: [],
@@ -118,7 +111,7 @@ export default new Vuex.Store({
         options: [],
         settingsComplete: false,
         sqlName: '',
-        model: '',
+        model: -1,
         id: '',
         total: '',
         size: '',

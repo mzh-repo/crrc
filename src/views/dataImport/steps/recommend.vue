@@ -68,19 +68,21 @@ export default {
           ],
         },
       ],
-      model: '',
     };
   },
   mounted() {
     // TODO dataInit
     this.$axios.get().then(res => res);
+    this.chooseIndex = this.$store.state.importData.model;
   },
   methods: {
     handleClickCard(index) {
       if (this.chooseIndex === index) {
         this.chooseIndex = -1;
+        this.$store.dispatch('setImportData', { model: this.chooseIndex });
       } else {
         this.chooseIndex = index;
+        this.$store.dispatch('setImportData', { model: this.chooseIndex });
       }
     },
   },
