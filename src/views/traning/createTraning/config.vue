@@ -2,13 +2,15 @@
   <el-container class="container">
     <el-row class="choice">请选择数据进行训练</el-row>
     <el-row class="data-choice">
-      <div v-for="(data,index) in dataList"
-           :key="index"
-           :class="{active:index==(isActive-1) }"
-           @click="check(index)">
-        <div>{{data.name}}</div>
+      <div class="choice-content">
+        <div v-for="(data,index) in dataList"
+             :key="index"
+             :class="{active:index==(isActive-1) }"
+             @click="check(index)">
+          <div>{{data.name}}</div>
+        </div>
       </div>
-      <div class="total-num">共{{totalNum}}条</div>
+      <div class="total-num">共{{dataList[isActive-1].model_number}}条</div>
     </el-row>
     <ul v-for="(item, index) in  resource"
         :key="index">
@@ -42,10 +44,11 @@ export default {
 
   data() {
     return {
-      dataList: [],
+      dataList: [{ model_number: 0 }],
       model: true,
       isActive: 1,
       totalNum: 129,
+
       resource: [
         {
           needCores: 56,
@@ -144,16 +147,24 @@ export default {
   color: #666;
 }
 .data-choice {
-  @include box-center;
+  display: flex;
+  align-items: center;
+  width: 100%;
   font-size: 22px;
   line-height: 30px;
   cursor: pointer;
-  div {
-    padding-right: 16px;
+  .choice-content {
+    @include box-center;
+    justify-content: flex-start;
+    width: 626px;
+    div:first-child {
+      padding-right: 16px;
+    }
   }
 }
 .active {
   font-size: 28px;
+  font-weight: bold;
   line-height: 40px;
 }
 .total-num {

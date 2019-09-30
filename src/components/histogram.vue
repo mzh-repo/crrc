@@ -72,6 +72,12 @@ export default {
       this.chart.setOption({
         title: {
           text: this.title,
+          padding: [17, 27],
+          textStyle: {
+            fontFamily: 'PingFangSC-Medium,PingFangSC',
+            fontSize: 24,
+            fontWeight: 'bold',
+          },
         },
         tooltip: {
           // trigger: 'axis',

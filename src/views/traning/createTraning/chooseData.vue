@@ -2,11 +2,13 @@
   <el-container class="container">
     <el-row class="choice">请选择数据进行训练</el-row>
     <el-row class="data-choice">
-      <div v-for="(data,index) in dataList"
-           :key="index"
-           :class="{active:index==(isActive-1) }"
-           @click="check(index)">
-        <div>{{data.name}}</div>
+      <div class="choice-content">
+        <div v-for="(data,index) in dataList"
+             :key="index"
+             :class="{active:index==(isActive-1) }"
+             @click="check(index)">
+          <div>{{data.name}}</div>
+        </div>
       </div>
       <div class="totalNum">共{{dataList[isActive-1].model_number}}条</div>
     </el-row>
@@ -21,15 +23,15 @@
             </div>
             <span>共{{item.line}}条</span>
           </template>
-          <el-col v-for="(histogramList, index) in lineDataList"
+          <el-col v-for="(histogramList, i) in lineDataList"
                   :span="8"
-                  :key="index"
+                  :key="i"
                   class="echarts">
-            <histogram :colors="colors[index]"
+            <histogram :colors="colors[i]"
+                       :title="titles[i]"
                        :lineData="histogramList.lineData" />
-
           </el-col>
-          <img v-if="selected===index"
+          <img v-if="index===selected"
                src="@/assets/images/choiced.png"
                class="stamp"
                @click="setSelect(index)">
@@ -57,9 +59,17 @@ export default {
       collapseList: [],
       selected: 0,
       lineDataList: [{ lineData: {} }, { lineData: {} }],
+      titles: ['速度值分布', '坡度值分布'],
     };
   },
   mounted() {
+    if (this.$store.state.chooseData) {
+      this.dataList.forEach((item, num) => {
+        if (this.$store.state.chooseData === item.id) {
+          this.dataList[num].selected = true;
+        }
+      });
+    }
     this.getDataList();
     this.getlineDataList();
     this.getList();
@@ -71,12 +81,19 @@ export default {
       this.getList();
     },
     setSelect(index) {
-      this.collapseList.forEach((item, i) => {
-        this.collapseList[i].selected = false;
-        if (index === i) {
-          this.selected = i;
-        }
-      });
+      // this.collapseList.forEach((item, i) => {
+      //   this.collapseList[i].selected = false;
+      //   if (index === i) {
+      //     this.selected = i;
+      //   }
+      // });
+      if (this.$store.state.chooseData !== index) {
+        this.$store.commit('setChoose', index);
+        this.selected = index;
+      } else {
+        this.$store.commit('setChoose', 0);
+        this.selected = 0;
+      }
     },
     getlineDataList() {
       this.$axios
@@ -123,15 +140,24 @@ export default {
   margin-bottom: 33px;
 }
 .data-choice {
-  @include box-center;
+  display: flex;
+  align-items: center;
+  width: 100%;
   font-size: 22px;
   line-height: 30px;
-  div {
-    padding-right: 16px;
+  cursor: pointer;
+  .choice-content {
+    @include box-center;
+    justify-content: flex-start;
+    width: 626px;
+    div:first-child {
+      padding-right: 16px;
+    }
   }
 }
 .active {
   font-size: 28px;
+  font-weight: bold;
   line-height: 40px;
 }
 .totalNum {
@@ -179,7 +205,7 @@ export default {
   border: 1px solid rgba(227, 227, 227, 1);
   bottom: 30px;
   right: 30px;
-  z-index: 3000;
+  z-index: 2000;
 }
 img {
   width: 36px;

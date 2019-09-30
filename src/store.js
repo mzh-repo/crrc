@@ -52,11 +52,9 @@ export default new Vuex.Store({
         cpu: '',
         gpu: '',
       },
-      line: '',
-      size: '',
-      frame: '',
     },
     trainSelected: '',
+    chooseData: '',
     record: {},
   },
   mutations: {
@@ -95,6 +93,9 @@ export default new Vuex.Store({
     },
     setTrain(state, value) {
       state.trainSelected = value;
+    },
+    setChoose(state, value) {
+      state.chooseData = value;
     },
   },
   actions: {
