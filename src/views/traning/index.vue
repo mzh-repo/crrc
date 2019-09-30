@@ -65,6 +65,7 @@ export default {
         this.$router.push('./model');
       });
       this.$store.commit('setPublishActive', this.active);
+      this.$store.commit('setTrain', 0);
     },
     handlePre() {
       this.$router.push('/chooseData');

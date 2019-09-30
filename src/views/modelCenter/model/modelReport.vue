@@ -19,18 +19,22 @@
     </el-row>
     <el-row :gutter="16"
             class="chart-report">
-      <el-col :span="10">
+      <el-col :span="9">
         <div class="chart">
-          <bar-chart title="近期训练" />
+          <bar-chart title="近期训练"
+                     xName="id"
+                     yName="Loss" />
         </div>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="9">
         <div class="chart">
           <bar-chart title="近期应用"
-                     :colors="colors" />
+                     :colors="colors"
+                     xName="id"
+                     yName="Loss" />
         </div>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="6">
         <div class="chart">
           <div class="config">
             <el-tag type="primary"

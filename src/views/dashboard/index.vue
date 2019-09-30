@@ -202,7 +202,6 @@ export default {
 }
 
 .server-data {
-  font-weight: bold;
   font-size: 24px;
   font-family: PingFangSC-Medium, PingFangSC;
   text-align: left;
@@ -278,14 +277,13 @@ export default {
   div:nth-child(1) {
     padding: 18px 0 9px 25px;
     font-size: 24px;
-    line-height: 33pz;
-    font-weight: bold;
+    line-height: 33px;
   }
   div:nth-child(2) {
     padding-left: 25px;
     color: #666;
     font-size: 16px;
-    line-height: 22pz;
+    line-height: 22px;
   }
 }
 

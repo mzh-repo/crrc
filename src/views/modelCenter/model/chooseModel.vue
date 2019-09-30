@@ -30,7 +30,7 @@
                @click="newModel">
             <svg-icon icon-class="add-model"
                       class="add-img" />
-            <div>新建训练模块</div>
+            <div>新建模型</div>
           </div>
         </div>
         <div v-for="(item,index) in modelData"

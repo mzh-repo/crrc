@@ -8,9 +8,9 @@
     <div class="title">
       <div class="title-left">
         <span :class="tab===1?'active':''"
-              @click.stop="tab=1">{{datebase[0].name||'间歇式供电列车数据'}}</span>
+              @click.stop="tab=1">{{datebase[0].name||'间歇式供电列车'}}</span>
         <span :class="tab===1?'':'active'"
-              @click.stop="tab=2">{{datebase[1].name||'非接触式间歇式供电列车数据'}}</span>
+              @click.stop="tab=2">{{datebase[1].name||'非接触式供电列车'}}</span>
       </div>
     </div>
     <div class="model-area">

@@ -84,11 +84,11 @@ export default {
         {
           title: '轮次',
           value: item.model_configuration.rounds,
-          maxValue: 100,
+          maxValue: 3000,
         },
-        { title: '内存', value: item.model_configuration.ram, maxValue: 200 },
-        { title: 'CPU', value: item.model_configuration.cpu, maxValue: 300 },
-        { title: 'GPU', value: item.model_configuration.gpu, maxValue: 400 },
+        { title: '内存', value: item.model_configuration.ram, maxValue: 128 },
+        { title: 'CPU', value: item.model_configuration.cpu, maxValue: 32 },
+        { title: 'GPU', value: item.model_configuration.gpu, maxValue: 64 },
       ];
       if (this.$store.state.trainSelected !== index) {
         this.$store.commit('setRecord', {

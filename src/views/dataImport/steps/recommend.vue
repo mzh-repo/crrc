@@ -37,10 +37,10 @@ export default {
           times: 188,
           frame: 'TensorFlow',
           itemList: [
-            { title: '轮次\n(次)', value: 24, maxValue: 200 },
-            { title: '内存\n(M)', value: 2048, maxValue: 30720 },
-            { title: 'CPU\n(core)', value: 4, maxValue: 64 },
-            { title: 'GPU\n(M)', value: 1024, maxValue: 12288 },
+            { title: '轮次\n(次)', value: 2000, maxValue: 3000 },
+            { title: '内存\n(G)', value: 64, maxValue: 128 },
+            { title: 'CPU\n(core)', value: 8, maxValue: 32 },
+            { title: 'GPU\n(G)', value: 16, maxValue: 64 },
           ],
         },
         {

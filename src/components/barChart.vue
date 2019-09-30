@@ -63,9 +63,7 @@ export default {
     initChart(myChart, data, colors) {
       const options = {
         legend: {},
-        tooltip: {
-          formatter: {},
-        },
+
         title: {
           text: this.title || '',
           textStyle: {
@@ -105,9 +103,17 @@ export default {
           },
         ],
       };
-      // 存在纵坐标, 加边框值
+      // 首页存在纵坐标, 加边框值，及tooltip
       if (this.yName) {
         Object.assign(options, {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+            },
+            formatter: 'id: {b} <br/>  预测: {c0} <br/> 实际: {c1}',
+          },
           grid: {
             x: 70, // 坐标轴左边与边框的距离
             y: 100, // 坐标轴顶端与边框的距离
