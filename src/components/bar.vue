@@ -15,11 +15,16 @@ export default {
         x_list: [],
         data_list: [],
         validation_list: [],
+        record_list: [],
       }),
     },
     colors: {
       type: Array,
-      default: () => ['#ff0000', '#00C4C0'],
+      default: () => ['#ff0000', '#00C4C0', '#54A8F7'],
+    },
+    legend: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -59,6 +64,9 @@ export default {
             type: 'shadow',
           },
         },
+        legend: {
+          data: this.legend,
+        },
         grid: {
           left: '50px',
           right: '50px',
@@ -93,7 +101,7 @@ export default {
           {
             type: 'line',
             color: this.colors[0],
-            name: 'data',
+            name: this.legend[0],
             data: this.lineData.data_list,
             smooth: true,
             seriesLayoutBy: 'row',
@@ -109,7 +117,7 @@ export default {
           {
             type: 'line',
             color: this.colors[1],
-            name: 'validation',
+            name: this.legend[1],
             smooth: true,
             data: this.lineData.validation_list,
             seriesLayoutBy: 'row',
@@ -117,6 +125,22 @@ export default {
               normal: {
                 width: 3,
                 shadowColor: '#00C4C0',
+                shadowBlur: 30,
+                shadowOffsetY: 20,
+              },
+            },
+          },
+          {
+            type: 'line',
+            color: this.colors[2],
+            name: this.legend[2],
+            smooth: true,
+            data: this.lineData.record_list,
+            seriesLayoutBy: 'row',
+            lineStyle: {
+              normal: {
+                width: 3,
+                shadowColor: '#54A8F7',
                 shadowBlur: 30,
                 shadowOffsetY: 20,
               },

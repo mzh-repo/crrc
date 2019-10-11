@@ -85,7 +85,7 @@ export default {
       resettime: false,
       date: '',
       time: '',
-      result: 4,
+      result: 6,
       recommendBattery: [
         {
           title: '推荐电池串联数',

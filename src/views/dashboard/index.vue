@@ -156,6 +156,7 @@ export default {
     getLineData() {
       this.$axios.get('/form/train?id=1').then((res) => {
         this.lineData = res.train;
+        // console.log('444', res.train);
       });
     },
     getModelList() {
