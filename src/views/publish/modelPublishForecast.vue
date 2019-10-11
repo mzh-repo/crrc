@@ -48,13 +48,16 @@
       </el-col>
     </el-row>
     <el-row v-if="result === 3"></el-row>
-    <el-row v-if="result === 4">
+    <el-row v-if="result === 4"
+            class="forcecast-container">
       <forcecast-one />
     </el-row>
-    <el-row v-if="result === 5">
+    <el-row v-if="result === 5"
+            class="forcecast-container">
       <forcecast-two />
     </el-row>
-    <el-row v-if="result === 6">
+    <el-row v-if="result === 6"
+            class="forcecast-container">
       <forcecast-three />
     </el-row>
     <Mzh-table v-if="result === 1 || result ===2 || result === 3" />
@@ -82,7 +85,7 @@ export default {
       resettime: false,
       date: '',
       time: '',
-      result: 6,
+      result: 4,
       recommendBattery: [
         {
           title: '推荐电池串联数',
@@ -219,13 +222,34 @@ export default {
   border-radius: 6px;
   border: 1px solid rgba(225, 225, 225, 1);
   padding: 36px 62px;
-  display: flex;
-  justify-content: flex-start;
 
   .el-row {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    text-align: left;
+
+    &:first-child {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(153, 153, 153, 1);
+    }
+
+    &:nth-child(2) {
+      height: 84px;
+      font-size: 60px;
+      font-weight: 600;
+      color: rgba(72, 72, 180, 1);
+      line-height: 84px;
+    }
+
+    &:nth-child(3) {
+      font-size: 24px;
+      font-weight: 600;
+      color: rgba(51, 51, 51, 1);
+      line-height: 33px;
+    }
   }
+}
+
+.forcecast-container {
+  @include set-size(100%);
 }
 </style>
