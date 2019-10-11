@@ -15,7 +15,8 @@
       <span>预测总次数: {{'128'}}次</span>
       <span>预测总数据大小: {{'128'}}M</span>
     </div>
-    <el-row class="line-area">
+    <el-row v-if="result === 1"
+            class="line-area">
       <el-col :span="8">
         <div class="chart-wrapper">
           <Mzh-line :lineData="lineData.power"
@@ -36,22 +37,64 @@
         </div>
       </el-col>
     </el-row>
-    <Mzh-table />
+    <el-row v-if="result === 2"
+            class="recommend-battery">
+      <el-col v-for="(item,index) in recommendBattery"
+              :span="12"
+              :key="index">
+        <el-row>{{item.title}}</el-row>
+        <el-row>{{item.recommendNum}}</el-row>
+        <el-row>实际 {{item.actualNum}}</el-row>
+      </el-col>
+    </el-row>
+    <el-row v-if="result === 3"></el-row>
+    <el-row v-if="result === 4">
+      <forcecast-one />
+    </el-row>
+    <el-row v-if="result === 5">
+      <forcecast-two />
+    </el-row>
+    <el-row v-if="result === 6">
+      <forcecast-three />
+    </el-row>
+    <Mzh-table v-if="result === 1 || result ===2 || result === 3" />
   </el-container>
 </template>
 
 <script>
 import line from './components/line.vue';
 import Mzhtable from '../../components/table.vue';
+import forecastOne from './result/forecast1.vue';
+import forecastTwo from './result/forecast2.vue';
+import forecastThree from './result/forecast3.vue';
 
 export default {
-  components: { 'Mzh-table': Mzhtable, 'Mzh-line': line },
+  components: {
+    'Mzh-table': Mzhtable,
+    'Mzh-line': line,
+    'forcecast-one': forecastOne,
+    'forcecast-two': forecastTwo,
+    'forcecast-three': forecastThree,
+  },
   data() {
     return {
       lineData: {},
       resettime: false,
       date: '',
       time: '',
+      result: 6,
+      recommendBattery: [
+        {
+          title: '推荐电池串联数',
+          recommendNum: 356,
+          actualNum: 349,
+        },
+        {
+          title: '推荐电池并联数',
+          recommendNum: 6,
+          actualNum: 10,
+        },
+      ],
     };
   },
   mounted() {
@@ -166,5 +209,23 @@ export default {
   width: 100%;
   margin-bottom: 30px;
   height: 300px;
+}
+
+.recommend-battery {
+  width: 100%;
+  height: 225px;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 6px;
+  border: 1px solid rgba(225, 225, 225, 1);
+  padding: 36px 62px;
+  display: flex;
+  justify-content: flex-start;
+
+  .el-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 }
 </style>
