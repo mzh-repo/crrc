@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="457px" height="101px" viewBox="0 0 457 101" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>火车</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="49.9977517%" y1="100%" x2="49.9977517%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#000000" offset="0%"></stop>
+            <stop stop-color="#888888" offset="22%"></stop>
+            <stop stop-color="#FFFFFF" offset="91%"></stop>
+            <stop stop-color="#282828" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50.0004566%" y1="-4.40180587%" x2="50.0004566%" y2="102.495025%" id="linearGradient-2">
+            <stop stop-color="#434343" offset="0%"></stop>
+            <stop stop-color="#888888" offset="17.6458634%"></stop>
+            <stop stop-color="#FFFFFF" offset="57.5121929%"></stop>
+            <stop stop-color="#282828" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="linearGradient-3">
+            <stop stop-color="#004859" offset="29%"></stop>
+            <stop stop-color="#282828" offset="79%"></stop>
+            <stop stop-color="#FFFFFF" offset="84%"></stop>
+            <stop stop-color="#074351" offset="88%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="-88.0434783%" x2="50%" y2="-88.0434783%" id="linearGradient-4">
+            <stop stop-color="#004859" offset="29%"></stop>
+            <stop stop-color="#282828" offset="79%"></stop>
+            <stop stop-color="#FFFFFF" offset="84%"></stop>
+            <stop stop-color="#074351" offset="88%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="-87.4100719%" id="linearGradient-5">
+            <stop stop-color="#004859" offset="29%"></stop>
+            <stop stop-color="#282828" offset="79%"></stop>
+            <stop stop-color="#FFFFFF" offset="84%"></stop>
+            <stop stop-color="#074351" offset="88%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-929.000000, -646.000000)">
+            <g id="火车" transform="translate(1157.500000, 696.500000) scale(-1, 1) translate(-1157.500000, -696.500000) translate(930.000000, 646.000000)">
+                <rect id="矩形" stroke="#F7931E" stroke-width="0.5" fill="#333333" x="442.314" y="10.6788538" width="12.6" height="74.8517787"></rect>
+                <rect id="矩形" fill="#333333" x="19.614" y="80.4407115" width="420" height="17.1660079"></rect>
+                <path d="M359.814,3.99209486 C359.814,5.86615201 358.291768,7.38537549 356.414,7.38537549 L315.014,7.38537549 C313.136232,7.38537549 311.614,5.86615201 311.614,3.99209486 C311.614,2.11803772 313.136232,0.598814229 315.014,0.598814229 L356.414,0.598814229 C358.291768,0.598814229 359.814,2.11803772 359.814,3.99209486 Z" id="路径" fill="#333333"></path>
+                <path d="M146.414,3.39328063 C146.414,5.26733778 144.891768,6.78656126 143.014,6.78656126 L101.614,6.78656126 C99.7362319,6.78656126 98.214,5.26733778 98.214,3.39328063 C98.214,1.51922349 99.7362319,3.89697239e-15 101.614,3.55271368e-15 L143.014,3.55271368e-15 C144.891768,3.66746658e-15 146.414,1.51922349 146.414,3.39328063 Z" id="路径" fill="#333333"></path>
+                <rect id="矩形" stroke="#F7931E" stroke-width="0.5" fill="#333333" x="216.914" y="12.076087" width="12.6" height="74.8517787"></rect>
+                <path d="M448.714,82.3369565 C448.714,87.8480435 444.094,92.3171937 438.27,92.3171937 L236.87,92.3171937 C231.046,92.3171937 226.324,87.8480435 226.324,82.3369565 L226.324,13.8725296 C226.324,8.36144269 231.046,3.89229249 236.87,3.89229249 L438.27,3.89229249 C444.094,3.89229249 448.714,8.36144269 448.714,13.8725296 L448.714,82.3369565 Z" id="路径" stroke="#F7931E" stroke-width="0.5" fill="url(#linearGradient-1)"></path>
+                <path d="M219.114,82.3369565 C219.114,87.8488893 214.636847,92.3171937 209.114,92.3171937 L18.114,92.3171937 C8.2,92.3171937 8.2,92.3171937 0.576,87.027668 L0.1,64.8715415 C1.48020362,60.5989576 3.19274711,56.4405157 5.222,52.43417 C10.878,41.2323518 18.622,31.7650988 26.754,24.2519763 C41.04,11.0780632 56.584,3.89229249 64.386,3.89229249 L209.114,3.89229249 C214.636847,3.89229249 219.114,8.36059686 219.114,13.8725296 L219.114,82.3369565 Z" id="路径" stroke="#F7931E" stroke-width="0.5" fill="url(#linearGradient-2)"></path>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-3)" x="62.314" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="80.314" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="161.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="179.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="197.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="236.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="254.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="272.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="290.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-4)" x="143.114" y="24.2519763" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-3)" x="362.114" y="23.2539526" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-3)" x="380.114" y="23.2539526" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-3)" x="398.114" y="23.2539526" width="18" height="27.5454545" rx="4"></rect>
+                <rect id="矩形" stroke="#F7931E" fill="url(#linearGradient-3)" x="416.114" y="23.2539526" width="18" height="27.5454545" rx="4"></rect>
+                <path d="M0.414,76.3488142 L219.014,76.3488142" id="路径" stroke="#FFFFFF"></path>
+                <path d="M226.214,76.3488142 L437.614,76.3488142" id="路径" stroke="#FFFFFF"></path>
+                <path d="M111.914,92.416996 L111.914,22.2718972 C111.914,19.948498 115.478,18.0642292 119.874,18.0642292 L123.854,18.0642292 C128.254,18.0642292 131.514,19.948498 131.514,22.2718972 L131.514,92.416996" id="路径" stroke="#333333"></path>
+                <path d="M325.914,92.416996 L325.914,22.2718972 C325.914,19.948498 329.478,18.0642292 333.874,18.0642292 L337.854,18.0642292 C342.254,18.0642292 345.514,19.948498 345.514,22.2718972 L345.514,92.416996" id="路径" stroke="#333333"></path>
+                <path d="M121.914,3.99209486 L121.914,92.416996" id="路径" stroke="#333333"></path>
+                <path d="M335.714,3.99209486 L335.714,92.416996" id="路径" stroke="#333333"></path>
+                <polygon id="路径" fill="#FFFFFF" points="109.614 70.0612648 48.214 70.0612648 59.566 63.2747036 109.614 63.2747036"></polygon>
+                <rect id="矩形" fill="#FFFFFF" x="133.614" y="63.2747036" width="83.2" height="6.78656126"></rect>
+                <rect id="矩形" fill="#FFFFFF" x="229.614" y="63.2747036" width="93.6" height="6.78656126"></rect>
+                <rect id="矩形" fill="#FFFFFF" x="348.214" y="63.2747036" width="85.8" height="6.78656126"></rect>
+                <path d="M57.314,51.9970356 L5.446,51.7974308 C5.446,51.7974308 9.964,43.513834 15.81,35.938834 C21.552,28.4955731 26.628,24.2519763 26.628,24.2519763 L57.314,24.2519763 L57.314,51.9970356 Z" id="路径" stroke="#F7931E" fill="url(#linearGradient-5)"></path>
+                <rect id="矩形" fill="#999999" x="34.814" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="62.214" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="108.614" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="136.014" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="181.214" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="208.614" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="254.214" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="281.614" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="327.814" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <rect id="矩形" fill="#999999" x="355.214" y="97.6067194" width="22.4" height="3.39328063"></rect>
+                <path d="M3.814,55.2905138 L23.614,55.2905138" id="路径"></path>
+                <path d="M1.814,59.7816206 L28.814,59.7816206" id="路径" stroke="#000000" stroke-width="0.5"></path>
+                <polygon id="路径" fill="#FFFFFF" points="42.214 70.0612648 31.414 70.0612648 42.766 63.2747036 53.014 63.2747036"></polygon>
+                <path d="M62.214,59.9812253 L109.614,59.9812253" id="路径" stroke="#FFFFFF" stroke-width="0.5"></path>
+                <path d="M133.614,59.9812253 L216.814,59.9812253" id="路径" stroke="#FFFFFF" stroke-width="0.5"></path>
+                <path d="M229.414,59.9812253 L323.214,59.9812253" id="路径" stroke="#FFFFFF" stroke-width="0.5"></path>
+                <path d="M349.614,59.9812253 L432.814,59.9812253" id="路径" stroke="#FFFFFF" stroke-width="0.5"></path>
+            </g>
+        </g>
+    </g>
+</svg>
