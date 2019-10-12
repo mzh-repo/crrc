@@ -1,5 +1,13 @@
 <template>
   <div>
+    <el-row class="tab-container">
+      <span v-for="(item,index) in tabList"
+            :key="index"
+            :class="tabId === item.id ? 'active': ''"
+            @click="chooseTab(item.id)">
+        {{item.name}}
+      </span>
+    </el-row>
     <el-row class="title">
       <div class="dot"></div>
       <div>最大旅行速度</div>
@@ -23,12 +31,14 @@
             class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="手扳极位" />
+          <mzh-line title="手扳极位"
+                    :lineData="lineData.force" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="牵引功率" />
+          <mzh-line title="牵引功率"
+                    :lineData="lineData.power" />
         </div>
       </el-col>
     </el-row>
@@ -38,14 +48,16 @@
     <move-train />
     <el-row :gutter="19"
             class="chart-container">
-      <el-col :span="12">
+      <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="手扳极位" />
+          <mzh-line title="手扳极位"
+                    :lineData="dynasticData.force" />
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="牵引功率" />
+          <mzh-line title="牵引功率"
+                    :lineData="dynasticData.power" />
         </div>
       </el-col>
     </el-row>
@@ -60,16 +72,69 @@ export default {
   components: { 'mzh-line': Line, 'move-train': MovingTrain },
   data() {
     return {
+      tabList: [
+        { name: 'tabl', id: 1 },
+        { name: 'tab2', id: 2 },
+        { name: 'tab3', id: 3 },
+      ],
+      tabId: 1,
       percent: 80,
       explain: 'xxxxxxxxxxxxxxxxxxxxxxx',
       speed: 10,
       energy: 10,
+      lineData: {},
+      dynasticData: {},
+      time: '',
     };
+  },
+  mounted() {
+    this.getLineData();
+    this.getDynastic();
+  },
+  methods: {
+    chooseTab(e) {
+      this.tabId = e;
+    },
+    getLineData() {
+      this.$axios.get('form/deployment?id=111').then((res) => {
+        this.lineData = res;
+      });
+    },
+    getDynastic() {
+      this.time = setTimeout(() => {
+        this.$axios.get('form/deployment?id=111').then((res) => {
+          this.dynasticData = res;
+        });
+        this.getDynastic();
+      }, 1000);
+    },
+  },
+  beforeDestroy() {
+    clearTimeout(this.time);
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.tab-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+
+  span {
+    margin-right: 40px;
+    cursor: pointer;
+
+    &.active {
+      font-weight: 600;
+      transform: scale(1.15);
+      transition: all 0.3s;
+    }
+  }
+}
+
 .title {
   height: 49px;
   font-size: 18px;
@@ -119,7 +184,6 @@ export default {
 .chart-container {
   height: 318px;
   margin-top: 60px;
-  // margin-bottom: 103px;
 
   &.chart-1 {
     margin-bottom: 30px;
@@ -129,6 +193,7 @@ export default {
     background: rgba(255, 255, 255, 1);
     border-radius: 8px;
     padding: 16px 16px 0;
+    margin-bottom: 30px;
   }
 }
 

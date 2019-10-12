@@ -82,10 +82,10 @@ export default {
   data() {
     return {
       lineData: {},
-      resettime: false,
+      resettime: '',
       date: '',
       time: '',
-      result: '',
+      result: 3,
       recommendBattery: [
         {
           title: '推荐电池串联数',
@@ -101,9 +101,9 @@ export default {
     };
   },
   mounted() {
-    this.getRandom();
+    // this.getRandom();
     this.getLineData();
-    this.b();
+    // this.b();
     const nowDate = new Date();
     this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
       + 1}-${nowDate.getDate()}`;
@@ -114,14 +114,21 @@ export default {
     getRandom() {
       const random = Math.floor((Math.random() * 100) % 6);
       this.result = random;
+      if (this.result === 0) {
+        this.b();
+      }
     },
     b() {
-      if (!this.resettime) {
-        setTimeout(() => {
-          this.getLineData();
-          this.b();
-        }, 1000);
-      }
+      // if (!this.resettime) {
+      //   setTimeout(() => {
+      //     this.getLineData();
+      //     this.b();
+      //   }, 1000);
+      // }
+      this.resettime = setTimeout(() => {
+        this.getLineData();
+        this.b();
+      }, 1000);
     },
     getLineData() {
       this.$axios.get('form/deployment?id=111').then((res) => {
@@ -130,7 +137,8 @@ export default {
     },
   },
   beforeDestroy() {
-    this.resettime = true;
+    // this.resettime = true;
+    clearTimeout(this.resettime);
   },
 };
 </script>

@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       userName: 'Admin',
-      loginTime: '2019/12/08 19:00:05',
+      loginTime: '2019/11/08 19:00:05',
       avatarUrl:
         'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
       staticData: [
