@@ -23,20 +23,38 @@ export default {};
     animation: mymove 5s infinite;
 
     @keyframes mymove {
-      0% {
-        left: 0%;
+      from {
+        right: 100%;
       }
-      25% {
-        left: 25%;
+      to {
+        right: 0%;
       }
-      50% {
-        left: 50%;
+    }
+
+    @-moz-keyframes mymove /* Firefox */ {
+      from {
+        right: 100%;
       }
-      75% {
-        left: 75%;
+      to {
+        right: 0%;
       }
-      100% {
-        right: 0px;
+    }
+
+    @-webkit-keyframes mymove /* Safari 和 Chrome */ {
+      from {
+        right: 100%;
+      }
+      to {
+        right: 0%;
+      }
+    }
+
+    @-o-keyframes mymove /* Opera */ {
+      from {
+        right: 100%;
+      }
+      to {
+        right: 0%;
       }
     }
   }

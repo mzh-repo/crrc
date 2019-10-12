@@ -15,7 +15,7 @@
       <span>预测总次数: {{'128'}}次</span>
       <span>预测总数据大小: {{'128'}}M</span>
     </div>
-    <el-row v-if="result === 1"
+    <el-row v-if="result === 0"
             class="line-area">
       <el-col :span="8">
         <div class="chart-wrapper">
@@ -37,7 +37,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-row v-if="result === 2"
+    <el-row v-if="result === 1"
             class="recommend-battery">
       <el-col v-for="(item,index) in recommendBattery"
               :span="12"
@@ -47,20 +47,20 @@
         <el-row>实际 {{item.actualNum}}</el-row>
       </el-col>
     </el-row>
-    <el-row v-if="result === 3"></el-row>
-    <el-row v-if="result === 4"
+    <el-row v-if="result === 2"></el-row>
+    <el-row v-if="result === 3"
             class="forcecast-container">
       <forcecast-one />
     </el-row>
-    <el-row v-if="result === 5"
+    <el-row v-if="result === 4"
             class="forcecast-container">
       <forcecast-two />
     </el-row>
-    <el-row v-if="result === 6"
+    <el-row v-if="result === 5"
             class="forcecast-container">
       <forcecast-three />
     </el-row>
-    <Mzh-table v-if="result === 1 || result ===2 || result === 3" />
+    <Mzh-table v-if="result === 0 || result ===1 || result === 2" />
   </el-container>
 </template>
 
@@ -85,7 +85,7 @@ export default {
       resettime: false,
       date: '',
       time: '',
-      result: 6,
+      result: '',
       recommendBattery: [
         {
           title: '推荐电池串联数',
@@ -101,6 +101,7 @@ export default {
     };
   },
   mounted() {
+    this.getRandom();
     this.getLineData();
     this.b();
     const nowDate = new Date();
@@ -109,6 +110,11 @@ export default {
     this.time = `${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
   },
   methods: {
+    // 随机模型预测结果
+    getRandom() {
+      const random = Math.floor((Math.random() * 100) % 6);
+      this.result = random;
+    },
     b() {
       if (!this.resettime) {
         setTimeout(() => {

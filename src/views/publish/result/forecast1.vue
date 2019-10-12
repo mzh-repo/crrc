@@ -42,7 +42,7 @@
       </el-col>
     </el-row>
     <el-row :gutter="19"
-            class="chart-container">
+            class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
           <mzh-line title="手扳极位" />
@@ -54,9 +54,7 @@
         </div>
       </el-col>
     </el-row>
-    <!-- <el-row> -->
     <move-train />
-    <!-- </el-row> -->
     <el-row :gutter="19"
             class="chart-container">
       <el-col :span="12">
@@ -225,7 +223,10 @@ export default {
 .chart-container {
   height: 318px;
   margin-top: 60px;
-  margin-bottom: 103px;
+
+  &.chart-1 {
+    margin-bottom: 103px;
+  }
 
   .chart-box {
     background: rgba(255, 255, 255, 1);
