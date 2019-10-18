@@ -59,6 +59,7 @@ export default new Vuex.Store({
     trainSelected: '',
     chooseData: '',
     record: {},
+    dataBase: 1,
   },
   mutations: {
     setRecord(state, value) {
@@ -99,6 +100,10 @@ export default new Vuex.Store({
     },
     setChoose(state, value) {
       state.chooseData = value;
+    },
+    // 不同数据库中不同模型预测结果
+    chooseDataBase(state, value) {
+      state.dataBase = value;
     },
   },
   actions: {

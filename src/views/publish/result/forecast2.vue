@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-row class="tab-container">
+    <!-- <el-row class="tab-container">
       <span v-for="(item,index) in tabList"
             :key="index"
             :class="tabId === item.id ? 'active': ''"
             @click="chooseTab(item.id)">
         {{item.name}}
       </span>
-    </el-row>
+    </el-row> -->
     <el-row class="title">
       <div class="dot"></div>
       <div>最大旅行速度</div>
@@ -37,7 +37,7 @@
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="牵引功率"
+          <mzh-line title="能耗"
                     :lineData="lineData.power" />
         </div>
       </el-col>
@@ -51,13 +51,13 @@
       <el-col :span="24">
         <div class="chart-box">
           <mzh-line title="手扳极位"
-                    :lineData="dynasticData.force" />
+                    :lineData="dynasticDataOne" />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="牵引功率"
-                    :lineData="dynasticData.power" />
+          <mzh-line title="能耗"
+                    :lineData="dynasticDataTwo" />
         </div>
       </el-col>
     </el-row>
@@ -72,41 +72,100 @@ export default {
   components: { 'mzh-line': Line, 'move-train': MovingTrain },
   data() {
     return {
-      tabList: [
-        { name: 'tabl', id: 1 },
-        { name: 'tab2', id: 2 },
-        { name: 'tab3', id: 3 },
-      ],
-      tabId: 1,
+      // tabList: [
+      //   { name: 'tabl', id: 1 },
+      //   { name: 'tab2', id: 2 },
+      //   { name: 'tab3', id: 3 },
+      // ],
+      // tabId: 1,
       percent: 80,
-      explain: 'xxxxxxxxxxxxxxxxxxxxxxx',
+      explain:
+        '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network）模型如下：F_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t ); 目标函数为：L=‖F_(t+1)-F ̃_(t+1) ‖^2+α‖F_(t+1) v_(t+1) ‖^2',
       speed: 10,
       energy: 10,
-      lineData: {},
+      lineData: {
+        force: [],
+        power: [],
+      },
+      dynasticDataOne: {
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+      },
+      dynasticDataTwo: {
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+      },
       dynasticData: {},
+      type: 3, // 2 间歇式, 3 非接触式
       time: '',
     };
   },
   mounted() {
-    this.getLineData();
-    this.getDynastic();
+    // this.getLineData();
+    // this.getDynastic();
+    const { dataBase } = this.$store.state;
+    if (dataBase === 1) {
+      this.type = 2;
+    } else {
+      this.type = 3;
+    }
+    this.getData();
   },
   methods: {
-    chooseTab(e) {
-      this.tabId = e;
-    },
-    getLineData() {
-      this.$axios.get('form/deployment?id=111').then((res) => {
-        this.lineData = res;
+    // chooseTab(e) {
+    //   this.tabId = e;
+    // },
+    // getLineData() {
+    //   this.$axios.get('form/deployment?id=111').then((res) => {
+    //     this.lineData = res;
+    //   });
+    // },
+    // getDynastic() {
+    //   this.time = setTimeout(() => {
+    //     this.$axios.get('form/deployment?id=111').then((res) => {
+    //       this.dynasticData = res;
+    //     });
+    //     this.getDynastic();
+    //   }, 1000);
+    // },
+    // getData() {
+    //   this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+    //     this.lineData.force = res.level;
+    //     this.lineData.power = res.energy_consumption;
+    //   });
+    // },
+    getData() {
+      this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+        this.lineData.force = res.level;
+        this.lineData.power = res.energy_consumption;
+        this.renderData(res);
       });
     },
-    getDynastic() {
-      this.time = setTimeout(() => {
-        this.$axios.get('form/deployment?id=111').then((res) => {
-          this.dynasticData = res;
-        });
-        this.getDynastic();
-      }, 1000);
+    renderData(val) {
+      for (let i = 0; i < val.level.data_list.length; i += 1) {
+        this.time = setTimeout(() => {
+          const data = {
+            data_list: this.dynasticDataOne.data_list.concat(
+              val.level.data_list[i],
+            ),
+            predict_data_list: this.dynasticDataOne.predict_data_list.concat(
+              val.level.predict_data_list[i],
+            ),
+          };
+          const powerData = {
+            data_list: this.dynasticDataTwo.data_list.concat(
+              val.energy_consumption.data_list[i],
+            ),
+            predict_data_list: this.dynasticDataTwo.predict_data_list.concat(
+              val.energy_consumption.predict_data_list[i],
+            ),
+          };
+          this.dynasticDataOne = data;
+          this.dynasticDataTwo = powerData;
+        }, 1000);
+      }
     },
   },
   beforeDestroy() {
@@ -166,6 +225,7 @@ export default {
   margin-bottom: 16px;
   font-size: 24px;
   font-weight: 400;
+  text-align: left;
   color: rgba(51, 51, 51, 1);
 
   .el-col {

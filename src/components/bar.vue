@@ -81,13 +81,15 @@ export default {
           axisTick: {
             show: false,
           },
-          data: this.lineData.x_list,
+          data: this.lineData.x_list || [],
           axisLine: {
             show: false,
           },
         },
         yAxis: {
           gridIndex: 0,
+          max: 1,
+          min: 0,
           splitLine: { show: false },
           axisTick: {
             show: false,
@@ -100,9 +102,9 @@ export default {
         series: [
           {
             type: 'line',
-            color: this.colors[0],
+            // color: this.colors[0],
             name: this.legend[0],
-            data: this.lineData.data_list,
+            data: this.lineData.data_list || [],
             smooth: true,
             seriesLayoutBy: 'row',
             lineStyle: {
@@ -116,10 +118,10 @@ export default {
           },
           {
             type: 'line',
-            color: this.colors[1],
+            // color: this.colors[1],
             name: this.legend[1],
             smooth: true,
-            data: this.lineData.validation_list,
+            data: this.lineData.validation_list || [],
             seriesLayoutBy: 'row',
             lineStyle: {
               normal: {
@@ -132,10 +134,10 @@ export default {
           },
           {
             type: 'line',
-            color: this.colors[2],
+            // color: this.colors[2],
             name: this.legend[2],
             smooth: true,
-            data: this.lineData.record_list,
+            data: this.lineData.record_list || [],
             seriesLayoutBy: 'row',
             lineStyle: {
               normal: {

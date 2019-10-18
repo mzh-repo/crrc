@@ -37,17 +37,16 @@
         </div>
       </el-col>
     </el-row>
-    <el-row v-if="result === 1"
+    <!-- <el-row v-if="result === 1"
             class="recommend-battery">
       <el-col v-for="(item,index) in recommendBattery"
               :span="12"
               :key="index">
         <el-row>{{item.title}}</el-row>
         <el-row>{{item.recommendNum}}</el-row>
-        <el-row>实际 {{item.actualNum}}</el-row>
       </el-col>
     </el-row>
-    <el-row v-if="result === 2"></el-row>
+    <el-row v-if="result === 2"></el-row> -->
     <el-row v-if="result === 3"
             class="forcecast-container">
       <forcecast-one />
@@ -81,7 +80,11 @@ export default {
   },
   data() {
     return {
-      lineData: {},
+      lineData: {
+        power: [],
+        speed: [],
+        force: [],
+      },
       resettime: '',
       date: '',
       time: '',
@@ -89,7 +92,7 @@ export default {
       recommendBattery: [
         {
           title: '推荐电池串联数',
-          recommendNum: 356,
+          recommendNum: 358,
           actualNum: 349,
         },
         {
@@ -101,9 +104,22 @@ export default {
     };
   },
   mounted() {
+    // TODO: 获取不同模型的id 或 类型
+    // eslint-disable-next-line no-console
+    console.log('model', this.$store.state.modelSelected.index);
+    const id = this.$store.state.modelSelected.index;
+    if (id === 1 || id === 2) {
+      this.result = 4;
+    } else if (id === 3 || id === 4) {
+      this.result = 5;
+    } else if (id === 5 || id === 6) {
+      this.result = 3;
+    } else {
+      this.result = 0;
+    }
     // this.getRandom();
     this.getLineData();
-    // this.b();
+    this.b();
     const nowDate = new Date();
     this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
       + 1}-${nowDate.getDate()}`;

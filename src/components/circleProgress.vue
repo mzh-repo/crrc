@@ -82,6 +82,15 @@ export default {
     const perimeter = Math.PI * 2 * 60.5;
     this.stroke = `${perimeter * percent} ${perimeter * (1 - percent)}`;
   },
+  watch: {
+    show: {
+      handler(val) {
+        const percent = val / this.total;
+        const perimeter = Math.PI * 2 * 60.5;
+        this.stroke = `${perimeter * percent} ${perimeter * (1 - percent)}`;
+      },
+    },
+  },
 };
 </script>
 

@@ -10,13 +10,13 @@ export default new Router({
   routes: [
     {
       path: '/dashboard',
-      component: () => import(/* webpackChunkName: "dashboard" */ './views/dashboard/material'),
+      component: () => import('./views/dashboard/material'),
       children: [
         {
           path: '/dashboard',
           name: '首页',
           selectIcon: '首页-选中',
-          component: () => import(/* webpackChunkName: "dashboard" */ './views/dashboard'),
+          component: () => import('./views/dashboard'),
         },
         {
           path: '/chooseModel',
@@ -55,7 +55,7 @@ export default new Router({
           path: '/chooseData',
           name: '创建训练',
           selectIcon: '创建训练-选中',
-          component: () => import(/* webpackChunkName: "traning" */ './views/traning'),
+          component: () => import('./views/traning'),
           children: [
             {
               path: '/chooseData',
@@ -78,7 +78,7 @@ export default new Router({
           path: '/modelPublish',
           name: '模型部署',
           selectIcon: '模型部署-选中',
-          component: () => import(/* webpackChunkName: "publish" */ './views/publish'),
+          component: () => import('./views/publish'),
           children: [
             {
               path: '',
@@ -106,7 +106,7 @@ export default new Router({
           path: '/importData',
           name: '数据导入',
           selectIcon: '数据导入-选中',
-          component: () => import(/* webpackChunkName: "dataImport" */ './views/dataImport'),
+          component: () => import('./views/dataImport'),
           children: [
             {
               path: '/importData',

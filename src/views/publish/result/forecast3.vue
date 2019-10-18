@@ -7,15 +7,19 @@
           <div class="early-data">
             <div v-for="(item, index) in earlyList"
                  :key="index"
-                 :class="getColor(item.type)"
+                 :class="getColor(item.value)"
                  class="early">
-              {{item.title}}
+              {{item.name}}
             </div>
           </div>
         </div>
         <div class="early-model">
-          <Mzh-bar :lineData="lineData"
-                   :legend="legend" />
+          <Mzh-bar v-if="type === 0"
+                   :lineData="lineDataOne"
+                   :legend="legendOne" />
+          <Mzh-bar v-else
+                   :lineData="lineDataTwo"
+                   :legend="legendTwo" />
         </div>
       </el-col>
       <el-col :span="6"
@@ -29,12 +33,17 @@
                            :unit="progress.unit" />
         </div>
         <span>异常时刻</span>
-        <div v-for="(news, i) in newsList"
-             :key="i"
-             class="news">
-          <div>{{news.content}}</div>
-          <div>{{news.time}}</div>
-        </div>
+        <template v-if="newsList.length > 0">
+          <div v-for="(news, i) in newsList"
+               :key="i"
+               class="news">
+            <div>{{news.content}}</div>
+            <div>{{news.time}}</div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="news">暂无</div>
+        </template>
       </el-col>
     </el-row>
   </el-container>
@@ -51,28 +60,32 @@ export default {
   },
   data() {
     return {
-      legend: ['xxx', 'xxxx', 'xxxxx'],
+      legendOne: ['储能系统健康值'],
+      legendTwo: ['非接触供电系统健康值', '储能系统健康值', '总供电系统健康值'],
       backgroundColor: '',
       newsList: [
-        { content: 'xxxxxx', time: '2019.8.10' },
-        { content: 'xxxxxx', time: '2019.8.11' },
-        { content: 'xxxxxx', time: '2019.8.12' },
+        // { content: 'xxxxxx', time: '2019.8.10' },
+        // { content: 'xxxxxx', time: '2019.8.11' },
+        // { content: 'xxxxxx', time: '2019.8.12' },
       ],
       earlyList: [
-        { title: '储能电源1温度', type: 0 },
-        { title: '储能电源1电压', type: 0 },
-        { title: '储能电源1电流', type: 1 },
-        { title: '储能电源2温度', type: 0 },
-        { title: '储能电源2电压', type: 2 },
-        { title: '储能电源2电流', type: 1 },
-        { title: '储能电源3温度', type: 0 },
-        { title: '储能电源3电压', type: 0 },
-        { title: '储能电源3电流', type: 1 },
+        // { title: '储能电源1温度', type: 0 },
+        // { title: '储能电源1电压', type: 0 },
+        // { title: '储能电源1电流', type: 1 },
+        // { title: '储能电源2温度', type: 0 },
+        // { title: '储能电源2电压', type: 2 },
+        // { title: '储能电源2电流', type: 1 },
+        // { title: '储能电源3温度', type: 0 },
+        // { title: '储能电源3电压', type: 0 },
+        // { title: '储能电源3电流', type: 1 },
       ],
-      lineData: {
-        data_list: [20, 30, 40, 45, 60],
-        validation_list: [20, 10, 45, 45, 80],
-        record_list: [20, 80, 15, 95, 10],
+      lineDataOne: {
+        validation_list: [],
+      },
+      lineDataTwo: {
+        data_list: [],
+        validation_list: [],
+        record_list: [],
       },
       progress: {
         color: '#8FD867',
@@ -81,7 +94,18 @@ export default {
         total: 100,
         unit: '分',
       },
+      type: 0, // 模型类型: 0 间歇式, 1 非接触式
+      time: '', // 定时器
     };
+  },
+  mounted() {
+    const { dataBase } = this.$store.state;
+    if (dataBase === 1) {
+      this.type = 0;
+    } else {
+      this.type = 1;
+    }
+    this.round();
   },
   methods: {
     getColor(index) {
@@ -95,6 +119,41 @@ export default {
         default:
           return '';
       }
+    },
+    getData() {
+      this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+        // console.log('res', res.health.overall);
+        if (res.model_type === 0) {
+          const data = {
+            validation_list: res.health.overall,
+          };
+          this.lineDataOne = data;
+        } else {
+          const data = {
+            validation_list: res.health.overall,
+            data_list: res.health.storage,
+            record_list: res.health.supply,
+          };
+          this.lineDataTwo = data;
+        }
+        this.earlyList = res.status;
+        this.progress.show = res.overall;
+        this.progress.number = res.overall;
+        this.newsList = res.abnormal_moment;
+      });
+    },
+    round() {
+      // if (this.time !== '') {
+      //   clearTimeout(this.time);
+      // } else {
+      this.time = setTimeout(() => {
+        this.getData();
+        this.round();
+      }, 1000);
+      // }
+    },
+    beforeDestroy() {
+      clearTimeout(this.time);
     },
   },
 };

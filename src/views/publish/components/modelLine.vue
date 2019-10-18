@@ -24,7 +24,7 @@ export default {
     },
     yTitle: {
       type: String,
-      default: '推荐',
+      default: '预测',
     },
     title: {
       type: String,
@@ -41,6 +41,9 @@ export default {
   data() {
     return {
       chart: null,
+      originData: [],
+      predictData: [],
+      time: '',
     };
   },
   mounted() {
@@ -56,13 +59,34 @@ export default {
   },
   methods: {
     drawChart() {
-      this.initChart();
+      this.getDynastic();
+      // this.initChart();
       this.resizeHandler = () => {
         if (this.chart) {
           this.chart.resize();
         }
       };
       window.addEventListener('resize', this.resizeHandler);
+    },
+    getDynastic() {
+      return new Promise((resolve, reject) => {
+        if (!this.lineData.date_list) {
+          reject();
+        } else {
+          resolve();
+          for (let i = 0; i < this.lineData.data_list.length; i += 1) {
+            this.time = setTimeout(() => {
+              this.originData = this.originData.concat(
+                this.lineData.data_list[i],
+              );
+              this.predictData = this.predictData.concat(
+                this.lineData.predict_data_list[i],
+              );
+              this.initChart();
+            }, 500);
+          }
+        }
+      });
     },
     initChart() {
       this.chart = echarts.init(this.$el);
@@ -108,13 +132,13 @@ export default {
           {
             name: this.yTitle,
             type: 'line',
-            data: this.lineData.data_list,
+            data: this.predictData,
             symbol: 'none',
           },
           {
             name: '实际',
             type: 'line',
-            data: this.lineData.predict_data_list,
+            data: this.originData,
             symbol: 'none',
           },
         ],

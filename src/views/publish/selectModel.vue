@@ -65,6 +65,7 @@ export default {
   },
   watch: {
     tab() {
+      this.$store.commit('chooseDataBase', this.tab);
       if (this.tab === 1) {
         [this.modelList] = this.allList;
       } else if (this.tab === 2) {

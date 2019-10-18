@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-row class="tab-container">
+    <!-- <el-row class="tab-container">
       <span v-for="(item,index) in tabList"
             :key="index"
             :class="tabId === item.id ? 'active': ''"
             @click="chooseTab(item.id)">
         {{item.name}}
       </span>
-    </el-row>
+    </el-row> -->
     <el-row class="title">
       <div class="dot"></div>
       <div>综合优化设计</div>
@@ -16,13 +16,13 @@
             class="limit-container">
       <el-col :span="8">
         <div class="limit-box">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-row>约束条件</el-row>
             <el-row v-for="(item,index) in limitList"
                     :key="index"
                     class="limit-item">
-              <el-col>{{item}}</el-col>
-              <el-col>
+              <el-col :span="20">{{item}}</el-col>
+              <el-col :span="4">
                 <svg-icon icon-class="满足约束条件" />
               </el-col>
             </el-row>
@@ -33,10 +33,10 @@
         <el-row v-for="(item,index) in configList"
                 :key="index"
                 class="grid-content">
-          <el-col>
+          <el-col :span="8">
             <svg-icon :icon-class="item.name" />
           </el-col>
-          <el-col>
+          <el-col :span="16">
             <el-row> {{item.name}}</el-row>
             <el-row>{{item.source}}</el-row>
           </el-col>
@@ -59,7 +59,7 @@
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="牵引功率"
+          <mzh-line title="能耗"
                     :lineData="lineData.power" />
         </div>
       </el-col>
@@ -70,13 +70,13 @@
       <el-col :span="24">
         <div class="chart-box">
           <mzh-line title="手扳极位"
-                    :lineData="dynasticData.force" />
+                    :lineData="dynasticDataOne" />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="牵引功率"
-                    :lineData="dynasticData.power" />
+          <power-line title="能耗"
+                      :lineData="dynasticDataTwo" />
         </div>
       </el-col>
     </el-row>
@@ -86,21 +86,49 @@
 <script>
 import Line from '../components/line.vue';
 import MovingTrain from '../components/movingTrain.vue';
+// import ModelLine from '../components/modelLine.vue';
+import PowerLine from '../components/powerLine.vue';
 
 export default {
-  components: { 'mzh-line': Line, 'move-train': MovingTrain },
+  components: {
+    'mzh-line': Line,
+    'move-train': MovingTrain,
+    // 'model-line': ModelLine,
+    'power-line': PowerLine,
+  },
   data() {
     return {
-      tabList: [
-        { name: 'tabl', id: 1 },
-        { name: 'tab2', id: 2 },
-        { name: 'tab3', id: 3 },
-      ],
-      tabId: 1,
+      // tabList: [
+      //   { name: 'tabl', id: 1 },
+      //   { name: 'tab2', id: 2 },
+      //   { name: 'tab3', id: 3 },
+      // ],
+      // tabId: 1,
       limitList: ['约束条件1', '约束条件2', '约束条件3'],
-      lineData: {},
-      dynasticData: {},
-      time: '',
+      lineData: {
+        force: '',
+        power: '',
+      },
+      // dynasticData: {
+      //   force: {
+      //     data_list: [],
+      //     predict_data_list: [],
+      //   },
+      //   power: {
+      //     data_list: [],
+      //     predict_data_list: [],
+      //   },
+      // },
+      dynasticDataOne: {
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+      },
+      dynasticDataTwo: {
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+      },
       configList: [
         {
           name: '储能',
@@ -115,32 +143,126 @@ export default {
           source: 'n动配置',
         },
       ],
-      introduce:
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+      introduce: '已满足所有约束条件，在当前配置下的列车运行控制结果如下',
+      type: 3, // 2 间歇式, 3 非接触式
+      time: '',
     };
   },
   mounted() {
-    this.getLineData();
-    this.getDynastic();
+    // this.getLineData();
+    // this.getDynastic();
+    const { dataBase } = this.$store.state;
+    if (dataBase === 1) {
+      this.type = 2;
+    } else {
+      this.type = 3;
+    }
+    this.getData();
+    if (this.type === 3) {
+      this.limitList = [
+        'AW2下最高运行速度（km/h）：70',
+        'AW2下平均初始加速度（m/s2）：1',
+        'AW2下平均加速度（m/s2）：0.6',
+        'AW3下常用制动平均减速度（m/s2）：1.1',
+        '车辆最低电压（V）：500',
+        '车辆最高电压（V）：900',
+      ];
+      this.configList = [
+        {
+          name: '储能',
+          source: '358串*6并',
+        },
+        {
+          name: '供电',
+          source: '6组接收板',
+        },
+        {
+          name: '牵引',
+          source: '两动配置',
+        },
+      ];
+    } else {
+      this.limitList = [
+        '车辆最高运行速度（km/h）：70',
+        '平均最小启动加速度（m/s2）：1',
+        '平均最小加速度（m/s2）：0.6',
+        '常用制动平均减速度（m/s2）：1.1',
+        '车辆最低电压（V）：500',
+        '车辆最高电压（V）：900',
+      ];
+      this.configList = [
+        {
+          name: '储能',
+          source: '2组9500F超级电容+1组钛酸锂电池',
+        },
+        {
+          name: '供电',
+          source: '暂无',
+        },
+        {
+          name: '牵引',
+          source: '暂无',
+        },
+      ];
+    }
   },
   methods: {
-    chooseTab(e) {
-      this.tabId = e;
+    // chooseTab(e) {
+    //   this.tabId = e;
+    // },
+    // getLineData() {
+    //   this.$axios.get('form/deployment?id=111').then((res) => {
+    //     this.lineData = res;
+    //   });
+    // },
+    getDynastic() {
+      this.time = setTimeout(() => {
+        this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+          const data = {
+            data_list: this.dynasticDataOne.data_list.concat(
+              res.level.data_list,
+            ),
+            predict_data_list: this.dynasticDataOne.predict_data_list.concat(
+              res.level.predict_data_list,
+            ),
+          };
+          this.dynasticDataOne = data;
+        });
+        // this.getDynastic();
+      }, 1000);
     },
-    getLineData() {
-      this.$axios.get('form/deployment?id=111').then((res) => {
-        this.lineData = res;
+    getData() {
+      this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+        this.lineData.force = res.level;
+        this.lineData.power = res.energy_consumption;
+        // this.dynasticDataOne = res.level;
+        // this.dynasticDataTwo = res.energy_consumption;
+        this.renderData(res);
       });
     },
-    getDynastic() {
-      // const data = ['A', 'B', 'C', 'D', 'E'];
-      this.time = setTimeout(() => {
-        this.$axios.get('form/deployment?id=111').then((res) => {
-          this.dynasticData = res;
-          // this.dynasticData.force.date_list = data;
-        });
-        this.getDynastic();
-      }, 1000);
+    renderData(val) {
+      for (let i = 0; i < val.level.data_list.length; i += 1) {
+        this.time = setTimeout(() => {
+          const data = {
+            data_list: this.dynasticDataOne.data_list.concat(
+              val.level.data_list[i],
+            ),
+            predict_data_list: this.dynasticDataOne.predict_data_list.concat(
+              val.level.predict_data_list[i],
+            ),
+          };
+          const powerData = {
+            data_list: this.dynasticDataTwo.data_list.concat(
+              val.energy_consumption.data_list[i],
+            ),
+            predict_data_list: this.dynasticDataTwo.predict_data_list.concat(
+              val.energy_consumption.predict_data_list[i],
+            ),
+          };
+          this.dynasticDataOne = data;
+          this.dynasticDataTwo = powerData;
+        }, 1000);
+      }
     },
   },
   beforeDestroy() {
