@@ -36,25 +36,29 @@
       </el-col>
     </el-row>
     <el-row class="upload-title">
-      <span v-for="(item,index) in dataBaseList"
-            :key="index"
-            :class="databaseId === item.id ? 'active': ''"
-            @click="chooseDatabase(item.id)">
-        {{item.name}}
-      </span>
-      <el-button type="primary"
-                 @click="upload">
-        上传数据集
-      </el-button>
+      <el-tabs v-model="databaseName"
+               @tab-click="chooseDatabase">
+        <template v-for="(item,index) in dataBaseList">
+          <el-tab-pane :key="index"
+                       :label="item.name"
+                       :name="item.name">
+            <el-button type="primary"
+                       @click="upload">
+              上传数据集
+            </el-button>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
     </el-row>
     <div class="model-area">
       <template v-for="(item,index) in modelList">
-        <div :key="index"
-             :span="6"
-             @click="chooseModel(item.id)">
-          <training :dataList="item"
-                    @set-choice="choose(item)" />
-        </div>
+        <!-- <div
+             @click="chooseModel(item.id)"> -->
+        <training :dataList="item"
+                  :key="index"
+                  :span="6"
+                  @set-choice="choose" />
+        <!-- </div> -->
       </template>
     </div>
     <el-row class="input-title">请选择输入输出</el-row>
@@ -81,6 +85,7 @@ export default {
       dataBaseList: [],
       modelList: [],
       databaseId: '',
+      databaseName: '',
       dataActive: true,
       inputList: ['输入', '输出'],
       arrayOptions: [],
@@ -117,11 +122,16 @@ export default {
       this.$axios.get('/database/list').then((res) => {
         this.dataBaseList = res;
         this.databaseId = res[0].id;
+        this.databaseName = res[0].name;
         this.getData();
       });
     },
-    chooseDatabase(id) {
-      this.databaseId = id;
+    chooseDatabase() {
+      this.dataBaseList.forEach((item) => {
+        if (item.name === this.databaseName) {
+          this.databaseId = item.id;
+        }
+      });
       this.getData();
     },
     handleSelectChange(e) {
@@ -151,6 +161,7 @@ export default {
           });
         }
       });
+      this.chooseModel(val.id);
     },
     chooseModel(id) {
       this.$axios.get(`/dataset/headers?dataset_id=${id}`).then((res) => {
@@ -169,12 +180,12 @@ export default {
 .input-container {
   height: 198px;
   margin-top: 42px;
-  margin-bottom: 57px;
+  margin-bottom: 30px;
   color: #666;
   font-weight: 400;
 
   /deep/ .el-textarea__inner {
-    height: 196px;
+    height: 152px;
   }
 }
 
@@ -184,7 +195,7 @@ export default {
   align-items: center;
 
   /deep/ .el-input__inner {
-    height: 66px;
+    height: 46px;
   }
 }
 
@@ -198,15 +209,16 @@ export default {
   align-items: center;
   font-size: 24px;
 
-  span {
-    margin-right: 40px;
-    cursor: pointer;
+  /deep/ .el-tabs {
+    display: flex;
+    justify-content: space-between;
 
-    // &:hover,
-    &.active {
-      font-weight: 600;
-      transform: scale(1.15);
-      transition: all 0.3s;
+    .el-tabs__item {
+      font-size: 24px;
+    }
+
+    .el-button {
+      margin-left: 30px;
     }
   }
 }

@@ -3,14 +3,17 @@
     <el-row class="choice">请选择数据进行训练</el-row>
     <el-row class="data-choice">
       <div class="choice-content">
-        <div v-for="(data,index) in dataList"
-             :key="index"
-             :class="{active:index==(isActive-1) }"
-             @click="check(index)">
-          <div>{{data.name}}</div>
-        </div>
+        <el-tabs v-model="databaseName"
+                 @tab-click="chooseDatabase">
+          <template v-for="(item,index) in dataBaseList">
+            <el-tab-pane :key="index"
+                         :label="item.name"
+                         :name="item.name">
+              <div class="totalNum">共{{item.model_number}}个数据集</div>
+            </el-tab-pane>
+          </template>
+        </el-tabs>
       </div>
-      <div class="totalNum">共{{dataList[isActive-1].model_number}}条</div>
     </el-row>
     <el-row class="collapse">
       <el-collapse v-for="(item,index) in collapseList"
@@ -23,20 +26,20 @@
             </div>
             <span>共{{item.line}}条</span>
           </template>
-          <el-col v-for="(histogramList, i) in lineDataList"
-                  :span="8"
-                  :key="i"
-                  class="echarts">
-            <histogram :colors="colors[i]"
-                       :lineData="histogramList.lineData" />
-          </el-col>
-          <img v-if="index===selected"
-               src="@/assets/images/choiced.png"
-               class="stamp"
-               @click="setSelect(index)">
-          <div v-else
-               class="select"
-               @click="setSelect(index)"></div>
+          <el-row @click.native="setSelect(index)">
+            <el-col v-for="(histogramList, i) in lineDataList"
+                    :span="8"
+                    :key="i"
+                    class="echarts">
+              <histogram :colors="colors[i]"
+                         :lineData="histogramList.lineData" />
+            </el-col>
+            <img v-if="index===selected"
+                 src="@/assets/images/choiced.png"
+                 class="stamp">
+            <div v-else
+                 class="select"></div>
+          </el-row>
         </el-collapse-item>
       </el-collapse>
     </el-row>
@@ -50,9 +53,10 @@ export default {
   components: { Histogram },
   data() {
     return {
-      dataList: [{ model_number: '' }],
+      dataBaseList: [],
+      databaseName: '',
+      databaseId: '',
       colors: ['#8FD866', '#00C4C0'],
-      isActive: 1,
       totalNum: 129,
       activeName: 0,
       collapseList: [],
@@ -70,14 +74,16 @@ export default {
       });
     }
     this.getDataList();
-    this.getlineDataList();
-    this.getList();
   },
   methods: {
-    check(index) {
-      this.isActive = index + 1;
+    chooseDatabase() {
+      this.dataBaseList.forEach((item) => {
+        if (item.name === this.databaseName) {
+          this.databaseId = item.id;
+        }
+      });
+      this.getData();
       this.getlineDataList();
-      this.getList();
     },
     setSelect(index) {
       // this.collapseList.forEach((item, i) => {
@@ -96,7 +102,7 @@ export default {
     },
     getlineDataList() {
       this.$axios
-        .get(`/dataset/graph?database_id=${this.isActive}`)
+        .get(`/dataset/graph?database_id=${this.databaseId}`)
         .then((res) => {
           const temp = JSON.parse(JSON.stringify(this.lineDataList));
           for (let i = 0; i < res.length; i += 1) {
@@ -108,12 +114,16 @@ export default {
     },
     getDataList() {
       this.$axios.get('/database/list').then((res) => {
-        this.dataList = res;
+        this.dataBaseList = res;
+        this.databaseId = res[0].id;
+        this.databaseName = res[0].name;
+        this.getData();
+        this.getlineDataList();
       });
     },
-    getList() {
+    getData() {
       this.$axios
-        .get(`/dataset/list?database_id=${this.isActive}`)
+        .get(`/dataset/list?database_id=${this.databaseId}`)
         .then((res) => {
           this.collapseList = res.data_list;
         });
@@ -144,13 +154,23 @@ export default {
   width: 100%;
   font-size: 22px;
   line-height: 30px;
-  cursor: pointer;
+
   .choice-content {
     @include box-center;
     justify-content: flex-start;
     width: 626px;
-    div:first-child {
-      padding-right: 16px;
+    // div:first-child {
+    //   padding-right: 16px;
+    // }
+
+    /deep/ .el-tabs {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .el-tabs__item {
+        font-size: 24px;
+      }
     }
   }
 }
@@ -163,6 +183,7 @@ export default {
   color: #999;
   font-size: 18px;
   line-height: 25px;
+  margin-left: 50px;
 }
 .collapse {
   width: 100%;

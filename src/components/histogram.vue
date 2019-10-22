@@ -96,6 +96,10 @@ export default {
           axisLine: {
             show: false,
           },
+          axisLabel: {
+            interval: 0,
+            rotate: 45,
+          },
         },
         yAxis: [
           {
@@ -114,8 +118,9 @@ export default {
             name: '直接访问',
             color: this.colors,
             type: 'bar',
-            barWidth: '50%',
+            // barWidth: '50%',
             data: data.data,
+            barCategoryGap: '0%',
           },
         ],
       });

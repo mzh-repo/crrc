@@ -44,6 +44,7 @@ export default {
 <style lang="scss" scoped>
 .step {
   position: relative;
+  padding-bottom: 20px;
 
   &:last-child {
     width: auto;

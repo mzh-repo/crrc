@@ -155,7 +155,7 @@ export default {
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
   font-size: 24px;
-  margin-top: 53px;
+  margin-top: 30px;
   margin-bottom: 16px;
 }
 

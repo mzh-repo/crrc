@@ -13,7 +13,9 @@
       <el-col v-for="(item,index) in staticData"
               :key="index"
               :span="8">
-        <el-row class="number">{{item.number}}</el-row>
+        <div class="number"
+             :id="count[index]">
+        </div>
         <el-row class="title">{{item.title}}</el-row>
       </el-col>
     </el-row>
@@ -29,66 +31,99 @@
       <el-row v-for="(item,index) in historyList"
               :key="index"
               class="history-box">
-        <el-col>{{item.type===2?'添加模型':'添加训练'}}</el-col>
-        <el-col>{{item.time}}天前</el-col>
+        <el-col>{{converType(item.type)}}</el-col>
+        <el-col>{{item.time}}</el-col>
       </el-row>
     </el-row>
   </el-container>
 </template>
 
 <script>
+import { CountUp } from 'countup.js';
 import Mzhstep from './step.vue';
 
 export default {
   components: { 'mzh-step': Mzhstep },
   data() {
     return {
-      userName: 'Admin',
+      // userName: 'Admin',
       loginTime: '2019/11/08 19:00:05',
       avatarUrl:
         'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
       staticData: [
-        { title: '训练次数', number: 12 },
-        { title: '部署次数', number: 20 },
-        { title: '模型总数', number: 8 },
+        { title: '训练次数', number: '' },
+        { title: '部署次数', number: '' },
+        { title: '模型总数', number: '' },
       ],
       historyList: [
-        {
-          name: '添加模型',
-          time: '1天前',
-        },
-        {
-          name: '添加模型',
-          time: '2天前',
-        },
-
-        {
-          name: '添加模型',
-          time: '3天前',
-        },
-        {
-          name: '添加模型',
-          time: '4天前',
-        },
+        // {
+        //   name: '添加模型',
+        //   time: '1天前',
+        // },
+        // {
+        //   name: '添加模型',
+        //   time: '2天前',
+        // },
+        // {
+        //   name: '添加模型',
+        //   time: '3天前',
+        // },
+        // {
+        //   name: '添加模型',
+        //   time: '4天前',
+        // },
       ],
+      count: ['one', 'two', 'three'],
     };
   },
   mounted() {
     this.getStatistics();
     this.getHistoryList();
+    this.covertDate();
   },
   methods: {
     getStatistics() {
       this.$axios.get('statistics').then((res) => {
-        this.staticData[0].number = res.training_number;
-        this.staticData[1].number = res.deployment_number;
-        this.staticData[2].number = res.model_number;
+        // this.staticData[0].number = res.training_number;
+        // this.staticData[1].number = res.deployment_number;
+        // this.staticData[2].number = res.model_number;
+        new CountUp('one', res.training_number).start();
+        new CountUp('two', res.deployment_number).start();
+        new CountUp('three', res.model_number).start();
       });
     },
     getHistoryList() {
       this.$axios.get('log/list').then((res) => {
         this.historyList = res;
       });
+    },
+    covertDate() {
+      const date = new Date(localStorage.getItem('showTime'));
+      this.loginTime = `${date.getFullYear()}/${this.convertNum(
+        date.getMonth() + 1,
+      )}/${this.convertNum(date.getDate())}
+         ${this.convertNum(date.getHours())}:${this.convertNum(
+  date.getMinutes(),
+)}:${this.convertNum(date.getSeconds())}`;
+    },
+    convertNum(val) {
+      if (val >= 10) {
+        return val;
+      }
+      return `0${val}`;
+    },
+    // 类型转化
+    converType(val) {
+      if (val === 1) {
+        return '添加训练';
+      }
+      if (val === 2) {
+        return '添加模型';
+      }
+      if (val === 3) {
+        return '模型部署';
+      }
+      return '数据导入';
     },
   },
 };
@@ -145,7 +180,8 @@ img {
 
 .step-box {
   width: 80%;
-  height: 320px;
+  // height: 320px;
+  height: 370px;
   // background: rgba(216, 216, 216, 1);
   margin-left: 20px;
   margin-bottom: 22px;

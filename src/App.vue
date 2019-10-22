@@ -11,9 +11,8 @@ body,
   height: 100%;
   width: 100%;
   margin: 0;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: PingFangSC, sans-serif, 'Microsoft YaHei', 微软雅黑,
+    'MicrosoftJhengHei', 华文细黑;
   text-align: center;
   color: #2c3e50;
 }

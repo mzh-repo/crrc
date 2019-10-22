@@ -1,29 +1,33 @@
 <template>
   <el-container class="footer-container">
     <div class="pre">
-      <span v-if="pre"
-            @click="handlePre">
-        <svg-icon icon-class="arrow_left" />
+      <el-button v-if="pre"
+                 @click="handlePre"
+                 type="primary">
+        <!-- <svg-icon icon-class="arrow_left" /> -->
         上一步
-      </span>
-      <span v-if="type === 'commit'"
-            @click="handlePre">
-        <svg-icon icon-class="arrow_left" />
+      </el-button>
+      <el-button v-if="type === 'commit'"
+                 type="primary"
+                 @click="handlePre">
+        <!-- <svg-icon icon-class="arrow_left" /> -->
         上一步
-        回到选择数据训练模型
-      </span>
+        <!-- 回到选择数据训练模型 -->
+      </el-button>
       <span v-if="type === 'return'">
-        <el-button @click="handleFinish">
+        <el-button @click="handleFinish"
+                   type="primary">
           终止训练
         </el-button>
         &nbsp; &nbsp;终止后，该进程将取消并回到模型训练中心
       </span>
     </div>
-    <span v-if="type === 'next'"
-          @click="next">
+    <el-button v-if="type === 'next'"
+               type="primary"
+               @click="next">
       下一步
-      <svg-icon icon-class="arrow_right" />
-    </span>
+      <!-- <svg-icon icon-class="arrow_right" /> -->
+    </el-button>
     <el-button v-if="type === 'commit'"
                type="primary"
                @click="commit">

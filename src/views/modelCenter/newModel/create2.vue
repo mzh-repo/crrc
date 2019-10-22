@@ -1,8 +1,8 @@
 <template>
   <div class="main">
-    <el-row class="title">
+    <!-- <el-row class="title">
       请选择算法
-    </el-row>
+    </el-row> -->
     <el-row v-for="(item,index) in algorithmList"
             :key="index"
             class="algorithm-container">
@@ -16,7 +16,7 @@
       <el-col :span="12"
               class="model">
         <el-row>
-          模型实例
+          使用该算法的实例
         </el-row>
         <el-row :gutter="16">
           <el-col v-for="obj in item.model_list"

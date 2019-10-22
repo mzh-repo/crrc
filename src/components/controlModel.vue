@@ -1,73 +1,74 @@
 <template>
-  <div class="model-contrain">
-    <div class="container">
-      <el-row class="title">{{modelList.name}}</el-row>
-      <el-tag v-if="modelList"
-              size="small">推荐配置</el-tag>
-      <div v-if="modelList.newTab"
-           class="tab">新</div>
-      <el-row>
-        <el-col v-if="modelList.model_configuration"
-                :span="24"
-                class="configuration">
-          <el-row>
-            <div>轮次</div>
-            <div>
-              <span>{{modelList.model_configuration.rounds}}</span>次
-            </div>
-          </el-row>
-          <el-row>
-            <div>内存</div>
-            <div>
-              <span>{{modelList.model_configuration.ram}}</span>G
-            </div>
-          </el-row>
-          <el-row>
-            <div>CPU</div>
-            <div>
-              <span>{{modelList.model_configuration.cpu}}</span>个
-            </div>
-          </el-row>
-          <el-row>
-            <div>GPU</div>
-            <div>
-              <span>{{modelList.model_configuration.gpu}}</span>G
-            </div>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col v-if="modelList.dataset"
-                :span="24"
-                class="content">
-          <el-row>
-            <div>数据量</div>
-            <div>
-              <span>{{modelList.dataset.line}}</span>条
-            </div>
-          </el-row>
-          <el-row>
-            <div>大小</div>
-            <div>
-              <span>{{unitConvert(modelList.dataset.size)}}</span>M
-            </div>
-          </el-row>
-          <el-row>
-            {{modelList.algorithm.frame_name}}
-          </el-row>
-        </el-col>
+  <el-row class="card-container"
+          :class="this.$store.state.trainSelected===modelList.id? 'active': ''"
+          @click.native="setChoice(modelList)">
+    <el-row class="title">{{modelList.name}}</el-row>
+    <el-tag v-if="modelList"
+            size="small">推荐配置</el-tag>
+    <div v-if="modelList.newTab"
+         class="tab">新</div>
+    <el-row>
+      <el-col v-if="modelList.model_configuration"
+              :span="24"
+              class="configuration">
+        <el-row>
+          <div>轮次</div>
+          <div>
+            <span>{{modelList.model_configuration.rounds}}</span>次
+          </div>
+        </el-row>
+        <el-row>
+          <div>内存</div>
+          <div>
+            <span>{{modelList.model_configuration.ram}}</span>G
+          </div>
+        </el-row>
+        <el-row>
+          <div>CPU</div>
+          <div>
+            <span>{{modelList.model_configuration.cpu}}</span>个
+          </div>
+        </el-row>
+        <el-row>
+          <div>GPU</div>
+          <div>
+            <span>{{modelList.model_configuration.gpu}}</span>G
+          </div>
+        </el-row>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col v-if="modelList.dataset"
+              :span="24"
+              class="content">
+        <el-row>
+          <div>数据量</div>
+          <div>
+            <span>{{modelList.dataset.line}}</span>条
+          </div>
+        </el-row>
+        <el-row>
+          <div>大小</div>
+          <div>
+            <span>{{unitConvert(modelList.dataset.size)}}</span>M
+          </div>
+        </el-row>
+        <el-row>
+          {{modelList.algorithm.frame_name}}
+        </el-row>
+      </el-col>
 
-      </el-row>
-      <el-row class="features">
-        <img v-if="this.$store.state.trainSelected===modelList.id"
-             src="@/assets/images/choiced.png"
-             @click="setChoice(modelList.id)">
-        <div v-else
-             :class="showChoice?'choice':''"
-             @click="setChoice(modelList.id)"></div>
-      </el-row>
-    </div>
-  </div>
+    </el-row>
+    <el-row class="features">
+      <img v-if="this.$store.state.trainSelected===modelList.id"
+           src="@/assets/images/choiced.png">
+      <!-- @click="setChoice(modelList.id)"> -->
+      <div v-else
+           :class="showChoice?'choice':''">
+        <!-- @click="setChoice(modelList.id)"> -->
+      </div>
+    </el-row>
+  </el-row>
 </template>
 
 <script>
@@ -86,8 +87,8 @@ export default {
     return {};
   },
   methods: {
-    setChoice(index) {
-      this.$emit('set-choice', index);
+    setChoice(obj) {
+      this.$emit('set-choice', obj);
     },
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);
@@ -97,14 +98,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container {
+.card-container {
   position: relative;
-  width: 508px;
+  width: 550px;
   margin: 16px 6px 0 0;
   padding: 20px;
-  border-radius: 5px;
   background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.6;
+  z-index: 1;
+
+  &:hover,
+  &.active {
+    opacity: 1;
+    box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.4);
+    border-bottom-left-radius: 0%;
+    border-bottom-right-radius: 0%;
+  }
 }
+
 .el-tag {
   float: left;
   margin: 10px 0;

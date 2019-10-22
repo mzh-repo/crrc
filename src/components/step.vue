@@ -20,27 +20,26 @@ export default {
       imgList: [
         /* eslint-disable */
         {
-          url: 'step1',
-          title: '新建模型操作步骤'
+          url: 'step1'
+          // title: '新建模型操作步骤'
         },
         {
-          url: 'step2',
-          title: '创建训练操作步骤'
+          url: 'step2'
+          // title: '创建训练操作步骤'
         },
         {
-          url: 'step4',
-          title: '模型选择操作步骤'
+          url: 'step4'
+          // title: '模型选择操作步骤'
         },
         {
-          url: 'step3',
-          title: '数据导入操作步骤'
+          url: 'step3'
+          // title: '数据导入操作步骤'
         }
-        /* eslint-enable */
-      ],
+      ]
     };
   },
   mounted() {},
-  methods: {},
+  methods: {}
 };
 </script>
 
@@ -74,7 +73,8 @@ export default {
 }
 .img {
   width: 100%;
-  height: 242px;
+  // height: 242px;
+  height: 320px;
 }
 
 .title {

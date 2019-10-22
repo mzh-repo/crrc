@@ -2,27 +2,34 @@
   <el-container class="choose-model">
     <el-row class="title">
       <el-col>
-        <span class="title-header"
+        <!-- <span class="title-header"
               @click="chooseModel">
           选择模型
-        </span>
+        </span> -->
         <!-- <span :class="!modelActive? 'active': ''"
               @click="chooseApp">
           选择应用
         </span> -->
       </el-col>
-      <el-col>
-        请选择模型查看报告
-      </el-col>
     </el-row>
     <el-row class="model-data">
       <el-row class="database-tab">
-        <span v-for="(item,index) in dataBaseList"
+        <!-- <span v-for="(item,index) in dataBaseList"
               :key="index"
               :class="databaseId === item.id ? 'active': ''"
               @click="chooseDatabase(item.id)">
           {{item.name}}
-        </span>
+        </span> -->
+        <el-tabs v-model="databaseName"
+                 @tab-click="chooseDatabase">
+          <template v-for="(item,index) in dataBaseList">
+            <el-tab-pane :key="index"
+                         :label="item.name"
+                         :name="item.name">
+              请选择模型查看报告
+            </el-tab-pane>
+          </template>
+        </el-tabs>
       </el-row>
       <div class="model">
         <div style="height: 211px">
@@ -35,10 +42,11 @@
         </div>
         <div v-for="(item,index) in modelData"
              :key="index">
-          <span @click="modelReport(item)">
-            <model :modelList="item"
-                   :showChoice="false" />
-          </span>
+          <!-- <span @click="modelReport(item)"> -->
+          <model :modelList="item"
+                 :showChoice="true"
+                 @set-choice="modelReport(item)" />
+          <!-- </span> -->
         </div>
       </div>
     </el-row>
@@ -53,7 +61,8 @@ export default {
   data() {
     return {
       dataBaseList: [],
-      modelActive: true,
+      // modelActive: true,
+      databaseName: '',
       databaseId: '',
       modelData: [],
     };
@@ -61,17 +70,18 @@ export default {
   mounted() {
     this.$axios.get('/database/list').then((res) => {
       this.dataBaseList = res;
+      this.databaseName = res[0].name;
       this.databaseId = res[0].id;
       this.getData();
     });
   },
   methods: {
-    chooseModel() {
-      this.modelActive = true;
-    },
-    chooseApp() {
-      this.modelActive = false;
-    },
+    // chooseModel() {
+    //   this.modelActive = true;
+    // },
+    // chooseApp() {
+    //   this.modelActive = false;
+    // },
     newModel() {
       this.$router.push('/createModel/step1');
     },
@@ -88,10 +98,15 @@ export default {
         size: item.dataset.size,
         frame: item.algorithm.frame_name,
       });
-      this.$router.push('/modelReport');
+      // this.$router.push('/modelReport');
+      this.$store.commit('setTrain', item.id);
     },
-    chooseDatabase(id) {
-      this.databaseId = id;
+    chooseDatabase() {
+      this.dataBaseList.forEach((item) => {
+        if (item.name === this.databaseName) {
+          this.databaseId = item.id;
+        }
+      });
       this.getData();
     },
     getData() {
@@ -156,13 +171,12 @@ export default {
 
 .newModel {
   position: relative;
-  width: 508px;
+  width: 550px;
   margin: 16px 6px 0 0;
-  padding: 20px;
   border-radius: 5px;
   background: #fff;
   @include box-center;
-  height: 170px;
+  height: 211px;
   flex-direction: column;
   cursor: pointer;
 }
@@ -174,19 +188,31 @@ export default {
 
 .database-tab {
   text-align: left;
-  color: #333;
+  height: 50px;
   font-size: 24px;
+  position: relative;
 
   span {
     margin-right: 40px;
     cursor: pointer;
+    color: #999;
 
     // &:hover,
     &.active {
       font-size: 28px;
       font-weight: 600;
-      // transform: scale(1.4);
-      // transition: all 0.3s;
+      border-bottom: 2px solid #333;
+      color: #333;
+      transform: scale(1.4);
+      transition: all 0.3s;
+    }
+  }
+  /deep/ .el-tabs {
+    display: flex;
+    justify-content: space-between;
+
+    .el-tabs__item {
+      font-size: 24px;
     }
   }
 }

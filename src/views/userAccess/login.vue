@@ -48,6 +48,10 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$store.commit('setUsername', this.formData.name);
+          const date = new Date();
+          const loginTime = localStorage.getItem('loginTime') || date;
+          localStorage.setItem('showTime', loginTime); // 记录上次登录时间
+          localStorage.setItem('loginTime', date);
           this.$router.push('/dashboard');
         }
       });

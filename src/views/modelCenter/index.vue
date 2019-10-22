@@ -19,7 +19,9 @@
                 @handle-pre="handlePre"
                 @next="next"
                 @complete="complete" />
-
+    <footer-bar v-if="modelReport"
+                :type="footerType"
+                @next="report" />
   </el-container>
 </template>
 
@@ -74,6 +76,13 @@ export default {
       }
       return false;
     },
+    modelReport() {
+      const path = this.$route.fullPath;
+      if (path.indexOf('chooseModel') > -1) {
+        return true;
+      }
+      return false;
+    },
   },
 
   mounted() {
@@ -116,7 +125,7 @@ export default {
             name: data.name,
             scene: data.scene,
             describe: data.describe,
-            dataChoose: this.$store.state.dataSelected,
+            // dataChoose: this.$store.state.dataSelected,
             input: data.input,
             output: data.output,
           });
@@ -165,6 +174,9 @@ export default {
         this.$router.push('/chooseModel');
       });
     },
+    report() {
+      this.$router.push('/modelReport');
+    },
   },
 };
 </script>
@@ -191,6 +203,6 @@ export default {
 }
 
 .layout {
-  padding: 42px 70px 100px 70px;
+  padding: 0px 70px 100px 70px;
 }
 </style>

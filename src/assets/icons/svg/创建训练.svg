@@ -4,14 +4,15 @@
     <title>创建训练</title>
     <desc>Created with Sketch.</desc>
     <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="切图" transform="translate(-8.000000, -420.000000)">
-            <rect id="矩形-copy" fill="#242424" x="0" y="0" width="63" height="1096"></rect>
-            <g id="创建训练未选" transform="translate(8.000000, 420.000000)">
-                <rect id="矩形复制-26-copy-7" fill="#242424" x="0" y="0" width="48" height="48" rx="3"></rect>
-                <g id="Group" transform="translate(10.000000, 10.000000)" stroke="#979797" stroke-width="1.8">
-                    <polygon id="多边形-copy" points="14.5 0 27.0573684 7.25 27.0573684 21.75 14.5 29 1.94263165 21.75 1.94263165 7.25"></polygon>
-                    <polyline id="路径-17-copy" points="3 7.79222229 14.5 14.25 27.0573684 7"></polyline>
-                    <path d="M14.5,14 L14.5,27.810849" id="路径-18-copy"></path>
+        <g id="切图" transform="translate(-171.000000, -467.000000)">
+            <g id="分组-7" transform="translate(171.000000, 467.000000)">
+                <g id="模型部署-选中-copy-2" fill="#242424">
+                    <rect id="矩形复制-26-copy-4" x="0" y="0" width="48" height="48" rx="3"></rect>
+                </g>
+                <g id="分组-copy" transform="translate(11.000000, 11.000000)" stroke="#979797" stroke-width="1.8">
+                    <polygon id="路径-28" points="12 -2.66453526e-15 6 4 6 11 12.5 15 19 11 19 4"></polygon>
+                    <polygon id="路径-28-copy" points="6 11 -1.77635684e-15 15 -1.77635684e-15 22 6 26 13 22 13 15"></polygon>
+                    <polygon id="路径-28-copy-2" points="19 11 13 15 13 22 19 26 26 22 26 15"></polygon>
                 </g>
             </g>
         </g>

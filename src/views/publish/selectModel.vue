@@ -1,10 +1,10 @@
 <template>
   <el-container class="container">
-    <div class="title-first">
+    <!-- <div class="title-first">
       <div class="title-right">
         <span>请选择模型</span>
       </div>
-    </div>
+    </div> -->
     <div class="title">
       <div v-if="datebase[0]"
            class="title-left">
@@ -78,7 +78,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  padding: 50px 70px 100px;
+  padding: 0px 70px 100px;
   width: 100%;
   height: auto;
   overflow-y: auto;

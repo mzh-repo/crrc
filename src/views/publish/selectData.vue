@@ -1,34 +1,45 @@
 <template>
   <el-container class="container">
-    <div class="title-first">
+    <!-- <div class="title-first">
       <div class="title-right">
         <span>选择数据集</span>
       </div>
-    </div>
+    </div> -->
     <div class="title">
-      <div class="title-left">
+      <!-- <div class="title-left">
         <span :class="tab===1?'active':''"
               @click.stop="tab=1">{{datebase[0].name||'间歇式供电列车'}}</span>
         <span :class="tab===1?'':'active'"
               @click.stop="tab=2">{{datebase[1].name||'非接触式供电列车'}}</span>
-      </div>
+      </div> -->
+      <el-tabs v-model="databaseName"
+               @tab-click="chooseDatabase">
+        <template v-for="(item,index) in dataBaseList">
+          <el-tab-pane :key="index"
+                       :label="item.name"
+                       :name="item.name">
+            <el-button type="primary"
+                       @click="toAddData">
+              新建数据集
+            </el-button>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
     </div>
     <div class="model-area">
       <template v-for="(item,index) in modelList">
-        <div :key="index"
-             :span="6"
-             @click="choose(item.id)">
-          <mzh-trainingData :dataList="item"
-                            @set-choice="choose" />
-        </div>
+        <mzh-trainingData :key="index"
+                          :span="6"
+                          :dataList="item"
+                          @set-choice="choose" />
       </template>
     </div>
-    <div class="title-second">
+    <!-- <div class="title-second">
       <div class="title-right">
         <span>新建</span>
         <div @click="toAddData"><img src="@/assets/images/add.png" />新建数据集</div>
       </div>
-    </div>
+    </div> -->
   </el-container>
 </template>
 
@@ -40,61 +51,76 @@ export default {
   data() {
     return {
       modelList: [],
-      datebase: [{ name: '' }, { name: '' }],
+      dataBaseList: [],
       allList: [],
       dialogVisible: false,
       tab: 1,
+      databaseId: '',
+      databaseName: '',
     };
   },
   mounted() {
-    if (this.$store.state.dataSelected) {
-      this.modelList.forEach((item, num) => {
-        if (this.$store.state.dataSelected === item.id) {
-          this.modelList[num].choiced = true;
-        }
-      });
-    }
+    // if (this.$store.state.dataSelected) {
+    //   this.modelList.forEach((item, num) => {
+    //     if (this.$store.state.dataSelected === item.id) {
+    //       this.modelList[num].choiced = true;
+    //     } else {
+    //       this.modelList[num].choiced = false;
+    //     }
+    //   });
+    // }
     this.getDatebase();
-    this.getdata(1);
   },
   methods: {
     getDatebase() {
       this.$axios.get('database/list').then((res) => {
-        this.datebase = res;
+        this.dataBaseList = res;
+        this.databaseId = res[0].id;
+        this.databaseName = res[0].name;
+        this.getData();
       });
     },
-    getdata(id) {
-      this.$axios.get(`dataset/list?database_id=${id}`).then((res) => {
-        this.modelList = res.data_list;
-        // this.allList.push(res[0].data_info_list, res[1].data_info_list);
-      });
+    getData() {
+      this.$axios
+        .get(`dataset/list?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.modelList = res.data_list;
+        });
     },
-    choose(index) {
+    choose(val) {
       this.modelList.forEach((item) => {
-        if (index === item.id) {
-          this.$store.commit('selectData', index);
+        if (val.id === item.id) {
+          this.$store.commit('selectData', val.id);
         }
       });
+    },
+    chooseDatabase() {
+      this.dataBaseList.forEach((item) => {
+        if (item.name === this.databaseName) {
+          this.databaseId = item.id;
+        }
+      });
+      this.getData();
     },
     toAddData() {
       this.$router.push({ path: '/importData' });
     },
   },
-  watch: {
-    tab() {
-      if (this.tab === 1) {
-        this.getdata(1);
-      } else if (this.tab === 2) {
-        this.getdata(2);
-      }
-    },
-  },
+  // watch: {
+  //   tab() {
+  //     if (this.tab === 1) {
+  //       this.getdata(1);
+  //     } else if (this.tab === 2) {
+  //       this.getdata(2);
+  //     }
+  //   },
+  // },
 };
 </script>
 
 <style lang="scss" scoped>
 .container {
-  padding: 50px 70px 100px;
+  padding: 0px 70px 100px;
   width: 100%;
   height: auto;
   overflow-y: auto;
@@ -116,6 +142,19 @@ export default {
 
 .title {
   margin: 20px 0 0;
+
+  /deep/ .el-tabs {
+    display: flex;
+    justify-content: space-between;
+
+    .el-tabs__item {
+      font-size: 24px;
+    }
+
+    .el-button {
+      margin-left: 30px;
+    }
+  }
 }
 
 .title-first,
