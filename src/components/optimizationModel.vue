@@ -12,12 +12,12 @@
       <el-row>
         <el-col :span="8"
                 class="example">
-          <div>最近实例Loss</div>
+          <div>最近训练Loss</div>
           <div>{{(optimziationList.latest_loss)}}</div>
         </el-col>
         <el-col :span="16"
                 class="example">
-          <div>平均实例Loss</div>
+          <div>平均训练Loss</div>
           <div>{{(optimziationList.average_loss)}}</div>
         </el-col>
       </el-row>
@@ -44,7 +44,7 @@ const imgUrl = [
   /* eslint-disable */
   require('../assets/images/mklearn.png'),
   require('../assets/images/keras.png'),
-  require('../assets/images/tensorflow.png'),
+  require('../assets/images/tensorflow.png')
 
   /* eslint-enable */
 ];
@@ -135,9 +135,10 @@ export default {
 
 .content {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   font-size: 14px;
   line-height: 20px;
+
   .el-row {
     display: flex;
     align-items: center;
@@ -147,6 +148,7 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 4px;
+    margin-left: 30px;
     justify-content: flex-end;
   }
   .el-row div:first-child {

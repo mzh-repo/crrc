@@ -69,13 +69,13 @@
             class="chart-container">
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="手扳极位"
+          <mzh-line title="手扳极位(实时)"
                     :lineData="dynasticDataOne" />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <power-line title="能耗"
+          <power-line title="能耗(实时)"
                       :lineData="dynasticDataTwo" />
         </div>
       </el-col>

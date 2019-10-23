@@ -12,7 +12,7 @@
       <el-row type="flex"
               class="loss-row">
         <el-col class="loss">
-          该实例Loss
+          Loss
         </el-col>
       </el-row>
       <el-row type="flex">

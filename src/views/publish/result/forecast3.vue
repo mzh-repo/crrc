@@ -96,6 +96,7 @@ export default {
       },
       type: 0, // 模型类型: 0 间歇式, 1 非接触式
       time: '', // 定时器
+      // errorTime: '', // 异常时刻
     };
   },
   mounted() {
@@ -139,7 +140,15 @@ export default {
         this.earlyList = res.status;
         this.progress.show = res.overall;
         this.progress.number = res.overall;
-        this.newsList = res.abnormal_moment;
+        if (res.abnormal_moment.length > 0) {
+          const date = new Date();
+          res.abnormal_moment.forEach((item) => {
+            const data = JSON.parse(JSON.stringify(item));
+            data.time = this.covertDate(date);
+            this.newsList.unshift(data);
+          });
+          this.newsList = this.newsList.splice(0, 8);
+        }
       });
     },
     round() {
@@ -151,6 +160,20 @@ export default {
         this.round();
       }, 1000);
       // }
+    },
+    covertDate(date) {
+      return `${date.getFullYear()}/${this.convertNum(
+        date.getMonth() + 1,
+      )}/${this.convertNum(date.getDate())}
+         ${this.convertNum(date.getHours())}:${this.convertNum(
+  date.getMinutes(),
+)}:${this.convertNum(date.getSeconds())}`;
+    },
+    convertNum(val) {
+      if (val >= 10) {
+        return val;
+      }
+      return `0${val}`;
     },
     beforeDestroy() {
       clearTimeout(this.time);
@@ -224,6 +247,11 @@ span {
   font-size: 18px;
   line-height: 25px;
   border-bottom: 1px solid #d8d8d8;
+
+  div:last-child {
+    font-size: 14px;
+    color: #999;
+  }
 }
 
 .dangerous {

@@ -37,9 +37,10 @@
       <el-col :span="6">
         <div class="chart">
           <div class="config">
-            <el-tag type="primary"
+            <!-- <el-tag type="primary"
                     size="mini">推荐配置
-            </el-tag>
+            </el-tag> -->
+            <el-row class="">推荐配置</el-row>
             <el-row class="recommend">
               <el-col v-for="(item,index) in configList"
                       align="left"
@@ -144,14 +145,10 @@ export default {
 <style lang="scss" scoped>
 .report-container {
   @include flex-column;
-
-  .el-row {
-    display: flex;
-    justify-content: flex-start;
-  }
 }
 
 .main-title {
+  text-align: left;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
   font-size: 24px;
@@ -175,6 +172,7 @@ export default {
   font-weight: 400;
   color: rgba(153, 153, 153, 1);
   margin-bottom: 16px;
+  text-align: left;
 }
 
 .chart-report {

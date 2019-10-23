@@ -12,7 +12,8 @@ export default {
       default: () => ({
         data_list: [0.1, 0.3, 0.6, 0.2, 0.5, 0.7, 0.38, 0.2, 0.4],
         predict_data_list: [0.2, 0.5, 0.7, 0.6, 0.2, 0.46, 0.1, 0.3, 0.6],
-        id_list: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        // id_list: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        name: [],
       }),
     },
     // 柱形配色
@@ -40,6 +41,10 @@ export default {
     },
     yName: {
       type: String,
+    },
+    showTip: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -72,12 +77,14 @@ export default {
           },
           left: 24,
           top: 17,
+          subtext: this.showTip ? '移动鼠标至对应柱状图查看详情' : '',
         },
         xAxis: {
           type: 'category',
           show: this.showXAxis,
-          data: data.id_list,
-          // axisLine: { show: false },
+          // data: data.id_list,
+          data: data.name,
+          axisLine: { show: true },
           axisTick: { show: false },
           name: this.xName,
         },
@@ -112,7 +119,10 @@ export default {
               // 坐标轴指示器，坐标轴触发有效
               type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
             },
-            formatter: 'id: {b} <br/>  预测: {c0} <br/> 实际: {c1}',
+            formatter: '{b} <br/>  预测loss: {c0} <br/> 实际loss: {c1} ',
+            textStyle: {
+              align: 'left',
+            },
           },
           grid: {
             x: 70, // 坐标轴左边与边框的距离

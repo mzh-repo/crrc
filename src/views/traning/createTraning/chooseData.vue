@@ -27,12 +27,12 @@
             <span>共{{item.line}}条</span>
           </template>
           <el-row @click.native="setSelect(index)">
-            <el-col v-for="(histogramList, i) in lineDataList"
+            <el-col v-for="(histogramList, i) in item.graph"
                     :span="8"
                     :key="i"
                     class="echarts">
               <histogram :colors="colors[i]"
-                         :lineData="histogramList.lineData" />
+                         :lineData="histogramList" />
             </el-col>
             <img v-if="index===selected"
                  src="@/assets/images/choiced.png"
@@ -63,6 +63,8 @@ export default {
       selected: 0,
       lineDataList: [{ lineData: {} }, { lineData: {} }],
       // titles: ['速度值分布', '坡度值分布'],
+      // 数据集id
+      // datasetId: 1,
     };
   },
   mounted() {
@@ -90,6 +92,16 @@ export default {
       //   this.collapseList[i].selected = false;
       //   if (index === i) {
       //     this.selected = i;
+      //   }
+      // });
+      // this.dataBaseList.forEach((item) => {
+      //   if (item.id === this.databaseId) {
+      //     this.collapseList.forEach((i, j) => {
+      //       if (j === index) {
+      //         this.datasetId = i.id;
+      //         this.getlineDataList();
+      //       }
+      //     });
       //   }
       // });
       if (this.$store.state.chooseData !== index) {

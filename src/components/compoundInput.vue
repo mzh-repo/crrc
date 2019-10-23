@@ -1,6 +1,7 @@
 <template>
   <div class="box">
-    <div class="title">{{title}}</div>
+    <div class="title"
+         :title="title">{{title}}</div>
     <el-select v-model="value"
                placeholder=""
                :multiple="multiple"
@@ -23,7 +24,7 @@ export default {
     },
     options: {
       type: Array,
-      default: () => ['111', '222', '333', '444'],
+      default: () => ['String', 'Int', 'Float', 'Date'],
     },
     multiple: {
       type: Boolean,
@@ -61,7 +62,7 @@ export default {
 }
 
 .title {
-  font-size: 24px;
+  font-size: 20px;
   color: #666;
   margin-left: 15px;
   white-space: nowrap;
@@ -69,6 +70,10 @@ export default {
   line-height: 21px;
   padding-right: 13px;
   border-right: solid 1px #979797;
+  width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /deep/ .el-select {

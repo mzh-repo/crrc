@@ -159,6 +159,10 @@ export default {
   background-color: #fff;
   margin-bottom: 150px;
   margin-top: 26px;
+
+  tr:first-child td {
+    border-bottom: 1px solid #666666;
+  }
 }
 
 .out-table tr {

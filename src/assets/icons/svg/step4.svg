@@ -22,7 +22,7 @@
                         <rect id="矩形" x="0" y="0" width="70" height="26" rx="3"></rect>
                         <polygon id="路径-21" points="60 25 62.7305753 28.5389769 65.6142425 25"></polygon>
                     </g>
-                    <g id="Group-5-Copy-10" transform="translate(163.000000, 93.000000)">
+                    <g id="Group-5-Copy-10" transform="translate(161.000000, 93.000000)">
                         <rect id="矩形" fill="#FFFFFF" x="3" y="0" width="74" height="26" rx="3"></rect>
                         <polygon id="路径-21" fill="#FFFFFF" transform="translate(1.807121, 12.769488) rotate(-270.000000) translate(-1.807121, -12.769488) " points="-1 11 1.73057526 14.5389769 4.61424249 11"></polygon>
                         <text id="2.选择数据集" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
@@ -33,15 +33,15 @@
                         <rect id="矩形" x="0" y="0" width="70" height="26" rx="3"></rect>
                         <polygon id="路径-21" points="4 25 6.73057526 28.5389769 9.61424249 25"></polygon>
                     </g>
-                    <g id="Group-5-Copy-12" transform="translate(39.500000, 106.000000) rotate(-180.000000) translate(-39.500000, -106.000000) translate(3.000000, 93.000000)" fill="#FFFFFF">
-                        <rect id="矩形" x="3" y="0" width="70" height="26" rx="3"></rect>
-                        <polygon id="路径-21" transform="translate(1.769488, 14.807121) rotate(-270.000000) translate(-1.769488, -14.807121) " points="-1.03763281 13.0376328 1.69294245 16.5766097 4.57660968 13.0376328"></polygon>
+                    <g id="Group-5-Copy-12" transform="translate(40.500000, 106.000000) rotate(-180.000000) translate(-40.500000, -106.000000) translate(2.000000, 93.000000)" fill="#FFFFFF">
+                        <rect id="矩形" x="3" y="0" width="74" height="26" rx="3"></rect>
+                        <polygon id="路径-21" transform="translate(2.000000, 15.000000) rotate(-270.000000) translate(-2.000000, -15.000000) " points="-1 13 1.9181945 17 5 13"></polygon>
                     </g>
                     <text id="4.实例选择" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
                         <tspan x="23.816" y="177">4.实例选择</tspan>
                     </text>
-                    <text id="5.实例选择" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
-                        <tspan x="8.816" y="111">5.实例选择</tspan>
+                    <text id="5.部署与预测" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
+                        <tspan x="3.816" y="111">5.部署与预测</tspan>
                     </text>
                     <text id="3.模型选择" font-family="PingFangSC-Regular, PingFang SC" font-size="12" font-weight="normal" fill="#333333">
                         <tspan x="156.816" y="180">3.模型选择</tspan>

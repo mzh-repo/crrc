@@ -15,12 +15,13 @@
       <config title="自选配置"
               :sliderList="sliderList" />
     </div>
-    <div class="config model">
-      <el-row v-for="item in modelList"
-              :key="item">
-        {{item.name}}: {{item.value}}
-      </el-row>
-      <div class="model-line"></div>
+    <div class="model-contianer">
+      <div class="model">
+        <el-row v-for="item in modelList"
+                :key="item">
+          {{item.name}}: {{item.value}}
+        </el-row>
+        <!-- <div class="model-line"></div>
       <el-row>算法： {{algorithm}}</el-row>
       <el-row class="model-box">
         <el-col>
@@ -28,8 +29,24 @@
         </el-col>
         <el-col>适用问题： {{suit}}</el-col>
         <el-col>使用框架： {{frame}}</el-col>
+      </el-row> -->
+      </div>
+      <el-row class="algorithm">
+        <!-- <el-row>算法： {{algorithm}}</el-row>
+        <el-row class="model-box">
+          <el-col>
+            模型：{{model}}
+          </el-col>
+          <el-col>适用问题： {{suit}}</el-col>
+          <el-col>使用框架： {{frame}}</el-col>
+        </el-row> -->
+        <el-row v-for="item in algorithmList"
+                :key="item">
+          {{item.name}}: {{item.value}}
+        </el-row>
       </el-row>
     </div>
+
   </el-container>
 </template>
 
@@ -68,6 +85,12 @@ export default {
         { name: '数 据 集', value: this.$store.state.basic.datasetName },
         { name: '简介', value: this.$store.state.basic.describe },
       ],
+      algorithmList: [
+        { name: '算法', value: this.$store.state.algorithm.name },
+        { name: '模型', value: this.$store.state.algorithm.model_name },
+        { name: '适用问题', value: this.$store.state.algorithm.suit },
+        { name: '使用框架', value: this.$store.state.algorithm.frame },
+      ],
       algorithm: this.$store.state.algorithm.name,
       model: this.$store.state.algorithm.model_name,
       suit: this.$store.state.algorithm.suit,
@@ -91,8 +114,9 @@ export default {
   line-height: 28px;
   background: rgba(255, 255, 255, 1);
   border-radius: 8px;
-  padding: 22px 24px 20px 20px;
+  padding: 20px 24px 20px 20px;
   margin-right: 26px;
+  height: 360px;
 }
 
 .recommend {
@@ -115,7 +139,33 @@ export default {
 }
 
 .model {
-  width: 1112px;
+  width: 1000px;
+  height: 150px;
+  padding: 20px;
+  text-align: left;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 1);
+  margin-bottom: 20px;
+
+  .el-row {
+    margin-bottom: 20px;
+  }
+}
+
+// .model-box {
+//   height: 120px;
+//   font-size: 16px;
+//   @include flex-row;
+//   border-radius: 8px;
+//   background: rgba(255, 255, 255, 1);
+// }
+
+.algorithm {
+  text-align: left;
+  padding: 20px;
+  height: 190px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 1);
 
   .el-row {
     margin-bottom: 20px;
@@ -126,11 +176,5 @@ export default {
   height: 1px;
   background-color: #f2f2f2;
   margin-bottom: 16px;
-}
-
-.model-box {
-  padding-left: 66px;
-  font-size: 16px;
-  @include flex-row;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <el-container class="choose-model">
+    <el-row class="main-title">请选择模型查看报告</el-row>
     <el-row class="title">
       <el-col>
         <!-- <span class="title-header"
@@ -26,7 +27,7 @@
             <el-tab-pane :key="index"
                          :label="item.name"
                          :name="item.name">
-              请选择模型查看报告
+              <!-- 请选择模型查看报告 -->
             </el-tab-pane>
           </template>
         </el-tabs>
@@ -123,6 +124,11 @@ export default {
 <style lang="scss" scoped>
 .choose-model {
   @include flex-column;
+}
+
+.main-title {
+  text-align: left;
+  font-size: 24px;
 }
 
 .title {

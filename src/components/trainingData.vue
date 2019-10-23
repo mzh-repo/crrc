@@ -4,16 +4,16 @@
        ||this.$store.state.basic.datasetId===dataList.id? 'active': ''"
        @click="setChoice(dataList)">
     <!-- {{data}} -->
-    <el-row class="title">{{dataList.name}}</el-row>
+    <el-row class="title">{{dataList.name || "demo"}}</el-row>
     <el-row>
-      <el-col :span="10"
+      <el-col :span="12"
               class="training-continue">
         <div>数据总量</div>
         <div>
           <span>{{dataList.line}}</span>条
         </div>
       </el-col>
-      <el-col :span="14"
+      <el-col :span="12"
               class="training-continue">
         <div>物理大小</div>
         <div>
@@ -30,6 +30,7 @@
                   :key="index"> {{
                     `${item}${index+1===dataList.header_mappings.length?'':','}`
                     }}</span> -->
+          <span>上传时间： {{dataList.create_time}}</span>
         </el-row>
         <img v-if="this.$store.state.dataSelected===dataList.id
                     || this.$store.state.basic.datasetId === dataList.id"
@@ -74,7 +75,7 @@ export default {
   padding: 15px 20px;
   border-radius: 8px;
   width: 364px;
-  height: 160px;
+  height: 170px;
   cursor: pointer;
   opacity: 0.6;
 
@@ -83,6 +84,10 @@ export default {
     opacity: 1;
     box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.356);
   }
+
+  & .training-continue:first-child {
+    border-right: 1px solid #eee;
+  }
 }
 
 .title {
@@ -90,9 +95,13 @@ export default {
   line-height: 28px;
   margin-bottom: 18px;
   display: flex;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
 }
+
 .training-continue {
-  text-align: left;
+  // text-align: left;
   span {
     font-size: 32px;
     line-height: 45px;
@@ -106,7 +115,7 @@ export default {
   div:nth-child(2) {
     font-size: 18px;
     line-height: 25px;
-    margin-bottom: 15px;
+    // margin-bottom: 15px;
   }
 }
 .choice {
@@ -120,6 +129,7 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+  margin-top: 15px;
 }
 img {
   width: 32px;

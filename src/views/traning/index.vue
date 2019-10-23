@@ -73,7 +73,7 @@ export default {
       this.active = 1;
       this.$store.commit('setPublishActive', this.active);
     },
-    // TODO: 回到模型训练中心
+    // 回到模型训练中心
     handleFinish() {
       this.$router.push('/chooseModel');
     },

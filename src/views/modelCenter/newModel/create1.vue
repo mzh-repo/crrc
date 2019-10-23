@@ -1,5 +1,6 @@
 <template>
   <el-container>
+    <el-row class="input-title">请输入模型基本信息</el-row>
     <el-row class="input-container">
       <el-col :span="12">
         <el-row class="input-box">
@@ -8,7 +9,8 @@
           </el-col>
           <el-col :span="18">
             <el-input v-model="name"
-                      clearable>
+                      clearable
+                      placeholder="请输入模型名称">
             </el-input>
           </el-col>
         </el-row>
@@ -18,7 +20,8 @@
           </el-col>
           <el-col :span="18">
             <el-input v-model="scene"
-                      clearable>
+                      clearable
+                      placeholder="请输入适用场景">
             </el-input>
           </el-col>
         </el-row>
@@ -29,8 +32,9 @@
           模型简介
         </el-col>
         <el-col :span="18">
-          <el-input type="textarea"
-                    v-model="describe">
+          <el-input v-model="describe"
+                    type="textarea"
+                    placeholder="请输入模型简介">
           </el-input>
         </el-col>
       </el-col>
@@ -65,10 +69,10 @@
     <el-row class="data-set">
       <compound-input v-for="(item,index) in inputList"
                       multiple
-                      :title="item"
+                      :title="item.title"
                       :key="item"
                       :index="index"
-                      :options="arrayOptions"
+                      :options="item.options"
                       @selected="handleSelectChange" />
     </el-row>
   </el-container>
@@ -87,7 +91,10 @@ export default {
       databaseId: '',
       databaseName: '',
       dataActive: true,
-      inputList: ['输入', '输出'],
+      inputList: [
+        { title: '输入', options: [] },
+        { title: '输出', options: [] },
+      ],
       arrayOptions: [],
       name: this.$store.state.basic.name || '',
       scene: this.$store.state.basic.scene || '',
@@ -117,8 +124,14 @@ export default {
           database_id: this.$store.state.importData.sql,
           id: this.$store.state.importData.id,
         };
-        this.$axios.put('/dataset', data);
+        this.$axios.put('/dataset', data).then(() => {
+          this.getBase();
+        });
+      } else {
+        this.getBase();
       }
+    },
+    getBase() {
       this.$axios.get('/database/list').then((res) => {
         this.dataBaseList = res;
         this.databaseId = res[0].id;
@@ -165,7 +178,9 @@ export default {
     },
     chooseModel(id) {
       this.$axios.get(`/dataset/headers?dataset_id=${id}`).then((res) => {
-        this.arrayOptions = res;
+        // this.arrayOptions = res;
+        this.inputList[0].options = res;
+        this.inputList[1].options = [...res, '输出列'];
       });
     },
   },
@@ -179,13 +194,16 @@ export default {
 
 .input-container {
   height: 198px;
-  margin-top: 42px;
+  // margin-top: 42px;
   margin-bottom: 30px;
   color: #666;
   font-weight: 400;
 
   /deep/ .el-textarea__inner {
-    height: 152px;
+    height: 192px;
+    font-size: 20px;
+    font-family: PingFangSC, sans-serif, 'Microsoft YaHei', 微软雅黑,
+      'MicrosoftJhengHei', 华文细黑;
   }
 }
 
@@ -193,14 +211,21 @@ export default {
   @include flex-row;
   margin-bottom: 60px;
   align-items: center;
+  font-size: 24px;
 
   /deep/ .el-input__inner {
-    height: 46px;
+    height: 66px;
+    font-size: 24px;
+
+    &::placeholder {
+      font-size: 20px;
+    }
   }
 }
 
 .text-title {
   margin-top: 16px;
+  font-size: 24px;
 }
 
 .upload-title {
@@ -236,6 +261,10 @@ export default {
 .data-set {
   display: flex;
   flex-flow: row wrap;
+  /deep/ .el-tag {
+    font-size: 16px;
+    height: 30px;
+  }
 }
 
 .model-area {

@@ -5,6 +5,7 @@
 
 <script>
 import echarts from 'echarts';
+// import ecStat from 'echarts-stat';
 
 require('echarts/theme/macarons');
 
@@ -16,7 +17,7 @@ export default {
     },
     width: {
       type: String,
-      default: '555px',
+      default: '550px',
     },
     height: {
       type: String,
@@ -27,11 +28,11 @@ export default {
       default: '',
     },
     lineData: {
-      type: Object,
-      default: () => ({
-        bars: [],
-        data: [],
-      }),
+      type: Array,
+      default: () => [
+        // bars: [],
+        // data: [],
+      ],
     },
     colors: {
       type: String,
@@ -67,6 +68,8 @@ export default {
       window.addEventListener('resize', this.resizeHandler);
     },
     initChart(data) {
+      // const chartData = ecStat.histogram(data);
+      // console.log(chartData);
       this.chart = echarts.init(this.$el);
 
       this.chart.setOption({
@@ -79,38 +82,72 @@ export default {
         //     fontWeight: 'bold',
         //   },
         // },
-        tooltip: {
-          // trigger: 'axis',
-          axisPointer: {
-            type: 'shadow',
+        // tooltip: {
+        //   // trigger: 'axis',
+        //   axisPointer: {
+        //     type: 'shadow',
+        //   },
+        // },
+        // grid: {
+        //   left: '3%',
+        //   right: '3%',
+        //   bottom: '3%',
+        //   containLabel: true,
+        // },
+        xAxis: [
+          {
+            name: '数值',
+            // nameTextStyle: {
+            //   padding: 4,
+            // },
+            type: 'value',
+            scale: true,
+            data: data.x_list,
+            // data: data.bins,
+            // axisTick: {
+            //   // alignWithLabel: true,
+            //   show: false
+            // },
+            // splitLine: { show: false },
+            axisLine: {
+              show: false,
+            },
+            // axisLabel: {
+            //   interval: 0,
+            //   rotate: 45
+            //   // align: 'left',
+            // }
+            splitLine: {
+              show: false,
+            },
+            max: data.max,
+            min: data.min,
+            interval: data.interval,
+            splitNumber: data.split_number,
           },
-        },
-        xAxis: {
-          type: 'category',
-          data: data.bins,
-          axisTick: {
-            alignWithLabel: true,
-            show: false,
-          },
-          splitLine: { show: false },
-          axisLine: {
-            show: false,
-          },
-          axisLabel: {
-            interval: 0,
-            rotate: 45,
-          },
-        },
+        ],
         yAxis: [
           {
-            type: 'value',
-            splitLine: { show: false },
+            //   type: 'value',
+            //   splitLine: { show: false },
             axisTick: {
               show: false,
             },
             axisLine: {
               show: false,
             },
+            splitLine: {
+              show: false,
+            },
+            // },
+            type: 'value',
+            axisLabel: {
+              formatter: value => value * 100,
+            },
+            name: '占比(%)',
+            // position: 'left',
+            nameLocation: 'center',
+            nameGap: 30,
           },
         ],
         series: [
@@ -118,9 +155,12 @@ export default {
             name: '直接访问',
             color: this.colors,
             type: 'bar',
+            // type: 'value',
+            barWidth: '99.3%',
             // barWidth: '50%',
+            // data: data.data,
             data: data.data,
-            barCategoryGap: '0%',
+            // barCategoryGap: '0%',
           },
         ],
       });

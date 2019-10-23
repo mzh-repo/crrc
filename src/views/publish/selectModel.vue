@@ -6,13 +6,22 @@
       </div>
     </div> -->
     <div class="title">
-      <div v-if="datebase[0]"
+      <!-- <div v-if="datebase[0]"
            class="title-left">
         <span :class="tab===1?'active':''"
               @click.stop="tab=1">{{datebase[0]||'间歇式供电列车数据模型'}}</span>
         <span :class="tab===1?'':'active'"
               @click.stop="tab=2">{{datebase[1]||'非接触式间歇式供电列车数据模型'}}</span>
-      </div>
+      </div> -->
+      <el-tabs v-model="databaseName"
+               @tab-click="chooseDatabase">
+        <template v-for="(item,index) in dataBaseList">
+          <el-tab-pane :key="index"
+                       :label="item.name"
+                       :name="item.name">
+          </el-tab-pane>
+        </template>
+      </el-tabs>
     </div>
     <div class="model-area">
       <template v-for="(item) in modelList">
@@ -42,21 +51,47 @@ export default {
       allList: [],
       choosed: 0,
       tab: 1,
+      databaseId: '',
+      databaseName: '',
     };
   },
   mounted() {
     if (this.$store.state.modelSelected.index) {
       this.choosed = this.$store.state.modelSelected.index;
     }
-    this.getdata();
+    // this.getdata();
+    this.getDatebase();
   },
   methods: {
-    getdata() {
-      this.$axios.get('model/detail/list').then((res) => {
-        this.datebase.push(res[0].name, res[1].name);
-        this.allList.push(res[0].model_info_list, res[1].model_info_list);
-        [this.modelList] = this.allList;
+    // getdata() {
+    //   this.$axios.get('model/detail/list').then((res) => {
+    //     this.datebase.push(res[0].name, res[1].name);
+    //     this.allList.push(res[0].model_info_list, res[1].model_info_list);
+    //     [this.modelList] = this.allList;
+    //   });
+    // },
+    getDatebase() {
+      this.$axios.get('database/list').then((res) => {
+        this.dataBaseList = res;
+        this.databaseId = res[0].id;
+        this.databaseName = res[0].name;
+        this.getData();
       });
+    },
+    chooseDatabase() {
+      this.dataBaseList.forEach((item) => {
+        if (item.name === this.databaseName) {
+          this.databaseId = item.id;
+        }
+      });
+      this.getData();
+    },
+    getData() {
+      this.$axios
+        .get(`/model/list?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.modelList = res;
+        });
     },
     next(index, name) {
       this.choosed = index;
@@ -99,6 +134,10 @@ export default {
 
 .title {
   margin: 20px 0 0;
+
+  /deep/ .el-tabs__item {
+    font-size: 24px;
+  }
 }
 
 // .title-left {

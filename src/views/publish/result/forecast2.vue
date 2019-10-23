@@ -27,6 +27,20 @@
     <el-row class="progress">
       文本解释判据: {{explain}}
     </el-row>
+    <el-row class="target">
+      <el-col>
+        <el-row>
+          模型如下：
+        </el-row>
+        <markdown-it-vue :content="model" />
+      </el-col>
+      <el-col>
+        <el-row>
+          目标函数为：
+        </el-row>
+        <markdown-it-vue :content="targetFuc" />
+      </el-col>
+    </el-row>
     <el-row :gutter="19"
             class="chart-container chart-1">
       <el-col :span="12">
@@ -43,20 +57,20 @@
       </el-col>
     </el-row>
     <el-row class="speed-line">
-      平均速度： {{speed}}km/s &nbsp;&nbsp;&nbsp; 总能耗: {{energy}}km/h
+      平均速度： {{speed}}km/s &nbsp;&nbsp;&nbsp; 总能耗: {{energy}}kwh
     </el-row>
     <move-train />
     <el-row :gutter="19"
             class="chart-container">
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="手扳极位"
+          <mzh-line title="手扳极位(实时)"
                     :lineData="dynasticDataOne" />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="能耗"
+          <mzh-line title="能耗(实时)"
                     :lineData="dynasticDataTwo" />
         </div>
       </el-col>
@@ -65,11 +79,14 @@
 </template>
 
 <script>
+// AsciiMath 转换
+import MarkdownItVue from 'markdown-it-vue';
 import Line from '../components/line.vue';
 import MovingTrain from '../components/movingTrain.vue';
+import 'markdown-it-vue/dist/markdown-it-vue.css';
 
 export default {
-  components: { 'mzh-line': Line, 'move-train': MovingTrain },
+  components: { 'mzh-line': Line, 'move-train': MovingTrain, MarkdownItVue },
   data() {
     return {
       // tabList: [
@@ -80,7 +97,10 @@ export default {
       // tabId: 1,
       percent: 80,
       explain:
-        '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network）模型如下：F_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t ); 目标函数为：L=‖F_(t+1)-F ̃_(t+1) ‖^2+α‖F_(t+1) v_(t+1) ‖^2',
+        '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network.',
+      model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
+      targetFuc:
+        '```AsciiMath\nL= ||F_{t+1}-F_{t+1} ||^2+α||F_(t+1) v_(t+1) ||^2\n```',
       speed: 10,
       energy: 10,
       lineData: {
@@ -238,6 +258,22 @@ export default {
     /deep/ .el-progress-bar__outer {
       background-color: #d8d8d8;
     }
+  }
+}
+
+.target {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: left;
+  color: rgba(51, 51, 51, 1);
+
+  .el-col {
+    display: inline-flex;
+    line-height: 30px;
+    align-items: center;
   }
 }
 

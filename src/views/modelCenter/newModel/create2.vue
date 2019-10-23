@@ -5,18 +5,21 @@
     </el-row> -->
     <el-row v-for="(item,index) in algorithmList"
             :key="index"
-            class="algorithm-container">
+            class="algorithm-container"
+            :class="item.id === algorithmId? 'active': ''"
+            @click.native="setChoice(item)">
       <el-col :span="9"
               class="box">
         <el-row>{{item.name}}</el-row>
         <el-row>模型: {{item.model_name}}</el-row>
         <el-row>适用问题: {{item.applicable_problem}}</el-row>
         <el-row>使用框架: {{item.frame_name}}</el-row>
+        <el-row>使用次数: {{item.used_counter}}次</el-row>
       </el-col>
       <el-col :span="12"
               class="model">
         <el-row>
-          使用该算法的实例
+          使用该算法的实例（最近两个）
         </el-row>
         <el-row :gutter="16">
           <el-col v-for="obj in item.model_list"
@@ -28,13 +31,11 @@
         </el-row>
       </el-col>
       <div v-if="item.id === algorithmId"
-           class="choose"
-           @click="setChoice(item)">
+           class="choose">
         <img src="@/assets/images/choiced.png">
       </div>
       <div v-else
-           class="choose"
-           @click="setChoice(item)">
+           class="choose">
       </div>
     </el-row>
   </div>
@@ -91,6 +92,13 @@ export default {
   margin: 16px 0;
   padding: 29px 22px;
   @include flex-row;
+  opacity: 0.6;
+
+  &:hover,
+  &.active {
+    opacity: 1;
+    box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.356);
+  }
 
   .box {
     @include flex-column;

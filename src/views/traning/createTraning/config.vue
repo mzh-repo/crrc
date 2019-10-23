@@ -31,6 +31,7 @@
                        @set-choice="choose" />
         <div v-if="item.id===choiced"
              class="model-data">
+          <div class="line"></div>
           <configuration class="configuration"
                          title="自定义配置"
                          :sliderList="sliderList" />
@@ -110,9 +111,9 @@ export default {
       this.dataBaseList.forEach((item) => {
         if (item.name === this.databaseName) {
           this.databaseId = item.id;
+          this.getModelDataList();
         }
       });
-      this.getlineDataList();
     },
     getDataList() {
       this.$axios.get('/database/list').then((res) => {
@@ -217,13 +218,19 @@ ul {
     word-break: normal;
     position: relative;
     opacity: 1;
+
+    .line {
+      height: 1px;
+      padding: 0 20px;
+      background-color: #f2f2f2;
+    }
   }
 }
 .configuration {
   position: absolute;
   z-index: 9999999;
   padding: 27px 20px 20px 20px;
-  border-top: 1px solid #f2f2f2;
+  // border-top: 1px solid #f2f2f2;
   border-radius: 0 0 8px 8px;
 }
 .control-data {

@@ -1,8 +1,8 @@
 <template>
   <el-container class="container">
-    <el-row class="choice">请选择数据进行训练</el-row>
+    <el-row class="choice">模型训练</el-row>
     <el-row class="data-choice">
-      <div class="choice-content">
+      <!-- <div class="choice-content">
         <div v-for="(data,index) in dataList"
              :key="index"
              :class="{active:index==(isActive-1) }"
@@ -10,7 +10,7 @@
           <div>{{data.name}}</div>
         </div>
       </div>
-      <div class="total-num">共{{dataList[isActive-1].model_number}}条</div>
+      <div class="total-num">共{{dataList[isActive-1].model_number}}条</div> -->
     </el-row>
     <ul v-for="(item, index) in  resource"
         :key="index">
@@ -98,7 +98,7 @@ export default {
 .choice {
   font-size: 24px;
   line-height: 30px;
-  margin-bottom: 33px;
+  // margin-bottom: 33px;
   color: #666;
 }
 .data-choice {

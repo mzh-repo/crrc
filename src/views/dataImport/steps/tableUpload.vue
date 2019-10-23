@@ -47,7 +47,7 @@
                       :key="item"
                       :index="index"
                       :select="sqlSettings[index]"
-                      :options="arrayOptions"
+                      :options="compoundInput"
                       @selected="handleSelectChange" />
     </div>
     <el-row v-if="fileStatus===1"
@@ -251,7 +251,7 @@ label {
 }
 
 .delete {
-  font-size: 24px;
+  font-size: 22px;
   color: #666;
 }
 

@@ -37,10 +37,10 @@ export default {
           times: 188,
           frame: 'Keras',
           itemList: [
-            { title: '轮次\n(次)', value: 833, maxValue: 3000 },
-            { title: '内存\n(G)', value: 44, maxValue: 128 },
-            { title: 'CPU\n(core)', value: 6, maxValue: 32 },
-            { title: 'GPU\n(G)', value: 8, maxValue: 64 },
+            { title: '轮次', value: 833, maxValue: 3000 },
+            { title: '内存', value: 44, maxValue: 128 },
+            { title: 'CPU', value: 6, maxValue: 32 },
+            { title: 'GPU', value: 8, maxValue: 64 },
           ],
         },
         {
@@ -49,10 +49,10 @@ export default {
           times: 156,
           frame: 'Keras',
           itemList: [
-            { title: '轮次\n(次)', value: 1317, maxValue: 3000 },
-            { title: '内存\n(G)', value: 44, maxValue: 128 },
-            { title: 'CPU\n(core)', value: 8, maxValue: 32 },
-            { title: 'GPU\n(G)', value: 16, maxValue: 64 },
+            { title: '轮次', value: 1317, maxValue: 3000 },
+            { title: '内存', value: 44, maxValue: 128 },
+            { title: 'CPU', value: 8, maxValue: 32 },
+            { title: 'GPU', value: 16, maxValue: 64 },
           ],
         },
         {
@@ -61,10 +61,10 @@ export default {
           times: 133,
           frame: 'Tensorflow',
           itemList: [
-            { title: '轮次\n(次)', value: 2000, maxValue: 3000 },
-            { title: '内存\n(G)', value: 64, maxValue: 128 },
-            { title: 'CPU\n(core)', value: 8, maxValue: 32 },
-            { title: 'GPU\n(G)', value: 16, maxValue: 64 },
+            { title: '轮次', value: 2000, maxValue: 3000 },
+            { title: '内存', value: 64, maxValue: 128 },
+            { title: 'CPU', value: 8, maxValue: 32 },
+            { title: 'GPU', value: 16, maxValue: 64 },
           ],
         },
       ],
@@ -136,6 +136,7 @@ export default {
   flex-flow: row wrap;
   justify-content: space-evenly;
   margin-bottom: 100px;
+  margin: 0 -6px;
 }
 
 .el-card {

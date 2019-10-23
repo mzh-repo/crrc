@@ -2,7 +2,8 @@
   <el-container class="model-train">
     <div>
       <span class="title">{{modelData.name||'面向间歇式供电列车的模型训练'}}</span>
-      <span class="number">Loss {{number||'1'}}</span>
+      <span class="number">Loss: {{modelData.latest_loss}}</span>
+      <span class="time">创建时间：{{modelData.create_time}}</span>
     </div>
     <svg-icon icon-class="首页loss"
               class="img" />
@@ -43,10 +44,14 @@ export default {
     justify-content: center;
     align-items: flex-start;
   }
+
+  span:not(:last-child) {
+    margin-bottom: 25px;
+  }
 }
 
 .title {
-  margin: 0 0 78px;
+  // margin: 0 0 78px;
   font-size: 17px;
   font-family: 'PingFangSC-Regular', 'PingFangSC';
   font-weight: 400;

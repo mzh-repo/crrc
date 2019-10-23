@@ -39,9 +39,11 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     if (from.path === '/createModel/step1') {
-      localStorage.setItem('return', true);
+      localStorage.setItem('return', 1);
+    } else if (from.path === '/modelPublish') {
+      localStorage.setItem('return', 2);
     } else {
-      localStorage.setItem('return', false);
+      localStorage.setItem('return', 0);
     }
     next();
   },
@@ -53,8 +55,10 @@ export default {
     next() {
       if (this.active === 1) {
         if (this.$refs.route.value !== '' && this.$refs.route.DBName !== '') {
-          if (localStorage.getItem('return') === 'true') {
+          if (localStorage.getItem('return') === '1') {
             this.$router.push('/createModel/step1');
+          } else if (localStorage.getItem('return') === '2') {
+            this.$router.push('/modelPublish');
           } else {
             this.$router.push('/analyze');
             this.showPre = true;

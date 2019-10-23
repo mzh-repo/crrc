@@ -44,8 +44,11 @@
         <el-col :span="12">
           <div class="box">
             <bar-chart title="近期训练"
-                       xName="id"
+                       xName="Name"
                        yName="Loss"
+                       showTip="true"
+                       :showXAxis="false"
+                       :dataSet="trainData"
                        :height="chartHeight" />
           </div>
         </el-col>
@@ -54,6 +57,9 @@
             <bar-chart title="近期应用"
                        xName="id"
                        yName="Loss"
+                       showTip="true"
+                       :showXAxis="false"
+                       :dataSet="appData"
                        :colors="colors"
                        :height="chartHeight" />
           </div>
@@ -131,6 +137,8 @@ export default {
       screenWidth: document.body.clientWidth,
       modelList: [],
       resettime: false,
+      // 实时训练轮次
+      id: 1,
     };
   },
   computed: {
@@ -144,6 +152,7 @@ export default {
         setTimeout(() => {
           this.getLineData();
           this.b();
+          this.id += 1;
         }, 30000);
       }
     },
@@ -154,7 +163,7 @@ export default {
       this.$router.push({ path: '/modelReport' });
     },
     getLineData() {
-      this.$axios.get('/form/train?id=1').then((res) => {
+      this.$axios.get(`/form/train?id=${this.id}`).then((res) => {
         this.lineData = res.train;
         // console.log('444', res.train);
       });
@@ -167,7 +176,7 @@ export default {
   },
   mounted() {
     this.getLineData();
-    this.$axios.get('/form/recent?type=train').then((res) => {
+    this.$axios.get('/form/recent').then((res) => {
       this.appData = res.application;
       this.trainData = res.train;
     });

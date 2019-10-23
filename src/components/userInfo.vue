@@ -181,7 +181,7 @@ img {
 .step-box {
   width: 80%;
   // height: 320px;
-  height: 370px;
+  height: 350px;
   // background: rgba(216, 216, 216, 1);
   margin-left: 20px;
   margin-bottom: 22px;
