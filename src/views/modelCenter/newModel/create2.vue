@@ -16,7 +16,7 @@
         <el-row>使用框架: {{item.frame_name}}</el-row>
         <el-row>使用次数: {{item.used_counter}}次</el-row>
       </el-col>
-      <el-col :span="12"
+      <el-col :span="14"
               class="model">
         <el-row>
           使用该算法的实例（最近两个）
@@ -59,14 +59,25 @@ export default {
   },
   methods: {
     setChoice(item) {
-      this.algorithmId = item.id;
-      this.$store.commit('setAlgorithmData', {
-        id: item.id,
-        name: item.name,
-        model_name: item.model_name,
-        suit: item.applicable_problem,
-        frame: item.frame_name,
-      });
+      if (this.$store.state.algorithm.id === item.id) {
+        this.$store.commit('setAlgorithmData', {
+          id: '',
+          name: '',
+          model_name: '',
+          suit: '',
+          frame: '',
+        });
+        this.algorithmId = '';
+      } else {
+        this.$store.commit('setAlgorithmData', {
+          id: item.id,
+          name: item.name,
+          model_name: item.model_name,
+          suit: item.applicable_problem,
+          frame: item.frame_name,
+        });
+        this.algorithmId = item.id;
+      }
     },
   },
 };
@@ -132,6 +143,8 @@ export default {
 .model-example {
   border-radius: 8px;
   border: 1px solid rgba(216, 216, 216, 1);
+  min-width: 340px;
+  flex-wrap: wrap;
 
   /deep/ .optimization-continue {
     margin: 0;

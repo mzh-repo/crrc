@@ -1,41 +1,53 @@
 <template>
-  <div class="optimziation-continue">
-    <div class="optimization-continue">
-      <div v-if="optimziationList.algorithm"
-           class="tag">
-        <img :src="getUrl(optimziationList.algorithm.id)"
-             alt="">
-      </div>
-      <el-row class="title">{{optimziationList.name}}</el-row>
-      <el-row v-if="optimziationList.dataset"
-              class="describe">适用数据集：{{optimziationList.dataset.name}}</el-row>
-      <el-row>
-        <el-col :span="8"
-                class="example">
-          <div>最近训练Loss</div>
-          <div>{{(optimziationList.latest_loss)}}</div>
-        </el-col>
-        <el-col :span="16"
-                class="example">
-          <div>平均训练Loss</div>
-          <div>{{(optimziationList.average_loss)}}</div>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24"
-                class="content">
-          <el-row>
-            <div>实例个数</div>
-            <div>{{optimziationList.instance_number}}个</div>
-          </el-row>
-          <el-row v-if="optimziationList.dataset">
-            <div>大小</div>
-            <div>{{unitConvert(optimziationList.dataset.size)}}MB</div>
-          </el-row>
-        </el-col>
-      </el-row>
+  <!-- <div class="optimziation-continue"> -->
+  <div class="optimization-continue">
+    <div class="tag">
+      <img :src="getUrl(optimziationList.algorithm.id)"
+           alt="">
+      <!-- <img :src="getUrl(optimziationList.algorithm.id)"
+             alt=""> -->
+      <!-- <img src="@/assets/images/choiced.png" /> -->
     </div>
+    <el-row class="title">
+      <el-col>{{optimziationList.name}}</el-col>
+      <el-col>id: {{optimziationList.id}}</el-col>
+    </el-row>
+    <!-- <el-row class="title">{{optimziationList.name}}</el-row> -->
+    <el-row v-if="optimziationList.dataset"
+            class="describe">适用数据集：{{optimziationList.dataset.name}}</el-row>
+    <el-row>
+      <el-col :span="8"
+              class="example">
+        <div>最近训练Loss</div>
+        <div>{{(optimziationList.latest_loss)}}</div>
+      </el-col>
+      <el-col :span="16"
+              class="example">
+        <div>平均训练Loss</div>
+        <div>{{(optimziationList.average_loss)}}</div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24"
+              class="content">
+        <el-row>
+          <div>实例个数</div>
+          <div>{{optimziationList.instance_number}}个</div>
+        </el-row>
+        <el-row v-if="optimziationList.dataset">
+          <div>大小</div>
+          <div>{{unitConvert(optimziationList.dataset.size)}}MB</div>
+        </el-row>
+        <el-row v-if="showChoice">
+          <img v-if="this.$store.state.modelSelected.index === optimziationList.id"
+               src="@/assets/images/choiced.png" />
+          <div v-else
+               class="choice"></div>
+        </el-row>
+      </el-col>
+    </el-row>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -45,7 +57,6 @@ const imgUrl = [
   require('../assets/images/mklearn.png'),
   require('../assets/images/keras.png'),
   require('../assets/images/tensorflow.png')
-
   /* eslint-enable */
 ];
 
@@ -61,6 +72,10 @@ export default {
     describe: {
       type: String,
       default: '',
+    },
+    showChoice: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -89,9 +104,21 @@ export default {
   width: 428px;
 }
 
+// .tag {
+//   position: absolute;
+//   top: 20px;
+//   right: 20px;
+//   z-index: 9;
+
+//   // img {
+//   //   max-width: 96px;
+//   //   max-height: 40px;
+//   // }
+// }
+
 .tag {
   position: absolute;
-  top: 15px;
+  top: 10px;
   right: 15px;
   width: 96px;
   height: 40px;
@@ -101,10 +128,27 @@ export default {
   }
 }
 
+.choice {
+  width: 34px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(227, 227, 227, 1);
+}
+
 .title {
   font-size: 20px;
   line-height: 28px;
   margin-bottom: 20px;
+
+  .el-col {
+    text-align: left;
+
+    &:first-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }
 
 .describe {
@@ -112,6 +156,9 @@ export default {
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .title,
@@ -129,13 +176,13 @@ export default {
   div:nth-child(2) {
     font-size: 32px;
     line-height: 38px;
-    margin-bottom: 19px;
+    margin-bottom: 9px;
   }
 }
 
 .content {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   font-size: 14px;
   line-height: 20px;
 
@@ -144,13 +191,27 @@ export default {
     align-items: center;
     margin-bottom: 4px;
   }
+
   .el-row:nth-child(2) {
     display: flex;
     align-items: center;
     margin-bottom: 4px;
-    margin-left: 30px;
-    justify-content: flex-end;
+    // margin-left: 30px;
+    // justify-content: flex-end;
   }
+
+  .el-row:nth-child(3) {
+    display: flex;
+    margin-bottom: 4px;
+    justify-content: flex-end;
+
+    img {
+      width: 34px;
+      height: 34px;
+      margin-right: 22px;
+    }
+  }
+
   .el-row div:first-child {
     margin-right: 22px;
   }

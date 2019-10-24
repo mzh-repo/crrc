@@ -28,11 +28,10 @@ export default {
       default: '',
     },
     lineData: {
-      type: Array,
-      default: () => [
-        // bars: [],
-        // data: [],
-      ],
+      type: Object,
+      default: () => ({}),
+      // bars: [],
+      // data: [],
     },
     colors: {
       type: String,
@@ -96,10 +95,11 @@ export default {
         // },
         xAxis: [
           {
-            name: '数值',
-            // nameTextStyle: {
-            //   padding: 4,
-            // },
+            name: '数值范围',
+            nameLocation: 'center',
+            nameTextStyle: {
+              padding: 10,
+            },
             type: 'value',
             scale: true,
             data: data.x_list,
@@ -119,6 +119,9 @@ export default {
             // }
             splitLine: {
               show: false,
+            },
+            axisLabel: {
+              formatter: value => Math.floor(value * 10) / 10,
             },
             max: data.max,
             min: data.min,

@@ -9,7 +9,7 @@
             <el-tab-pane :key="index"
                          :label="item.name"
                          :name="item.name">
-              <div class="totalNum">共{{item.model_number}}个数据集</div>
+              <div class="totalNum">共{{item.dataset_line}}个数据集</div>
             </el-tab-pane>
           </template>
         </el-tabs>
@@ -65,6 +65,7 @@ export default {
       // titles: ['速度值分布', '坡度值分布'],
       // 数据集id
       // datasetId: 1,
+      dataList: [],
     };
   },
   mounted() {

@@ -48,7 +48,11 @@ export default {
     next();
   },
   created() {
-    this.$router.push('/importData');
+    // this.$router.push('/importData');
+  },
+  mounted() {
+    // 新建数据集跳转 && 导航栏跳转区分
+    this.fromRouteId = this.$route.query.id;
   },
   beforeDestroy() {},
   methods: {
@@ -57,7 +61,10 @@ export default {
         if (this.$refs.route.value !== '' && this.$refs.route.DBName !== '') {
           if (localStorage.getItem('return') === '1') {
             this.$router.push('/createModel/step1');
-          } else if (localStorage.getItem('return') === '2') {
+          } else if (
+            localStorage.getItem('return') === '2'
+            && this.fromRouteId
+          ) {
             this.$router.push('/modelPublish');
           } else {
             this.$router.push('/analyze');

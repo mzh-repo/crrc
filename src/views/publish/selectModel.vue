@@ -29,7 +29,8 @@
              :class="'model-box'"
              @click="next(item.id,item.name)">
           <div :class="item.id===choosed?'active':'noactive'">
-            <mzh-optimizationModel :optimziationList="item"
+            <mzh-optimizationModel showChoice="true"
+                                   :optimziationList="item"
                                    :describe="datebase[0]" />
           </div>
 
@@ -95,7 +96,11 @@ export default {
     },
     next(index, name) {
       this.choosed = index;
-      this.$store.commit('selectModel', { index, name });
+      if (this.$store.state.modelSelected.index === index) {
+        this.$store.commit('selectModel', { index: 0, name });
+      } else {
+        this.$store.commit('selectModel', { index, name });
+      }
     },
   },
   watch: {

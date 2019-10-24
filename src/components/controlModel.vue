@@ -170,7 +170,7 @@ export default {
 }
 .choice {
   width: 32px;
-  height: 32px;
+  height: 30px;
   border: 1px solid rgba(227, 227, 227, 1);
   border-radius: 50%;
   box-sizing: border-box;

@@ -87,6 +87,11 @@ export default {
       this.$router.push('/createModel/step1');
     },
     modelReport(item) {
+      if (this.$store.state.trainSelected === item.id) {
+        this.$store.commit('setTrain', '');
+      } else {
+        this.$store.commit('setTrain', item.id);
+      }
       // eslint-disable-next-line
       this.$store.commit('setReportData', {
         name: item.name,
@@ -100,7 +105,7 @@ export default {
         frame: item.algorithm.frame_name,
       });
       // this.$router.push('/modelReport');
-      this.$store.commit('setTrain', item.id);
+      // this.$store.commit('setTrain', item.id);
     },
     chooseDatabase() {
       this.dataBaseList.forEach((item) => {

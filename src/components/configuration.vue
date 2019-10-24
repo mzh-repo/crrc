@@ -3,17 +3,20 @@
     <div class="title">{{title}}</div>
     <el-row type="flex"
             align="middle"
-            v-for="item in sliderList"
-            :key="item.title">
+            v-for="(item,index) in sliderList"
+            :key="index">
       <el-col :span="2"
               class="label">
         <span class="demonstration">{{item.title}}</span>
       </el-col>
-      <el-col :span="22">
+      <el-col :span="20">
         <el-slider v-model="item.value"
                    :max="item.maxValue"
                    show-input>
         </el-slider>
+      </el-col>
+      <el-col :span="2">
+        <span>{{unitList[index]}}</span>
       </el-col>
     </el-row>
   </div>
@@ -29,19 +32,36 @@ export default {
     sliderList: {
       type: Array,
       default: () => [
-        { title: '轮次', value: 0, maxValue: 100 },
-        { title: '内存', value: 0, maxValue: 200 },
-        { title: 'CPU', value: 0, maxValue: 300 },
-        { title: 'GPU', value: 0, maxValue: 400 },
+        {
+          title: '轮次',
+          value: 0,
+          maxValue: 100,
+        },
+        {
+          title: '内存',
+          value: 0,
+          maxValue: 200,
+        },
+        {
+          title: 'CPU',
+          value: 0,
+          maxValue: 300,
+        },
+        {
+          title: 'GPU',
+          value: 0,
+          maxValue: 400,
+        },
       ],
     },
   },
   data() {
     return {
-      value1: 0,
-      value2: 0,
-      value3: 0,
-      value4: 0,
+      // value1: 0,
+      // value2: 0,
+      // value3: 0,
+      // value4: 0,
+      unitList: ['次', 'G', 'core', 'G'],
     };
   },
   methods: {},
@@ -79,6 +99,11 @@ export default {
 
 .el-row {
   margin-bottom: 8px;
+
+  .el-col:last-child {
+    margin-left: 10px;
+    font-size: 12px;
+  }
 }
 
 /deep/.el-input-number__decrease,

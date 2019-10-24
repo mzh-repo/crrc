@@ -7,12 +7,12 @@
         <div>物理大小：{{unitConvert(size)}}MB</div>
       </div>
     </div>
-    <el-row class="charts-title">
+    <!-- <el-row class="charts-title">
       <el-col :span="12">{{chartsOptions[0].title}}</el-col>
       <el-col :span="12">{{chartsOptions[1].title}}</el-col>
-    </el-row>
+    </el-row> -->
     <el-row class="charts-box">
-      <el-col :span="12">
+      <!-- <el-col :span="12">
         <bar-chart title=""
                    :colors="chartsOptions[0].colors"
                    :dataSet="chartsOptions[0].dataSet"
@@ -23,10 +23,18 @@
                    :colors="chartsOptions[1].colors"
                    :dataSet="chartsOptions[1].dataSet"
                    showXAxis="true" />
+      </el-col> -->
+      <el-col v-for="(item, index) in dataSetList"
+              :span="12"
+              :key="index"
+              align="center">
+        <histogram :colors="colors[index]"
+                   :lineData="item" />
       </el-col>
     </el-row>
     <div class="item-title">样例输出</div>
-    <table class="out-table">
+    <table class="out-table"
+           style="border-collapse:collapse">
       <tr v-for="(item,index) in outList"
           :key="index">
         <td v-for="(child,index) in item"
@@ -37,33 +45,36 @@
 </template>
 
 <script>
-import BarChart from '../../../components/barChart.vue';
+// import BarChart from '../../../components/barChart.vue';
+import Histogram from '../../../components/histogram.vue';
 
 export default {
-  components: { BarChart },
+  components: { Histogram },
   data() {
     return {
-      chartsOptions: [
-        {
-          title: '坡度值分布',
-          colors: ['#8FD866', '#8FD866'],
-          dataSet: {
-            data_list: [],
-            id_list: [],
-          },
-        },
-        {
-          title: '速度值分布',
-          colors: ['#00C4C0', '#00C4C0'],
-          dataSet: {
-            data_list: [],
-            id_list: [],
-          },
-        },
-      ],
+      // chartsOptions: [
+      //   {
+      //     title: '坡度值分布',
+      //     colors: ['#8FD866', '#8FD866'],
+      //     dataSet: {
+      //       data_list: [],
+      //       id_list: [],
+      //     },
+      //   },
+      //   {
+      //     title: '速度值分布',
+      //     colors: ['#00C4C0', '#00C4C0'],
+      //     dataSet: {
+      //       data_list: [],
+      //       id_list: [],
+      //     },
+      //   },
+      // ],
       outList: [],
       total: '',
       size: '',
+      dataSetList: [],
+      colors: ['#8FD866', '#00C4C0'],
     };
   },
   mounted() {
@@ -83,14 +94,14 @@ export default {
   },
   methods: {
     initData() {
-      this.$axios.get('/dataset/graph').then((res) => {
-        const temp = JSON.parse(JSON.stringify(this.chartsOptions));
-        for (let i = 0; i < res.length; i += 1) {
-          temp[i].dataSet.data_list = [...JSON.parse(res[i]).data];
-          temp[i].dataSet.id_list = [...JSON.parse(res[i]).bins];
-        }
-        this.chartsOptions = temp;
-      });
+      // this.$axios.get('/dataset/graph').then((res) => {
+      //   const temp = JSON.parse(JSON.stringify(this.chartsOptions));
+      //   for (let i = 0; i < res.length; i += 1) {
+      //     temp[i].dataSet.data_list = [...JSON.parse(res[i]).data];
+      //     temp[i].dataSet.id_list = [...JSON.parse(res[i]).bins];
+      //   }
+      //   this.chartsOptions = temp;
+      // });
 
       const data = {
         header_mappings: this.importData.options,
@@ -99,6 +110,7 @@ export default {
         id: this.importData.id,
       };
       this.$axios.put('/dataset', data).then((res) => {
+        this.dataSetList = res.graph;
         this.total = res.line;
         // this.size = this.formatDataSize(res.size, true);
         this.size = res.size;
@@ -117,26 +129,6 @@ export default {
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);
     },
-    // formatDataSize(val, isData) {
-    //   let unit = 1000;
-    //   if (isData) {
-    //     unit = 1024;
-    //   }
-    //   let data = val;
-    //   let flag = 0;
-    //   while (data / unit >= 1) {
-    //     data /= unit;
-    //     flag += 1;
-    //   }
-    //   if (flag === 1) {
-    //     data = `${data.toFixed(1)}K`;
-    //   } else if (flag === 2) {
-    //     data = `${data.toFixed(1)}M`;
-    //   } else if (flag === 3) {
-    //     data = `${data.toFixed(1)}G`;
-    //   }
-    //   return data;
-    // },
   },
 };
 </script>

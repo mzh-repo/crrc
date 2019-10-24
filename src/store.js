@@ -17,6 +17,7 @@ export default new Vuex.Store({
       total: '',
       size: '',
     },
+    // 选择模型
     modelSelected: '',
     dataSelected: '',
     exampleSelected: '',

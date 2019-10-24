@@ -46,7 +46,7 @@
             <bar-chart title="近期训练"
                        xName="Name"
                        yName="Loss"
-                       showTip="true"
+                       :showTip=true
                        :showXAxis="false"
                        :dataSet="trainData"
                        :height="chartHeight" />
@@ -57,7 +57,7 @@
             <bar-chart title="近期应用"
                        xName="id"
                        yName="Loss"
-                       showTip="true"
+                       :showTip=true
                        :showXAxis="false"
                        :dataSet="appData"
                        :colors="colors"

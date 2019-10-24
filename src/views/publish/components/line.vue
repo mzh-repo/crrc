@@ -80,6 +80,11 @@ export default {
             data: [this.yTitle, '实际'],
           },
           xAxis: {
+            name: '时间(s)',
+            nameLocation: 'center',
+            nameTextStyle: {
+              padding: [10, 0, 0, 0],
+            },
             type: 'category',
             boundaryGap: false,
             data: this.lineData.date_list,
@@ -101,10 +106,10 @@ export default {
               // y轴刻度线
               show: false,
             },
-            // axisLine: {
-            //   // y轴
-            //   show: false,
-            // },
+            axisLine: {
+              // y轴
+              show: false,
+            },
           },
           series: [
             {

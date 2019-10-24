@@ -31,7 +31,6 @@
                        @set-choice="choose" />
         <div v-if="item.id===choiced"
              class="model-data">
-          <div class="line"></div>
           <configuration class="configuration"
                          title="自定义配置"
                          :sliderList="sliderList" />
@@ -103,7 +102,7 @@ export default {
         this.$store.commit('setTrain', item.id);
         this.choiced = item.id;
       } else {
-        this.$store.commit('setTrain', 0);
+        this.$store.commit('setTrain', '');
         this.choiced = 0;
       }
     },
@@ -219,11 +218,11 @@ ul {
     position: relative;
     opacity: 1;
 
-    .line {
-      height: 1px;
-      padding: 0 20px;
-      background-color: #f2f2f2;
-    }
+    // .line {
+    //   height: 1px;
+    //   width: 100%;
+    //   padding: 0 20px;
+    // }
   }
 }
 .configuration {

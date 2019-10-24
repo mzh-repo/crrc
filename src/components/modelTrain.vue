@@ -37,6 +37,7 @@ export default {
   align-items: center;
   height: 164px;
   width: 100%;
+  text-align: left;
 
   div {
     padding: 19px 24px;
@@ -47,6 +48,11 @@ export default {
 
   span:not(:last-child) {
     margin-bottom: 25px;
+  }
+
+  span:last-child {
+    font-size: 14px;
+    color: #666;
   }
 }
 

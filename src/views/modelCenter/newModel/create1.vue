@@ -166,14 +166,25 @@ export default {
         });
     },
     choose(val) {
-      this.modelList.forEach((item) => {
-        if (val.id === item.id) {
-          this.$store.commit('setBasic', {
-            datasetId: val.id,
-            datasetName: val.name,
-          });
-        }
-      });
+      // this.modelList.forEach((item) => {
+      //   if (val.id === item.id) {
+      //     this.$store.commit('setBasic', {
+      //       datasetId: val.id,
+      //       datasetName: val.name,
+      //     });
+      //   }
+      // });
+      if (this.$store.state.basic.datasetId === val.id) {
+        this.$store.commit('setBasic', {
+          datasetId: '',
+          datasetName: '',
+        });
+      } else {
+        this.$store.commit('setBasic', {
+          datasetId: val.id,
+          datasetName: val.name,
+        });
+      }
       this.chooseModel(val.id);
     },
     chooseModel(id) {

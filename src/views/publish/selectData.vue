@@ -106,11 +106,16 @@ export default {
         });
     },
     choose(val) {
-      this.modelList.forEach((item) => {
-        if (val.id === item.id) {
-          this.$store.commit('selectData', val.id);
-        }
-      });
+      // this.modelList.forEach((item) => {
+      //   if (val.id === item.id) {
+      //     this.$store.commit('selectData', val.id);
+      //   }
+      // });
+      if (this.$store.state.dataSelected === val.id) {
+        this.$store.commit('selectData', '');
+      } else {
+        this.$store.commit('selectData', val.id);
+      }
     },
     chooseDatabase() {
       this.dataBaseList.forEach((item) => {
@@ -121,7 +126,7 @@ export default {
       this.getData();
     },
     toAddData() {
-      this.$router.push({ path: '/importData' });
+      this.$router.push({ path: '/importData?id=1' });
     },
   },
   // watch: {
@@ -146,7 +151,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'PingFangSC-Regular', 'PingFangSC';
 }
 
 .title,
