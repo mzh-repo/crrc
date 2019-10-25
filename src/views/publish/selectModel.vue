@@ -83,6 +83,7 @@ export default {
       this.dataBaseList.forEach((item) => {
         if (item.name === this.databaseName) {
           this.databaseId = item.id;
+          this.$store.commit('chooseDataBase', this.databaseId);
         }
       });
       this.getData();

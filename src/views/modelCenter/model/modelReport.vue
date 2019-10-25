@@ -22,6 +22,9 @@
       <el-col :span="9">
         <div class="chart">
           <bar-chart title="近期训练"
+                     :dataSet="trainData"
+                     :showTip=true
+                     :showXAxis="false"
                      xName="id"
                      yName="Loss" />
         </div>
@@ -30,6 +33,9 @@
         <div class="chart">
           <bar-chart title="近期应用"
                      :colors="colors"
+                     :dataSet="appData"
+                     :showTip=true
+                     :showXAxis="false"
                      xName="id"
                      yName="Loss" />
         </div>
@@ -130,7 +136,15 @@ export default {
   methods: {
     getdata() {
       this.$axios
-        .get(`model/instance/list?model_id=${this.$store.state.reportId || 1}`)
+        .get(`/form/recent?id=${this.$store.state.trainSelected}`)
+        .then((res) => {
+          this.appData = res.application;
+          this.trainData = res.train;
+        });
+      this.$axios
+        .get(
+          `model/instance/list?model_id=${this.$store.state.trainSelected || 1}`,
+        )
         .then((res) => {
           this.modelList = res;
         });

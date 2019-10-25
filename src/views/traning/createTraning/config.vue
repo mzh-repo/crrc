@@ -169,9 +169,9 @@ export default {
     @include box-center;
     justify-content: flex-start;
     width: 626px;
-    // div:first-child {
-    //   padding-right: 16px;
-    // }
+    div:first-child {
+      padding-right: 16px;
+    }
 
     /deep/ .el-tabs {
       display: flex;

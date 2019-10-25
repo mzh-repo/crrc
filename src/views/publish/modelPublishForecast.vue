@@ -116,10 +116,10 @@ export default {
       this.result = 3;
     } else {
       this.result = 0;
+      this.b();
     }
     // this.getRandom();
-    this.getLineData();
-    this.b();
+    // this.b();
     const nowDate = new Date();
     this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
       + 1}-${nowDate.getDate()}`;

@@ -45,13 +45,14 @@
             class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="手扳极位"
+          <mzh-line title="手扳级位"
                     :lineData="lineData.force" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
           <mzh-line title="能耗"
+                    :legend="legend"
                     :lineData="lineData.power" />
         </div>
       </el-col>
@@ -64,13 +65,14 @@
             class="chart-container">
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="手扳极位(实时)"
+          <mzh-line title="手扳级位(实时)"
                     :lineData="dynasticDataOne" />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
           <mzh-line title="能耗(实时)"
+                    :legend="legend"
                     :lineData="dynasticDataTwo" />
         </div>
       </el-col>
@@ -116,10 +118,12 @@ export default {
         date_list: [],
         data_list: [],
         predict_data_list: [],
+        green: [],
       },
       dynasticData: {},
       type: 3, // 2 间歇式, 3 非接触式
       time: '',
+      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
     };
   },
   mounted() {
@@ -157,30 +161,60 @@ export default {
     //   });
     // },
     getData() {
-      this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
-        this.lineData.force = res.level;
-        this.lineData.power = res.energy_consumption;
-        this.renderData(res);
-      });
+      this.$axios
+        .get(
+          `form/graph?model_type=${this.type}&dataset_id=${
+            this.$store.state.dataSelected
+          }`,
+        )
+        .then((res) => {
+          this.lineData.force = res.level;
+          this.lineData.power = res.energy_consumption;
+          this.renderData(res);
+        });
     },
     renderData(val) {
       for (let i = 0; i < val.level.data_list.length; i += 1) {
         this.time = setTimeout(() => {
           const data = {
-            data_list: this.dynasticDataOne.data_list.concat(
+            // data_list: this.dynasticDataOne.data_list.concat(
+            //   val.level.data_list[i],
+            // ),
+            // predict_data_list: this.dynasticDataOne.predict_data_list.concat(
+            //   val.level.predict_data_list[i],
+            // ),
+            data_list: [
+              ...this.dynasticDataOne.data_list,
               val.level.data_list[i],
-            ),
-            predict_data_list: this.dynasticDataOne.predict_data_list.concat(
+            ],
+
+            predict_data_list: [
+              ...this.dynasticDataOne.predict_data_list,
               val.level.predict_data_list[i],
-            ),
+            ],
           };
           const powerData = {
-            data_list: this.dynasticDataTwo.data_list.concat(
+            // data_list: this.dynasticDataTwo.data_list.concat(
+            //   val.energy_consumption.data_list[i],
+            // ),
+            // predict_data_list: this.dynasticDataTwo.predict_data_list.concat(
+            //   val.energy_consumption.predict_data_list[i],
+            // ),
+            // green: this.dynasticDataTwo.green.concat(
+            //   val.energy_consumption.green[i],
+            // ),
+            data_list: [
+              ...this.dynasticDataTwo.data_list,
               val.energy_consumption.data_list[i],
-            ),
-            predict_data_list: this.dynasticDataTwo.predict_data_list.concat(
+            ],
+            predict_data_list: [
+              ...this.dynasticDataTwo.predict_data_list,
               val.energy_consumption.predict_data_list[i],
-            ),
+            ],
+            green: [
+              ...this.dynasticDataTwo.green,
+              val.energy_consumption.green[i],
+            ],
           };
           this.dynasticDataOne = data;
           this.dynasticDataTwo = powerData;

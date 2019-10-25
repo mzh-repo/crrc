@@ -38,6 +38,10 @@ export default {
         predict_data_list: [],
       }),
     },
+    legend: {
+      type: Array,
+      default: () => ['预测', '实际'],
+    },
   },
   data() {
     return {
@@ -66,63 +70,148 @@ export default {
       };
       window.addEventListener('resize', this.resizeHandler);
     },
+    // initChart() {
+    //   this.chart = echarts.init(this.$el);
+    //   this.chart.setOption(
+    //     {
+    //       title: {
+    //         text: this.title,
+    //       },
+    //       tooltip: {
+    //         trigger: 'axis',
+    //       },
+    //       legend: {
+    //         data: [this.yTitle, '实际'],
+    //       },
+    //       xAxis: {
+    //         type: 'category',
+    //         boundaryGap: false,
+    //         data: this.lineData.date_list,
+    //         splitLine: { show: false },
+    //         axisTick: {
+    //           show: false,
+    //         },
+    //         axisLine: {
+    //           show: false,
+    //         },
+    //       },
+    //       yAxis: {
+    //         type: 'value',
+    //         axisLabel: {
+    //           formatter: '{value}',
+    //         },
+    //         splitLine: { show: false },
+    //         axisTick: {
+    //           // y轴刻度线
+    //           show: false,
+    //         },
+    //         // axisLine: {
+    //         //   // y轴
+    //         //   show: false,
+    //         // },
+    //       },
+    //       series: [
+    //         {
+    //           name: this.yTitle,
+    //           type: 'line',
+    //           data: this.lineData.predict_data_list,
+    //           symbol: 'none',
+    //         },
+    //         {
+    //           name: '实际',
+    //           type: 'line',
+    //           data: this.lineData.data_list,
+    //           symbol: 'none',
+    //         },
+    //       ],
+    //     },
+    //     true,
+    //   );
+    // },
     initChart() {
       this.chart = echarts.init(this.$el);
-      this.chart.setOption(
-        {
-          title: {
-            text: this.title,
+      const option = {
+        title: {
+          text: this.title,
+        },
+        tooltip: {
+          trigger: 'axis',
+        },
+        legend: {
+          data: this.legend,
+        },
+        xAxis: {
+          name: '时间(s)',
+          nameLocation: 'center',
+          nameTextStyle: {
+            padding: [10, 0, 0, 0],
           },
-          tooltip: {
-            trigger: 'axis',
+          type: 'category',
+          boundaryGap: false,
+          data: this.lineData.date_list,
+          splitLine: { show: false },
+          axisTick: {
+            show: false,
           },
-          legend: {
-            data: [this.yTitle, '实际'],
+          axisLine: {
+            show: false,
           },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: this.lineData.date_list,
-            splitLine: { show: false },
-            axisTick: {
-              show: false,
-            },
-            axisLine: {
-              show: false,
-            },
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            formatter: '{value}',
           },
-          yAxis: {
-            type: 'value',
-            axisLabel: {
-              formatter: '{value}',
-            },
-            splitLine: { show: false },
-            axisTick: {
-              // y轴刻度线
-              show: false,
-            },
-            // axisLine: {
-            //   // y轴
-            //   show: false,
-            // },
+          splitLine: { show: false },
+          axisTick: {
+            // y轴刻度线
+            show: false,
           },
+          axisLine: {
+            // y轴
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: this.yTitle,
+            type: 'line',
+            data: this.lineData.predict_data_list,
+            symbol: 'none',
+          },
+          {
+            name: '实际',
+            type: 'line',
+            data: this.lineData.data_list,
+            symbol: 'none',
+          },
+        ],
+      };
+      if (this.lineData.green) {
+        Object.assign(option, {
           series: [
             {
-              name: this.yTitle,
+              name: this.legend[0],
               type: 'line',
               data: this.lineData.predict_data_list,
               symbol: 'none',
             },
             {
-              name: '实际',
+              name: this.legend[1],
               type: 'line',
               data: this.lineData.data_list,
               symbol: 'none',
             },
+            {
+              name: this.legend[2],
+              type: 'line',
+              data: this.lineData.green,
+              symbol: 'none',
+            },
           ],
-        },
-        true,
-      );
+        });
+      }
+      this.chart.setOption(option, true);
     },
   },
   watch: {

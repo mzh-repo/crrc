@@ -155,7 +155,8 @@ export default {
 .content {
   display: flex;
   justify-content: space-between;
-  margin-top: 35px;
+  height: 30px;
+  margin-top: 24px;
   font-size: 14px;
   span {
     padding-right: 4px;
