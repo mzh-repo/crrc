@@ -106,7 +106,6 @@ export default {
   mounted() {
     // TODO: 获取不同模型的id 或 类型
     // eslint-disable-next-line no-console
-    console.log('model', this.$store.state.modelSelected.index);
     const id = this.$store.state.modelSelected.index;
     if (id === 1 || id === 2) {
       this.result = 4;

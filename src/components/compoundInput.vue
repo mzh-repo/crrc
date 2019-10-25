@@ -16,7 +16,7 @@
 <script>
 export default {
   props: {
-    select: { type: String, default: '' },
+    select: { type: Array, default: () => [] },
     index: { type: Number, default: null },
     title: {
       type: String,
@@ -32,7 +32,7 @@ export default {
     },
   },
   data() {
-    return { value: '' };
+    return { value: [] };
   },
   created() {
     this.value = this.select;

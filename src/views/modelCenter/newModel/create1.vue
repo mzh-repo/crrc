@@ -67,23 +67,37 @@
     </div>
     <el-row class="input-title">请选择输入输出</el-row>
     <el-row class="data-set">
-      <compound-input v-for="(item,index) in inputList"
+      <!-- <compound-input v-for="(item,index) in inputList"
                       multiple
                       :title="item.title"
-                      :key="item"
+                      :key="index"
                       :index="index"
+                      select="['12','33']"
                       :options="item.options"
-                      @selected="handleSelectChange" />
+                      @selected="handleSelectChange" /> -->
+      <template v-for="(item,index) in inputList">
+        <div class="box"
+             :key="index">
+          <div class="title">{{item.title}}</div>
+          <el-select v-model="inputData[index].data"
+                     multiple
+                     placeholder=""
+                     @change="selected">
+            <el-option v-for="(i,j) in item.options"
+                       :value="i"
+                       :key="j"></el-option>
+          </el-select>
+        </div>
+      </template>
     </el-row>
   </el-container>
 </template>
 
 <script>
 import Training from '@/components/trainingData.vue';
-import CompoundInput from '../../../components/compoundInput.vue';
 
 export default {
-  components: { Training, CompoundInput },
+  components: { Training },
   data() {
     return {
       dataBaseList: [],
@@ -92,8 +106,8 @@ export default {
       databaseName: '',
       dataActive: true,
       inputList: [
-        { title: '输入', options: [] },
-        { title: '输出', options: [] },
+        { title: '输入', options: [], select: [] },
+        { title: '输出', options: [], select: [] },
       ],
       arrayOptions: [],
       name: this.$store.state.basic.name || '',
@@ -101,6 +115,14 @@ export default {
       describe: this.$store.state.basic.describe || '',
       input: [],
       output: '',
+      inputData: [
+        {
+          data: [],
+        },
+        {
+          data: [],
+        },
+      ],
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -191,7 +213,13 @@ export default {
       this.$axios.get(`/dataset/headers?dataset_id=${id}`).then((res) => {
         // this.arrayOptions = res;
         this.inputList[0].options = res;
-        this.inputList[1].options = [...res, '输出列'];
+        this.inputData[0].data = res;
+        this.inputList[1].options = [
+          ...res,
+          '系统优化',
+          '运行控制',
+          '故障预警',
+        ];
       });
     },
   },
@@ -271,7 +299,8 @@ export default {
 
 .data-set {
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: column;
+
   /deep/ .el-tag {
     font-size: 16px;
     height: 30px;
@@ -281,5 +310,46 @@ export default {
 .model-area {
   display: flex;
   flex-wrap: wrap;
+}
+
+.box {
+  margin-right: 20px;
+  margin-bottom: 40px;
+  width: 100%;
+  height: 66px;
+  background: #fff;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.title {
+  font-size: 20px;
+  color: #666;
+  margin-left: 15px;
+  white-space: nowrap;
+  height: 21px;
+  line-height: 21px;
+  padding-right: 13px;
+  border-right: solid 1px #979797;
+  width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/deep/ .el-select {
+  width: 100%;
+}
+/deep/ .el-input {
+  width: 100%;
+}
+/deep/.el-input__inner {
+  width: 100%;
+  height: 66px;
+  border: none;
+  font-size: 24px;
+  color: #333;
 }
 </style>
