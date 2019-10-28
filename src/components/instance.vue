@@ -1,6 +1,7 @@
 <template>
   <el-card shadow="hover"
-           :style="chose?'height:116px;':'height:148px;'">
+           :style="chose?'height:116px;':'height:148px;'"
+           :class="status ===1 ? 'active': ''">
     <el-row type="flex"
             justify="space-between">
       <el-col class="title left">{{title}}</el-col>
@@ -148,6 +149,13 @@ export default {
   background-color: #fff;
   border-radius: 6px;
   position: relative;
+  opacity: 0.6;
+
+  &.active {
+    opacity: 1;
+    cursor: pointer;
+    box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.356);
+  }
 }
 
 /deep/.el-card__body {
@@ -181,10 +189,12 @@ export default {
   line-height: 17px;
   color: #fff;
   text-align: center;
+  opacity: 0.6;
 }
 
 .status1 {
   background: #70b40f;
+  opacity: 1;
 }
 
 .status2 {

@@ -87,7 +87,6 @@ export default {
       this.dataBaseList.forEach((item) => {
         if (item.name === this.databaseName) {
           this.databaseId = item.id;
-          this.$store.commit('chooseDataBase', this.databaseId);
         }
       });
       this.getData();
@@ -110,7 +109,7 @@ export default {
   },
   watch: {
     tab() {
-      this.$store.commit('chooseDataBase', this.tab);
+      // this.$store.commit('chooseDataBase', this.tab);
       if (this.tab === 1) {
         [this.modelList] = this.allList;
       } else if (this.tab === 2) {

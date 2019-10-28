@@ -115,6 +115,9 @@ export default {
       //     this.$store.commit('selectData', val.id);
       //   }
       // });
+      // 选择的数据表
+      this.$store.commit('chooseDataBase', this.databaseId);
+      this.$store.commit('dataSetName', this.databaseName);
       if (this.$store.state.dataSelected === val.id) {
         this.$store.commit('selectData', '');
       } else {
@@ -127,13 +130,14 @@ export default {
           this.databaseId = item.id;
         }
       });
-      this.$store.commit('dataSetName', this.databaseName);
+      // this.$store.commit('dataSetName', this.databaseName);
       this.getData();
     },
     toAddData() {
       this.$router.push({ path: '/importData?id=1' });
     },
   },
+
   // watch: {
   //   tab() {
   //     if (this.tab === 1) {

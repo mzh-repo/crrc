@@ -23,6 +23,7 @@
         <div class="chart">
           <bar-chart title="近期训练"
                      :dataSet="trainData"
+                     :tooltipList="['训练Loss','测试Loss']"
                      :showTip=true
                      :showXAxis="false"
                      xName="id"
@@ -73,10 +74,12 @@
         </div>
       </el-col>
     </el-row>
+    <el-row class="model-example">相关实例</el-row>
     <el-row class="model-control">
       <template v-for="(item,index) in modelList">
         <div :key="index"
-             class="model-box">
+             class="model-box"
+             @click="getForecast(item.status)">
           <instance :chose="false"
                     :status="item.status"
                     :title="item.name"
@@ -151,6 +154,15 @@ export default {
     },
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);
+    },
+    getForecast(status) {
+      if (status === 1) {
+        this.$router.push({
+          path: `/modelPublish/modelPublishForecast?id=${
+            this.$store.state.trainSelected
+          }`,
+        });
+      }
     },
   },
 };
@@ -244,5 +256,12 @@ export default {
   box-sizing: border-box;
   margin: 20px 8px 0 0;
   float: left;
+}
+
+.model-example {
+  text-align: left;
+  color: #333;
+  font-size: 24px;
+  margin-top: 20px;
 }
 </style>

@@ -46,6 +46,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    tooltipList: {
+      type: Array,
+      default: () => ['预测loss', '实际loss'],
+    },
   },
   data() {
     return {
@@ -119,7 +123,11 @@ export default {
               // 坐标轴指示器，坐标轴触发有效
               type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
             },
-            formatter: '{b} <br/>  预测loss: {c0} <br/> 实际loss: {c1} ',
+            // formatter: '{b} <br/>  预测loss: {c0} <br/> 实际loss: {c1} ',
+            /* eslint-disable indent */
+            formatter: value => `名称:${value[0].name}<br>${this.tooltipList[0]}: ${
+                value[0].value
+              }<br>${this.tooltipList[1]}: ${value[1].value}`,
             textStyle: {
               align: 'left',
             },

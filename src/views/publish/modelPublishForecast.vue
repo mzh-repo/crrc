@@ -2,7 +2,7 @@
   <el-container class="container">
     <div class="title">
       <div class="title-left">
-        <span>{{this.$store.state.modelSelected.name}}预测 - {{this.$store.state.dataSetName}}</span>
+        <span>{{this.$store.state.modelSelected.name}}预测 - {{databaseType}}</span>
         <span>实例{{this.$store.state.exampleSelected.name||'1908231434'}}</span>
       </div>
       <div class="title-right">
@@ -101,17 +101,24 @@ export default {
           actualNum: 10,
         },
       ],
+      modelId: '',
+      databaseType:
+        this.$store.state.dataSetName || this.$store.state.modelDatabaseName,
     };
   },
   mounted() {
     // TODO: 获取不同模型的id 或 类型
     // eslint-disable-next-line no-console
-    const id = this.$store.state.modelSelected.index;
-    if (id === 1 || id === 2) {
+    if (this.$route.query.id) {
+      this.modelId = Number(this.$route.query.id);
+    } else {
+      this.modelId = this.$store.state.modelSelected.index;
+    }
+    if (this.modelId === 1 || this.modelId === 2) {
       this.result = 4;
-    } else if (id === 3 || id === 4) {
+    } else if (this.modelId === 3 || this.modelId === 4) {
       this.result = 5;
-    } else if (id === 5 || id === 6) {
+    } else if (this.modelId === 5 || this.modelId === 6) {
       this.result = 3;
     } else {
       this.result = 0;

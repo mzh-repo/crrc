@@ -115,7 +115,7 @@ export default {
     width: 10%;
     height: 44px;
     position: absolute;
-    animation: mymove 160s infinite;
+    animation: mymove 100s infinite;
     animation-iteration-count: 1;
     -webkit-animation-iteration-count: 1; /* Safari 和 Chrome */
     animation-fill-mode: forwards;

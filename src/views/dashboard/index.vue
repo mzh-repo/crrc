@@ -46,6 +46,7 @@
             <bar-chart title="近期训练"
                        xName="Name"
                        yName="Loss"
+                       :tooltipList="['训练Loss','测试Loss']"
                        :showTip=true
                        :showXAxis="false"
                        :dataSet="trainData"

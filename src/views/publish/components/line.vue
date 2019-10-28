@@ -42,6 +42,10 @@ export default {
         predict_data_list: [],
       }),
     },
+    yArea: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -151,6 +155,27 @@ export default {
               symbol: 'none',
             },
           ],
+        });
+      }
+      if (this.yArea.length > 0) {
+        Object.assign(option, {
+          yAxis: {
+            type: 'value',
+            axisLabel: {
+              formatter: '{value}',
+            },
+            splitLine: { show: false },
+            axisTick: {
+              // y轴刻度线
+              show: false,
+            },
+            axisLine: {
+              // y轴
+              show: false,
+            },
+            max: this.yArea[0],
+            min: this.yArea[1],
+          },
         });
       }
       this.chart.setOption(option, true);

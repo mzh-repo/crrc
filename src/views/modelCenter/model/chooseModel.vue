@@ -62,6 +62,7 @@ export default {
       databaseName: '',
       databaseId: '',
       modelData: [],
+      datasetId: '',
     };
   },
   mounted() {
@@ -88,6 +89,8 @@ export default {
       } else {
         this.$store.commit('setTrain', item.id);
       }
+      this.$store.commit('setModelDatasetId', item.dataset.id);
+      this.$store.commit('modelDatabase', this.databaseName);
       // eslint-disable-next-line
       this.$store.commit('setReportData', {
         name: item.name,

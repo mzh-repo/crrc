@@ -64,6 +64,7 @@
         <div class="chart-box">
           <mzh-line title="能耗"
                     :legend="legend"
+                    :yArea="yArea"
                     :lineData="lineData.power" />
         </div>
       </el-col>
@@ -78,6 +79,7 @@
       <el-col :span="24">
         <div class="chart-box">
           <mzh-line title="手柄级位(实时)"
+                    :yArea="yArea"
                     :lineData="dynasticDataOne" />
         </div>
       </el-col>
@@ -147,25 +149,30 @@ export default {
         { name: '最快旅行速度', id: 2 },
       ],
       showAgain: true,
+      yArea: [],
+      dataSetId: '',
     };
   },
   mounted() {
     const { dataBase } = this.$store.state;
     if (dataBase === 1) {
       this.type = 2;
+      this.yArea = ['100', '-100'];
     } else {
+      this.yArea = ['8', '-8'];
       this.type = 3;
     }
     this.getData();
   },
   methods: {
     getData() {
+      if (this.$store.state.modelDatasetId !== '') {
+        this.dataSetId = this.$store.state.modelDatasetId;
+      } else {
+        this.dataSetId = this.$store.state.dataSelected;
+      }
       this.$axios
-        .get(
-          `form/graph?model_type=${this.type}&dataset_id=${
-            this.$store.state.dataSelected
-          }`,
-        )
+        .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
         .then((res) => {
           this.lineData.force = res.level;
           this.lineData.power = res.energy_consumption;
@@ -175,33 +182,68 @@ export default {
     renderData(val) {
       for (let i = 0; i < val.level.data_list.length; i += 1) {
         this.time = setTimeout(() => {
-          const data = {
-            data_list: [
-              ...this.dynasticDataOne.data_list,
-              val.level.data_list[i],
-            ],
+          if (i > 200) {
+            this.dynasticDataOne.data_list.shift();
+            this.dynasticDataOne.predict_data_list.shift();
+            this.dynasticDataTwo.data_list.shift();
+            this.dynasticDataTwo.predict_data_list.shift();
+            this.dynasticDataTwo.green.shift();
+            const data = {
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i],
+              ],
 
-            predict_data_list: [
-              ...this.dynasticDataOne.predict_data_list,
-              val.level.predict_data_list[i],
-            ],
-          };
-          const powerData = {
-            data_list: [
-              ...this.dynasticDataTwo.data_list,
-              val.energy_consumption.data_list[i],
-            ],
-            predict_data_list: [
-              ...this.dynasticDataTwo.predict_data_list,
-              val.energy_consumption.predict_data_list[i],
-            ],
-            green: [
-              ...this.dynasticDataTwo.green,
-              val.energy_consumption.green[i],
-            ],
-          };
-          this.dynasticDataOne = data;
-          this.dynasticDataTwo = powerData;
+              predict_data_list: [
+                ...this.dynasticDataOne.predict_data_list,
+                val.level.predict_data_list[i],
+              ],
+            };
+            const powerData = {
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i],
+              ],
+              predict_data_list: [
+                ...this.dynasticDataTwo.predict_data_list,
+                val.energy_consumption.predict_data_list[i],
+              ],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption.green[i],
+              ],
+            };
+            this.dynasticDataOne = data;
+            this.dynasticDataTwo = powerData;
+          } else {
+            const data = {
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i],
+              ],
+
+              predict_data_list: [
+                ...this.dynasticDataOne.predict_data_list,
+                val.level.predict_data_list[i],
+              ],
+            };
+            const powerData = {
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i],
+              ],
+              predict_data_list: [
+                ...this.dynasticDataTwo.predict_data_list,
+                val.energy_consumption.predict_data_list[i],
+              ],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption.green[i],
+              ],
+            };
+            this.dynasticDataOne = data;
+            this.dynasticDataTwo = powerData;
+          }
         }, 1000);
       }
     },
@@ -229,12 +271,13 @@ export default {
       });
     },
     getDataOther() {
+      if (this.$store.state.modelDatasetId !== '') {
+        this.dataSetId = this.$store.state.modelDatasetId;
+      } else {
+        this.dataSetId = this.$store.state.dataSelected;
+      }
       this.$axios
-        .get(
-          `form/graph?model_type=${this.type}&dataset_id=${
-            this.$store.state.dataSelected
-          }`,
-        )
+        .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
         .then((res) => {
           this.lineData.force = res.level_speed;
           this.lineData.power = res.energy_consumption_speed;
@@ -271,7 +314,7 @@ export default {
           };
           this.dynasticDataOne = data;
           this.dynasticDataTwo = powerData;
-        }, 1000);
+        }, 500);
       }
     },
   },

@@ -62,6 +62,8 @@ export default new Vuex.Store({
     record: {},
     dataBase: 1,
     dataSetName: '',
+    modelDatabaseName: '',
+    modelDatasetId: '',
   },
   mutations: {
     setRecord(state, value) {
@@ -110,6 +112,14 @@ export default new Vuex.Store({
     // 数据集名称
     dataSetName(state, value) {
       state.dataSetName = value;
+    },
+    // 模型中心选择的模型数据表名
+    modelDatabase(state, value) {
+      state.modelDatabaseName = value;
+    },
+    // 模型中心不同数据集不同结果集
+    setModelDatasetId(state, value) {
+      state.modelDatasetId = value;
     },
   },
   actions: {
