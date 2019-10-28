@@ -2,7 +2,7 @@
   <el-container class="container">
     <div class="title">
       <div class="title-left">
-        <span>{{this.$store.state.modelSelected.name}}预测</span>
+        <span>{{this.$store.state.modelSelected.name}}预测 - {{this.$store.state.dataSetName}}</span>
         <span>实例{{this.$store.state.exampleSelected.name||'1908231434'}}</span>
       </div>
       <div class="title-right">

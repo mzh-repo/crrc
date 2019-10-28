@@ -1,33 +1,29 @@
 <template>
   <el-container class="choose-model">
-    <el-row class="main-title">请选择模型查看报告</el-row>
-    <el-row class="title">
+    <!-- <el-row class="main-title">请选择模型查看报告</el-row> -->
+    <!-- <el-row class="title">
       <el-col>
-        <!-- <span class="title-header"
+        <span class="title-header"
               @click="chooseModel">
           选择模型
-        </span> -->
-        <!-- <span :class="!modelActive? 'active': ''"
+        </span>
+        <span :class="!modelActive? 'active': ''"
               @click="chooseApp">
           选择应用
-        </span> -->
+        </span>
       </el-col>
-    </el-row>
+    </el-row> -->
     <el-row class="model-data">
       <el-row class="database-tab">
-        <!-- <span v-for="(item,index) in dataBaseList"
-              :key="index"
-              :class="databaseId === item.id ? 'active': ''"
-              @click="chooseDatabase(item.id)">
-          {{item.name}}
-        </span> -->
         <el-tabs v-model="databaseName"
                  @tab-click="chooseDatabase">
           <template v-for="(item,index) in dataBaseList">
             <el-tab-pane :key="index"
                          :label="item.name"
                          :name="item.name">
-              <!-- 请选择模型查看报告 -->
+              <span><i class="el-icon-info" />
+                请选择模型查看报告
+              </span>
             </el-tab-pane>
           </template>
         </el-tabs>
@@ -204,20 +200,12 @@ export default {
   position: relative;
 
   span {
-    margin-right: 40px;
-    cursor: pointer;
-    color: #999;
-
-    // &:hover,
-    &.active {
-      font-size: 28px;
-      font-weight: 600;
-      border-bottom: 2px solid #333;
-      color: #333;
-      transform: scale(1.4);
-      transition: all 0.3s;
-    }
+    margin-right: 60px;
+    // cursor: pointer;
+    color: #666;
+    font-size: 20px;
   }
+
   /deep/ .el-tabs {
     display: flex;
     justify-content: space-between;

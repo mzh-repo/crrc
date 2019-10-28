@@ -1,19 +1,20 @@
 <template>
   <el-container class="container">
-    <el-row class="choice">请选择数据进行训练</el-row>
+    <!-- <el-row class="choice">请选择数据进行训练</el-row> -->
     <el-row class="data-choice">
-      <div class="choice-content">
-        <el-tabs v-model="databaseName"
-                 @tab-click="chooseDatabase">
-          <template v-for="(item,index) in dataBaseList">
-            <el-tab-pane :key="index"
-                         :label="item.name"
-                         :name="item.name">
-              <div class="totalNum">共{{item.dataset_line}}个数据集</div>
-            </el-tab-pane>
-          </template>
-        </el-tabs>
-      </div>
+      <el-tabs v-model="databaseName"
+               @tab-click="chooseDatabase">
+        <template v-for="(item,index) in dataBaseList">
+          <el-tab-pane :key="index"
+                       :label="item.name"
+                       :name="item.name">
+            <div class="totalNum">共{{item.dataset_line}}个数据集</div>
+            <span><i class="el-icon-info" />
+              请选择数据进行训练
+            </span>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
     </el-row>
     <el-row class="collapse">
       <el-collapse v-for="(item,index) in collapseList"
@@ -26,7 +27,7 @@
             </div>
             <span>共{{item.line}}条</span>
           </template>
-          <el-row @click.native="setSelect(index)">
+          <el-row @click.native="setSelect(item.id)">
             <el-col v-for="(histogramList, i) in item.graph"
                     :span="8"
                     :key="i"
@@ -34,7 +35,7 @@
               <histogram :colors="colors[i]"
                          :lineData="histogramList" />
             </el-col>
-            <img v-if="index===selected"
+            <img v-if="item.id===selected"
                  src="@/assets/images/choiced.png"
                  class="stamp">
             <div v-else
@@ -167,24 +168,33 @@ export default {
   width: 100%;
   font-size: 22px;
   line-height: 30px;
+  position: relative;
 
-  .choice-content {
-    @include box-center;
-    justify-content: flex-start;
-    width: 626px;
-    // div:first-child {
-    //   padding-right: 16px;
-    // }
+  // .choice-content {
+  //   @include box-center;
+  //   justify-content: flex-start;
+  //   // width: 626px;
 
-    /deep/ .el-tabs {
+  /deep/ .el-tabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .el-tab-pane {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-
-      .el-tabs__item {
-        font-size: 24px;
-      }
     }
+
+    span {
+      color: #666;
+      font-size: 20px;
+    }
+
+    .el-tabs__item {
+      font-size: 24px;
+    }
+    // }
   }
 }
 .active {
@@ -196,7 +206,7 @@ export default {
   color: #999;
   font-size: 18px;
   line-height: 25px;
-  margin-left: 50px;
+  margin-right: 50px;
 }
 .collapse {
   width: 100%;

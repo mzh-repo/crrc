@@ -61,6 +61,7 @@ export default new Vuex.Store({
     chooseData: '',
     record: {},
     dataBase: 1,
+    dataSetName: '',
   },
   mutations: {
     setRecord(state, value) {
@@ -105,6 +106,10 @@ export default new Vuex.Store({
     // 不同数据库中不同模型预测结果
     chooseDataBase(state, value) {
       state.dataBase = value;
+    },
+    // 数据集名称
+    dataSetName(state, value) {
+      state.dataSetName = value;
     },
   },
   actions: {

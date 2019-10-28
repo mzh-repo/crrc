@@ -56,7 +56,7 @@
             class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="手扳级位"
+          <mzh-line title="手柄级位"
                     :lineData="lineData.force" />
         </div>
       </el-col>
@@ -77,7 +77,7 @@
             class="chart-container">
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="手扳级位(实时)"
+          <mzh-line title="手柄级位(实时)"
                     :lineData="dynasticDataOne" />
         </div>
       </el-col>
@@ -115,7 +115,7 @@ export default {
         '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network.',
       model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
       targetFuc:
-        '```AsciiMath\nL= ||F_{t+1}-F_{t+1} ||^2+α||F_(t+1) v_(t+1) ||^2\n```',
+        '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
       speed: 10,
       energy: 10,
       lineData: {

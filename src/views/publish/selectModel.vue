@@ -19,6 +19,9 @@
           <el-tab-pane :key="index"
                        :label="item.name"
                        :name="item.name">
+            <span class="info"><i class="el-icon-info" />
+              请选择模型
+            </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -29,7 +32,7 @@
              :class="'model-box'"
              @click="next(item.id,item.name)">
           <div :class="item.id===choosed?'active':'noactive'">
-            <mzh-optimizationModel showChoice="true"
+            <mzh-optimizationModel showChoice
                                    :optimziationList="item"
                                    :describe="datebase[0]" />
           </div>
@@ -52,6 +55,7 @@ export default {
       allList: [],
       choosed: 0,
       tab: 1,
+      dataBaseList: [],
       databaseId: '',
       databaseName: '',
     };
@@ -143,6 +147,18 @@ export default {
 
   /deep/ .el-tabs__item {
     font-size: 24px;
+  }
+
+  /deep/ .el-tabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  span {
+    color: #666;
+    font-size: 20px;
   }
 }
 

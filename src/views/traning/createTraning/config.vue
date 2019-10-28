@@ -1,20 +1,22 @@
 <template>
   <el-container class="container">
-    <el-row class="choice">请选择模型进行训练</el-row>
+    <!-- <el-row class="choice">请选择模型进行训练</el-row> -->
     <el-row class="data-choice">
-      <div class="choice-content">
-        <el-tabs v-model="databaseName"
-                 @tab-click="chooseDatabase">
-          <template v-for="(item,index) in dataBaseList">
-            <el-tab-pane :key="index"
-                         :label="item.name"
-                         :name="item.name">
-              <div class="total-num">共{{item.model_number}}个模型</div>
-            </el-tab-pane>
-          </template>
-        </el-tabs>
-      </div>
-      <!-- <div class="total-num">共{{dataList[isActive-1].model_number}}个模型</div> -->
+      <!-- <div class="choice-content"> -->
+      <el-tabs v-model="databaseName"
+               @tab-click="chooseDatabase">
+        <template v-for="(item,index) in dataBaseList">
+          <el-tab-pane :key="index"
+                       :label="item.name"
+                       :name="item.name">
+            <div class="total-num">共{{item.model_number}}个模型</div>
+            <span><i class="el-icon-info" />
+              请选择模型进行训练
+            </span>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
+      <!-- </div> -->
     </el-row>
     <!-- <ul v-for="(item, index) in  resource"
         :key="index">
@@ -165,34 +167,47 @@ export default {
   font-size: 22px;
   line-height: 30px;
 
-  .choice-content {
-    @include box-center;
-    justify-content: flex-start;
-    width: 626px;
-    div:first-child {
-      padding-right: 16px;
+  // .choice-content {
+  //   @include box-center;
+  //   justify-content: flex-start;
+  //   width: 626px;
+  //   div:first-child {
+  //     padding-right: 16px;
+  //   }
+
+  /deep/ .el-tabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .el-tab-pane {
+      display: flex;
+      align-items: center;
     }
 
-    /deep/ .el-tabs {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .el-tabs__item {
-        font-size: 24px;
-      }
+    span {
+      color: #666;
+      font-size: 20px;
+      margin-right: 20px;
+    }
+    .el-tabs__item {
+      font-size: 24px;
     }
   }
+  // }
 }
+
 .active {
   font-size: 28px;
   line-height: 40px;
 }
+
 .total-num {
   color: #999;
   font-size: 18px;
   line-height: 25px;
-  margin-left: 50px;
+  margin-right: 50px;
 }
 
 ul {

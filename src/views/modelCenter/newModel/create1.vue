@@ -61,6 +61,7 @@
         <training :dataList="item"
                   :key="index"
                   :span="6"
+                  :active="$store.state.basic.datasetId===item.id"
                   @set-choice="choose" />
         <!-- </div> -->
       </template>
@@ -215,10 +216,10 @@ export default {
         this.inputList[0].options = res;
         this.inputData[0].data = res;
         this.inputList[1].options = [
-          ...res,
           '系统优化',
           '运行控制',
           '故障预警',
+          ...res,
         ];
       });
     },
@@ -341,9 +342,18 @@ export default {
 
 /deep/ .el-select {
   width: 100%;
+  max-height: 120px;
+  overflow: auto;
+
+  .el-select__tags {
+    max-height: 120px;
+    overflow: auto;
+  }
 }
 /deep/ .el-input {
   width: 100%;
+  max-height: 120px;
+  overflow: hidden;
 }
 /deep/.el-input__inner {
   width: 100%;

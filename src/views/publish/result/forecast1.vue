@@ -53,7 +53,7 @@
             class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="手扳级位"
+          <mzh-line title="手柄级位"
                     :lineData="lineData.force" />
         </div>
       </el-col>
@@ -70,7 +70,7 @@
             class="chart-container">
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="手扳级位(实时)"
+          <mzh-line title="手柄级位(实时)"
                     :lineData="dynasticDataOne" />
         </div>
       </el-col>
@@ -108,8 +108,8 @@ export default {
       // tabId: 1,
       limitList: ['约束条件1', '约束条件2', '约束条件3'],
       lineData: {
-        force: '',
-        power: '',
+        force: {},
+        power: {},
       },
       // dynasticData: {
       //   force: {

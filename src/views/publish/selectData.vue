@@ -22,6 +22,9 @@
                        @click="toAddData">
               新建数据集
             </el-button>
+            <span class="info"><i class="el-icon-info" />
+              请选择数据集
+            </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -31,6 +34,7 @@
         <mzh-trainingData :key="index"
                           :span="6"
                           :dataList="item"
+                          :active="$store.state.dataSelected===item.id"
                           @set-choice="choose" />
       </template>
     </div>
@@ -123,6 +127,7 @@ export default {
           this.databaseId = item.id;
         }
       });
+      this.$store.commit('dataSetName', this.databaseName);
       this.getData();
     },
     toAddData() {
@@ -168,13 +173,26 @@ export default {
   /deep/ .el-tabs {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+
+    .el-tab-pane {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
 
     .el-tabs__item {
       font-size: 24px;
     }
 
     .el-button {
-      margin-left: 30px;
+      margin-right: 30px;
+    }
+
+    .info {
+      margin-right: 40px;
+      color: #666;
+      font-size: 20px;
     }
   }
 }

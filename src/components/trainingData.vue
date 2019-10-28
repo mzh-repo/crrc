@@ -1,7 +1,6 @@
 <template>
   <div class="training-data"
-       :class="this.$store.state.dataSelected===dataList.id
-       ||this.$store.state.basic.datasetId===dataList.id? 'active': ''"
+       :class="active === true? 'active': ''"
        @click="setChoice(dataList)">
     <!-- {{data}} -->
     <el-row class="title">{{dataList.name || "demo"}}</el-row>
@@ -32,8 +31,7 @@
                     }}</span> -->
           <span>上传时间： {{dataList.create_time}}</span>
         </el-row>
-        <img v-if="this.$store.state.dataSelected===dataList.id
-                    || this.$store.state.basic.datasetId === dataList.id"
+        <img v-if="active === true"
              src="@/assets/images/choiced.png">
         <div v-else
              class="choice"></div>
