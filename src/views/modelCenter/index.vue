@@ -115,12 +115,14 @@ export default {
             message: '请选择数据集',
             type: 'warning',
           });
-        } else if (data.input.length === 0) {
-          this.$message({
-            message: '请选择输入',
-            type: 'warning',
-          });
-        } else {
+        }
+        // else if (data.input.length === 0) {
+        //   this.$message({
+        //     message: '请选择输入',
+        //     type: 'warning',
+        //   });
+        // }
+        else {
           this.$store.commit('setBasic', {
             name: data.name,
             scene: data.scene,
