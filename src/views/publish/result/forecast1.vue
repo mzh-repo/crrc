@@ -60,7 +60,7 @@
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <power-line title="能耗"
+          <power-line title="能耗 kW·h"
                       :legend="legend"
                       :lineData="lineData.power" />
         </div>
@@ -78,7 +78,7 @@
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <power-line title="能耗(实时)"
+          <power-line title="能耗(实时) kW·h"
                       :legend="legend"
                       :lineData="dynasticDataTwo" />
         </div>
@@ -229,22 +229,6 @@ export default {
     //     this.lineData = res;
     //   });
     // },
-    // getDynastic() {
-    //   this.time = setTimeout(() => {
-    //     this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
-    //       const data = {
-    //         data_list: this.dynasticDataOne.data_list.concat(
-    //           res.level.data_list,
-    //         ),
-    //         predict_data_list: this.dynasticDataOne.predict_data_list.concat(
-    //           res.level.predict_data_list,
-    //         ),
-    //       };
-    //       this.dynasticDataOne = data;
-    //     });
-    //     // this.getDynastic();
-    //   }, 1000);
-    // },
     getData() {
       if (this.$store.state.modelDatasetId !== '') {
         this.dataSetId = this.$store.state.modelDatasetId;
@@ -267,19 +251,24 @@ export default {
           if (i > 200) {
             this.dynasticDataOne.data_list.shift();
             this.dynasticDataOne.predict_data_list.shift();
+            // this.dynasticDataOne.date_list.shift();
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
             this.dynasticDataTwo.green.shift();
+            // this.dynasticDataTwo.date_list.shift();
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
                 val.level.data_list[i],
               ],
-
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataOne.date_list,
+              //   val.level.date_list[i],
+              // ],
             };
             const powerData = {
               data_list: [
@@ -294,6 +283,10 @@ export default {
                 ...this.dynasticDataTwo.green,
                 val.energy_consumption.green[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataTwo.date_list,
+              //   val.level.date_list[i],
+              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -307,6 +300,10 @@ export default {
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataOne.date_list,
+              //   val.level.date_list[i],
+              // ],
             };
             const powerData = {
               data_list: [
@@ -321,11 +318,15 @@ export default {
                 ...this.dynasticDataTwo.green,
                 val.energy_consumption.green[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataTwo.date_list,
+              //   val.level.date_list[i],
+              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
-        }, 500);
+        }, 1000);
       }
     },
   },

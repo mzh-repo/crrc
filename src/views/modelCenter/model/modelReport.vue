@@ -227,6 +227,10 @@ export default {
     font-size: 24px;
   }
 
+  .el-col {
+    text-align: center;
+  }
+
   .el-row {
     align-items: flex-end;
     margin-bottom: 28px;

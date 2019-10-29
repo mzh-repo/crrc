@@ -144,7 +144,7 @@ export default {
           name: '时间(s)',
           nameLocation: 'center',
           nameTextStyle: {
-            padding: [10, 0, 0, 0],
+            padding: [20, 0, 0, 0],
           },
           type: 'category',
           boundaryGap: false,
@@ -152,6 +152,10 @@ export default {
           splitLine: { show: false },
           axisTick: {
             show: false,
+          },
+          axisLabel: {
+            // rotate: 50,
+            formatter: value => Math.floor(value * 10) / 10,
           },
           axisLine: {
             show: false,

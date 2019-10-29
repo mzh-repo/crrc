@@ -75,13 +75,13 @@ export default {
   },
 
   mounted() {
-    if (this.$store.state.dataSelected) {
-      this.dataList.forEach((item, num) => {
-        if (this.$store.state.dataSelected === item.id) {
-          this.dataList[num].choiced = true;
-        }
-      });
-    }
+    // if (this.$store.state.dataSelected) {
+    //   this.dataList.forEach((item, num) => {
+    //     if (this.$store.state.dataSelected === item.id) {
+    //       this.dataList[num].choiced = true;
+    //     }
+    //   });
+    // }
     this.getDataList();
   },
   methods: {

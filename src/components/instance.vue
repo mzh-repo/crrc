@@ -119,6 +119,9 @@ export default {
       } else if (this.status === 4) {
         tag.text = '训练中';
         tag.class = 'status4';
+      } else if (this.status === 5) {
+        tag.text = '未部署';
+        tag.class = 'status5';
       }
       return tag;
     },
@@ -208,6 +211,10 @@ export default {
 
 .status4 {
   background: #54a8f7;
+}
+
+.status5 {
+  background: black;
 }
 
 .loss {

@@ -33,6 +33,7 @@
                     :key="i"
                     class="echarts">
               <histogram :colors="colors[i]"
+                         :title="titleList[i]"
                          :lineData="histogramList" />
             </el-col>
             <img v-if="item.id===selected"
@@ -67,6 +68,7 @@ export default {
       // 数据集id
       // datasetId: 1,
       dataList: [],
+      titleList: ['关键指标<速度>分布', '关键指标<坡度>分布'],
     };
   },
   mounted() {

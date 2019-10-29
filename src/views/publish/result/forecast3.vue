@@ -130,12 +130,12 @@ export default {
           };
           this.lineDataOne = data;
         } else {
-          const data = {
+          const dataOther = {
             validation_list: res.health.overall,
             data_list: res.health.storage,
             record_list: res.health.supply,
           };
-          this.lineDataTwo = data;
+          this.lineDataTwo = dataOther;
         }
         this.earlyList = res.status;
         this.progress.show = res.overall;

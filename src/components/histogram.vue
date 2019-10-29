@@ -93,6 +93,15 @@ export default {
         //   bottom: '3%',
         //   containLabel: true,
         // },
+        title: {
+          text: this.title,
+          padding: [17, 27],
+          textStyle: {
+            fontFamily: 'PingFangSC-Medium,PingFangSC',
+            fontSize: 16,
+            fontWeight: 'bold',
+          },
+        },
         xAxis: [
           {
             name: '数值范围',

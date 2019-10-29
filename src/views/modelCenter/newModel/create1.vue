@@ -212,14 +212,16 @@ export default {
     },
     chooseModel(id) {
       this.$axios.get(`/dataset/headers?dataset_id=${id}`).then((res) => {
-        // this.arrayOptions = res;
-        this.inputList[0].options = res;
-        this.inputData[0].data = res;
+        // const reg = /^[\u4e00-\u9fa5a-z]+$/gi;
+        // const data = res.filter(item => item !== '' && reg.test(...item));
+        const data = res.filter(item => item !== '');
+        this.inputList[0].options = data;
+        this.inputData[0].data = data;
         this.inputList[1].options = [
           '系统优化',
           '运行控制',
           '故障预警',
-          ...res,
+          ...data,
         ];
       });
     },
@@ -342,17 +344,17 @@ export default {
 
 /deep/ .el-select {
   width: 100%;
-  max-height: 120px;
+  max-height: 66px;
   overflow: auto;
 
   .el-select__tags {
-    max-height: 120px;
+    max-height: 66px;
     overflow: auto;
   }
 }
 /deep/ .el-input {
   width: 100%;
-  max-height: 120px;
+  max-height: 66px;
   overflow: hidden;
 }
 /deep/.el-input__inner {

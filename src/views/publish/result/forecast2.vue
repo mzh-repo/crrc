@@ -52,28 +52,39 @@
         <markdown-it-vue :content="targetFuc" />
       </el-col>
     </el-row>
+    <!-- <el-row>
+      <el-col :span="12"></el-col>
+      <el-col :span="12"
+              class="speed-line">
+        预测能耗(实际级位)与实际能耗(实际级位)平均差异：{{lineData.power.ratio}}
+      </el-col>
+    </el-row> -->
+    <el-row class="speed-line">
+      预测能耗(实际级位)与实际能耗(实际级位)平均差异：{{lineData.power.ratio}}
+    </el-row>
     <el-row :gutter="19"
             class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
           <mzh-line title="手柄级位"
+                    :yArea="yArea"
                     :lineData="lineData.force" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="能耗"
+          <mzh-line title="能耗 kW·h"
                     :legend="legend"
-                    :yArea="yArea"
                     :lineData="lineData.power" />
         </div>
       </el-col>
     </el-row>
-    <el-row class="speed-line">
-      <!-- 平均速度： {{speed}}km/s &nbsp;&nbsp;&nbsp; 总能耗: {{energy}}kwh -->
+    <!-- <el-row class="speed-line">
       预测能耗(实际级位)与实际能耗(实际级位)平均差异：{{lineData.power.ratio}}
-    </el-row>
-    <move-train v-if="showAgain" />
+    </el-row> -->
+    <template v-if="showAgain">
+      <move-train />
+    </template>
     <el-row :gutter="19"
             class="chart-container">
       <el-col :span="24">
@@ -85,7 +96,7 @@
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="能耗(实时)"
+          <mzh-line title="能耗(实时) kW·h"
                     :legend="legend"
                     :lineData="dynasticDataTwo" />
         </div>
@@ -114,15 +125,15 @@ export default {
       // tabId: 1,
       percent: 80,
       explain:
-        '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network.',
+        '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network)',
       model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
       targetFuc:
         '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
       speed: 10,
       energy: 10,
       lineData: {
-        force: [],
-        power: [],
+        force: {},
+        power: {},
       },
       dynasticDataOne: {
         date_list: [],
@@ -137,7 +148,8 @@ export default {
       },
       dynasticData: {},
       type: 3, // 2 间歇式, 3 非接触式
-      time: '',
+      time: null,
+      timer: null,
       legend: [
         '预测能耗(预测级位)',
         '实际能耗(实际级位)',
@@ -159,7 +171,7 @@ export default {
       this.type = 2;
       this.yArea = ['100', '-100'];
     } else {
-      this.yArea = ['8', '-8'];
+      this.yArea = ['7', '-7'];
       this.type = 3;
     }
     this.getData();
@@ -185,9 +197,11 @@ export default {
           if (i > 200) {
             this.dynasticDataOne.data_list.shift();
             this.dynasticDataOne.predict_data_list.shift();
+            // this.dynasticDataOne.date_list.shift();
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
             this.dynasticDataTwo.green.shift();
+            // this.dynasticDataTwo.date_list.shift();
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
@@ -198,6 +212,10 @@ export default {
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataOne.date_list,
+              //   val.level.date_list[i],
+              // ],
             };
             const powerData = {
               data_list: [
@@ -212,6 +230,10 @@ export default {
                 ...this.dynasticDataTwo.green,
                 val.energy_consumption.green[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataTwo.date_list,
+              //   val.energy_consumption.date_list[i],
+              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -226,6 +248,10 @@ export default {
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataOne.date_list,
+              //   val.level.date_list[i],
+              // ],
             };
             const powerData = {
               data_list: [
@@ -240,6 +266,10 @@ export default {
                 ...this.dynasticDataTwo.green,
                 val.energy_consumption.green[i],
               ],
+              // date_list: [
+              //   ...this.dynasticDataTwo.date_list,
+              //   val.energy_consumption.date_list[i],
+              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -250,6 +280,12 @@ export default {
     // 不同结果集
     chooseResult() {
       this.showAgain = false;
+      if (this.timeOutLoading !== 0) {
+        clearTimeout(this.time);
+        clearTimeout(this.timer);
+        this.time = null;
+        this.timer = null;
+      }
       this.dynasticDataOne = {
         date_list: [],
         data_list: [],
@@ -286,40 +322,96 @@ export default {
     },
     renderDataOther(val) {
       for (let i = 0; i < val.level.data_list.length; i += 1) {
-        this.time = setTimeout(() => {
-          const data = {
-            data_list: [
-              ...this.dynasticDataOne.data_list,
-              val.level_speed.data_list[i],
-            ],
+        this.timer = setTimeout(() => {
+          if (i > 200) {
+            this.dynasticDataOne.data_list.shift();
+            this.dynasticDataOne.predict_data_list.shift();
+            // this.dynasticDataOne.date_list.shift();
+            this.dynasticDataTwo.data_list.shift();
+            this.dynasticDataTwo.predict_data_list.shift();
+            this.dynasticDataTwo.green.shift();
+            // this.dynasticDataTwo.date_list.shift();
+            const data = {
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level_speed.data_list[i],
+              ],
 
-            predict_data_list: [
-              ...this.dynasticDataOne.predict_data_list,
-              val.level_speed.predict_data_list[i],
-            ],
-          };
-          const powerData = {
-            data_list: [
-              ...this.dynasticDataTwo.data_list,
-              val.energy_consumption_speed.data_list[i],
-            ],
-            predict_data_list: [
-              ...this.dynasticDataTwo.predict_data_list,
-              val.energy_consumption_speed.predict_data_list[i],
-            ],
-            green: [
-              ...this.dynasticDataTwo.green,
-              val.energy_consumption_speed.green[i],
-            ],
-          };
-          this.dynasticDataOne = data;
-          this.dynasticDataTwo = powerData;
-        }, 500);
+              predict_data_list: [
+                ...this.dynasticDataOne.predict_data_list,
+                val.level_speed.predict_data_list[i],
+              ],
+              // date_list: [
+              //   ...this.dynasticDataOne.date_list,
+              //   val.level_speed.date_list[i],
+              // ],
+            };
+            const powerData = {
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption_speed.data_list[i],
+              ],
+              predict_data_list: [
+                ...this.dynasticDataTwo.predict_data_list,
+                val.energy_consumption_speed.predict_data_list[i],
+              ],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption_speed.green[i],
+              ],
+              // date_list: [
+              //   ...this.dynasticDatTwo.date_list,
+              //   val.energy_consumption_speed.date_list[i],
+              // ],
+            };
+            this.dynasticDataOne = data;
+            this.dynasticDataTwo = powerData;
+          } else {
+            const data = {
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level_speed.data_list[i],
+              ],
+
+              predict_data_list: [
+                ...this.dynasticDataOne.predict_data_list,
+                val.level_speed.predict_data_list[i],
+              ],
+              // date_list: [
+              //   ...this.dynasticDataOne.date_list,
+              //   val.level_speed.date_list[i],
+              // ],
+            };
+            const powerData = {
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption_speed.data_list[i],
+              ],
+              predict_data_list: [
+                ...this.dynasticDataTwo.predict_data_list,
+                val.energy_consumption_speed.predict_data_list[i],
+              ],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption_speed.green[i],
+              ],
+              // date_list: [
+              //   ...this.dynasticDatTwo.date_list,
+              //   val.energy_consumption_speed.date_list[i],
+              // ],
+            };
+            this.dynasticDataOne = data;
+            this.dynasticDataTwo = powerData;
+          }
+        }, 1000);
       }
     },
   },
   beforeDestroy() {
     clearTimeout(this.time);
+    clearTimeout(this.timer);
+    this.time = null;
+    this.timer = null;
   },
 };
 </script>
@@ -409,10 +501,10 @@ export default {
 
 .chart-container {
   height: 318px;
-  margin-top: 60px;
+  margin-top: 20px;
 
   &.chart-1 {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
   }
 
   .chart-box {
@@ -425,12 +517,13 @@ export default {
 
 .speed-line {
   text-align: left;
+  margin-left: 50%;
   height: 25px;
   font-size: 18px;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
   line-height: 25px;
-  margin-bottom: 103px;
+  // margin-bottom: 103px;
 }
 
 .result-tab {
