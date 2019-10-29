@@ -214,7 +214,8 @@ export default {
       this.$axios.get(`/dataset/headers?dataset_id=${id}`).then((res) => {
         // const reg = /^[\u4e00-\u9fa5a-z]+$/gi;
         // const data = res.filter(item => item !== '' && reg.test(...item));
-        const data = res.filter(item => item !== '');
+        const reg = /^[\uFEFF]+$/gi;
+        const data = res.filter(item => item !== '' && !reg.test(...item));
         this.inputList[0].options = data;
         this.inputData[0].data = data;
         this.inputList[1].options = [
