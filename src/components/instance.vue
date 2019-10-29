@@ -9,7 +9,11 @@
 
       </el-col>
     </el-row>
-    <div v-if="!chose">
+    <el-row class="dataset-container">
+      <el-col :span="4">数据集：</el-col>
+      <el-col :span="20">{{datasetName}}</el-col>
+    </el-row>
+    <!-- <div v-if="!chose">
       <el-row type="flex"
               class="loss-row">
         <el-col class="loss">
@@ -21,7 +25,12 @@
           {{lately}}
         </el-col>
       </el-row>
-    </div>
+    </div> -->
+    <el-row v-if="!chose"
+            class="loss-container">
+      <el-col>Loss</el-col>
+      <el-col>{{lately}}</el-col>
+    </el-row>
     <el-row v-else
             type="flex">
       <el-col :span="7"
@@ -102,6 +111,10 @@ export default {
     estimate: {
       type: String,
       default: '35分钟',
+    },
+    datasetName: {
+      type: String,
+      default: '数据集',
     },
   },
   computed: {
@@ -284,5 +297,32 @@ export default {
   color: #fff;
   background: #8fd866;
   border: solid 1px #8fd866;
+}
+
+.dataset-container,
+.loss-container {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+}
+
+.dataset-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.loss-container {
+  // text-align: center;
+  line-height: 38px;
+  margin: auto;
+
+  .el-col:nth-child(2) {
+    color: #333;
+    font-size: 32px;
+    text-align: right;
+  }
 }
 </style>

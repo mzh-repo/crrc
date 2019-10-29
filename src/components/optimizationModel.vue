@@ -19,12 +19,12 @@
       <el-col :span="8"
               class="example">
         <div>最近训练Loss</div>
-        <div>{{(optimziationList.latest_loss)}}</div>
+        <div>{{(Math.floor(optimziationList.latest_loss*100)/100)}}</div>
       </el-col>
       <el-col :span="16"
               class="example">
         <div>平均训练Loss</div>
-        <div>{{(optimziationList.average_loss)}}</div>
+        <div>{{(Math.floor(optimziationList.average_loss*100)/100)}}</div>
       </el-col>
     </el-row>
     <el-row>

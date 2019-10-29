@@ -66,6 +66,8 @@ export default {
   beforeRouteEnter(to, from, next) {
     if (from.path === '/importData') {
       localStorage.setItem('upload', true);
+    } else {
+      localStorage.setItem('upload', false);
     }
     next();
   },
@@ -79,16 +81,20 @@ export default {
     //     }
     //   });
     // }
-    if (localStorage.getItem('upload')) {
+    if (localStorage.getItem('upload') === 'true') {
       const data = {
         header_mappings: this.$store.state.importData.options,
         name: this.$store.state.importData.sqlName,
         database_id: this.$store.state.importData.sql,
         id: this.$store.state.importData.id,
       };
-      this.$axios.put('/dataset', data).then(() => {
+      if (this.$store.state.importData.id !== '') {
+        this.$axios.put('/dataset', data).then(() => {
+          this.getDatebase();
+        });
+      } else {
         this.getDatebase();
-      });
+      }
     } else {
       this.getDatebase();
     }

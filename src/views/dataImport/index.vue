@@ -65,7 +65,7 @@ export default {
             localStorage.getItem('return') === '2'
             && this.fromRouteId
           ) {
-            this.$router.push('/modelPublish');
+            this.$router.push({ path: '/modelPublish' });
           } else {
             this.$router.push('/analyze');
             this.showPre = true;

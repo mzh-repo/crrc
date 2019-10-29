@@ -85,6 +85,7 @@
                     :title="item.name"
                     :lately="item.loss"
                     :traning="item.training_time"
+                    :datasetName="item.dataset_name"
                     :estimate="item.estimated_deployment_time" />
 
         </div>
