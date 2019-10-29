@@ -52,16 +52,6 @@
         <markdown-it-vue :content="targetFuc" />
       </el-col>
     </el-row>
-    <!-- <el-row>
-      <el-col :span="12"></el-col>
-      <el-col :span="12"
-              class="speed-line">
-        预测能耗(实际级位)与实际能耗(实际级位)平均差异：{{lineData.power.ratio}}
-      </el-col>
-    </el-row> -->
-    <el-row class="speed-line">
-      预测能耗(实际级位)与实际能耗(实际级位)平均差异：{{lineData.power.ratio}}
-    </el-row>
     <el-row :gutter="19"
             class="chart-container chart-1">
       <el-col :span="12">
@@ -73,9 +63,9 @@
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="能耗 kW·h"
-                    :legend="legend"
-                    :lineData="lineData.power" />
+          <power-line title="能耗 kW·h"
+                      :legend="legend"
+                      :lineData="lineData.power" />
         </div>
       </el-col>
     </el-row>
@@ -96,9 +86,9 @@
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="能耗(实时) kW·h"
-                    :legend="legend"
-                    :lineData="dynasticDataTwo" />
+          <power-line title="能耗(实时) kW·h"
+                      :legend="legend"
+                      :lineData="dynasticDataTwo" />
         </div>
       </el-col>
     </el-row>
@@ -112,9 +102,15 @@ import MarkdownItVue from 'markdown-it-vue';
 import Line from '../components/line.vue';
 import MovingTrain from '../components/movingTrain.vue';
 import 'markdown-it-vue/dist/markdown-it-vue.css';
+import PowerLine from '../components/powerLine.vue';
 
 export default {
-  components: { 'mzh-line': Line, 'move-train': MovingTrain, MarkdownItVue },
+  components: {
+    'mzh-line': Line,
+    'move-train': MovingTrain,
+    MarkdownItVue,
+    PowerLine,
+  },
   data() {
     return {
       // tabList: [

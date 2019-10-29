@@ -183,6 +183,17 @@ export default {
           },
         });
       }
+      if (this.lineData.ratio) {
+        Object.assign(option, {
+          title: {
+            text: this.title,
+            subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${
+              this.lineData.ratio
+            }`,
+          },
+        });
+      }
+
       this.chart.setOption(option, true);
     },
   },

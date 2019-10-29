@@ -175,6 +175,8 @@ export default {
             // y轴
             show: false,
           },
+          max: 40,
+          min: 0,
         },
         series: [
           {
@@ -213,6 +215,16 @@ export default {
               symbol: 'none',
             },
           ],
+        });
+      }
+      if (this.lineData.ratio) {
+        Object.assign(option, {
+          title: {
+            text: this.title,
+            subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${
+              this.lineData.ratio
+            }`,
+          },
         });
       }
       this.chart.setOption(option, true);

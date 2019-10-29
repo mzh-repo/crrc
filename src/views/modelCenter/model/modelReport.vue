@@ -79,7 +79,7 @@
       <template v-for="(item,index) in modelList">
         <div :key="index"
              class="model-box"
-             @click="getForecast(item.status)">
+             @click="getForecast(item.dataset_id,item.status)">
           <instance :chose="false"
                     :status="item.status"
                     :title="item.name"
@@ -155,8 +155,9 @@ export default {
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);
     },
-    getForecast(status) {
+    getForecast(id, status) {
       if (status === 1) {
+        this.$store.commit('setModelDatasetId', id);
         this.$router.push({
           path: `/modelPublish/modelPublishForecast?id=${
             this.$store.state.trainSelected

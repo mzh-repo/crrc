@@ -89,7 +89,7 @@ export default {
       } else {
         this.$store.commit('setTrain', item.id);
       }
-      this.$store.commit('setModelDatasetId', item.dataset.id);
+      this.$store.commit('selectModel', { name: item.name });
       this.$store.commit('modelDatabase', this.databaseName);
       // eslint-disable-next-line
       this.$store.commit('setReportData', {

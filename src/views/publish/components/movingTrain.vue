@@ -28,27 +28,27 @@ export default {
         {
           name: '香山站',
           color: otherColor,
-          left: '23%',
+          left: '0%',
         },
         {
           name: '植物园站',
           color: otherColor,
-          left: '41%',
+          left: '25%',
         },
         {
           name: '万安公墓站',
           color: otherColor,
-          left: '56%',
+          left: '45%',
         },
         {
           name: '玉泉郊野公园',
           color: otherColor,
-          left: '74%',
+          left: '61%',
         },
         {
           name: '颐和园西门',
           color: otherColor,
-          left: '88%',
+          left: '81%',
         },
         {
           name: '颐和园南门',
@@ -115,7 +115,7 @@ export default {
     width: 10%;
     height: 44px;
     position: absolute;
-    animation: mymove 160s infinite;
+    animation: mymove 120s infinite;
     animation-iteration-count: 1;
     -webkit-animation-iteration-count: 1; /* Safari 和 Chrome */
     animation-fill-mode: forwards;
