@@ -29,10 +29,12 @@
         </div>
         <div class="early-model">
           <Mzh-bar v-if="type === 0"
+                   :title="title"
                    :maxyAxis="100"
                    :lineData="lineDataOne"
                    :legend="legendOne" />
           <Mzh-bar v-else
+                   :title="title"
                    :maxyAxis="100"
                    :lineData="lineDataTwo"
                    :legend="legendTwo" />
@@ -54,7 +56,7 @@
                :key="i"
                class="news">
             <div>{{news.content}}</div>
-            <div>{{news.time}}</div>
+            <div>启动后{{news.time}}s</div>
           </div>
         </template>
         <template v-else>
@@ -80,8 +82,9 @@ export default {
   },
   data() {
     return {
+      title: '根据历史行车数据模拟预警今日行车路线上可能的故障时刻',
       legendOne: ['储能系统健康值'],
-      legendTwo: ['非接触供电系统健康值', '储能系统健康值', '总供电系统健康值'],
+      legendTwo: ['储能系统健康值', '非接触供电系统健康值', '总供电系统健康值'],
       backgroundColor: '',
       newsList: [],
       earlyList: [],
@@ -162,10 +165,10 @@ export default {
         this.progress.show = res.overall;
         this.progress.number = res.overall;
         if (res.abnormal_moment.length > 0) {
-          const date = new Date();
+          // const date = new Date();
           res.abnormal_moment.forEach((item) => {
             const data = JSON.parse(JSON.stringify(item));
-            data.time = this.covertDate(date);
+            // data.time = this.covertDate(date);
             this.newsList.unshift(data);
           });
           this.newsList = this.newsList.splice(0, 8);

@@ -30,6 +30,10 @@ export default {
       type: Number,
       default: 1,
     },
+    title: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -62,6 +66,15 @@ export default {
     initChart() {
       this.chart = echarts.init(this.$el);
       this.chart.setOption({
+        title: {
+          text: this.title,
+          padding: [17, 27],
+          textStyle: {
+            fontFamily: 'PingFangSC-Medium,PingFangSC',
+            fontSize: 16,
+            fontWeight: 'bold',
+          },
+        },
         tooltip: {
           showContent: false,
           axisPointer: {
@@ -70,6 +83,8 @@ export default {
         },
         legend: {
           data: this.legend,
+          right: 50,
+          top: 20,
         },
         grid: {
           left: '50px',
@@ -108,7 +123,7 @@ export default {
             type: 'line',
             // color: this.colors[0],
             name: this.legend[0],
-            data: this.lineData.data_list || [],
+            data: this.lineData.validation_list || [],
             smooth: true,
             seriesLayoutBy: 'row',
             lineStyle: {
@@ -125,7 +140,7 @@ export default {
             // color: this.colors[1],
             name: this.legend[1],
             smooth: true,
-            data: this.lineData.validation_list || [],
+            data: this.lineData.data_list || [],
             seriesLayoutBy: 'row',
             lineStyle: {
               normal: {
