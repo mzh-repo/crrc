@@ -125,13 +125,13 @@ export default {
         },
         series: [
           {
-            name: this.yTitle,
+            name: this.legend[0],
             type: 'line',
             data: this.lineData.predict_data_list,
             symbol: 'none',
           },
           {
-            name: '实际',
+            name: this.legend[1],
             type: 'line',
             data: this.lineData.data_list,
             symbol: 'none',

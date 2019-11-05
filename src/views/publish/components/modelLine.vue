@@ -22,12 +22,13 @@ export default {
       type: String,
       default: '300px',
     },
+    title: {
+      type: String,
+      default: '推荐牵引力 kN',
+    },
     yTitle: {
       type: String,
       default: '预测',
-    },
-    title: {
-      type: String,
     },
     lineData: {
       type: Object,
@@ -37,19 +38,21 @@ export default {
         predict_data_list: [],
       }),
     },
+    legend: {
+      type: Array,
+      default: () => ['预测', '实际'],
+    },
   },
   data() {
     return {
-      chart: null,
-      originData: [],
-      predictData: [],
-      time: '',
+      chart: '',
     };
   },
   mounted() {
     this.drawChart();
   },
   beforeDestroy() {
+    this.chart.clear();
     if (!this.chart) {
       return;
     }
@@ -59,8 +62,7 @@ export default {
   },
   methods: {
     drawChart() {
-      this.getDynastic();
-      // this.initChart();
+      this.initChart();
       this.resizeHandler = () => {
         if (this.chart) {
           this.chart.resize();
@@ -68,29 +70,9 @@ export default {
       };
       window.addEventListener('resize', this.resizeHandler);
     },
-    getDynastic() {
-      return new Promise((resolve, reject) => {
-        if (!this.lineData.date_list) {
-          reject();
-        } else {
-          resolve();
-          for (let i = 0; i < this.lineData.data_list.length; i += 1) {
-            this.time = setTimeout(() => {
-              this.originData = this.originData.concat(
-                this.lineData.data_list[i],
-              );
-              this.predictData = this.predictData.concat(
-                this.lineData.predict_data_list[i],
-              );
-              this.initChart();
-            }, 500);
-          }
-        }
-      });
-    },
     initChart() {
       this.chart = echarts.init(this.$el);
-      this.chart.setOption({
+      const option = {
         title: {
           text: this.title,
         },
@@ -98,15 +80,24 @@ export default {
           trigger: 'axis',
         },
         legend: {
-          data: [this.yTitle, '实际'],
+          data: this.legend,
         },
         xAxis: {
+          name: '时间(s)',
+          nameLocation: 'center',
+          nameTextStyle: {
+            padding: [20, 0, 0, 0],
+          },
           type: 'category',
           boundaryGap: false,
           data: this.lineData.date_list,
           splitLine: { show: false },
           axisTick: {
             show: false,
+          },
+          axisLabel: {
+            // rotate: 50,
+            formatter: value => Math.floor(value * 10) / 10,
           },
           axisLine: {
             show: false,
@@ -118,31 +109,67 @@ export default {
             formatter: '{value}',
           },
           splitLine: { show: false },
-          axisLine: { show: false },
           axisTick: {
             // y轴刻度线
             show: false,
           },
-          // axisLine: {
-          //   // y轴
-          //   show: false,
-          // },
+          axisLine: {
+            // y轴
+            show: false,
+          },
+          max: 40,
+          min: 0,
         },
         series: [
           {
-            name: this.yTitle,
+            name: this.legend[0],
             type: 'line',
-            data: this.predictData,
+            data: this.lineData.predict_data_list,
             symbol: 'none',
           },
           {
-            name: '实际',
+            name: this.legend[1],
             type: 'line',
-            data: this.originData,
+            data: this.lineData.data_list,
             symbol: 'none',
           },
         ],
-      });
+      };
+      // if (this.lineData.green) {
+      //   Object.assign(option, {
+      //     series: [
+      //       {
+      //         name: this.legend[0],
+      //         type: 'line',
+      //         data: this.lineData.predict_data_list,
+      //         symbol: 'none',
+      //       },
+      //       {
+      //         name: this.legend[1],
+      //         type: 'line',
+      //         data: this.lineData.data_list,
+      //         symbol: 'none',
+      //       },
+      //       {
+      //         name: this.legend[2],
+      //         type: 'line',
+      //         data: this.lineData.green,
+      //         symbol: 'none',
+      //       },
+      //     ],
+      //   });
+      // }
+      // if (this.lineData.ratio) {
+      //   Object.assign(option, {
+      //     title: {
+      //       text: this.title,
+      //       subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${
+      //         this.lineData.ratio
+      //       }`,
+      //     },
+      //   });
+      // }
+      this.chart.setOption(option, true);
     },
   },
   watch: {

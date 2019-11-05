@@ -54,9 +54,11 @@
 const img = new Map();
 const imgUrl = [
   /* eslint-disable */
-  require('../assets/images/mklearn.png'),
+  // require('../assets/images/sklearn.png'),
   require('../assets/images/keras.png'),
-  require('../assets/images/tensorflow.png')
+  require('../assets/images/tensorflow.png'),
+  require('../assets/images/sklearn.png'),
+  require('../assets/images/keras.png')
   /* eslint-enable */
 ];
 
@@ -83,7 +85,7 @@ export default {
   },
   methods: {
     getUrl(type) {
-      return img.get(type);
+      return img.get(type - 1);
     },
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);

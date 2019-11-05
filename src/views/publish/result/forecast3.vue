@@ -15,9 +15,11 @@
         </div>
         <div class="early-model">
           <Mzh-bar v-if="type === 0"
+                   :maxyAxis="100"
                    :lineData="lineDataOne"
                    :legend="legendOne" />
           <Mzh-bar v-else
+                   :maxyAxis="100"
                    :lineData="lineDataTwo"
                    :legend="legendTwo" />
         </div>
@@ -63,22 +65,8 @@ export default {
       legendOne: ['储能系统健康值'],
       legendTwo: ['非接触供电系统健康值', '储能系统健康值', '总供电系统健康值'],
       backgroundColor: '',
-      newsList: [
-        // { content: 'xxxxxx', time: '2019.8.10' },
-        // { content: 'xxxxxx', time: '2019.8.11' },
-        // { content: 'xxxxxx', time: '2019.8.12' },
-      ],
-      earlyList: [
-        // { title: '储能电源1温度', type: 0 },
-        // { title: '储能电源1电压', type: 0 },
-        // { title: '储能电源1电流', type: 1 },
-        // { title: '储能电源2温度', type: 0 },
-        // { title: '储能电源2电压', type: 2 },
-        // { title: '储能电源2电流', type: 1 },
-        // { title: '储能电源3温度', type: 0 },
-        // { title: '储能电源3电压', type: 0 },
-        // { title: '储能电源3电流', type: 1 },
-      ],
+      newsList: [],
+      earlyList: [],
       lineDataOne: {
         validation_list: [],
       },
@@ -95,11 +83,14 @@ export default {
         unit: '分',
       },
       type: 0, // 模型类型: 0 间歇式, 1 非接触式
-      time: '', // 定时器
+      time: null, // 定时器
       // errorTime: '', // 异常时刻
     };
   },
   mounted() {
+    if (this.time) {
+      clearTimeout(this.time);
+    }
     const { dataBase } = this.$store.state;
     if (dataBase === 1) {
       this.type = 0;
@@ -123,18 +114,25 @@ export default {
     },
     getData() {
       this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
-        // console.log('res', res.health.overall);
         if (res.model_type === 0) {
           const data = {
-            validation_list: res.health.overall,
+            validation_list: [...this.lineDataOne.validation_list, res.overall],
           };
+          if (data.validation_list.length > 20) {
+            data.validation_list.splice(0, 1);
+          }
           this.lineDataOne = data;
         } else {
           const dataOther = {
-            validation_list: res.health.overall,
-            data_list: res.health.storage,
-            record_list: res.health.supply,
+            validation_list: [...this.lineDataTwo.validation_list, res.overall],
+            data_list: [...this.lineDataTwo.data_list, res.storage],
+            record_list: [...this.lineDataTwo.record_list, res.supply],
           };
+          if (dataOther.validation_list.length > 20) {
+            dataOther.validation_list.splice(0, 1);
+            dataOther.data_list.splice(0, 1);
+            dataOther.record_list.splice(0, 1);
+          }
           this.lineDataTwo = dataOther;
         }
         this.earlyList = res.status;

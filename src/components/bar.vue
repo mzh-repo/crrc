@@ -26,6 +26,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    maxyAxis: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
@@ -88,7 +92,7 @@ export default {
         },
         yAxis: {
           gridIndex: 0,
-          max: 1,
+          max: this.maxyAxis,
           min: 0,
           splitLine: { show: false },
           axisTick: {

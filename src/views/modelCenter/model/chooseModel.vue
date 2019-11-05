@@ -89,6 +89,7 @@ export default {
       } else {
         this.$store.commit('setTrain', item.id);
       }
+      this.$store.commit('chooseDataBase', this.databaseId);
       this.$store.commit('selectModel', { name: item.name });
       this.$store.commit('modelDatabase', this.databaseName);
       // eslint-disable-next-line

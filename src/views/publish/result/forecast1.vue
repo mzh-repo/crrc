@@ -29,7 +29,8 @@
           </el-col>
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col v-if="type !==2"
+              :span="8">
         <el-row v-for="(item,index) in configList"
                 :key="index"
                 class="grid-content">
@@ -42,10 +43,32 @@
           </el-col>
         </el-row>
       </el-col>
+      <el-col v-else
+              :span="8">
+        <el-row v-for="(item, index) in configList"
+                :key="index"
+                class="grid-other">
+          <el-row class="grid-tag">
+            <el-col>
+              <el-tag>{{item.tag}}</el-tag>
+            </el-col>
+            <el-col>
+              {{item.name}}
+            </el-col>
+          </el-row>
+          <el-row class="grid-source">
+            {{item.source}}
+          </el-row>
+        </el-row>
+      </el-col>
       <el-col :span="8">
         <div class="input-content">
           <el-row>说明</el-row>
-          <el-row>{{introduce}}</el-row>
+          <el-row>已满足所有约束条件，在当前配置下的列车运行控制结果如下。</el-row>
+          <template v-if="type === 2">
+            <el-row>最优配置下的运行能耗为：{{best}} kW·h</el-row>
+            <el-row>次优配置下的运行能耗为：{{second}} kW·h</el-row>
+          </template>
         </div>
       </el-col>
     </el-row>
@@ -54,13 +77,14 @@
       <el-col :span="12">
         <div class="chart-box">
           <mzh-line title="手柄级位"
+                    :legend="legendone"
                     :yArea="yArea"
                     :lineData="lineData.force" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <power-line title="能耗 kW·h"
+          <model-line title="能耗 kW·h"
                       :legend="legend"
                       :lineData="lineData.power" />
         </div>
@@ -72,13 +96,14 @@
       <el-col :span="24">
         <div class="chart-box">
           <mzh-line title="手柄级位(实时)"
+                    :legend="legendone"
                     :yArea="yArea"
                     :lineData="dynasticDataOne" />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <power-line title="能耗(实时) kW·h"
+          <model-line title="能耗(实时) kW·h"
                       :legend="legend"
                       :lineData="dynasticDataTwo" />
         </div>
@@ -90,24 +115,18 @@
 <script>
 import Line from '../components/line.vue';
 import MovingTrain from '../components/movingTrain.vue';
-// import ModelLine from '../components/modelLine.vue';
-import PowerLine from '../components/powerLine.vue';
+import ModelLine from '../components/modelLine.vue';
+// import PowerLine from '../components/powerLine.vue';
 
 export default {
   components: {
     'mzh-line': Line,
     'move-train': MovingTrain,
-    // 'model-line': ModelLine,
-    'power-line': PowerLine,
+    'model-line': ModelLine,
+    // 'power-line': PowerLine,
   },
   data() {
     return {
-      // tabList: [
-      //   { name: 'tabl', id: 1 },
-      //   { name: 'tab2', id: 2 },
-      //   { name: 'tab3', id: 3 },
-      // ],
-      // tabId: 1,
       limitList: ['约束条件1', '约束条件2', '约束条件3'],
       lineData: {
         force: {},
@@ -132,7 +151,7 @@ export default {
         date_list: [],
         data_list: [],
         predict_data_list: [],
-        green: [],
+        // green: [],
       },
       configList: [
         {
@@ -148,7 +167,9 @@ export default {
           source: 'n动配置',
         },
       ],
-      introduce: '已满足所有约束条件，在当前配置下的列车运行控制结果如下',
+      // introduce: '已满足所有约束条件，在当前配置下的列车运行控制结果如下',
+      best: '25.6',
+      second: '31',
       type: 3, // 2 间歇式, 3 非接触式
       time: '',
       legend: [
@@ -156,6 +177,7 @@ export default {
         '实际能耗(实际级位)',
         '预测能耗(实际级位)',
       ],
+      legendone: ['预测', '实际'],
       yArea: [],
       dataSetId: '',
     };
@@ -206,18 +228,18 @@ export default {
       ];
       this.configList = [
         {
+          tag: '最优选择',
           name: '储能',
           source: '2组9500F超级电容+1组钛酸锂电池',
         },
         {
-          name: '供电',
-          source: '暂无',
-        },
-        {
-          name: '牵引',
-          source: '暂无',
+          tag: '次优选择',
+          name: '储能',
+          source: '3组7500F超级电容储能电源',
         },
       ];
+      this.legend = ['最优能耗最低', '次优能耗最低'];
+      this.legendone = ['最优', '次优'];
     }
   },
   methods: {
@@ -240,8 +262,6 @@ export default {
         .then((res) => {
           this.lineData.force = res.level;
           this.lineData.power = res.energy_consumption;
-          // this.dynasticDataOne = res.level;
-          // this.dynasticDataTwo = res.energy_consumption;
           this.renderData(res);
         });
     },
@@ -254,7 +274,7 @@ export default {
             // this.dynasticDataOne.date_list.shift();
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
-            this.dynasticDataTwo.green.shift();
+            // this.dynasticDataTwo.green.shift();
             // this.dynasticDataTwo.date_list.shift();
             const data = {
               data_list: [
@@ -279,10 +299,10 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              // green: [
+              //   ...this.dynasticDataTwo.green,
+              //   val.energy_consumption.green[i],
+              // ],
               // date_list: [
               //   ...this.dynasticDataTwo.date_list,
               //   val.level.date_list[i],
@@ -314,10 +334,10 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              // green: [
+              //   ...this.dynasticDataTwo.green,
+              //   val.energy_consumption.green[i],
+              // ],
               // date_list: [
               //   ...this.dynasticDataTwo.date_list,
               //   val.level.date_list[i],
@@ -452,6 +472,35 @@ export default {
       }
     }
   }
+}
+
+.grid-other {
+  height: 235px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 8px;
+  padding: 30px 30px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.grid-tag {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+
+  .el-col:nth-child(1) {
+    text-align: left;
+  }
+
+  .el-col:nth-child(2) {
+    text-align: right;
+  }
+}
+
+.grid-source {
+  font-size: 28px;
 }
 
 .input-content {
