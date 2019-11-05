@@ -1,5 +1,19 @@
 <template>
   <el-container class="forcast-container">
+    <!-- <div> -->
+    <div class="explain-container">
+      <el-row>
+        解释判据: {{type===1 ? explain1: explain2}}。
+      </el-row>
+      <el-row>
+        其构建的iTree的平均路径长度 c(n)为:
+        <markdown-it-vue :content="model1" />
+      </el-row>
+      <el-row>
+        定义样本x 的异常系数为:
+        <markdown-it-vue :content="model2" />
+      </el-row>
+    </div>
     <el-row :gutter="16">
       <el-col :span="18">
         <div class="early-warning">
@@ -48,17 +62,21 @@
         </template>
       </el-col>
     </el-row>
+    <!-- </div> -->
   </el-container>
 </template>
 
 <script>
+import MarkdownItVue from 'markdown-it-vue';
 import bar from '@/components/bar.vue';
 import circleProgress from '@/components/circleProgress.vue';
+import 'markdown-it-vue/dist/markdown-it-vue.css';
 
 export default {
   components: {
     'Mzh-bar': bar,
     'circle-progress': circleProgress,
+    MarkdownItVue,
   },
   data() {
     return {
@@ -85,6 +103,11 @@ export default {
       type: 0, // 模型类型: 0 间歇式, 1 非接触式
       time: null, // 定时器
       // errorTime: '', // 异常时刻
+      explain1: '利用孤立森林模型求解供电系统状态监测及故障预警模型',
+      explain2:
+        '利用孤立森林模型求解基于服役状态检测的车载储能装置检修策略模型',
+      model1: '```AsciiMath\nc(n) = 2H(n-1) - (2(n-1))/n \n```',
+      model2: '```AsciiMath\ns(x, n) = 2^(-(E(h(x)))/(c(n))) \n```',
     };
   },
   mounted() {
@@ -181,10 +204,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-row,
 .forcast-container {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
 .early-warning {
   text-align: left;
   margin-bottom: 20px;
@@ -221,7 +246,7 @@ export default {
   border-radius: 8px;
   background: #fff;
   text-align: left;
-  height: 100%;
+  height: 791px;
   span {
     padding-left: 30px;
   }
@@ -260,5 +285,14 @@ span {
 }
 .normal {
   background-color: #97e9d5;
+}
+
+.explain-container {
+  text-align: left;
+  font-size: 20px;
+
+  .el-row:first-child {
+    margin-bottom: 20px;
+  }
 }
 </style>
