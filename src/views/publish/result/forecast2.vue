@@ -15,11 +15,10 @@
     <el-row class="result-tab">
       <el-tabs v-model="resultName"
                @tab-click="chooseResult">
-        <template v-for="(item,index) in resultList">
+        <template v-for="(item, index) in resultList">
           <el-tab-pane :key="index"
                        :label="item.name"
-                       :name="item.name">
-          </el-tab-pane>
+                       :name="item.name"> </el-tab-pane>
         </template>
       </el-tabs>
     </el-row>
@@ -31,13 +30,10 @@
               :lg="3"
               :xl="3">
         <el-progress :percentage="percent"
-                     :stroke-width="18">
-        </el-progress>
+                     :stroke-width="18"> </el-progress>
       </el-col>
     </el-row>
-    <el-row class="progress">
-      文本解释判据: {{explain}}
-    </el-row>
+    <el-row class="progress"> 文本解释判据: {{ explain }} </el-row>
     <el-row class="target">
       <el-col>
         <el-row>
@@ -92,7 +88,6 @@
         </div>
       </el-col>
     </el-row>
-
   </div>
 </template>
 

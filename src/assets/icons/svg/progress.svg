@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="66px" height="684px" viewBox="0 0 66 684" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>简单-难</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="-81 321.519238 116.521228 321.519238 116.521228 314 140.158926 343.78813 116.521228 371.995169 116.521228 364.48631 -81 364.48631"></polygon>
+        <filter x="-1.8%" y="-13.8%" width="107.2%" height="127.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="4" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <polygon id="path-3" points="-73 130.519238 109.675324 130.519238 109.675324 123 133.313021 152.78813 109.675324 180.995169 109.675324 173.48631 -73 173.48631"></polygon>
+        <filter x="-1.9%" y="-13.8%" width="107.8%" height="127.6%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="4" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页-copy" transform="translate(-127.000000, -211.000000)">
+            <rect fill="#F2F2F2" x="0" y="0" width="1920" height="1080"></rect>
+            <g id="简单-难" transform="translate(130.000000, 207.000000)">
+                <polygon id="Path-8-Copy-2" fill="#F78348" opacity="0.800000012" transform="translate(30.280309, 535.997585) rotate(-270.000000) translate(-30.280309, -535.997585) " points="-76 514.519238 112.92292 514.519238 112.92292 507 136.560617 536.78813 112.92292 564.995169 112.92292 557.48631 -76 557.48631"></polygon>
+                <g id="Path-8-Copy" opacity="0.800000012" transform="translate(29.579463, 342.997585) rotate(-270.000000) translate(-29.579463, -342.997585) ">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#F6C44E" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <g id="Path-8" opacity="0.800000012" transform="translate(30.156511, 151.997585) rotate(-270.000000) translate(-30.156511, -151.997585) ">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <use fill="#5BA9F5" fill-rule="evenodd" xlink:href="#path-3"></use>
+                </g>
+                <text id="简单-copy" font-family="PingFangSC-Medium, PingFang SC" font-size="20" font-weight="400" fill="#333333">
+                    <tspan x="10" y="21">简单</tspan>
+                </text>
+                <text id="困难-copy" font-family="PingFangSC-Medium, PingFang SC" font-size="20" font-weight="400" fill="#333333">
+                    <tspan x="10" y="685">困难</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

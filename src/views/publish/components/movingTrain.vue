@@ -1,71 +1,118 @@
 <template>
   <el-row class="train-container">
+    <el-row class="trace-point energy">
+      <div v-for="(item, index) in pointList"
+           :key="index"
+           :style="{ left: item.left }"
+           class="point-box">
+        <div class="charge">是否充电：{{ item.charge }}</div>
+        <div class="energy">剩余电量：{{ item.energy }}</div>
+      </div>
+    </el-row>
     <svg-icon icon-class="火车" />
     <div class="trace-line"></div>
     <el-row class="trace-point">
-      <div v-for="(item,index) in pointList"
+      <div v-for="(item, index) in pointList"
            :key="index"
-           :style="{'left': item.left}"
+           :style="{ left: item.left }"
            class="point-box">
         <div class="point"
-             :style="{'background-color': item.color}">
-        </div>
-        <div>{{item.name}}</div>
+             :style="{ 'background-color': item.color }"></div>
+        <div>{{ item.name }}</div>
       </div>
     </el-row>
   </el-row>
 </template>
 
 <script>
-const primaryColor = ' #FF2020 ';
+const primaryColor = '#FF2020';
 const otherColor = '#00C4C0';
 
 export default {
-  props: {
-    pointList: {
-      type: Array,
-      default: () => [
+  // props: {
+  //   pointList: {
+  //     type: Array,
+  //     default: () => [
+  //       {
+  //         name: '香山站',
+  //         color: primaryColor,
+  //         left: '0%',
+  //       },
+  //       {
+  //         name: '植物园站',
+  //         color: otherColor,
+  //         left: '25%',
+  //       },
+  //       {
+  //         name: '万安公墓站',
+  //         color: otherColor,
+  //         left: '45%',
+  //       },
+  //       {
+  //         name: '玉泉郊野公园',
+  //         color: otherColor,
+  //         left: '61%',
+  //       },
+  //       {
+  //         name: '颐和园西门',
+  //         color: otherColor,
+  //         left: '81%',
+  //       },
+  //       {
+  //         name: '颐和园南门',
+  //         color: otherColor,
+  //         left: '95%',
+  //       },
+  //     ],
+  //   },
+  // },
+  data() {
+    return {
+      time: null,
+      current: 0,
+      pointList: [
         {
           name: '香山站',
-          color: otherColor,
+          color: primaryColor,
           left: '0%',
+          charge: '是',
+          energy: '98%',
         },
         {
           name: '植物园站',
           color: otherColor,
           left: '25%',
+          charge: '',
         },
         {
           name: '万安公墓站',
           color: otherColor,
           left: '45%',
+          charge: '',
         },
         {
           name: '玉泉郊野公园',
           color: otherColor,
           left: '61%',
+          charge: '',
         },
         {
           name: '颐和园西门',
           color: otherColor,
           left: '81%',
+          charge: '',
         },
         {
           name: '颐和园南门',
           color: otherColor,
           left: '95%',
+          charge: '',
         },
       ],
-    },
-  },
-  data() {
-    return {
-      time: '',
-      current: 0,
     };
   },
   mounted() {
-    // this.getPoint();
+    this.getPoint();
   },
   methods: {
     getPoint() {
@@ -76,29 +123,53 @@ export default {
     },
   },
 
+  beforeDestroy() {
+    if (this.time) {
+      clearTimeout(this.time);
+      this.time = null;
+    }
+  },
+
   watch: {
     current(val) {
-      if (val > 22) {
-        this.pointList[0].color = primaryColor;
+      console.log('al', val);
+      const data = JSON.parse(JSON.stringify(this.pointList));
+      if (val > 18) {
+        data[1].color = primaryColor;
+        data[1].charge = '否';
+        data[1].energy = '72%';
+        // this.pointList[0].color = primaryColor;
+      }
+      if (val > 30) {
+        data[2].color = primaryColor;
+        data[2].charge = '否';
+        data[2].energy = '54%';
+        // this.pointList[1].color = primaryColor;
       }
       if (val > 41) {
-        this.pointList[1].color = primaryColor;
+        data[3].color = primaryColor;
+        data[3].charge = '是';
+        data[3].energy = '40%';
+        // this.pointList[2].color = primaryColor;
       }
-      if (val > 56) {
-        this.pointList[2].color = primaryColor;
+      if (val > 62) {
+        data[4].color = primaryColor;
+        data[4].charge = '否';
+        data[4].energy = '65%';
+        // this.pointList[3].color = primaryColor;
       }
-      if (val > 74) {
-        this.pointList[3].color = primaryColor;
+      if (val > 93) {
+        data[5].color = primaryColor;
+        data[5].charge = '是';
+        data[5].energy = '43%';
+        // this.pointList[4].color = primaryColor;
       }
-      if (val > 88) {
-        this.pointList[4].color = primaryColor;
-      }
-      if (val > 95) {
-        this.pointList[5].color = primaryColor;
-      }
-      if (val > 100) {
+      if (val >= 100) {
         clearTimeout(this.time);
+        this.time = null;
       }
+      // console.log(data);
+      this.pointList = data;
     },
   },
 };
@@ -110,6 +181,7 @@ export default {
   height: 66px;
   width: 100%;
   margin-bottom: 60px;
+  margin-top: 80px;
 
   .svg-icon {
     width: 10%;
@@ -183,6 +255,15 @@ export default {
       @include set-size(16px);
       border-radius: 50%;
       margin: auto;
+    }
+  }
+
+  &.energy {
+    top: -50px;
+
+    .point-box {
+      text-align: left;
+      width: 120px;
     }
   }
 }

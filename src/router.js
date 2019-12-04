@@ -16,7 +16,7 @@ export default new Router({
           path: '/dashboard',
           name: '首页',
           selectIcon: '首页-选中',
-          component: () => import('./views/dashboard'),
+          component: () => import('./views/dashboard/case'),
         },
         {
           path: '/chooseModel',
@@ -124,6 +124,10 @@ export default new Router({
               component: () => import('./views/dataImport/steps/recommend'),
             },
           ],
+        },
+        {
+          path: '/report',
+          component: () => import('./views/case'),
         },
       ],
     },

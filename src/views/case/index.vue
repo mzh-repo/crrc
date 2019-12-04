@@ -1,5 +1,6 @@
 <template>
   <el-container class="report-container">
+    <h1>实例报告</h1>
     <el-row class="main-title">
       {{ reportData.name }}
     </el-row>
@@ -31,35 +32,6 @@
                      :showXAxis="false"
                      xName="id"
                      yName="Loss" />
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="chart">
-          <div class="config">
-            <el-row class="">推荐配置</el-row>
-            <el-row class="recommend">
-              <el-col v-for="(item, index) in configList"
-                      align="left"
-                      :key="index"
-                      :span="6">
-                <el-row><span>{{ item.value }}</span> {{ item.unit }}</el-row>
-                <el-row>{{ item.name }}</el-row>
-              </el-col>
-            </el-row>
-            <div class="line"></div>
-            <div class="data-show">
-              <div>数据量</div>
-              <div>{{ reportData.line }}条</div>
-            </div>
-            <div class="data-show">
-              <div>大小</div>
-              <div>{{ unitConvert(reportData.size) }}M</div>
-            </div>
-            <div class="data-show">
-              <div>使用框架</div>
-              <div>{{ reportData.frame }}</div>
-            </div>
-          </div>
         </div>
       </el-col>
     </el-row>
@@ -94,28 +66,6 @@ export default {
       trainData: {},
       reportData: this.$store.state.reportData,
       colors: ['#00C4C0', '#8FD866'],
-      configList: [
-        {
-          name: '轮次',
-          value: this.$store.state.reportData.config.rounds,
-          unit: '次',
-        },
-        {
-          name: '内存',
-          value: this.$store.state.reportData.config.ram,
-          unit: 'M',
-        },
-        {
-          name: 'CPU',
-          value: this.$store.state.reportData.config.cpu,
-          unit: '个',
-        },
-        {
-          name: 'GPU',
-          value: this.$store.state.reportData.config.gpu,
-          unit: 'M',
-        },
-      ],
       total: 100,
       size: 34.2,
       frame: 'keras',
@@ -160,6 +110,7 @@ export default {
 
 <style lang="scss" scoped>
 .report-container {
+  padding: 60px;
   @include flex-column;
 }
 
