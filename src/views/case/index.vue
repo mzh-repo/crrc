@@ -1,6 +1,6 @@
 <template>
   <el-container class="report-container">
-    <h1>实例报告</h1>
+    <div class="title">实例报告</div>
     <el-row class="main-title">
       {{ reportData.name }}
     </el-row>
@@ -10,44 +10,47 @@
       <el-col :span="6"> 部署实例总次数: {{ reportData.total }} 次 </el-col>
     </el-row>
     <el-row class="describe"> 简介: {{ reportData.describe }} </el-row>
-    <el-row :gutter="16"
-            class="chart-report">
+    <el-row :gutter="16" class="chart-report">
       <el-col :span="12">
         <div class="chart">
-          <bar-chart title="近期训练"
-                     :dataSet="trainData"
-                     :tooltipList="['训练Loss', '测试Loss']"
-                     :showTip="true"
-                     :showXAxis="false"
-                     xName="id"
-                     yName="Loss" />
+          <bar-chart
+            title="近期训练"
+            :dataSet="trainData"
+            :tooltipList="['训练Loss', '测试Loss']"
+            :showTip="true"
+            :showXAxis="false"
+            xName="id"
+            yName="Loss"
+          />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart">
-          <bar-chart title="近期应用"
-                     :colors="colors"
-                     :dataSet="appData"
-                     :showTip="true"
-                     :showXAxis="false"
-                     xName="id"
-                     yName="Loss" />
+          <bar-chart
+            title="近期应用"
+            :colors="colors"
+            :dataSet="appData"
+            :showTip="true"
+            :showXAxis="false"
+            xName="id"
+            yName="Loss"
+          />
         </div>
       </el-col>
     </el-row>
     <el-row class="model-example">相关实例</el-row>
     <el-row class="model-control">
       <template v-for="(item, index) in modelList">
-        <div :key="index"
-             class="model-box"
-             @click="getForecast(item.dataset_id, item.status)">
-          <instance :chose="false"
-                    :status="item.status"
-                    :title="item.name"
-                    :lately="item.loss"
-                    :traning="item.training_time"
-                    :datasetName="item.dataset_name"
-                    :estimate="item.estimated_deployment_time" />
+        <div :key="index" class="model-box" @click="getForecast(item.dataset_id, item.status)">
+          <instance
+            :chose="false"
+            :status="item.status"
+            :title="item.name"
+            :lately="item.loss"
+            :traning="item.training_time"
+            :datasetName="item.dataset_name"
+            :estimate="item.estimated_deployment_time"
+          />
         </div>
       </template>
     </el-row>
@@ -64,7 +67,8 @@ export default {
     return {
       appData: {},
       trainData: {},
-      reportData: this.$store.state.reportData,
+      // reportData: this.$store.state.reportData,
+      reportData: {},
       colors: ['#00C4C0', '#8FD866'],
       total: 100,
       size: 34.2,
@@ -73,23 +77,19 @@ export default {
     };
   },
   mounted() {
+    // console.log('111', this.$route);
+    this.reportData = this.$store.state.reportData;
     this.getdata();
   },
   methods: {
     getdata() {
-      this.$axios
-        .get(`/form/recent?id=${this.$store.state.trainSelected}`)
-        .then((res) => {
-          this.appData = res.application;
-          this.trainData = res.train;
-        });
-      this.$axios
-        .get(
-          `model/instance/list?model_id=${this.$store.state.trainSelected || 1}`,
-        )
-        .then((res) => {
-          this.modelList = res;
-        });
+      this.$axios.get(`/form/recent?id=${this.reportData.id}`).then((res) => {
+        this.appData = res.application;
+        this.trainData = res.train;
+      });
+      this.$axios.get(`model/instance/list?model_id=${this.reportData.id}`).then((res) => {
+        this.modelList = res;
+      });
     },
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);
@@ -98,9 +98,7 @@ export default {
       if (status === 1) {
         this.$store.commit('setModelDatasetId', id);
         this.$router.push({
-          path: `/modelPublish/modelPublishForecast?id=${
-            this.$store.state.trainSelected
-          }`,
+          path: `/modelPublish/modelPublishForecast?id=${this.reportData.id}`,
         });
       }
     },
@@ -112,6 +110,12 @@ export default {
 .report-container {
   padding: 60px;
   @include flex-column;
+}
+
+.title {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
 }
 
 .main-title {

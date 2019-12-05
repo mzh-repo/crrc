@@ -1,28 +1,28 @@
 <template>
-  <div class="case-example"
-       :style="{ 'z-index': zIndex }">
-    <div class="case-box"
-         :class="show ? 'active' : ''"
-         @mouseover="showContent"
-         @mouseout="closeContent"
-         @click="goDetail">
-      <div class="title">{{ title }}</div>
+  <div class="case-example" :style="{ 'z-index': zIndex }">
+    <div
+      class="case-box"
+      :class="show ? 'active' : ''"
+      @mouseover="showContent"
+      @mouseout="closeContent"
+      @click="goDetail"
+    >
+      <div class="title">{{ data.title }}</div>
       <div class="sulation">
         <svg-icon icon-class="case_train" />
-        {{ describe[0] }}
+        {{ data.text1 }}
       </div>
       <div class="sulation">
         <svg-icon icon-class="case_line" />
-        {{ describe[1] }}
+        {{ data.text2 }}
       </div>
-      <svg-icon class="algorithm"
-                icon-class="instance1" />
+      <svg-icon class="algorithm" :icon-class="getIcon(data.type)" />
     </div>
     <template v-if="show">
       <transition name="intro">
         <div class="show-content">
-          <div class="model">模型：{{ model }}</div>
-          <div class="intro">简介：{{ intro }}</div>
+          <div class="model">模型：{{ data.model.name }}</div>
+          <div class="intro">简介：{{ data.summary }}</div>
         </div>
       </transition>
     </template>
@@ -36,14 +36,13 @@ export default {
     zIndex: {
       type: Number,
     },
+    data: {
+      type: Object,
+    },
   },
   data() {
     return {
       show: false,
-      title: '多目标列车运行控制案例',
-      describe: ['定车：车辆配置不变', '定线：线路充电情况不变'],
-      model: 'xxxxxx',
-      intro: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     };
   },
   methods: {
@@ -54,7 +53,19 @@ export default {
       this.show = false;
     },
     goDetail() {
+      this.$store.commit('setReportData', {
+        name: this.data.model.name,
+        scene: this.data.model.applicable_scene,
+        describe: this.data.model.introduction,
+        total: this.data.model.deploy_number,
+        id: this.data.model.id,
+        dateSetName: this.data.model.dataset_name,
+        // dateSetName: this.data.model.dataset.name,
+      });
       this.$router.push({ path: '/report' });
+    },
+    getIcon(type) {
+      return `instance${type}`;
     },
   },
 };

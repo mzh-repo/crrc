@@ -2,38 +2,33 @@
   <el-container class="container">
     <div class="title">
       <div class="title-left">
-        <span>{{this.$store.state.modelSelected.name}} - {{databaseType}}</span>
-        <span>实例{{this.$store.state.exampleSelected.name||'1908231434'}}</span>
+        <span>{{ this.$store.state.modelSelected.name }} - {{ databaseType }}</span>
+        <span>实例{{ this.$store.state.exampleSelected.name || "1908231434" }}</span>
       </div>
       <div class="title-right">
-        <span>更新时间: {{date||'2019.09.11'}} {{time||'19:00:00'}}</span>
-        <span>当前时间: {{date||'2019.09.11'}} {{time||'19:00:00'}}</span>
+        <span>更新时间: {{ date || "2019.09.11" }} {{ time || "19:00:00" }}</span>
+        <span>当前时间: {{ date || "2019.09.11" }} {{ time || "19:00:00" }}</span>
       </div>
     </div>
     <div class="forecast-data">
-      <span>平均预测时间: {{'1'}}s</span>
-      <span>预测总次数: {{'128'}}次</span>
-      <span>预测总数据大小: {{'128'}}M</span>
+      <span>平均预测时间: {{ "1" }}s</span>
+      <span>预测总次数: {{ "128" }}次</span>
+      <span>预测总数据大小: {{ "128" }}M</span>
     </div>
-    <el-row v-if="result === 0"
-            class="line-area">
+    <el-row v-if="result === 0" class="line-area">
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.power"
-                    :title="'能耗对比 kW·h'"
-                    :yTitle="'预测'" />
+          <Mzh-line :lineData="lineData.power" :title="'能耗对比 kW·h'" :yTitle="'预测'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.speed"
-                    :title="'速度 km/h'" />
+          <Mzh-line :lineData="lineData.speed" :title="'速度 km/h'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper nopadding">
-          <Mzh-line :lineData="lineData.force"
-                    :title="'牵引力 KN'" />
+          <Mzh-line :lineData="lineData.force" :title="'牵引力 KN'" />
         </div>
       </el-col>
     </el-row>
@@ -47,19 +42,16 @@
       </el-col>
     </el-row>
     <el-row v-if="result === 2"></el-row> -->
-    <el-row v-if="result === 3"
-            class="forcecast-container">
+    <el-row v-if="result === 3" class="forcecast-container">
       <forcecast-one />
     </el-row>
-    <el-row v-if="result === 4"
-            class="forcecast-container">
-      <forcecast-two />
+    <el-row v-if="result === 4" class="forcecast-container">
+      <forcecast-two :result-type="type" />
     </el-row>
-    <el-row v-if="result === 5"
-            class="forcecast-container">
+    <el-row v-if="result === 5" class="forcecast-container">
       <forcecast-three />
     </el-row>
-    <Mzh-table v-if="result === 0 || result ===1 || result === 2" />
+    <Mzh-table v-if="result === 0 || result === 1 || result === 2" />
   </el-container>
 </template>
 
@@ -102,8 +94,8 @@ export default {
         },
       ],
       modelId: '',
-      databaseType:
-        this.$store.state.dataSetName || this.$store.state.modelDatabaseName,
+      databaseType: this.$store.state.dataSetName || this.$store.state.modelDatabaseName,
+      type: 1, // 区分 列车运行控制 A和 B 对应的结果集
     };
   },
   mounted() {
@@ -115,11 +107,18 @@ export default {
       this.modelId = this.$store.state.modelSelected.index;
     }
     if (this.modelId === 1 || this.modelId === 2) {
+      // 列车运行控制  A
       this.result = 4;
     } else if (this.modelId === 3 || this.modelId === 4) {
+      // 故障预警
       this.result = 5;
     } else if (this.modelId === 5 || this.modelId === 6) {
+      // 列车运行控制  C
       this.result = 3;
+    } else if (this.modelId === 7 || this.modelId === 8) {
+      // 列车运行控制  B
+      this.result = 4;
+      this.type = 2;
     } else {
       this.result = 0;
       this.b();
@@ -127,8 +126,7 @@ export default {
     // this.getRandom();
     // this.b();
     const nowDate = new Date();
-    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
-      + 1}-${nowDate.getDate()}`;
+    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth() + 1}-${nowDate.getDate()}`;
     this.time = `${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
   },
   methods: {
@@ -175,7 +173,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'PingFangSC-Regular', 'PingFangSC';
+  font-family: "PingFangSC-Regular", "PingFangSC";
 }
 
 .title {
