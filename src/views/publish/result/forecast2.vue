@@ -13,16 +13,24 @@
       <div>最大旅行速度</div>
     </el-row> -->
     <el-row class="result-tab">
-      <el-tabs v-model="resultName" @tab-click="chooseResult">
+      <el-tabs v-model="resultName"
+               @tab-click="chooseResult">
         <template v-for="(item, index) in resultList">
-          <el-tab-pane :key="index" :label="item.name" :name="item.name"> </el-tab-pane>
+          <el-tab-pane :key="index"
+                       :label="item.name"
+                       :name="item.name"> </el-tab-pane>
         </template>
       </el-tabs>
     </el-row>
     <el-row class="progress">
       储能系统性能衰减度 &nbsp;
-      <el-col :xs="8" :sm="6" :md="3" :lg="3" :xl="3">
-        <el-progress :percentage="percent" :stroke-width="18"> </el-progress>
+      <el-col :xs="8"
+              :sm="6"
+              :md="3"
+              :lg="3"
+              :xl="3">
+        <el-progress :percentage="percent"
+                     :stroke-width="18"> </el-progress>
       </el-col>
     </el-row>
     <el-row class="progress"> 文本解释判据: {{ explain }} </el-row>
@@ -40,15 +48,20 @@
         <markdown-it-vue :content="targetFuc" />
       </el-col>
     </el-row>
-    <el-row :gutter="19" class="chart-container chart-1">
+    <el-row :gutter="19"
+            class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="手柄级位" :yArea="yArea" :lineData="lineData.force" />
+          <mzh-line title="手柄级位"
+                    :yArea="yArea"
+                    :lineData="lineData.force" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <power-line title="能耗 kW·h" :legend="legend" :lineData="lineData.power" />
+          <power-line title="能耗 kW·h"
+                      :legend="legend"
+                      :lineData="lineData.power" />
         </div>
       </el-col>
     </el-row>
@@ -63,15 +76,20 @@
         <move-train />
       </template>
     </template>
-    <el-row :gutter="19" class="chart-container">
+    <el-row :gutter="19"
+            class="chart-container">
       <el-col :span="24">
         <div class="chart-box">
-          <mzh-line title="手柄级位(实时)" :yArea="yArea" :lineData="dynasticDataOne" />
+          <mzh-line title="手柄级位(实时)"
+                    :yArea="yArea"
+                    :lineData="dynasticDataOne" />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="chart-box">
-          <power-line title="能耗(实时) kW·h" :legend="legend" :lineData="dynasticDataTwo" />
+          <power-line title="能耗(实时) kW·h"
+                      :legend="legend"
+                      :lineData="dynasticDataTwo" />
         </div>
       </el-col>
     </el-row>
@@ -91,12 +109,12 @@ export default {
     'mzh-line': Line,
     'move-train': MovingTrain,
     MarkdownItVue,
-    PowerLine,
+    PowerLine
   },
   props: {
     resultType: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   data() {
     return {
@@ -110,38 +128,43 @@ export default {
       explain:
         '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network)',
       model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
-      targetFuc: '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
+      targetFuc:
+        '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
       speed: 10,
       energy: 10,
       lineData: {
         force: {},
-        power: {},
+        power: {}
       },
       dynasticDataOne: {
         date_list: [],
         data_list: [],
-        predict_data_list: [],
+        predict_data_list: []
       },
       dynasticDataTwo: {
         date_list: [],
         data_list: [],
         predict_data_list: [],
-        green: [],
+        green: []
       },
       dynasticData: {},
       type: 3, // 2 间歇式, 3 非接触式
       time: null,
       timer: null,
-      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
+      legend: [
+        '预测能耗(预测级位)',
+        '实际能耗(实际级位)',
+        '预测能耗(实际级位)'
+      ],
       resultName: '最佳能耗',
       resultList: [
         { name: '最佳能耗', id: 1 },
-        { name: '最快旅行速度', id: 2 },
+        { name: '最快旅行速度', id: 2 }
       ],
       showAgain: true,
       yArea: [],
       dataSetId: '',
-      curent: 0,
+      curent: 0
     };
   },
   mounted() {
@@ -164,7 +187,7 @@ export default {
       }
       this.$axios
         .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
-        .then((res) => {
+        .then(res => {
           this.lineData.force = res.level;
           this.lineData.power = res.energy_consumption;
           this.renderData(res);
@@ -184,43 +207,61 @@ export default {
             this.dynasticDataTwo.green.shift();
             // this.dynasticDataTwo.date_list.shift();
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i]
+              ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i],
-              ],
+                val.level.predict_data_list[i]
+              ]
             };
             const powerData = {
-              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i]
+              ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i],
+                val.energy_consumption.predict_data_list[i]
               ],
-              green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption.green[i]
+              ]
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i]
+              ],
 
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i],
-              ],
+                val.level.predict_data_list[i]
+              ]
             };
             const powerData = {
-              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i]
+              ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i],
+                val.energy_consumption.predict_data_list[i]
               ],
-              green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption.green[i]
+              ]
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
-        }, 1000);
+        }, 100 * i);
       }
     },
     // 不同结果集
@@ -235,13 +276,13 @@ export default {
       this.dynasticDataOne = {
         date_list: [],
         data_list: [],
-        predict_data_list: [],
+        predict_data_list: []
       };
       this.dynasticDataTwo = {
         date_list: [],
         data_list: [],
         predict_data_list: [],
-        green: [],
+        green: []
       };
       this.$nextTick(() => {
         this.showAgain = true;
@@ -260,7 +301,7 @@ export default {
       }
       this.$axios
         .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
-        .then((res) => {
+        .then(res => {
           this.lineData.force = res.level_speed;
           this.lineData.power = res.energy_consumption_speed;
           this.renderDataOther(res);
@@ -280,12 +321,15 @@ export default {
             this.dynasticDataTwo.green.shift();
             // this.dynasticDataTwo.date_list.shift();
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level_speed.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level_speed.data_list[i]
+              ],
 
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level_speed.predict_data_list[i],
-              ],
+                val.level_speed.predict_data_list[i]
+              ]
               // date_list: [
               //   ...this.dynasticDataOne.date_list,
               //   val.level_speed.date_list[i],
@@ -294,13 +338,16 @@ export default {
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption_speed.data_list[i],
+                val.energy_consumption_speed.data_list[i]
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption_speed.predict_data_list[i],
+                val.energy_consumption_speed.predict_data_list[i]
               ],
-              green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption_speed.green[i]
+              ]
               // date_list: [
               //   ...this.dynasticDatTwo.date_list,
               //   val.energy_consumption_speed.date_list[i],
@@ -310,12 +357,15 @@ export default {
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level_speed.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level_speed.data_list[i]
+              ],
 
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level_speed.predict_data_list[i],
-              ],
+                val.level_speed.predict_data_list[i]
+              ]
               // date_list: [
               //   ...this.dynasticDataOne.date_list,
               //   val.level_speed.date_list[i],
@@ -324,13 +374,16 @@ export default {
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption_speed.data_list[i],
+                val.energy_consumption_speed.data_list[i]
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption_speed.predict_data_list[i],
+                val.energy_consumption_speed.predict_data_list[i]
               ],
-              green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption_speed.green[i]
+              ]
               // date_list: [
               //   ...this.dynasticDatTwo.date_list,
               //   val.energy_consumption_speed.date_list[i],
@@ -339,16 +392,16 @@ export default {
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
-        }, 1000);
+        }, 100 * i);
       }
-    },
+    }
   },
   beforeDestroy() {
     clearTimeout(this.time);
     clearTimeout(this.timer);
     this.time = null;
     this.timer = null;
-  },
+  }
 };
 </script>
 

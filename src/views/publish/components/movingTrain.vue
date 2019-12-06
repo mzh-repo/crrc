@@ -1,26 +1,24 @@
 <template>
   <el-row class="train-container">
     <el-row class="trace-point energy">
-      <div
-        v-for="(item, index) in pointList"
-        :key="index"
-        :style="{ left: item.left }"
-        class="point-box"
-      >
+      <div v-for="(item, index) in pointList"
+           :key="index"
+           :style="{ left: item.left }"
+           class="point-box">
         <div class="energy-content">{{ item.charge }}</div>
         <div class="energy-content">{{ item.energy }}</div>
       </div>
     </el-row>
-    <svg-icon icon-class="火车" class="animation-train" />
+    <svg-icon icon-class="火车"
+              class="animation-train" />
     <div class="trace-line"></div>
     <el-row class="trace-point">
-      <div
-        v-for="(item, index) in pointList"
-        :key="index"
-        :style="{ left: item.left }"
-        class="point-box"
-      >
-        <div class="point" :style="{ 'background-color': item.color }"></div>
+      <div v-for="(item, index) in pointList"
+           :key="index"
+           :style="{ left: item.left }"
+           class="point-box">
+        <div class="point"
+             :style="{ 'background-color': item.color }"></div>
         <div>{{ item.name }}</div>
       </div>
     </el-row>
@@ -134,58 +132,55 @@ export default {
       // eslint-disable-next-line no-console
       console.log('al', val);
       const query = document.querySelector('.animation-train');
-      const list = [
-        '20',
-        '21',
-        '22',
-        '40',
-        '41',
-        '42',
-        '60',
-        '61',
-        '62',
-        '80',
-        '81',
-        '82',
-        '99',
-        '100',
-      ];
       const data = JSON.parse(JSON.stringify(this.pointList));
-      if (val > 0) {
+      if (val >= 0) {
         // const query = document.querySelector('.animation-train');
         // query.style['animation-play-state'] = 'paused';
         data[0].color = primaryColor;
         data[0].charge = '是否充电:是';
         data[0].energy = '剩余电量:97%';
       }
-      if (list.includes(val)) {
-        query.style['animation-play-state'] = 'paused';
-      } else {
-        query.style['animation-play-state'] = 'running';
-      }
-      if (val >= 20) {
+      if (val >= 21) {
         data[1].color = primaryColor;
         data[1].charge = '是否充电:是';
         data[1].energy = '剩余电量:81.12%';
+        if (val <= 24) {
+          query.style['animation-play-state'] = 'paused';
+        } else {
+          query.style['animation-play-state'] = 'running';
+        }
       }
-      if (val >= 40) {
+      if (val >= 42) {
         data[2].color = primaryColor;
         data[2].charge = '是否充电:是';
         data[2].energy = '剩余电量:69.32%';
+        if (val <= 45) {
+          query.style['animation-play-state'] = 'paused';
+        } else {
+          query.style['animation-play-state'] = 'running';
+        }
       }
-      if (val >= 60) {
+      if (val >= 63) {
         data[3].color = primaryColor;
         data[3].charge = '是否充电:是';
         data[3].energy = '剩余电量:68.85%';
+        if (val <= 66) {
+          query.style['animation-play-state'] = 'paused';
+        } else {
+          query.style['animation-play-state'] = 'running';
+        }
       }
-      if (val > 80) {
+      if (val > 84) {
         data[4].color = primaryColor;
         data[4].charge = '是否充电:是';
         data[4].energy = '剩余电量:65.83%';
+        if (val <= 87) {
+          query.style['animation-play-state'] = 'paused';
+        } else {
+          query.style['animation-play-state'] = 'running';
+        }
       }
       if (val >= 100) {
-        // clearTimeout(this.time);
-        // this.time = null;
         data[5].color = primaryColor;
         data[5].charge = '是否充电:是';
         data[5].energy = '剩余电量:67.24%';
@@ -208,8 +203,9 @@ export default {
     width: 10%;
     height: 44px;
     position: absolute;
-    animation: mymove 100s infinite;
+    animation: mymove 112s infinite;
     animation-play-state: running;
+    animation-timing-function: linear;
     animation-iteration-count: 1;
     -webkit-animation-iteration-count: 1; /* Safari 和 Chrome */
     animation-fill-mode: forwards;
@@ -217,7 +213,7 @@ export default {
 
     @keyframes mymove {
       from {
-        left: 0%;
+        left: -10%;
       }
       to {
         left: 90%;
@@ -226,7 +222,7 @@ export default {
 
     @-moz-keyframes mymove /* Firefox */ {
       from {
-        left: 0%;
+        left: -10%;
       }
       to {
         left: 90%;
@@ -235,7 +231,7 @@ export default {
 
     @-webkit-keyframes mymove /* Safari 和 Chrome */ {
       from {
-        left: 0%;
+        left: -10%;
       }
       to {
         left: 90%;
@@ -244,7 +240,7 @@ export default {
 
     @-o-keyframes mymove /* Opera */ {
       from {
-        left: 0%;
+        left: -10%;
       }
       to {
         left: 90%;
