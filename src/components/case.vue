@@ -1,12 +1,11 @@
 <template>
-  <div class="case-example" :style="{ 'z-index': zIndex }">
-    <div
-      class="case-box"
-      :class="show ? 'active' : ''"
-      @mouseover="showContent"
-      @mouseout="closeContent"
-      @click="goDetail"
-    >
+  <div class="case-example"
+       :style="{ 'z-index': zIndex }">
+    <div class="case-box"
+         :class="show ? 'active' : ''"
+         @mouseover="showContent"
+         @mouseout="closeContent"
+         @click="goDetail">
       <div class="title">{{ data.title }}</div>
       <div class="sulation">
         <svg-icon icon-class="case_train" />
@@ -16,7 +15,8 @@
         <svg-icon icon-class="case_line" />
         {{ data.text2 }}
       </div>
-      <svg-icon class="algorithm" :icon-class="getIcon(data.type)" />
+      <svg-icon class="algorithm"
+                :icon-class="getIcon(data.type)" />
     </div>
     <template v-if="show">
       <transition name="intro">
@@ -39,6 +39,9 @@ export default {
     data: {
       type: Object,
     },
+    id: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -60,6 +63,7 @@ export default {
         total: this.data.model.deploy_number,
         id: this.data.model.id,
         dateSetName: this.data.model.dataset_name,
+        dataBaseId: this.id,
         // dateSetName: this.data.model.dataset.name,
       });
       this.$router.push({ path: '/report' });
@@ -132,7 +136,8 @@ export default {
 .model {
   font-size: 20px;
   margin-bottom: 20px;
-  width: 240px;
+  width: 300px;
+  // word-break: break-all;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -109,12 +109,12 @@ export default {
     'mzh-line': Line,
     'move-train': MovingTrain,
     MarkdownItVue,
-    PowerLine
+    PowerLine,
   },
   props: {
     resultType: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
@@ -134,18 +134,18 @@ export default {
       energy: 10,
       lineData: {
         force: {},
-        power: {}
+        power: {},
       },
       dynasticDataOne: {
         date_list: [],
         data_list: [],
-        predict_data_list: []
+        predict_data_list: [],
       },
       dynasticDataTwo: {
         date_list: [],
         data_list: [],
         predict_data_list: [],
-        green: []
+        green: [],
       },
       dynasticData: {},
       type: 3, // 2 间歇式, 3 非接触式
@@ -154,17 +154,17 @@ export default {
       legend: [
         '预测能耗(预测级位)',
         '实际能耗(实际级位)',
-        '预测能耗(实际级位)'
+        '预测能耗(实际级位)',
       ],
       resultName: '最佳能耗',
       resultList: [
         { name: '最佳能耗', id: 1 },
-        { name: '最快旅行速度', id: 2 }
+        { name: '最快旅行速度', id: 2 },
       ],
       showAgain: true,
       yArea: [],
       dataSetId: '',
-      curent: 0
+      curent: 0,
     };
   },
   mounted() {
@@ -187,7 +187,7 @@ export default {
       }
       this.$axios
         .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
-        .then(res => {
+        .then((res) => {
           this.lineData.force = res.level;
           this.lineData.power = res.energy_consumption;
           this.renderData(res);
@@ -209,26 +209,26 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level.data_list[i]
+                val.level.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i]
-              ]
+                val.level.predict_data_list[i],
+              ],
             };
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i]
+                val.energy_consumption.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i]
+                val.energy_consumption.predict_data_list[i],
               ],
               green: [
                 ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i]
-              ]
+                val.energy_consumption.green[i],
+              ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -236,27 +236,27 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level.data_list[i]
+                val.level.data_list[i],
               ],
 
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i]
-              ]
+                val.level.predict_data_list[i],
+              ],
             };
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i]
+                val.energy_consumption.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i]
+                val.energy_consumption.predict_data_list[i],
               ],
               green: [
                 ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i]
-              ]
+                val.energy_consumption.green[i],
+              ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -276,13 +276,13 @@ export default {
       this.dynasticDataOne = {
         date_list: [],
         data_list: [],
-        predict_data_list: []
+        predict_data_list: [],
       };
       this.dynasticDataTwo = {
         date_list: [],
         data_list: [],
         predict_data_list: [],
-        green: []
+        green: [],
       };
       this.$nextTick(() => {
         this.showAgain = true;
@@ -301,7 +301,7 @@ export default {
       }
       this.$axios
         .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
-        .then(res => {
+        .then((res) => {
           this.lineData.force = res.level_speed;
           this.lineData.power = res.energy_consumption_speed;
           this.renderDataOther(res);
@@ -323,13 +323,13 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level_speed.data_list[i]
+                val.level_speed.data_list[i],
               ],
 
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level_speed.predict_data_list[i]
-              ]
+                val.level_speed.predict_data_list[i],
+              ],
               // date_list: [
               //   ...this.dynasticDataOne.date_list,
               //   val.level_speed.date_list[i],
@@ -338,16 +338,16 @@ export default {
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption_speed.data_list[i]
+                val.energy_consumption_speed.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption_speed.predict_data_list[i]
+                val.energy_consumption_speed.predict_data_list[i],
               ],
               green: [
                 ...this.dynasticDataTwo.green,
-                val.energy_consumption_speed.green[i]
-              ]
+                val.energy_consumption_speed.green[i],
+              ],
               // date_list: [
               //   ...this.dynasticDatTwo.date_list,
               //   val.energy_consumption_speed.date_list[i],
@@ -359,13 +359,13 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level_speed.data_list[i]
+                val.level_speed.data_list[i],
               ],
 
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level_speed.predict_data_list[i]
-              ]
+                val.level_speed.predict_data_list[i],
+              ],
               // date_list: [
               //   ...this.dynasticDataOne.date_list,
               //   val.level_speed.date_list[i],
@@ -374,16 +374,16 @@ export default {
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption_speed.data_list[i]
+                val.energy_consumption_speed.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption_speed.predict_data_list[i]
+                val.energy_consumption_speed.predict_data_list[i],
               ],
               green: [
                 ...this.dynasticDataTwo.green,
-                val.energy_consumption_speed.green[i]
-              ]
+                val.energy_consumption_speed.green[i],
+              ],
               // date_list: [
               //   ...this.dynasticDatTwo.date_list,
               //   val.energy_consumption_speed.date_list[i],
@@ -394,14 +394,14 @@ export default {
           }
         }, 100 * i);
       }
-    }
+    },
   },
   beforeDestroy() {
     clearTimeout(this.time);
     clearTimeout(this.timer);
     this.time = null;
     this.timer = null;
-  }
+  },
 };
 </script>
 

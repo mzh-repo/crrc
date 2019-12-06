@@ -109,83 +109,186 @@ export default {
     };
   },
   mounted() {
-    // this.getPoint();
+    this.dataBaseId = Number(this.$store.state.reportData.dataBaseId);
   },
   methods: {
-    // getPoint() {
-    //   this.time = setTimeout(() => {
-    //     this.current += 1;
-    //     this.getPoint();
-    //   }, 1000);
-    // },
-  },
-
-  // beforeDestroy() {
-  //   if (this.time) {
-  //     clearTimeout(this.time);
-  //     this.time = null;
-  //   }
-  // },
-
-  watch: {
-    current(val) {
-      // eslint-disable-next-line no-console
-      console.log('al', val);
+    getData(val) {
       const query = document.querySelector('.animation-train');
       const data = JSON.parse(JSON.stringify(this.pointList));
       if (val >= 0) {
-        // const query = document.querySelector('.animation-train');
-        // query.style['animation-play-state'] = 'paused';
         data[0].color = primaryColor;
-        data[0].charge = '是否充电:是';
-        data[0].energy = '剩余电量:97%';
+        data[0].energy = '当前电量: 97%';
+        if (val < 3) {
+          query.style['animation-play-state'] = 'paused';
+        } else {
+          data[0].energy = '';
+          query.style['animation-play-state'] = 'running';
+        }
       }
       if (val >= 21) {
         data[1].color = primaryColor;
-        data[1].charge = '是否充电:是';
-        data[1].energy = '剩余电量:81.12%';
+        data[1].charge = '是否越站充电: 是';
+        data[1].energy = '剩余电量: 69.9%';
         if (val <= 24) {
           query.style['animation-play-state'] = 'paused';
+          if (val === 24) {
+            data[1].charge = '';
+            data[1].energy = '当前电量:84.18%';
+          }
         } else {
+          data[1].charge = '';
+          data[1].energy = '';
           query.style['animation-play-state'] = 'running';
         }
       }
       if (val >= 42) {
         data[2].color = primaryColor;
-        data[2].charge = '是否充电:是';
-        data[2].energy = '剩余电量:69.32%';
+        data[2].charge = '是否越站充电:否';
+        data[2].energy = '剩余电量:51.49%';
         if (val <= 45) {
           query.style['animation-play-state'] = 'paused';
+          if (val === 45) {
+            data[2].charge = '';
+            data[2].energy = '当前电量:50.21%';
+          }
         } else {
+          data[2].charge = '';
+          data[2].energy = '';
           query.style['animation-play-state'] = 'running';
         }
       }
       if (val >= 63) {
         data[3].color = primaryColor;
-        data[3].charge = '是否充电:是';
-        data[3].energy = '剩余电量:68.85%';
+        data[3].charge = '是否越站充电:是';
+        data[3].energy = '剩余电量:42.76%';
         if (val <= 66) {
+          if (val === 66) {
+            data[3].charge = '';
+            data[3].energy = '当前电量:59.7%';
+          }
           query.style['animation-play-state'] = 'paused';
         } else {
+          data[3].charge = '';
+          data[3].energy = '';
           query.style['animation-play-state'] = 'running';
         }
       }
-      if (val > 84) {
+      if (val >= 84) {
         data[4].color = primaryColor;
-        data[4].charge = '是否充电:是';
-        data[4].energy = '剩余电量:65.83%';
+        data[4].charge = '是否越站充电:否';
+        data[4].energy = '剩余电量:30.93%';
         if (val <= 87) {
           query.style['animation-play-state'] = 'paused';
+          if (val === 87) {
+            data[4].charge = '';
+            data[4].energy = '当前电量:28.3%';
+          }
         } else {
+          data[4].charge = '';
+          data[4].energy = '';
           query.style['animation-play-state'] = 'running';
         }
       }
       if (val >= 100) {
         data[5].color = primaryColor;
-        data[5].charge = '是否充电:是';
+        data[5].charge = '是否越站充电:是';
+        data[5].energy = '剩余电量:13.23%';
+      }
+      this.pointList = data;
+    },
+    getOther(val) {
+      const query = document.querySelector('.animation-train');
+      const data = JSON.parse(JSON.stringify(this.pointList));
+      if (val >= 0) {
+        data[0].color = primaryColor;
+        data[0].energy = '当前电量:97%';
+        if (val < 3) {
+          query.style['animation-play-state'] = 'paused';
+        } else {
+          data[0].energy = '';
+          query.style['animation-play-state'] = 'running';
+        }
+      }
+      if (val >= 21) {
+        data[1].color = primaryColor;
+        data[1].charge = '是否越站充电:是';
+        data[1].energy = '剩余电量:81.12%';
+        if (val <= 24) {
+          query.style['animation-play-state'] = 'paused';
+          if (val === 24) {
+            data[1].charge = '';
+            data[1].energy = '当前电量:91.68%';
+          }
+        } else {
+          data[1].charge = '';
+          data[1].energy = '';
+          query.style['animation-play-state'] = 'running';
+        }
+      }
+      if (val >= 42) {
+        data[2].color = primaryColor;
+        data[2].charge = '是否越站充电:是';
+        data[2].energy = '剩余电量:69.32%';
+        if (val <= 45) {
+          query.style['animation-play-state'] = 'paused';
+          if (val === 45) {
+            data[2].charge = '';
+            data[2].energy = '当前电量:74.86%';
+          }
+        } else {
+          data[2].charge = '';
+          data[2].energy = '';
+          query.style['animation-play-state'] = 'running';
+        }
+      }
+      if (val >= 63) {
+        data[3].color = primaryColor;
+        data[3].charge = '是否越站充电:否';
+        data[3].energy = '剩余电量:68.85%';
+        if (val <= 66) {
+          if (val === 66) {
+            data[3].charge = '';
+            data[3].energy = '当前电量:67.62%';
+          }
+          query.style['animation-play-state'] = 'paused';
+        } else {
+          data[3].charge = '';
+          data[3].energy = '';
+          query.style['animation-play-state'] = 'running';
+        }
+      }
+      if (val >= 84) {
+        data[4].color = primaryColor;
+        data[4].charge = '是否越站充电:是';
+        data[4].energy = '剩余电量:65.83%';
+        if (val <= 87) {
+          query.style['animation-play-state'] = 'paused';
+          if (val === 87) {
+            data[4].charge = '';
+            data[4].energy = '当前电量:75.62%';
+          }
+        } else {
+          data[4].charge = '';
+          data[4].energy = '';
+          query.style['animation-play-state'] = 'running';
+        }
+      }
+      if (val >= 100) {
+        data[5].color = primaryColor;
+        data[5].charge = '是否越站充电:是';
         data[5].energy = '剩余电量:67.24%';
       }
       this.pointList = data;
+    },
+  },
+
+  watch: {
+    current(val) {
+      if (this.dataBaseId === 1) {
+        this.getData(val);
+      } else {
+        this.getOther(val);
+      }
     },
   },
 };
@@ -203,7 +306,7 @@ export default {
     width: 10%;
     height: 44px;
     position: absolute;
-    animation: mymove 112s infinite;
+    animation: mymove 110s infinite;
     animation-play-state: running;
     animation-timing-function: linear;
     animation-iteration-count: 1;
