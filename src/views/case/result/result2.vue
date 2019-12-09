@@ -1,17 +1,5 @@
 <template>
   <div>
-    <!-- <el-row class="tab-container">
-      <span v-for="(item,index) in tabList"
-            :key="index"
-            :class="tabId === item.id ? 'active': ''"
-            @click="chooseTab(item.id)">
-        {{item.name}}
-      </span>
-    </el-row> -->
-    <!-- <el-row class="title">
-      <div class="dot"></div>
-      <div>最大旅行速度</div>
-    </el-row> -->
     <el-row class="result-tab">
       <el-tabs v-model="resultName"
                @tab-click="chooseResult">
@@ -174,6 +162,8 @@ export default {
       dataSetId: '',
       curent: 0,
       showDynastic: false,
+      numberList: [],
+      number: 82.87,
     };
   },
   mounted() {
@@ -293,12 +283,12 @@ export default {
     // 不同结果集
     chooseResult() {
       this.showAgain = false;
-      if (this.timeOutLoading !== 0) {
-        clearTimeout(this.time);
-        clearTimeout(this.timer);
-        this.time = null;
-        this.timer = null;
-      }
+      // if (this.timeOutLoading !== 0) {
+      clearTimeout(this.time);
+      clearTimeout(this.timer);
+      this.time = null;
+      this.timer = null;
+      // }
       this.dynasticDataOne = {
         date_list: [],
         data_list: [],
@@ -310,17 +300,17 @@ export default {
         predict_data_list: [],
         green: [],
       };
+      if (this.resultName === '最佳能耗') {
+        // eslint-disable-next-line prefer-destructuring
+        this.number = this.numberList[0];
+        this.getData();
+      } else {
+        // eslint-disable-next-line prefer-destructuring
+        this.number = this.numberList[1];
+        this.getDataOther();
+      }
       this.$nextTick(() => {
         this.showAgain = true;
-        if (this.resultName === '最佳能耗') {
-          // eslint-disable-next-line prefer-destructuring
-          this.number = this.numberList[0];
-          this.getData();
-        } else {
-          // eslint-disable-next-line prefer-destructuring
-          this.number = this.numberList[1];
-          this.getDataOther();
-        }
       });
     },
     getDataOther() {

@@ -62,11 +62,15 @@ export default {
         describe: this.data.model.introduction,
         total: this.data.model.deploy_number,
         id: this.data.model.id,
+        dataSetId: this.data.model.dataset_id,
         dateSetName: this.data.model.dataset_name,
         dataBaseId: this.id,
-        // dateSetName: this.data.model.dataset.name,
       });
-      this.$router.push({ path: '/report' });
+      this.$store.commit('chooseDataBase', this.id);
+      // this.$router.push({ path: '/report' });
+      this.$router.push({
+        path: `/result?id=${this.data.model.id}`,
+      });
     },
     getIcon(type) {
       return `instance${type}`;

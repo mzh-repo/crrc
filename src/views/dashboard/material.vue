@@ -37,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 .el-container {
   height: 100%;
-  overflow-x: hidden;
+  // overflow-x: hidden;
 }
 
 .el-main {

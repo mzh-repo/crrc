@@ -90,7 +90,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-button id="scroll"
+    <el-button id="scroll-1"
                @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>
     <template v-if="showDynastic">
@@ -176,7 +176,7 @@ export default {
       best: '25.6',
       second: '31',
       type: 3, // 2 间歇式, 3 非接触式
-      time: '',
+      time: null,
       legend: [
         '预测能耗(预测级位)',
         '实际能耗(实际级位)',
@@ -253,27 +253,20 @@ export default {
       this.showDynastic = true;
       this.$nextTick(() => {
         document
-          .getElementById('scroll')
+          .getElementById('scroll-1')
           .scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goCase() {
       this.$router.push('/report');
     },
-    // chooseTab(e) {
-    //   this.tabId = e;
-    // },
-    // getLineData() {
-    //   this.$axios.get('form/deployment?id=111').then((res) => {
-    //     this.lineData = res;
-    //   });
-    // },
     getData() {
-      if (this.$store.state.modelDatasetId !== '') {
-        this.dataSetId = this.$store.state.modelDatasetId;
-      } else {
-        this.dataSetId = this.$store.state.dataSelected;
-      }
+      // if (this.$store.state.modelDatasetId !== '') {
+      //   this.dataSetId = this.$store.state.modelDatasetId;
+      // } else {
+      //   this.dataSetId = this.$store.state.dataSelected;
+      // }
+      this.dataSetId = this.$store.state.reportData.dataSetId;
       this.$axios
         .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
         .then((res) => {
@@ -288,11 +281,8 @@ export default {
           if (i > 200) {
             this.dynasticDataOne.data_list.shift();
             this.dynasticDataOne.predict_data_list.shift();
-            // this.dynasticDataOne.date_list.shift();
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
-            // this.dynasticDataTwo.green.shift();
-            // this.dynasticDataTwo.date_list.shift();
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
@@ -302,10 +292,6 @@ export default {
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
-              // date_list: [
-              //   ...this.dynasticDataOne.date_list,
-              //   val.level.date_list[i],
-              // ],
             };
             const powerData = {
               data_list: [
@@ -316,14 +302,6 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              // green: [
-              //   ...this.dynasticDataTwo.green,
-              //   val.energy_consumption.green[i],
-              // ],
-              // date_list: [
-              //   ...this.dynasticDataTwo.date_list,
-              //   val.level.date_list[i],
-              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -337,10 +315,6 @@ export default {
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
-              // date_list: [
-              //   ...this.dynasticDataOne.date_list,
-              //   val.level.date_list[i],
-              // ],
             };
             const powerData = {
               data_list: [
@@ -351,14 +325,6 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              // green: [
-              //   ...this.dynasticDataTwo.green,
-              //   val.energy_consumption.green[i],
-              // ],
-              // date_list: [
-              //   ...this.dynasticDataTwo.date_list,
-              //   val.level.date_list[i],
-              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;

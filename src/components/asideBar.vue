@@ -4,13 +4,15 @@
       <svg-icon icon-class="中车" />
       <svg-icon icon-class="浙江大学" />
     </el-row>
-    <el-menu router @select="handleSelect">
+    <el-menu router
+             @select="handleSelect">
       <template v-for="(menu, index) in routerList">
-        <template v-if="index + 1 !== routerList.length">
-          <el-menu-item :index="menu.path" :key="menu.name" @click="showMy">
-            <svg-icon
-              :icon-class="selectItem === menu.path ? menu.selectIcon : menu.name"
-            ></svg-icon>
+        <template v-if="index < routerList.length - 2">
+          <el-menu-item :index="menu.path"
+                        :key="menu.name"
+                        @click="showMy">
+            <svg-icon :icon-class="selectItem === menu.path
+             ? menu.selectIcon : menu.name"></svg-icon>
           </el-menu-item>
         </template>
       </template>

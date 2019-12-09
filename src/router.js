@@ -16,14 +16,14 @@ export default new Router({
           path: '/dashboard',
           name: '首页',
           selectIcon: '首页-选中',
-          component: () => import('./views/dashboard'),
+          component: () => import('./views/dashboard/case'),
         },
         {
           path: '/chooseModel',
           name: '模型中心',
           selectIcon: '模型中心-选中',
-          // component: () => import('./views/modelCenter'),
-          component: () => import('./views/dashboard/case'),
+          component: () => import('./views/modelCenter'),
+          // component: () => import('./views/dashboard/case'),
           children: [
             {
               path: '/chooseModel',
@@ -131,6 +131,10 @@ export default new Router({
           // name: '',
           // selectIcon: '',
           component: () => import('./views/case'),
+        },
+        {
+          path: '/result',
+          component: () => import('./views/case/result'),
         },
       ],
     },
