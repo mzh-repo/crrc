@@ -1,6 +1,6 @@
 <template>
   <div :class="className"
-       :style="{height:height,width:width}" />
+       :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -141,7 +141,7 @@ export default {
           data: this.legend,
         },
         xAxis: {
-          name: '时间(s)',
+          name: '路程(m)',
           nameLocation: 'center',
           nameTextStyle: {
             padding: [20, 0, 0, 0],
@@ -154,8 +154,9 @@ export default {
             show: false,
           },
           axisLabel: {
+            show: false,
             // rotate: 50,
-            formatter: value => Math.floor(value * 10) / 10,
+            formatter: value => Math.floor(value * 1000) / 10,
           },
           axisLine: {
             show: false,

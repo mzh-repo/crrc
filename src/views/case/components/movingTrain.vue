@@ -306,7 +306,7 @@ export default {
     width: 10%;
     height: 44px;
     position: absolute;
-    animation: mymove 110s infinite;
+    animation: mymove 100s infinite;
     animation-play-state: running;
     animation-timing-function: linear;
     animation-iteration-count: 1;

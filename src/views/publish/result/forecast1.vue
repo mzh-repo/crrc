@@ -69,6 +69,9 @@
             <el-row>最优配置下的运行能耗为：{{ best }} kW·h</el-row>
             <el-row>次优配置下的运行能耗为：{{ second }} kW·h</el-row>
           </template>
+          <template v-else>
+            <el-row>当前成本: 1158.5万元</el-row>
+          </template>
         </div>
       </el-col>
     </el-row>
@@ -202,6 +205,7 @@ export default {
     this.getData();
     if (this.type === 3) {
       this.limitList = [
+        '成本最优设计',
         'AW2下最高运行速度（km/h）：70',
         'AW2下平均初始加速度（m/s2）：1',
         'AW2下平均加速度（m/s2）：0.6',
@@ -225,6 +229,7 @@ export default {
       ];
     } else {
       this.limitList = [
+        '成本最优设计',
         '车辆最高运行速度（km/h）：70',
         '平均最小启动加速度（m/s2）：1',
         '平均最小加速度（m/s2）：0.6',

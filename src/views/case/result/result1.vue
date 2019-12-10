@@ -69,6 +69,9 @@
             <el-row>最优配置下的运行能耗为：{{ best }} kW·h</el-row>
             <el-row>次优配置下的运行能耗为：{{ second }} kW·h</el-row>
           </template>
+          <template v-else>
+            <el-row>当前成本: 1158.5万元</el-row>
+          </template>
         </div>
       </el-col>
     </el-row>

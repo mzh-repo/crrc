@@ -72,7 +72,7 @@
                @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>
     <div class="tips">
-      预估能耗为原来<span>{{ number }}%</span>
+      预估{{tip}}为原来<span>{{ number }}%</span>
     </div>
     <template v-if="showDynastic">
       <template v-if="showAgain">
@@ -174,6 +174,7 @@ export default {
       dataSetId: '',
       curent: 0,
       showDynastic: false,
+      tip: '能耗',
     };
   },
   mounted() {
@@ -320,10 +321,12 @@ export default {
         if (this.resultName === '最佳能耗') {
           // eslint-disable-next-line prefer-destructuring
           this.number = this.numberList[0];
+          this.tip = '能耗';
           this.getData();
         } else {
           // eslint-disable-next-line prefer-destructuring
           this.number = this.numberList[1];
+          this.tip = '时间';
           this.getDataOther();
         }
       });
