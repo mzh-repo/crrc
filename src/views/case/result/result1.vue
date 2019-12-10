@@ -189,10 +189,8 @@ export default {
     };
   },
   mounted() {
-    // this.getLineData();
-    // this.getDynastic();
     const { dataBase } = this.$store.state;
-    if (dataBase === 1) {
+    if (Number(dataBase) === 1) {
       this.type = 2;
       this.yArea = ['100', '-100'];
     } else {
@@ -202,6 +200,7 @@ export default {
     this.getData();
     if (this.type === 3) {
       this.limitList = [
+        '成本最优设计',
         'AW2下最高运行速度（km/h）：70',
         'AW2下平均初始加速度（m/s2）：1',
         'AW2下平均加速度（m/s2）：0.6',
@@ -225,6 +224,7 @@ export default {
       ];
     } else {
       this.limitList = [
+        '成本最优设计',
         '车辆最高运行速度（km/h）：70',
         '平均最小启动加速度（m/s2）：1',
         '平均最小加速度（m/s2）：0.6',
@@ -329,7 +329,7 @@ export default {
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
-        }, 1000);
+        }, 100 * i);
       }
     },
   },

@@ -128,7 +128,7 @@ export default {
 }
 
 .show-content {
-  height: 196px;
+  height: 180px;
   background-color: #fff;
   position: absolute;
   top: 220px;
@@ -148,7 +148,7 @@ export default {
 }
 
 .intro {
-  font-size: 20px;
+  font-size: 14px;
   word-break: break-all;
 }
 

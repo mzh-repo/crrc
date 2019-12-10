@@ -363,7 +363,7 @@ export default {
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
-        }, 1000);
+        }, 100 * i);
       }
     },
   },

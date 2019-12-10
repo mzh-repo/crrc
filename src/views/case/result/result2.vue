@@ -145,8 +145,8 @@ export default {
       },
       dynasticData: {},
       type: 3, // 2 间歇式, 3 非接触式
-      time: null,
-      timer: null,
+      time: [],
+      timer: [],
       legend: [
         '预测能耗(预测级位)',
         '实际能耗(实际级位)',
@@ -212,7 +212,7 @@ export default {
     renderData(val) {
       const dataIndex = val.level.data_list.length;
       for (let i = 0; i < dataIndex; i += 1) {
-        this.time = setTimeout(() => {
+        this.time[i] = setTimeout(() => {
           this.current = Math.ceil(((i + 1) / (dataIndex + 1)) * 100);
           if (i > 200) {
             this.dynasticDataOne.data_list.shift();
@@ -283,12 +283,11 @@ export default {
     // 不同结果集
     chooseResult() {
       this.showAgain = false;
-      // if (this.timeOutLoading !== 0) {
-      clearTimeout(this.time);
-      clearTimeout(this.timer);
-      this.time = null;
-      this.timer = null;
-      // }
+      this.showAgain = false;
+      for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
+        clearTimeout(this.time[i]);
+        clearTimeout(this.timer[i]);
+      }
       this.dynasticDataOne = {
         date_list: [],
         data_list: [],
@@ -330,7 +329,7 @@ export default {
     renderDataOther(val) {
       const dataIndex = val.level.data_list.length;
       for (let i = 0; i < val.level.data_list.length; i += 1) {
-        this.timer = setTimeout(() => {
+        this.timer[i] = setTimeout(() => {
           this.current = Math.ceil(((i + 1) / (dataIndex + 1)) * 100);
           if (i > 200) {
             this.dynasticDataOne.data_list.shift();
@@ -345,15 +344,10 @@ export default {
                 ...this.dynasticDataOne.data_list,
                 val.level_speed.data_list[i],
               ],
-
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level_speed.predict_data_list[i],
               ],
-              // date_list: [
-              //   ...this.dynasticDataOne.date_list,
-              //   val.level_speed.date_list[i],
-              // ],
             };
             const powerData = {
               data_list: [
@@ -368,10 +362,6 @@ export default {
                 ...this.dynasticDataTwo.green,
                 val.energy_consumption_speed.green[i],
               ],
-              // date_list: [
-              //   ...this.dynasticDatTwo.date_list,
-              //   val.energy_consumption_speed.date_list[i],
-              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -381,15 +371,10 @@ export default {
                 ...this.dynasticDataOne.data_list,
                 val.level_speed.data_list[i],
               ],
-
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level_speed.predict_data_list[i],
               ],
-              // date_list: [
-              //   ...this.dynasticDataOne.date_list,
-              //   val.level_speed.date_list[i],
-              // ],
             };
             const powerData = {
               data_list: [
@@ -404,10 +389,6 @@ export default {
                 ...this.dynasticDataTwo.green,
                 val.energy_consumption_speed.green[i],
               ],
-              // date_list: [
-              //   ...this.dynasticDatTwo.date_list,
-              //   val.energy_consumption_speed.date_list[i],
-              // ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
