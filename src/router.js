@@ -136,6 +136,14 @@ export default new Router({
           path: '/result',
           component: () => import('./views/case/result'),
         },
+        {
+          path: '/upload',
+          component: () => import('./views/case/upload'),
+        },
+        {
+          path: '/training',
+          component: () => import('./views/case/trainResult.vue'),
+        },
       ],
     },
     {

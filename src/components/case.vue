@@ -1,11 +1,12 @@
 <template>
-  <div class="case-example"
-       :style="{ 'z-index': zIndex }">
-    <div class="case-box"
-         :class="show ? 'active' : ''"
-         @mouseover="showContent"
-         @mouseout="closeContent"
-         @click="goDetail">
+  <div class="case-example" :style="{ 'z-index': zIndex }">
+    <div
+      class="case-box"
+      :class="show ? 'active' : ''"
+      @mouseover="showContent"
+      @mouseout="closeContent"
+      @click="goDetail"
+    >
       <div class="title">{{ data.title }}</div>
       <div class="sulation">
         <svg-icon icon-class="case_train" />
@@ -15,12 +16,16 @@
         <svg-icon icon-class="case_line" />
         {{ data.text2 }}
       </div>
-      <svg-icon class="algorithm"
-                :icon-class="getIcon(data.type)" />
+      <div class="sulation">
+        <svg-icon icon-class="case_date" />
+        训练日期:
+      </div>
+      <svg-icon class="algorithm" :icon-class="getIcon(data.type)" />
     </div>
     <template v-if="show">
       <transition name="intro">
         <div class="show-content">
+          <div class="model">数据集：{{ data.model.dataset_name }}</div>
           <div class="model">模型：{{ data.model.name }}</div>
           <div class="intro">简介：{{ data.summary }}</div>
         </div>
@@ -110,7 +115,7 @@ export default {
 }
 
 .sulation {
-  margin-top: 25px;
+  margin-top: 20px;
   display: flex;
   align-items: center;
 
@@ -138,8 +143,8 @@ export default {
 }
 
 .model {
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 16px;
+  margin-bottom: 10px;
   width: 300px;
   // word-break: break-all;
   overflow: hidden;

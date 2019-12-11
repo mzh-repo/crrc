@@ -1,24 +1,36 @@
 <template>
   <div>
     <el-row class="result-tab">
-      <el-tabs v-model="resultName"
-               @tab-click="chooseResult">
+      <el-tabs v-model="resultName" @tab-click="chooseResult">
         <template v-for="(item, index) in resultList">
-          <el-tab-pane :key="index"
-                       :label="item.name"
-                       :name="item.name"> </el-tab-pane>
+          <el-tab-pane :key="index" :label="item.name" :name="item.name"> </el-tab-pane>
         </template>
       </el-tabs>
     </el-row>
-    <el-row class="progress">
+    <el-row v-if="resultType === 2" class="progress">
       储能系统性能衰减度 &nbsp;
-      <el-col :xs="8"
-              :sm="6"
-              :md="3"
-              :lg="3"
-              :xl="3">
-        <el-progress :percentage="percent"
-                     :stroke-width="18"> </el-progress>
+      <el-col :xs="8" :sm="6" :md="3" :lg="3" :xl="3">
+        <el-progress :percentage="percent" :stroke-width="18"> </el-progress>
+      </el-col>
+    </el-row>
+    <el-row class="tips">
+      预估{{ tip }}为原来<span>{{ number }}%</span>
+      <el-button type="primary" @click="$router.push('/upload')">添加训练</el-button>
+    </el-row>
+    <!-- <div class="tips">
+      预估{{ tip }}为原来<span>{{ number }}%</span>
+    </div> -->
+
+    <el-row :gutter="19" class="chart-container chart-1">
+      <el-col :span="12">
+        <div class="chart-box">
+          <mzh-line title="手柄级位" :yArea="yArea" :lineData="lineData.force" />
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="chart-box">
+          <power-line title="能耗 kW·h" :legend="legend" :lineData="lineData.power" />
+        </div>
       </el-col>
     </el-row>
     <el-row class="progress"> 文本解释判据: {{ explain }} </el-row>
@@ -36,32 +48,12 @@
         <markdown-it-vue :content="targetFuc" />
       </el-col>
     </el-row>
-    <el-row :gutter="19"
-            class="chart-container chart-1">
-      <el-col :span="12">
-        <div class="chart-box">
-          <mzh-line title="手柄级位"
-                    :yArea="yArea"
-                    :lineData="lineData.force" />
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="chart-box">
-          <power-line title="能耗 kW·h"
-                      :legend="legend"
-                      :lineData="lineData.power" />
-        </div>
-      </el-col>
-    </el-row>
     <!-- <el-row class="speed-line">
       预测能耗(实际级位)与实际能耗(实际级位)平均差异：{{lineData.power.ratio}}
     </el-row> -->
-    <el-button id="scroll"
-               @click="goDynastic">实时运行图表</el-button>
+    <el-button id="scroll" @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>
-    <div class="tips">
-      预估{{tip}}为原来<span>{{ number }}%</span>
-    </div>
+
     <template v-if="showDynastic">
       <template v-if="showAgain">
         <template v-if="resultType === 2">
@@ -71,20 +63,15 @@
           <move-train />
         </template>
       </template>
-      <el-row :gutter="19"
-              class="chart-container">
+      <el-row :gutter="19" class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <mzh-line title="手柄级位(实时)"
-                      :yArea="yArea"
-                      :lineData="dynasticDataOne" />
+            <mzh-line title="手柄级位(实时)" :yArea="yArea" :lineData="dynasticDataOne" />
           </div>
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <power-line title="能耗(实时) kW·h"
-                        :legend="legend"
-                        :lineData="dynasticDataTwo" />
+            <power-line title="能耗(实时) kW·h" :legend="legend" :lineData="dynasticDataTwo" />
           </div>
         </el-col>
       </el-row>
@@ -124,8 +111,7 @@ export default {
       explain:
         '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network)',
       model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
-      targetFuc:
-        '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
+      targetFuc: '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
       speed: 10,
       energy: 10,
       lineData: {
@@ -147,11 +133,7 @@ export default {
       type: 3, // 2 间歇式, 3 非接触式
       time: [],
       timer: [],
-      legend: [
-        '预测能耗(预测级位)',
-        '实际能耗(实际级位)',
-        '预测能耗(实际级位)',
-      ],
+      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
       resultName: '最佳能耗',
       resultList: [
         { name: '最佳能耗', id: 1 },
@@ -188,9 +170,7 @@ export default {
     goDynastic() {
       this.showDynastic = true;
       this.$nextTick(() => {
-        document
-          .getElementById('scroll')
-          .scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document.getElementById('scroll').scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goCase() {
@@ -224,37 +204,25 @@ export default {
             this.dynasticDataTwo.green.shift();
             // this.dynasticDataTwo.date_list.shift();
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
             };
             const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
+              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
 
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
@@ -262,18 +230,12 @@ export default {
               ],
             };
             const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
+              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -343,10 +305,7 @@ export default {
             this.dynasticDataTwo.green.shift();
             // this.dynasticDataTwo.date_list.shift();
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level_speed.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level_speed.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level_speed.predict_data_list[i],
@@ -361,19 +320,13 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption_speed.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption_speed.green[i],
-              ],
+              green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level_speed.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level_speed.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level_speed.predict_data_list[i],
@@ -388,10 +341,7 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption_speed.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption_speed.green[i],
-              ],
+              green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -536,13 +486,17 @@ export default {
 }
 
 .tips {
-  text-align: right;
+  text-align: center;
   font-size: 30px;
-  margin-top: -40px;
+  // margin-top: -40px;
 
   span {
     margin-left: 5px;
     color: $primary-color;
+  }
+
+  .el-button {
+    float: right;
   }
 }
 </style>

@@ -1,6 +1,61 @@
 <template>
   <el-container class="forcast-container">
     <!-- <div> -->
+    <el-row :gutter="16">
+      <el-col :span="18">
+        <div class="early-warning">
+          <span>故障预警</span>
+          <div class="early-data">
+            <div
+              v-for="(item, index) in earlyList"
+              :key="index"
+              :class="getColor(item.value)"
+              class="early"
+            >
+              {{ item.name }}
+            </div>
+          </div>
+        </div>
+        <div class="early-model">
+          <Mzh-bar
+            v-if="type === 0"
+            :title="title"
+            :maxyAxis="100"
+            :lineData="lineDataOne"
+            :legend="legendOne"
+          />
+          <Mzh-bar
+            v-else
+            :title="title"
+            :maxyAxis="100"
+            :lineData="lineDataTwo"
+            :legend="legendTwo"
+          />
+        </div>
+      </el-col>
+      <el-col :span="6" class="early-situation">
+        <span>健康值</span>
+        <div class="circle-progress">
+          <circle-progress
+            :color="progress.color"
+            :show="progress.show"
+            :total="progress.total"
+            :number="progress.number"
+            :unit="progress.unit"
+          />
+        </div>
+        <span>异常时刻</span>
+        <template v-if="newsList.length > 0">
+          <div v-for="(news, i) in newsList" :key="i" class="news">
+            <div>{{ news.content }}</div>
+            <div>启动后{{ news.time }}s</div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="news">暂无</div>
+        </template>
+      </el-col>
+    </el-row>
     <div class="explain-container">
       <el-row> 解释判据: {{ type === 1 ? explain1 : explain2 }}。 </el-row>
       <el-row>
@@ -12,56 +67,6 @@
         <markdown-it-vue :content="model2" />
       </el-row>
     </div>
-    <el-row :gutter="16">
-      <el-col :span="18">
-        <div class="early-warning">
-          <span>故障预警</span>
-          <div class="early-data">
-            <div v-for="(item, index) in earlyList"
-                 :key="index"
-                 :class="getColor(item.value)"
-                 class="early">
-              {{ item.name }}
-            </div>
-          </div>
-        </div>
-        <div class="early-model">
-          <Mzh-bar v-if="type === 0"
-                   :title="title"
-                   :maxyAxis="100"
-                   :lineData="lineDataOne"
-                   :legend="legendOne" />
-          <Mzh-bar v-else
-                   :title="title"
-                   :maxyAxis="100"
-                   :lineData="lineDataTwo"
-                   :legend="legendTwo" />
-        </div>
-      </el-col>
-      <el-col :span="6"
-              class="early-situation">
-        <span>健康值</span>
-        <div class="circle-progress">
-          <circle-progress :color="progress.color"
-                           :show="progress.show"
-                           :total="progress.total"
-                           :number="progress.number"
-                           :unit="progress.unit" />
-        </div>
-        <span>异常时刻</span>
-        <template v-if="newsList.length > 0">
-          <div v-for="(news, i) in newsList"
-               :key="i"
-               class="news">
-            <div>{{ news.content }}</div>
-            <div>启动后{{ news.time }}s</div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="news">暂无</div>
-        </template>
-      </el-col>
-    </el-row>
     <!-- </div> -->
   </el-container>
 </template>
@@ -105,8 +110,7 @@ export default {
       time: null, // 定时器
       // errorTime: '', // 异常时刻
       explain1: '利用孤立森林模型求解供电系统状态监测及故障预警模型',
-      explain2:
-        '利用孤立森林模型求解基于服役状态检测的车载储能装置检修策略模型',
+      explain2: '利用孤立森林模型求解基于服役状态检测的车载储能装置检修策略模型',
       model1: '```AsciiMath\nc(n) = 2H(n-1) - (2(n-1))/n \n```',
       model2: '```AsciiMath\ns(x, n) = 2^(-(E(h(x)))/(c(n))) \n```',
     };
@@ -184,9 +188,9 @@ export default {
       // }
     },
     covertDate(date) {
-      return `${date.getFullYear()}/${this.convertNum(
-        date.getMonth() + 1,
-      )}/${this.convertNum(date.getDate())}
+      return `${date.getFullYear()}/${this.convertNum(date.getMonth() + 1)}/${this.convertNum(
+        date.getDate(),
+      )}
          ${this.convertNum(date.getHours())}:${this.convertNum(
   date.getMinutes(),
 )}:${this.convertNum(date.getSeconds())}`;

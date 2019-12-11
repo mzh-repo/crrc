@@ -12,15 +12,30 @@
       <div class="dot"></div>
       <div>综合优化设计</div>
     </el-row>
-    <el-row :gutter="19"
-            class="limit-container">
+    <el-button type="primary" @click="$router.push('/upload')">添加训练</el-button>
+    <el-row :gutter="19" class="chart-container chart-1">
+      <el-col :span="12">
+        <div class="chart-box">
+          <mzh-line
+            title="手柄级位"
+            :legend="legendone"
+            :yArea="yArea"
+            :lineData="lineData.force"
+          />
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="chart-box">
+          <model-line title="能耗 kW·h" :legend="legend" :lineData="lineData.power" />
+        </div>
+      </el-col>
+    </el-row>
+    <el-row :gutter="19" class="limit-container">
       <el-col :span="8">
         <div class="limit-box">
           <el-col :span="24">
             <el-row>约束条件</el-row>
-            <el-row v-for="(item, index) in limitList"
-                    :key="index"
-                    class="limit-item">
+            <el-row v-for="(item, index) in limitList" :key="index" class="limit-item">
               <el-col :span="20">{{ item }}</el-col>
               <el-col :span="4">
                 <svg-icon icon-class="满足约束条件" />
@@ -29,11 +44,8 @@
           </el-col>
         </div>
       </el-col>
-      <el-col v-if="type !== 2"
-              :span="8">
-        <el-row v-for="(item, index) in configList"
-                :key="index"
-                class="grid-content">
+      <el-col v-if="type !== 2" :span="8">
+        <el-row v-for="(item, index) in configList" :key="index" class="grid-content">
           <el-col :span="8">
             <svg-icon :icon-class="item.name" />
           </el-col>
@@ -43,11 +55,8 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col v-else
-              :span="8">
-        <el-row v-for="(item, index) in configList"
-                :key="index"
-                class="grid-other">
+      <el-col v-else :span="8">
+        <el-row v-for="(item, index) in configList" :key="index" class="grid-other">
           <el-row class="grid-tag">
             <el-col>
               <el-tag>{{ item.tag }}</el-tag>
@@ -75,44 +84,26 @@
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="19"
-            class="chart-container chart-1">
-      <el-col :span="12">
-        <div class="chart-box">
-          <mzh-line title="手柄级位"
-                    :legend="legendone"
-                    :yArea="yArea"
-                    :lineData="lineData.force" />
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="chart-box">
-          <model-line title="能耗 kW·h"
-                      :legend="legend"
-                      :lineData="lineData.power" />
-        </div>
-      </el-col>
+    <el-row id="scroll" style="padding-top: 80px">
+      <el-button @click="goDynastic">实时运行图表</el-button>
+      <el-button @click="goCase">查看实例报告</el-button>
     </el-row>
-    <el-button id="scroll"
-               @click="goDynastic">实时运行图表</el-button>
-    <el-button @click="goCase">查看实例报告</el-button>
     <template v-if="showDynastic">
       <move-train />
-      <el-row :gutter="19"
-              class="chart-container">
+      <el-row :gutter="19" class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <mzh-line title="手柄级位(实时)"
-                      :legend="legendone"
-                      :yArea="yArea"
-                      :lineData="dynasticDataOne" />
+            <mzh-line
+              title="手柄级位(实时)"
+              :legend="legendone"
+              :yArea="yArea"
+              :lineData="dynasticDataOne"
+            />
           </div>
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <model-line title="能耗(实时) kW·h"
-                        :legend="legend"
-                        :lineData="dynasticDataTwo" />
+            <model-line title="能耗(实时) kW·h" :legend="legend" :lineData="dynasticDataTwo" />
           </div>
         </el-col>
       </el-row>
@@ -180,11 +171,7 @@ export default {
       second: '31',
       type: 3, // 2 间歇式, 3 非接触式
       time: '',
-      legend: [
-        '预测能耗(预测级位)',
-        '实际能耗(实际级位)',
-        '预测能耗(实际级位)',
-      ],
+      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
       legendone: ['预测', '实际'],
       yArea: [],
       dataSetId: '',
@@ -257,9 +244,7 @@ export default {
     goDynastic() {
       this.showDynastic = true;
       this.$nextTick(() => {
-        document
-          .getElementById('scroll')
-          .scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document.getElementById('scroll').scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goCase() {
@@ -299,10 +284,7 @@ export default {
             // this.dynasticDataTwo.green.shift();
             // this.dynasticDataTwo.date_list.shift();
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
@@ -313,10 +295,7 @@ export default {
               // ],
             };
             const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
+              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
@@ -334,10 +313,7 @@ export default {
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
@@ -348,10 +324,7 @@ export default {
               // ],
             };
             const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
+              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
@@ -549,9 +522,9 @@ export default {
   height: 318px;
   margin-top: 60px;
 
-  &.chart-1 {
-    margin-bottom: 103px;
-  }
+  // &.chart-1 {
+  //   margin-bottom: 103px;
+  // }
 
   .chart-box {
     margin-bottom: 30px;
