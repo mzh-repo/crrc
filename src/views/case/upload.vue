@@ -1,45 +1,62 @@
 <template>
   <el-container class="wrap">
     <el-row class="title">上传数据</el-row>
-    <el-row class="select" type="flex" justify="start" align="middle">
+    <el-row class="select"
+            type="flex"
+            justify="start"
+            align="middle">
       <label>选择类型</label>
-      <el-select v-model="value" placeholder="">
-        <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
+      <el-select v-model="value"
+                 placeholder="">
+        <el-option v-for="(item, index) in options"
+                   :key="index"
+                   :label="item.name"
+                   :value="item.value">
         </el-option>
       </el-select>
     </el-row>
-    <label v-if="value !== ''" class="file-label">选择文件</label>
-    <el-row
-      v-if="fileStatus === 0 && value !== ''"
-      type="flex"
-      class="file-box center"
-      align="middle"
-    >
+    <label v-if="value !== ''"
+           class="file-label">选择文件</label>
+    <el-row v-if="fileStatus === 0 && value !== ''"
+            type="flex"
+            class="file-box center"
+            align="middle">
       <svg-icon icon-class="绿色加号" />
       <div class="upload">上传文件</div>
-      <input type="file" class="input-file" accept=".csv" @change="fileChange" />
+      <input type="file"
+             class="input-file"
+             accept=".csv"
+             @change="fileChange" />
     </el-row>
-    <el-row v-if="fileStatus === 1" type="flex" class="start show" align="middle">
-      <svg-icon icon-class="数据导入-文件" class="import-file" />
+    <el-row v-if="fileStatus === 1"
+            type="flex"
+            class="start show"
+            align="middle">
+      <svg-icon icon-class="数据导入-文件"
+                class="import-file" />
       <div class="delete">{{ file[0].name }}</div>
-      <div @click="deleteFile()" class="import-delete">
+      <div @click="deleteFile()"
+           class="import-delete">
         <svg-icon icon-class="数据导入-取消" />
       </div>
     </el-row>
-    <label v-if="fileStatus === 1" class="file-label">数据集配置</label>
-    <div v-if="fileStatus === 1" class="data-set">
-      <compound-input
-        v-for="(item, index) in array"
-        :title="item"
-        :key="item"
-        :index="index"
-        :select="sqlSettings[index]"
-        :options="compoundInput"
-        @selected="handleSelectChange"
-      />
+    <label v-if="fileStatus === 1"
+           class="file-label">数据集配置</label>
+    <div v-if="fileStatus === 1"
+         class="data-set">
+      <compound-input v-for="(item, index) in array"
+                      :title="item"
+                      :key="item"
+                      :index="index"
+                      :select="sqlSettings[index]"
+                      :options="compoundInput"
+                      @selected="handleSelectChange" />
     </div>
-    <el-row v-if="fileStatus === 1" class="train-btn">
-      <el-button type="primary" :loading="loading" @click="goReport">提交训练</el-button>
+    <el-row v-if="fileStatus === 1"
+            class="train-btn">
+      <el-button type="primary"
+                 :loading="loading"
+                 @click="goReport">提交训练</el-button>
     </el-row>
   </el-container>
 </template>
@@ -57,8 +74,8 @@ export default {
       fileStatus: 0,
       file: [],
       options: [
-        { id: 1, name: '数据集' },
-        { id: 2, name: '模型' },
+        { value: 'dataset', name: '数据集' },
+        { value: 'model', name: '模型' },
       ],
       sqlSettings: [],
       // settingsComplete: false,
@@ -153,6 +170,13 @@ export default {
     },
     goReport() {
       this.loading = true;
+      const modelId = this.$store.state.reportData.id;
+      const data = {
+        model_id: modelId,
+        dataset_id: this.id,
+        upload_type: this.value,
+      };
+      this.$axios.post('/case/train', data);
       setTimeout(() => {
         this.$router.push('/training');
       }, 5000);
