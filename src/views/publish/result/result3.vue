@@ -7,20 +7,8 @@
     <el-row :gutter="16">
       <el-col :span="18">
         <div class="early-warning">
-          <span>故障监测</span>
+          <span>状态监测</span>
           <el-row>原始指标</el-row>
-          <!-- <div class="early-data">
-            <el-col
-              v-for="(item, index) in earlyList"
-              :key="index"
-              :span="8"
-              :class="getColor(item.value)"
-              class="early"
-            >
-              <el-row>{{ item.name }}</el-row>
-              <el-row>{{ item.value }}</el-row>
-            </el-col>
-          </div> -->
           <div class="early-data">
             <div v-for="(item, index) in earlyList"
                  :key="index"
@@ -42,27 +30,11 @@
             </el-col>
           </div>
         </div>
-        <!-- <div class="early-model">
-          <Mzh-bar
-            v-if="type === 0"
-            :title="title"
-            :maxyAxis="100"
-            :lineData="lineDataOne"
-            :legend="legendOne"
-          />
-          <Mzh-bar
-            v-else
-            :title="title"
-            :maxyAxis="100"
-            :lineData="lineDataTwo"
-            :legend="legendTwo"
-          />
-        </div> -->
       </el-col>
       <el-col :span="6"
               class="early-situation">
         <span>故障预警</span>
-        <span>今日故障概率</span>
+        <span>今日异常概率</span>
         <div class="circle-progress">
           <circle-progress :color="progress.color"
                            :show="Number(number[0])"
@@ -70,17 +42,7 @@
                            :number="Number(number[0])"
                            :unit="progress.unit" />
         </div>
-        <!-- <span>异常时刻</span>
-        <template v-if="newsList.length > 0">
-          <div v-for="(news, i) in newsList" :key="i" class="news">
-            <div>{{ news.content }}</div>
-            <div>启动后{{ news.time }}s</div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="news">暂无</div>
-        </template> -->
-        <span>本周故障概率</span>
+        <span>本周异常概率</span>
         <div class="circle-progress">
           <circle-progress :color="progress.color"
                            :show="Number(number[1])"
@@ -88,7 +50,7 @@
                            :number="Number(number[1])"
                            :unit="progress.unit" />
         </div>
-        <span>本月故障概率</span>
+        <span>本月异常概率</span>
         <div class="circle-progress">
           <circle-progress :color="progress.color"
                            :show="Number(number[2])"
@@ -98,7 +60,7 @@
         </div>
       </el-col>
     </el-row>
-    <div class="explain-container">
+    <!-- <div class="explain-container">
       <el-row> 解释判据: {{ type === 1 ? explain1 : explain2 }}。 </el-row>
       <el-row>
         其构建的iTree的平均路径长度 c(n)为:
@@ -108,7 +70,20 @@
         定义样本x 的异常系数为:
         <markdown-it-vue :content="model2" />
       </el-row>
-    </div>
+    </div> -->
+    <el-row class="progress"
+            v-html="explain"> </el-row>
+    <el-row :gutter="30"
+            class="progress-img">
+      <el-col :span="12">
+        <el-image :src="srcList[0]"
+                  :preview-src-list="[srcList[0]]" />
+      </el-col>
+      <el-col :span="12">
+        <el-image :src="srcList[1]"
+                  :preview-src-list="[srcList[1]]" />
+      </el-col>
+    </el-row>
     <el-row style="padding-top: 40px">
       <el-button @click="goCase">查看实例报告</el-button>
     </el-row>
@@ -116,19 +91,24 @@
 </template>
 
 <script>
-import MarkdownItVue from 'markdown-it-vue';
-// import bar from '@/components/bar.vue';
+/* eslint-disable global-require */
+// import MarkdownItVue from 'markdown-it-vue';
 import circleProgress from '@/components/circleProgress.vue';
-import 'markdown-it-vue/dist/markdown-it-vue.css';
+// import 'markdown-it-vue/dist/markdown-it-vue.css';
 
 export default {
   components: {
-    // 'Mzh-bar': bar,
     'circle-progress': circleProgress,
-    MarkdownItVue,
+    // MarkdownItVue,
   },
   data() {
     return {
+      explain:
+        '&nbsp;&nbsp;&nbsp;&nbsp;孤立森林（Isolation Forest）模型通过构建多棵 𝑖𝑇𝑟𝑒𝑒 进行决策投票的方法进行异常检测。直观上来讲，可以观察到对于数据空间中数据分布密度较高的区域，需要对其进行多次切割才会停止，而那些密度很低的区域很容易较早便切割停到叶子结点了。因为异常点一般都是非常稀有的，所以在 𝑖𝑇𝑟𝑒𝑒 中会很快被划分到叶子节点，使用叶子节点到根节点的路径 ℎ(𝑥) 长度计算一条记录 𝑥 是否异常的概率。最后结合异常概率序列的时序信息，将过去及当前时刻的异常概率输入到循环神经网络的变种 GRU （Gate Recurrent Unit）网络中，从而预测未来时刻的异常概率。',
+      srcList: [
+        require('@/assets/images/故障预警1.png'),
+        require('@/assets/images/故障预警2.png'),
+      ],
       title: '根据历史行车数据模拟预警今日行车路线上可能的故障时刻',
       legendOne: ['储能系统健康值'],
       legendTwo: ['储能系统健康值', '非接触供电系统健康值', '总供电系统健康值'],
@@ -187,41 +167,6 @@ export default {
           return '';
       }
     },
-    // getData() {
-    //   this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
-    //     if (res.model_type === 0) {
-    //       const data = {
-    //         validation_list: [...this.lineDataOne.validation_list, res.overall],
-    //       };
-    //       if (data.validation_list.length > 20) {
-    //         data.validation_list.splice(0, 1);
-    //       }
-    //       this.lineDataOne = data;
-    //     } else {
-    //       const dataOther = {
-    //         validation_list: [...this.lineDataTwo.validation_list, res.overall],
-    //         data_list: [...this.lineDataTwo.data_list, res.storage],
-    //         record_list: [...this.lineDataTwo.record_list, res.supply],
-    //       };
-    //       if (dataOther.validation_list.length > 20) {
-    //         dataOther.validation_list.splice(0, 1);
-    //         dataOther.data_list.splice(0, 1);
-    //         dataOther.record_list.splice(0, 1);
-    //       }
-    //       this.lineDataTwo = dataOther;
-    //     }
-    //     this.earlyList = res.status;
-    //     this.progress.show = res.overall;
-    //     this.progress.number = res.overall;
-    //     if (res.abnormal_moment.length > 0) {
-    //       res.abnormal_moment.forEach((item) => {
-    //         const data = JSON.parse(JSON.stringify(item));
-    //         this.newsList.unshift(data);
-    //       });
-    //       this.newsList = this.newsList.splice(0, 8);
-    //     }
-    //   });
-    // },
     getData() {
       this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
         this.number = res.probably;
@@ -280,21 +225,12 @@ export default {
   background: #fff;
   overflow: auto;
 }
-// .early-warning,
-// .early-model {
-//   border-radius: 8px;
-//   background: #fff;
-//   text-align: left;
-// }
-// .early-model {
-//   padding-left: 20px;
-// }
+
 .early-data {
   display: flex;
   overflow: hidden;
   width: 100%;
   flex-wrap: wrap;
-  // margin: 20px 0;
 }
 .early {
   display: flex;
@@ -303,7 +239,6 @@ export default {
   flex-direction: column;
   margin: 20px 5px;
   width: 180px;
-  // width: 380px;
   height: 160px;
   color: #fff;
   border: 1px solid #ccc;
@@ -377,5 +312,23 @@ span {
 .train-btn {
   text-align: right;
   margin: -60px 0 30px;
+}
+
+.progress {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: left;
+  color: rgba(51, 51, 51, 1);
+}
+
+.progress-img {
+  margin-bottom: 30px;
+
+  .el-image {
+    height: 500px;
+  }
 }
 </style>

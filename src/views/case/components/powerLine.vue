@@ -42,6 +42,11 @@ export default {
       type: Array,
       default: () => ['预测', '实际'],
     },
+    // 除多目标外只有预测一条线
+    chartType: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -136,6 +141,19 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
+          formatter(params) {
+            return `
+               ${params[0].marker} ${params[0].seriesName}：${Number(
+  params[0].value,
+).toFixed(2)}<br/>
+                ${params[1].marker} ${params[1].seriesName}：${Number(
+  params[1].value,
+).toFixed(2)}<br/>
+               ${params[2].marker} ${params[2].seriesName}：${Number(
+  params[2].value,
+).toFixed(2)}
+               `;
+          },
         },
         legend: {
           data: this.legend,
@@ -227,6 +245,25 @@ export default {
               this.lineData.ratio
             }`,
           },
+        });
+      }
+      if (this.chartType === 'precit') {
+        Object.assign(option, {
+          tooltip: {
+            trigger: 'axis',
+            formatter(params) {
+              return `
+               ${params[0].marker} ${params[0].seriesName}：${params[0].value}`;
+            },
+          },
+          series: [
+            {
+              name: this.legend[0],
+              type: 'line',
+              data: this.lineData.predict_data_list,
+              symbol: 'none',
+            },
+          ],
         });
       }
       this.chart.setOption(option, true);

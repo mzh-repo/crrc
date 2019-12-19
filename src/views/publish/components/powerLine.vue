@@ -42,6 +42,11 @@ export default {
       type: Array,
       default: () => ['预测', '实际'],
     },
+    // 除多目标外只有预测一条线
+    chartType: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -70,64 +75,6 @@ export default {
       };
       window.addEventListener('resize', this.resizeHandler);
     },
-    // initChart() {
-    //   this.chart = echarts.init(this.$el);
-    //   this.chart.setOption(
-    //     {
-    //       title: {
-    //         text: this.title,
-    //       },
-    //       tooltip: {
-    //         trigger: 'axis',
-    //       },
-    //       legend: {
-    //         data: [this.yTitle, '实际'],
-    //       },
-    //       xAxis: {
-    //         type: 'category',
-    //         boundaryGap: false,
-    //         data: this.lineData.date_list,
-    //         splitLine: { show: false },
-    //         axisTick: {
-    //           show: false,
-    //         },
-    //         axisLine: {
-    //           show: false,
-    //         },
-    //       },
-    //       yAxis: {
-    //         type: 'value',
-    //         axisLabel: {
-    //           formatter: '{value}',
-    //         },
-    //         splitLine: { show: false },
-    //         axisTick: {
-    //           // y轴刻度线
-    //           show: false,
-    //         },
-    //         // axisLine: {
-    //         //   // y轴
-    //         //   show: false,
-    //         // },
-    //       },
-    //       series: [
-    //         {
-    //           name: this.yTitle,
-    //           type: 'line',
-    //           data: this.lineData.predict_data_list,
-    //           symbol: 'none',
-    //         },
-    //         {
-    //           name: '实际',
-    //           type: 'line',
-    //           data: this.lineData.data_list,
-    //           symbol: 'none',
-    //         },
-    //       ],
-    //     },
-    //     true,
-    //   );
-    // },
     initChart() {
       this.chart = echarts.init(this.$el);
       const option = {
@@ -136,12 +83,26 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
+          formatter(params) {
+            return `
+               ${params[0].marker} ${params[0].seriesName}：${Number(
+  params[0].value,
+).toFixed(2)}<br/>
+                ${params[1].marker} ${params[1].seriesName}：${Number(
+  params[1].value,
+).toFixed(2)}<br/>
+               ${params[2].marker} ${params[2].seriesName}：${Number(
+  params[2].value,
+).toFixed(2)}
+               `;
+          },
         },
         legend: {
           data: this.legend,
         },
         xAxis: {
           name: '路程(m)',
+          // show: false,
           nameLocation: 'center',
           nameTextStyle: {
             padding: [20, 0, 0, 0],
@@ -156,7 +117,7 @@ export default {
           axisLabel: {
             show: false,
             // rotate: 50,
-            formatter: value => Math.floor(value * 1000) / 10,
+            formatter: value => Math.floor(value * 10) / 10,
           },
           axisLine: {
             show: false,
@@ -226,6 +187,25 @@ export default {
               this.lineData.ratio
             }`,
           },
+        });
+      }
+      if (this.chartType === 'precit') {
+        Object.assign(option, {
+          tooltip: {
+            trigger: 'axis',
+            formatter(params) {
+              return `
+               ${params[0].marker} ${params[0].seriesName}：${params[0].value}`;
+            },
+          },
+          series: [
+            {
+              name: this.legend[0],
+              type: 'line',
+              data: this.lineData.predict_data_list,
+              symbol: 'none',
+            },
+          ],
         });
       }
       this.chart.setOption(option, true);

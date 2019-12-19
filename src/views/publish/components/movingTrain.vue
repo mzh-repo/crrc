@@ -9,17 +9,21 @@
         <div class="energy-content">{{ item.energy }}</div>
       </div>
     </el-row>
-    <svg-icon icon-class="火车"
-              class="animation-train" />
     <div class="trace-line"></div>
-    <el-row class="trace-point">
-      <div v-for="(item, index) in pointList"
-           :key="index"
-           :style="{ left: item.left }"
-           class="point-box">
-        <div class="point"
-             :style="{ 'background-color': item.color }"></div>
-        <div>{{ item.name }}</div>
+    <el-row class="point-line">
+      <div v-for="(item, index) in 26"
+           :key="index">
+        <template v-if="index % 5 === 0">
+          <div class="point station"
+               :style="{ left: `${4 * index}%`, background: current / 4 >= index ? 'red' : '' }">
+            <div class="station-name">{{ pointList[index / 5].name }}</div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="point"
+               :style="{ left: `${4 * index}%`, background: current / 4
+               >= index ? 'red' : '' }"></div>
+        </template>
       </div>
     </el-row>
   </el-row>
@@ -31,49 +35,12 @@ const otherColor = '#00C4C0';
 
 export default {
   props: {
-    // pointList: {
-    //   type: Array,
-    //   default: () => [
-    //     {
-    //       name: '香山站',
-    //       color: primaryColor,
-    //       left: '0%',
-    //     },
-    //     {
-    //       name: '植物园站',
-    //       color: otherColor,
-    //       left: '25%',
-    //     },
-    //     {
-    //       name: '万安公墓站',
-    //       color: otherColor,
-    //       left: '45%',
-    //     },
-    //     {
-    //       name: '玉泉郊野公园',
-    //       color: otherColor,
-    //       left: '61%',
-    //     },
-    //     {
-    //       name: '颐和园西门',
-    //       color: otherColor,
-    //       left: '81%',
-    //     },
-    //     {
-    //       name: '颐和园南门',
-    //       color: otherColor,
-    //       left: '95%',
-    //     },
-    //   ],
-    // },
     current: {
       type: Number,
     },
   },
   data() {
     return {
-      // time: null,
-      // current: 0,
       pointList: [
         {
           name: '香山站',
@@ -103,7 +70,7 @@ export default {
         {
           name: '颐和园南门',
           color: otherColor,
-          left: '95%',
+          left: '100%',
         },
       ],
     };
@@ -283,13 +250,13 @@ export default {
   },
 
   watch: {
-    current(val) {
-      if (this.dataBaseId === 1) {
-        this.getData(val);
-      } else {
-        this.getOther(val);
-      }
-    },
+    // current(val) {
+    //   if (this.dataBaseId === 1) {
+    //     this.getData(val);
+    //   } else {
+    //     this.getOther(val);
+    //   }
+    // },
   },
 };
 </script>
@@ -355,7 +322,7 @@ export default {
   width: 100%;
   height: 10px;
   position: absolute;
-  background: rgba(102, 102, 102, 1);
+  background: rgba(102, 102, 102, 0.6);
   border-radius: 2px;
   top: 44px;
 }
@@ -364,7 +331,8 @@ export default {
   position: absolute;
   @include flex-row;
   width: 100%;
-  top: 63px;
+  // top: 63px;
+  top: 40px;
 
   .point-box {
     position: absolute;
@@ -376,6 +344,15 @@ export default {
       @include set-size(16px);
       border-radius: 50%;
       margin: auto;
+    }
+
+    &:first-child .point {
+      margin-left: -8px;
+    }
+
+    &:last-child .point {
+      // margin-right: -6px;
+      margin-left: -8px;
     }
   }
 
@@ -391,5 +368,32 @@ export default {
 
 .energy-content {
   font-size: 12px;
+}
+
+.point-line {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-top: 40px;
+
+  .point {
+    @include set-size(16px);
+    background: $primary-color;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: -8px;
+
+    &.station {
+      @include set-size(30px);
+      margin-top: -7px;
+    }
+
+    .station-name {
+      transform: rotate(-45deg);
+      width: 100px;
+      text-align: left;
+      margin-top: -60px;
+    }
+  }
 }
 </style>

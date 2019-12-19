@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-bottom: 20px">
+  <div style="margin-top: 80px">
     <el-row>
       <el-row>
         <el-col v-for="(item, index) in 3"
@@ -16,7 +16,6 @@
                     show-summary
                     style="width: 100%">
             <el-table-column prop="id"
-                             sortable
                              label="序号"
                              width="180"> </el-table-column>
             <el-table-column prop="name"
@@ -24,9 +23,13 @@
             <el-table-column prop="distance"
                              label="距离km"> </el-table-column>
             <el-table-column prop="energy"
-                             label="区间运行能耗kWh"> </el-table-column>
+                             label="区间运行能耗kwh"> </el-table-column>
           </el-table>
-          <div style="padding: 12px 0; text-align: right">单公里能耗: <strong>4.93</strong>kwh</div>
+          <div class="average"
+               align="left">
+            <el-col :span="18">单公里能耗</el-col>
+            <el-col :span="6"><strong>4.93</strong></el-col>
+          </div>
         </el-col>
         <el-col :span="12">
           <h1>站点充电能耗(平均)</h1>
@@ -132,5 +135,17 @@ export default {
 <style lang="scss" scoped>
 h1 {
   font-weight: 400;
+}
+
+.average {
+  background-color: #f5f7fa;
+  color: #606266;
+  height: 49px;
+  line-height: 49px;
+  font-size: 14px;
+
+  .el-col {
+    height: 100%;
+  }
 }
 </style>

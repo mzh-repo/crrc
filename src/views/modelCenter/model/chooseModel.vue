@@ -15,13 +15,11 @@
     </el-row> -->
     <el-row class="model-data">
       <el-row class="database-tab">
-        <el-tabs v-model="databaseName"
-                 @tab-click="chooseDatabase">
-          <template v-for="(item,index) in dataBaseList">
-            <el-tab-pane :key="index"
-                         :label="item.name"
-                         :name="item.name">
-              <span><i class="el-icon-info" />
+        <el-tabs v-model="databaseName" @tab-click="chooseDatabase">
+          <template v-for="(item, index) in dataBaseList">
+            <el-tab-pane :key="index" :label="item.name" :name="item.name">
+              <span
+                ><i class="el-icon-info" />
                 请选择模型查看报告
               </span>
             </el-tab-pane>
@@ -30,19 +28,14 @@
       </el-row>
       <div class="model">
         <div style="height: 211px">
-          <div class="newModel"
-               @click="newModel">
-            <svg-icon icon-class="add-model"
-                      class="add-img" />
+          <div class="newModel" @click="newModel">
+            <svg-icon icon-class="add-model" class="add-img" />
             <div>新建模型</div>
           </div>
         </div>
-        <div v-for="(item,index) in modelData"
-             :key="index">
+        <div v-for="(item, index) in modelData" :key="index">
           <!-- <span @click="modelReport(item)"> -->
-          <model :modelList="item"
-                 :showChoice="true"
-                 @set-choice="modelReport(item)" />
+          <model :modelList="item" :showChoice="true" @set-choice="modelReport(item)" />
           <!-- </span> -->
         </div>
       </div>
@@ -90,10 +83,10 @@ export default {
         this.$store.commit('setTrain', item.id);
       }
       this.$store.commit('chooseDataBase', this.databaseId);
-      this.$store.commit('selectModel', { name: item.name });
+      this.$store.commit('selectModel', { name: item.name, id: item.id });
       this.$store.commit('modelDatabase', this.databaseName);
       // eslint-disable-next-line
-      this.$store.commit('setReportData', {
+      this.$store.commit("setReportData", {
         name: item.name,
         scene: item.applicable_scene,
         describe: item.introduction,
@@ -116,11 +109,9 @@ export default {
       this.getData();
     },
     getData() {
-      this.$axios
-        .get(`/model/list?database_id=${this.databaseId}`)
-        .then((res) => {
-          this.modelData = res;
-        });
+      this.$axios.get(`/model/list?database_id=${this.databaseId}`).then((res) => {
+        this.modelData = res;
+      });
     },
   },
 };

@@ -2,53 +2,48 @@
   <el-container class="container">
     <div class="title">
       <div class="title-left">
-        <span>{{ this.$store.state.modelSelected.name }} - {{ databaseType }}</span>
-        <span>实例{{ this.$store.state.exampleSelected.name || "1908231434" }}</span>
-      </div>
-      <div class="title-right">
-        <span>更新时间: {{ date || "2019.09.11" }} {{ time || "19:00:00" }}</span>
-        <span>当前时间: {{ date || "2019.09.11" }} {{ time || "19:00:00" }}</span>
+        <span>{{ this.$store.state.reportData.name }}</span>
       </div>
     </div>
+    <div class="forecast-data title-1">
+      车次: {{ databasetype == 1 ? "间歇式供电列车" : "非接触式供电列车" }}
+    </div>
+    <div class="forecast-data">行车线路: 香山——颐和园南门</div>
     <div class="forecast-data">
-      <span>平均预测时间: {{ "1" }}s</span>
-      <span>预测总次数: {{ "128" }}次</span>
       <span>预测总数据大小: {{ "128" }}M</span>
     </div>
-    <el-row v-if="result === 0" class="line-area">
+    <el-row v-if="result === 0"
+            class="line-area">
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.power" :title="'能耗对比 kW·h'" :yTitle="'预测'" />
+          <Mzh-line :lineData="lineData.power"
+                    :title="'能耗对比 kW·h'"
+                    :yTitle="'预测'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.speed" :title="'速度 km/h'" />
+          <Mzh-line :lineData="lineData.speed"
+                    :title="'速度 km/h'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper nopadding">
-          <Mzh-line :lineData="lineData.force" :title="'牵引力 KN'" />
+          <Mzh-line :lineData="lineData.force"
+                    :title="'牵引力 KN'" />
         </div>
       </el-col>
     </el-row>
-    <!-- <el-row v-if="result === 1"
-            class="recommend-battery">
-      <el-col v-for="(item,index) in recommendBattery"
-              :span="12"
-              :key="index">
-        <el-row>{{item.title}}</el-row>
-        <el-row>{{item.recommendNum}}</el-row>
-      </el-col>
-    </el-row>
-    <el-row v-if="result === 2"></el-row> -->
-    <el-row v-if="result === 3" class="forcecast-container">
+    <el-row v-if="result === 3"
+            class="forcecast-container">
       <forcecast-one />
     </el-row>
-    <el-row v-if="result === 4" class="forcecast-container">
+    <el-row v-if="result === 4"
+            class="forcecast-container">
       <forcecast-two :result-type="type" />
     </el-row>
-    <el-row v-if="result === 5" class="forcecast-container">
+    <el-row v-if="result === 5"
+            class="forcecast-container">
       <forcecast-three />
     </el-row>
     <Mzh-table v-if="result === 0 || result === 1 || result === 2" />
@@ -57,10 +52,10 @@
 
 <script>
 import line from './components/line.vue';
-import Mzhtable from '../../components/table.vue';
-import forecastOne from './result/forecast1.vue';
-import forecastTwo from './result/forecast2.vue';
-import forecastThree from './result/forecast3.vue';
+import Mzhtable from '@/components/table.vue';
+import forecastOne from './result/result1.vue';
+import forecastTwo from './result/result2.vue';
+import forecastThree from './result/result3.vue';
 
 export default {
   components: {
@@ -94,17 +89,18 @@ export default {
         },
       ],
       modelId: '',
-      databaseType: this.$store.state.dataSetName || this.$store.state.modelDatabaseName,
+      databaseType: 1,
       type: 1, // 区分 列车运行控制 A和 B 对应的结果集
     };
   },
   mounted() {
+    // 车次
+    this.databasetype = this.$store.state.dataBase;
     // TODO: 获取不同模型的id 或 类型
-    // eslint-disable-next-line no-console
     if (this.$route.query.id) {
       this.modelId = Number(this.$route.query.id);
     } else {
-      this.modelId = this.$store.state.modelSelected.index;
+      this.modelId = this.$store.state.modelSelected.id;
     }
     if (this.modelId === 1 || this.modelId === 2) {
       // 列车运行控制  A
@@ -126,7 +122,8 @@ export default {
     // this.getRandom();
     // this.b();
     const nowDate = new Date();
-    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth() + 1}-${nowDate.getDate()}`;
+    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
+      + 1}-${nowDate.getDate()}`;
     this.time = `${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
   },
   methods: {
@@ -139,12 +136,6 @@ export default {
       }
     },
     b() {
-      // if (!this.resettime) {
-      //   setTimeout(() => {
-      //     this.getLineData();
-      //     this.b();
-      //   }, 1000);
-      // }
       this.resettime = setTimeout(() => {
         this.getLineData();
         this.b();
@@ -173,7 +164,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "PingFangSC-Regular", "PingFangSC";
+  font-family: 'PingFangSC-Regular', 'PingFangSC';
 }
 
 .title {
@@ -214,7 +205,8 @@ export default {
 
 .forecast-data {
   width: 100%;
-  margin: 27px 0;
+  // margin: 27px 0;
+  margin-bottom: 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -285,5 +277,9 @@ export default {
 
 .forcecast-container {
   @include set-size(100%);
+}
+
+.title-1 {
+  margin-top: 20px;
 }
 </style>

@@ -52,8 +52,8 @@
         </el-tabs>
       </el-row>
       <el-row class="tips">
-        预测{{ tip }}: <span>{{ precit }}</span> {{tip=='时间'? 's': 'kwh'}}, &nbsp;&nbsp;
-        实际{{ tip }}: <span>{{ actual }}</span> {{tip=='时间'? 's': 'kwh'}}, &nbsp;&nbsp;
+        预测{{ tip }}: <span>{{ precit }}</span> {{ tip == "时间" ? "s" : "kwh" }}, &nbsp;&nbsp;
+        实际{{ tip }}: <span>{{ actual }}</span> {{ tip == "时间" ? "s" : "kwh" }}, &nbsp;&nbsp;
         预测{{ tip }}为实际<span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
         <el-button type="primary"
                    @click="$router.push('/upload')">添加训练</el-button>
@@ -66,7 +66,7 @@
           <mzh-line title="手柄级位"
                     :yArea="yArea"
                     :lineData="lineData.force"
-                    :chartType="resultType === 2 ? 'precit': ''" />
+                    :chartType="resultType === 2 ? 'precit' : ''" />
         </div>
       </el-col>
       <el-col :span="12">
@@ -74,11 +74,11 @@
           <power-line title="能耗 kW·h"
                       :legend="legend"
                       :lineData="lineData.power"
-                      :chartType="resultType === 2 ? 'precit': ''" />
+                      :chartType="resultType === 2 ? 'precit' : ''" />
         </div>
       </el-col>
     </el-row>
-    <el-row class="progress"> 文本解释判据: {{ explain }} </el-row>
+    <!-- <el-row class="progress"> 文本解释判据: {{ explain }} </el-row>
     <el-row class="target">
       <el-col>
         <el-row>
@@ -92,7 +92,34 @@
         </el-row>
         <markdown-it-vue :content="targetFuc" />
       </el-col>
-    </el-row>
+    </el-row> -->
+    <template v-if="resultType === 1">
+      <el-row class="progress"
+              v-html="explain1"> </el-row>
+      <el-row :gutter="30"
+              class="progress-img">
+        <el-col :span="12">
+          <el-image fit="fill"
+                    :src="srcList1[0]"
+                    :preview-src-list="[srcList1[0]]" />
+        </el-col>
+        <el-col :span="12">
+          <el-image fit="fill"
+                    :src="srcList1[1]"
+                    :preview-src-list="[srcList1[1]]" />
+        </el-col>
+      </el-row>
+    </template>
+    <template v-else>
+      <el-row class="progress"
+              v-html="explain2"> </el-row>
+      <el-row :gutter="30"
+              class="progress-img">
+        <el-image style="width: 50%"
+                  :src="srcList2[0]"
+                  :preview-src-list="[srcList2[0]]" />
+      </el-row>
+    </template>
     <el-button id="scroll"
                @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>
@@ -107,7 +134,7 @@
             <mzh-line title="手柄级位(预测)"
                       :yArea="yArea"
                       :lineData="dynasticDataOne"
-                      :chartType="resultType === 2 ? 'precit': ''" />
+                      :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
         <el-col :span="24">
@@ -115,7 +142,7 @@
             <power-line title="能耗(预测) kW·h"
                         :legend="legend"
                         :lineData="dynasticDataTwo"
-                        :chartType="resultType === 2 ? 'precit': ''" />
+                        :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
       </el-row>
@@ -124,21 +151,23 @@
 </template>
 
 <script>
+/* eslint-disable global-require */
 // AsciiMath 转换
-import MarkdownItVue from 'markdown-it-vue';
+// import MarkdownItVue from 'markdown-it-vue';
 import Line from '../components/line.vue';
 import MovingTrain from '../components/movingTrain.vue';
-import 'markdown-it-vue/dist/markdown-it-vue.css';
+// import 'markdown-it-vue/dist/markdown-it-vue.css';
 import PowerLine from '../components/powerLine.vue';
 
 export default {
   components: {
     'mzh-line': Line,
     'move-train': MovingTrain,
-    MarkdownItVue,
+    // MarkdownItVue,
     PowerLine,
   },
   props: {
+    // 1,2 分别对应多目标和劣化
     resultType: {
       type: Number,
     },
@@ -146,13 +175,22 @@ export default {
   data() {
     return {
       percent: [60, 90],
-      explain:
-        '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network)',
-      model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
-      targetFuc:
-        '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
-      speed: 10,
-      energy: 10,
+      // explain:
+      //   '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network)',
+      // model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
+      // targetFuc:
+      //   '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
+      // speed: 10,
+      // energy: 10,
+      explain1:
+        '&nbsp;&nbsp;&nbsp;&nbsp;对多目标优化问题设计函数映射并使用LSTM（Long Short Term Memory Network）模型求解列车运行过程多目标方程函数：定义为每个时刻 𝑡 的信息状态，每个时刻的信息状态包含该时刻下的驾驶信息和环境信息，即 = [驾驶信息, 环境信息]，定义一个列车信息序列为，这个列车信息序列包括列车前 𝑙 时刻内的信息状态。LSTM模型解决序列相关的问题，其特别之处是其输入不仅仅考虑了当前时刻的输入，也考虑了上一时刻的输出，从而捕获到了序列之间的关联信息。它通过增加多一个单元状态解决了普通 RNN 无法捕获长期依赖的问题，而且巧妙地提出了遗忘门办法来对长期单元状态进行控制，将重要特征保留下来，保证了在长期传播的过程中不会丢失数据中重要的时序信息。',
+      srcList1: [
+        require('@/assets/images/多目标1.png'),
+        require('@/assets/images/多目标2.png'),
+      ],
+      explain2:
+        '&nbsp;&nbsp;&nbsp;&nbsp;基于多目标优化列车运行控制模型，使用长短期记忆网络，修改数据预处理部分，对劣化条件下的静态和动态车载储能系统数据进行参数化。其中：将静态劣化条件下的储能系统数据参数化为 𝑊；将动态劣化条件下的储能系统数据参数化为 𝑄。在列车运行控制模型的基础上加入劣化条件，将储能系统中劣化条件下的静态与动态数据结合输入到长短期记忆网络中，可以使得网络模型更加有效地捕获到其运行策略中与劣化储能系统相关的状态信息，以及长短期变化依赖，更具鲁棒性。',
+      srcList2: [require('@/assets/images/劣化.png')],
       lineData: {
         force: {},
         power: {},
@@ -519,23 +557,18 @@ export default {
 .progress {
   display: flex;
   flex-direction: row;
-  // align-items: center;
   margin-bottom: 16px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
   text-align: left;
   color: rgba(51, 51, 51, 1);
+}
 
-  .el-col {
-    text-align: left;
+.progress-img {
+  margin-bottom: 30px;
 
-    /deep/ .el-progress-bar__inner {
-      background-color: #ff2b2b;
-    }
-
-    /deep/ .el-progress-bar__outer {
-      background-color: #d8d8d8;
-    }
+  .el-image {
+    height: 500px;
   }
 }
 

@@ -134,7 +134,7 @@ export default new Router({
         },
         {
           path: '/result',
-          component: () => import('./views/case/result'),
+          component: () => import('./views/publish/modelPublishForecast'),
         },
         {
           path: '/upload',

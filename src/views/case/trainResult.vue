@@ -12,7 +12,8 @@
       </div>
       <div class="total-num">共{{dataList[isActive-1].model_number}}条</div> -->
     </el-row>
-    <ul v-for="(item, index) in resource" :key="index">
+    <ul v-for="(item, index) in resource"
+        :key="index">
       <li>CPU cores：{{ item.needCores }}M/{{ item.surplusCores }}M（所需/剩余）</li>
       <li>CPU Memory：{{ item.needCpuMemory }}M/{{ item.surplusCpuMemory }}M（所需/剩余）</li>
       <li>GPU Memory：{{ item.needGpuMemory }}M/{{ item.surplusGpuMemory }}M（所需/剩余）</li>
@@ -21,7 +22,8 @@
       <bar :lineData="lineData" />
     </el-row>
     <el-row class="goback-btn">
-      <el-button type="primary" @click="$router.push('/dashboard')">返回首页</el-button>
+      <el-button type="primary"
+                 @click="$router.push('/dashboard')">返回首页</el-button>
     </el-row>
   </el-container>
 </template>

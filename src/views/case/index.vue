@@ -1,7 +1,8 @@
 <template>
   <el-container class="report-container">
     <div class="title">
-      <el-button type="primary" @click="$router.go(-1)">返回上一页</el-button>
+      <el-button type="primary"
+                 @click="$router.go(-1)">返回上一页</el-button>
       实例报告
     </div>
     <el-row class="main-title">
@@ -13,47 +14,44 @@
       <el-col :span="6"> 部署实例总次数: {{ reportData.total }} 次 </el-col>
     </el-row>
     <el-row class="describe"> 简介: {{ reportData.describe }} </el-row>
-    <el-row :gutter="16" class="chart-report">
+    <el-row :gutter="16"
+            class="chart-report">
       <el-col :span="12">
         <div class="chart">
-          <bar-chart
-            title="近期训练"
-            :dataSet="trainData"
-            :tooltipList="['训练Loss', '测试Loss']"
-            :showTip="true"
-            :showXAxis="false"
-            xName="id"
-            yName="Loss"
-          />
+          <bar-chart title="近期训练"
+                     :dataSet="trainData"
+                     :tooltipList="['训练Loss', '测试Loss']"
+                     :showTip="true"
+                     :showXAxis="false"
+                     xName="id"
+                     yName="Loss" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart">
-          <bar-chart
-            title="近期应用"
-            :colors="colors"
-            :dataSet="appData"
-            :showTip="true"
-            :showXAxis="false"
-            xName="id"
-            yName="Loss"
-          />
+          <bar-chart title="近期应用"
+                     :colors="colors"
+                     :dataSet="appData"
+                     :showTip="true"
+                     :showXAxis="false"
+                     xName="id"
+                     yName="Loss" />
         </div>
       </el-col>
     </el-row>
     <el-row class="model-example">相关实例</el-row>
     <el-row class="model-control">
       <template v-for="(item, index) in modelList">
-        <div :key="index" class="model-box" @click="getForecast(item.dataset_id, item.status)">
-          <instance
-            :chose="false"
-            :status="item.status"
-            :title="item.name"
-            :lately="item.loss"
-            :traning="item.training_time"
-            :datasetName="item.dataset_name"
-            :estimate="item.estimated_deployment_time"
-          />
+        <div :key="index"
+             class="model-box"
+             @click="getForecast(item.dataset_id, item.status)">
+          <instance :chose="false"
+                    :status="item.status"
+                    :title="item.name"
+                    :lately="item.loss"
+                    :traning="item.training_time"
+                    :datasetName="item.dataset_name"
+                    :estimate="item.estimated_deployment_time" />
         </div>
       </template>
     </el-row>
@@ -90,9 +88,11 @@ export default {
         this.appData = res.application;
         this.trainData = res.train;
       });
-      this.$axios.get(`model/instance/list?model_id=${this.reportData.id}`).then((res) => {
-        this.modelList = res;
-      });
+      this.$axios
+        .get(`model/instance/list?model_id=${this.reportData.id}`)
+        .then((res) => {
+          this.modelList = res;
+        });
     },
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);

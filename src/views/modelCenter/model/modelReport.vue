@@ -68,7 +68,7 @@
     <el-row class="model-example">相关实例</el-row>
     <el-row class="model-control">
       <template v-for="(item, index) in modelList">
-        <div :key="index" class="model-box" @click="getForecast(item.dataset_id, item.status)">
+        <div :key="index" class="model-box" @click="getForecast(item, item.status)">
           <instance
             :chose="false"
             :status="item.status"
@@ -142,9 +142,14 @@ export default {
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);
     },
-    getForecast(id, status) {
+    getForecast(item, status) {
       if (status === 1) {
-        this.$store.commit('setModelDatasetId', id);
+        this.$store.commit('setModelDatasetId', item.dataset_id);
+        this.$store.commit('setReportData', {
+          name: item.name,
+          dataSetId: item.dataset_id,
+          dateSetName: item.dataset_name,
+        });
         this.$router.push({
           path: `/modelPublish/modelPublishForecast?id=${this.$store.state.trainSelected}`,
         });

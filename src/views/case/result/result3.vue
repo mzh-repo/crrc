@@ -7,20 +7,8 @@
     <el-row :gutter="16">
       <el-col :span="18">
         <div class="early-warning">
-          <span>故障监测</span>
+          <span>状态监测</span>
           <el-row>原始指标</el-row>
-          <!-- <div class="early-data">
-            <el-col
-              v-for="(item, index) in earlyList"
-              :key="index"
-              :span="8"
-              :class="getColor(item.value)"
-              class="early"
-            >
-              <el-row>{{ item.name }}</el-row>
-              <el-row>{{ item.value }}</el-row>
-            </el-col>
-          </div> -->
           <div class="early-data">
             <div v-for="(item, index) in earlyList"
                  :key="index"
@@ -42,27 +30,11 @@
             </el-col>
           </div>
         </div>
-        <!-- <div class="early-model">
-          <Mzh-bar
-            v-if="type === 0"
-            :title="title"
-            :maxyAxis="100"
-            :lineData="lineDataOne"
-            :legend="legendOne"
-          />
-          <Mzh-bar
-            v-else
-            :title="title"
-            :maxyAxis="100"
-            :lineData="lineDataTwo"
-            :legend="legendTwo"
-          />
-        </div> -->
       </el-col>
       <el-col :span="6"
               class="early-situation">
         <span>故障预警</span>
-        <span>今日故障概率</span>
+        <span>今日异常概率</span>
         <div class="circle-progress">
           <circle-progress :color="progress.color"
                            :show="Number(number[0])"
@@ -70,17 +42,7 @@
                            :number="Number(number[0])"
                            :unit="progress.unit" />
         </div>
-        <!-- <span>异常时刻</span>
-        <template v-if="newsList.length > 0">
-          <div v-for="(news, i) in newsList" :key="i" class="news">
-            <div>{{ news.content }}</div>
-            <div>启动后{{ news.time }}s</div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="news">暂无</div>
-        </template> -->
-        <span>本周故障概率</span>
+        <span>本周异常概率</span>
         <div class="circle-progress">
           <circle-progress :color="progress.color"
                            :show="Number(number[1])"
@@ -88,7 +50,7 @@
                            :number="Number(number[1])"
                            :unit="progress.unit" />
         </div>
-        <span>本月故障概率</span>
+        <span>本月异常概率</span>
         <div class="circle-progress">
           <circle-progress :color="progress.color"
                            :show="Number(number[2])"
