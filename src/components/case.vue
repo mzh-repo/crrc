@@ -1,11 +1,12 @@
 <template>
-  <div class="case-example"
-       :style="{ 'z-index': zIndex }">
-    <div class="case-box"
-         :class="show ? 'active' : ''"
-         @mouseover="showContent"
-         @mouseout="closeContent"
-         @click="goDetail">
+  <div class="case-example" :style="{ 'z-index': zIndex }">
+    <div
+      class="case-box"
+      :class="show ? 'active' : ''"
+      @mouseover="showContent"
+      @mouseout="closeContent"
+      @click="goDetail"
+    >
       <div class="title">{{ data.title }}</div>
       <div class="sulation">
         <svg-icon icon-class="case_train" />
@@ -19,8 +20,7 @@
         <svg-icon icon-class="case_date" />
         训练日期: {{ data.dataset_train_date }}
       </div>
-      <svg-icon class="algorithm"
-                :icon-class="getIcon(data.type)" />
+      <svg-icon class="algorithm" :icon-class="getIcon(data.type)" />
     </div>
     <template v-if="show">
       <transition name="intro">
@@ -71,7 +71,7 @@ export default {
         dateSetName: this.data.model.dataset_name,
         dataBaseId: this.id,
       });
-      this.$store.commit('chooseDataBase', this.id);
+      this.$store.commit('chooseDataBase', Number(this.id));
       // this.$router.push({ path: '/report' });
       this.$router.push({
         path: `/result?id=${this.data.model.id}`,

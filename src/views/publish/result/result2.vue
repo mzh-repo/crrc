@@ -2,42 +2,45 @@
   <div>
     <template v-if="resultType === 2">
       <el-row class="result-tab">
-        <el-tabs v-model="resultName"
+        <el-tabs v-model="resultId"
                  @tab-click="chooseResult">
           <template v-for="(item, index) in resultList">
             <el-tab-pane :key="index"
                          :label="item.name"
-                         :name="item.name"> </el-tab-pane>
+                         :name="item.id.toString()"> </el-tab-pane>
           </template>
         </el-tabs>
       </el-row>
       <el-row v-if="type === 2"
               class="progress">
-        <el-col :span="4">电池内阻: &nbsp;{{ percent[0] }} mR</el-col>
+        <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mR</el-col>
         <el-col :span="8"
                 class="percentage-num">
-          电池容量: &nbsp; <el-progress :percentage="percent[1]"
+          电池额定容量: &nbsp;
+          <el-progress :percentage="percent[1]"
                        :stroke-width="18"> </el-progress>
         </el-col>
         <el-col :span="8"
                 class="percentage-num">
-          电容容量: &nbsp; <el-progress :percentage="percent[1]"
+          电容额定容量: &nbsp;
+          <el-progress :percentage="percent[2]"
                        :stroke-width="18"> </el-progress>
         </el-col>
       </el-row>
       <el-row v-else
               class="progress">
-        <el-col :span="4">电池内阻: &nbsp;{{ percent[0] }} mR</el-col>
+        <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mR</el-col>
         <el-col :span="8"
                 class="percentage-num">
-          电池容量: &nbsp; <el-progress :percentage="percent[1]"
+          电池额定容量: &nbsp;
+          <el-progress :percentage="percent[1]"
                        :stroke-width="18"> </el-progress>
         </el-col>
       </el-row>
       <el-row class="tips">
-        预测能耗为<span> {{ 300 }} </span>kwh
+        预测能耗为<span> {{ precit2 }} </span>kwh
         <el-button type="primary"
-                   @click="$router.push('/upload')">添加训练</el-button>
+                   @click="$router.push('/upload')">强化训练</el-button>
       </el-row>
     </template>
     <template v-else>
@@ -56,7 +59,7 @@
         实际{{ tip }}: <span>{{ actual }}</span> {{ tip == "时间" ? "s" : "kwh" }}, &nbsp;&nbsp;
         预测{{ tip }}为实际<span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
         <el-button type="primary"
-                   @click="$router.push('/upload')">添加训练</el-button>
+                   @click="$router.push('/upload')">强化训练</el-button>
       </el-row>
     </template>
     <el-row :gutter="19"
@@ -115,8 +118,7 @@
               v-html="explain2"> </el-row>
       <el-row :gutter="30"
               class="progress-img">
-        <el-image style="width: 50%"
-                  :src="srcList2[0]"
+        <el-image :src="srcList2[0]"
                   :preview-src-list="[srcList2[0]]" />
       </el-row>
     </template>
@@ -216,6 +218,7 @@ export default {
         '预测能耗(实际级位)',
       ],
       resultName: '最佳能耗',
+      resultId: '1', // 劣化tab 初始值   activeTb must be string
       resultList: [
         { name: '最佳能耗', id: 1 },
         { name: '最快旅行速度', id: 2 },
@@ -228,6 +231,7 @@ export default {
       tip: '能耗',
       actual: null, // 实际能耗 / 实际旅行时间
       precit: null, // 预测能耗 / 预测旅行时间
+      precit2: null, // 劣化预测能耗值
       dataSource: '', // 数据源
     };
   },
@@ -235,27 +239,28 @@ export default {
     if (this.resultType === 2) {
       this.resultList = [
         {
-          name: '循环次数 10000',
+          name: '循环次数 800',
           id: 1,
         },
         {
-          name: '循环次数 20000',
+          name: '循环次数 1200',
           id: 2,
         },
         {
-          name: '循环次数 30000',
+          name: '循环次数 1600',
           id: 3,
         },
       ];
-      this.resultName = '循环次数 10000';
     }
     const { dataBase } = this.$store.state;
     if (dataBase === 1) {
       this.type = 2;
+      this.percent = [60, 90, 96];
       this.yArea = ['100', '-100'];
     } else {
-      this.yArea = ['7', '-7'];
       this.type = 3;
+      this.percent = [60, 90];
+      this.yArea = ['7', '-7'];
     }
     this.getData();
   },
@@ -272,26 +277,37 @@ export default {
       this.$router.push('/report');
     },
     getData() {
-      // if (this.$store.state.modelDatasetId !== '') {
-      //   this.dataSetId = this.$store.state.modelDatasetId;
-      // } else {
-      //   this.dataSetId = this.$store.state.dataSelected;
-      // }
       this.dataSetId = this.$store.state.reportData.dataSetId;
-      this.$axios
-        .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
-        .then((res) => {
-          this.dataSource = res;
-          this.actual = Number(res.energy_consumption.data_list.pop()).toFixed(
-            2,
-          );
-          this.precit = Number(
-            res.energy_consumption.predict_data_list.pop(),
-          ).toFixed(2);
-          this.lineData.force = res.level;
-          this.lineData.power = res.energy_consumption;
-          this.renderData(res);
-        });
+      // 劣化对应的结果集
+      if (this.resultType === 1) {
+        this.$axios
+          .get(
+            `form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`,
+          )
+          .then((res) => {
+            this.dataSource = res;
+            this.actual = Number(
+              res.energy_consumption.data_list.pop(),
+            ).toFixed(2);
+            this.precit = Number(
+              res.energy_consumption.predict_data_list.pop(),
+            ).toFixed(2);
+            this.lineData.force = res.level;
+            this.lineData.power = res.energy_consumption;
+            this.renderData(res);
+          });
+      } else {
+        this.$axios
+          .get(`form/graph?model_type=${this.type}&tab_id=${this.resultId}`)
+          .then((res) => {
+            this.precit2 = Number(
+              res.energy_consumption.predict_data_list.pop(),
+            ).toFixed(2);
+            this.lineData.force = res.level;
+            this.lineData.power = res.energy_consumption;
+            this.renderData(res);
+          });
+      }
     },
     renderData(val) {
       const dataIndex = val.level.data_list.length;
@@ -366,55 +382,67 @@ export default {
     },
     // 不同结果集
     chooseResult() {
-      if (this.resultType === 2) {
-        if (this.resultName === '循环次数 10000') {
-          // TODO
-          this.percent = [90, 60, 30];
-        } else if (this.resultName === '循环次数 20000') {
-          this.percent = [75, 75, 40];
-        } else if (this.resultName === '循环次数 30000') {
-          this.percent = [60, 90, 60];
-        }
-      } else {
-        this.showAgain = false;
-        for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
-          clearTimeout(this.time[i]);
-          clearTimeout(this.timer[i]);
-        }
-        this.dynasticDataOne = {
-          date_list: [],
-          data_list: [],
-          predict_data_list: [],
-        };
-        this.dynasticDataTwo = {
-          date_list: [],
-          data_list: [],
-          predict_data_list: [],
-          green: [],
-        };
-        if (this.resultName === '最佳能耗') {
-          this.tip = '能耗';
-          this.actual = Number(
-            this.dataSource.energy_consumption.data_list.pop(),
-          ).toFixed(2);
-          this.precit = Number(
-            this.dataSource.energy_consumption.predict_data_list.pop(),
-          ).toFixed(2);
-          this.getData();
-        } else {
-          this.tip = '时间';
-          this.actual = Number(
-            this.dataSource.travel_time.data_list.pop(),
-          ).toFixed(2);
-          this.precit = Number(
-            this.dataSource.travel_time.predict_data_list.pop(),
-          ).toFixed(2);
-          this.getDataOther();
-        }
-        this.$nextTick(() => {
-          this.showAgain = true;
-        });
+      this.showAgain = false;
+      for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
+        clearTimeout(this.time[i]);
+        clearTimeout(this.timer[i]);
       }
+      this.dynasticDataOne = {
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+      };
+      this.dynasticDataTwo = {
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+        green: [],
+      };
+      if (this.resultType === 2) {
+        // 间歇式
+        if (this.type === 2) {
+          if (this.resultId === '1') {
+            // TODO
+            this.percent = [60, 90, 96];
+          } else if (this.resultId === '2') {
+            this.percent = [75, 75, 92];
+          } else if (this.resultId === '3') {
+            this.percent = [90, 60, 88];
+          }
+          this.getData();
+        } else if (this.type === 3) {
+          // 非接触
+          if (this.resultId === '1') {
+            this.percent = [60, 90];
+          } else if (this.resultId === '2') {
+            this.percent = [75, 75];
+          } else if (this.resultId === '3') {
+            this.percent = [90, 60];
+          }
+          this.getData();
+        }
+      } else if (this.resultName === '最佳能耗') {
+        this.tip = '能耗';
+        this.actual = Number(
+          this.dataSource.energy_consumption.data_list.pop(),
+        ).toFixed(2);
+        this.precit = Number(
+          this.dataSource.energy_consumption.predict_data_list.pop(),
+        ).toFixed(2);
+        this.getData();
+      } else {
+        this.tip = '时间';
+        this.actual = Number(
+          this.dataSource.travel_time.data_list.pop(),
+        ).toFixed(2);
+        this.precit = Number(
+          this.dataSource.travel_time.predict_data_list.pop(),
+        ).toFixed(2);
+        this.getDataOther();
+      }
+      this.$nextTick(() => {
+        this.showAgain = true;
+      });
     },
     getDataOther() {
       // if (this.$store.state.modelDatasetId !== '') {
@@ -557,7 +585,7 @@ export default {
 .progress {
   display: flex;
   flex-direction: row;
-  margin-bottom: 16px;
+  margin: 16px 0;
   font-size: 20px;
   font-weight: 400;
   text-align: left;
@@ -568,7 +596,8 @@ export default {
   margin-bottom: 30px;
 
   .el-image {
-    height: 500px;
+    @include set-size(300px, 200px);
+    margin: auto;
   }
 }
 
@@ -593,7 +622,7 @@ export default {
   margin-top: 20px;
 
   &.chart-1 {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
 
   .chart-box {
@@ -619,7 +648,7 @@ export default {
   text-align: left;
   height: 50px;
   font-size: 24px;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
 
   /deep/ .el-tabs {
     display: flex;

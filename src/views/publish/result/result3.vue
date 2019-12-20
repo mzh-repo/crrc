@@ -2,7 +2,7 @@
   <el-container class="forcast-container">
     <el-row class="train-btn">
       <el-button type="primary"
-                 @click="$router.push('/upload')">添加训练</el-button>
+                 @click="$router.push('/upload')">强化训练</el-button>
     </el-row>
     <el-row :gutter="16">
       <el-col :span="18">
@@ -328,7 +328,7 @@ span {
   margin-bottom: 30px;
 
   .el-image {
-    height: 500px;
+    @include set-size(300px, 200px);
   }
 }
 </style>

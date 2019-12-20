@@ -156,7 +156,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  padding: 58px 70px 100px;
+  padding: 30px 60px;
   width: 100%;
   height: auto;
   overflow-y: auto;

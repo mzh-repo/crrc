@@ -2,7 +2,7 @@
   <div>
     <el-row class="train-btn">
       <el-button type="primary"
-                 @click="$router.push('/upload')">添加训练</el-button>
+                 @click="$router.push('/upload')">强化训练</el-button>
     </el-row>
     <el-row class="result-tab">
       <el-tabs v-model="resultName"
@@ -76,17 +76,18 @@
     <template v-else>
       <el-row :gutter="16">
         <el-col :span="12">
-          <el-table :data="energyData"
+          <el-table height="336"
+                    :data="energyData"
                     border
                     style="width: 100%">
-            <el-table-column prop="name"
-                             label="站点"> </el-table-column>
-            <el-table-column prop="value1"
-                             label="剩余定量"> </el-table-column>
-            <el-table-column prop="value2"
-                             label="是否越站充电"> </el-table-column>
-            <el-table-column prop="value3"
-                             label="当前电量"> </el-table-column>
+            <el-table-column type="index"
+                             width="50"> </el-table-column>
+            <template v-for="(item, index) in tagList">
+              <el-table-column :key="index"
+                               :prop="item.prop"
+                               :label="item.name"
+                               :width="item.prop === 'area' ? '300px' : 'auto'"></el-table-column>
+            </template>
           </el-table>
         </el-col>
         <el-col :span="12">
@@ -193,44 +194,7 @@ export default {
         { name: '列车系统配置能耗最优', id: 2 },
         { name: '线路充电策略优化', id: 3 },
       ],
-      energyData: [
-        {
-          name: '香山站',
-          value1: '-',
-          value2: '-',
-          value3: '97%',
-        },
-        {
-          name: '植物园站',
-          value1: '69.9%',
-          value2: '是',
-          value3: '84.18%',
-        },
-        {
-          name: '万安公墓站',
-          value1: '51.49%',
-          value2: '是',
-          value3: '68.43%',
-        },
-        {
-          name: '玉泉郊野公园',
-          value1: '42.76%',
-          value2: '是',
-          value3: '59.7%',
-        },
-        {
-          name: '颐和园西门',
-          value1: '30.93%',
-          value2: '否',
-          value3: '28.63%',
-        },
-        {
-          name: '颐和园南门',
-          value1: '13.23%',
-          value2: '-',
-          value3: '-',
-        },
-      ],
+      energyData: [],
       current: 0,
       showStatics: false, // 显示统计信息
       configList: [
@@ -257,6 +221,28 @@ export default {
             '运行能耗为：<strong>25.69</strong> kwh<br/> 成本为：<strong>630 </strong> 万元',
         },
       ],
+      tagList: [
+        {
+          prop: 'area',
+          name: '区间',
+        },
+        {
+          prop: 'distance',
+          name: '线路距离m',
+        },
+        {
+          prop: 'start',
+          name: '线圈起点m',
+        },
+        {
+          prop: 'end',
+          name: '线圈终点m',
+        },
+        {
+          prop: 'length',
+          name: '线圈长度m',
+        },
+      ],
     };
   },
   mounted() {
@@ -264,9 +250,101 @@ export default {
     if (Number(dataBase) === 1) {
       this.type = 2;
       this.yArea = ['100', '-100'];
+      this.energyData = [
+        {
+          id: '0',
+          area: '植物园~万安公墓',
+          distance: '1310',
+          start: '912',
+          end: '1310',
+          length: '398',
+        },
+        {
+          id: '1',
+          area: '万安公墓~玉泉郊野公园',
+          distance: '1107',
+          start: '0',
+          end: '295',
+          length: '295',
+        },
+        {
+          id: '2',
+          area: '玉泉郊野公园~颐和园西门',
+          distance: '1320',
+          start: '797',
+          end: '1320',
+          length: '523',
+        },
+        {
+          id: '3',
+          area: '颐和园西门~颐和园南门',
+          distance: '1256',
+          start: '0',
+          end: '293',
+          length: '293',
+        },
+      ];
     } else {
       this.yArea = ['8', '-8'];
       this.type = 3;
+      this.energyData = [
+        {
+          id: '0',
+          area: '香山~植物园',
+          distance: '1669',
+          start: '1422',
+          end: '1499',
+          length: '77',
+        },
+        {
+          id: '1',
+          area: '植物园~万安公墓',
+          distance: '1310',
+          start: '13',
+          end: '488',
+          length: '475',
+        },
+        {
+          id: '2',
+          area: '植物园~万安公墓',
+          distance: '1310',
+          start: '1239',
+          end: '1310',
+          length: '71',
+        },
+        {
+          id: '3',
+          area: '万安公墓~玉泉郊野公园',
+          distance: '1107',
+          start: '142',
+          end: '666',
+          length: '524',
+        },
+        {
+          id: '4',
+          area: '万安公墓~玉泉郊野公园',
+          distance: '1107',
+          start: '1012',
+          end: '1107',
+          length: '95',
+        },
+        {
+          id: '5',
+          area: '玉泉郊野公园~颐和园西门',
+          distance: '1320',
+          start: '876',
+          end: '1320',
+          length: '444',
+        },
+        {
+          id: '6',
+          area: '颐和园西门~颐和园南门',
+          distance: '1256',
+          start: '0',
+          end: '224',
+          length: '224',
+        },
+      ];
     }
     this.getData();
     if (this.type === 3) {
@@ -470,8 +548,8 @@ export default {
 }
 
 .limit-container {
-  height: 450px;
-  margin-bottom: 20px;
+  height: 350px;
+  margin-bottom: 60px;
 
   .el-col {
     height: 100%;
@@ -544,8 +622,8 @@ export default {
 }
 
 .grid-other {
-  height: 235px;
-  background: rgba(255, 255, 255, 1);
+  height: 185px;
+  background: #fff;
   border-radius: 8px;
   padding: 30px 30px;
   margin-bottom: 20px;
@@ -557,7 +635,7 @@ export default {
 .grid-tag {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   .el-col:nth-child(1) {
     text-align: left;
@@ -619,7 +697,7 @@ export default {
   text-align: left;
   height: 50px;
   font-size: 24px;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
 
   /deep/ .el-tabs {
     display: flex;
@@ -634,7 +712,7 @@ export default {
 .progress {
   display: flex;
   flex-direction: row;
-  margin-top: 60px;
+  // margin-top: 60px;
   margin-bottom: 16px;
   font-size: 20px;
   font-weight: 400;
@@ -646,8 +724,10 @@ export default {
   margin-bottom: 30px;
 
   .el-image {
-    height: 500px;
-    width: 50%;
+    // height: 500px;
+    // width: 50%;
+    @include set-size(300px, 200px);
+    margin: auto;
   }
 }
 </style>
