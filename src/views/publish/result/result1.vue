@@ -159,7 +159,7 @@ export default {
       explain:
         '&nbsp;&nbsp;&nbsp;&nbsp;使用深度 FCNN（Fully Connected Neural Network）模型来解决系统优化设计模型的问题。首先构建神经网络结构，确定网络层数、神经元个数、激活函数等超参数；其次结合均方误差函数确认损失函数；最后利用反向传播算法训练数据，从而调整神经网络权重参数降低损失函数，得到确定的网络模型。相较于传统规划求解的方式，其多层的神经网络结构有更加强大的表征能力，通过逐层深入的方式用较少参数来对无法认为构建的复杂函数进行逼近，从而使其模型更符合实际问题。',
       // eslint-disable-next-line global-require
-      srcList: [require('@/assets/images/系统优化.png')],
+      srcList: [require('@/assets/images/optimize.png')],
       limitList: [],
       lineData: {
         force: {},

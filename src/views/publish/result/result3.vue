@@ -106,8 +106,8 @@ export default {
       explain:
         '&nbsp;&nbsp;&nbsp;&nbsp;孤立森林（Isolation Forest）模型通过构建多棵 𝑖𝑇𝑟𝑒𝑒 进行决策投票的方法进行异常检测。直观上来讲，可以观察到对于数据空间中数据分布密度较高的区域，需要对其进行多次切割才会停止，而那些密度很低的区域很容易较早便切割停到叶子结点了。因为异常点一般都是非常稀有的，所以在 𝑖𝑇𝑟𝑒𝑒 中会很快被划分到叶子节点，使用叶子节点到根节点的路径 ℎ(𝑥) 长度计算一条记录 𝑥 是否异常的概率。最后结合异常概率序列的时序信息，将过去及当前时刻的异常概率输入到循环神经网络的变种 GRU （Gate Recurrent Unit）网络中，从而预测未来时刻的异常概率。',
       srcList: [
-        require('@/assets/images/故障预警1.png'),
-        require('@/assets/images/故障预警2.png'),
+        require('@/assets/images/error1.png'),
+        require('@/assets/images/error2.png'),
       ],
       title: '根据历史行车数据模拟预警今日行车路线上可能的故障时刻',
       legendOne: ['储能系统健康值'],
