@@ -1,6 +1,5 @@
 <template>
-  <div :class="className"
-       :style="{ height: height, width: width }" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -76,8 +75,7 @@ export default {
           trigger: 'axis',
           formatter(params) {
             return `
-               ${params[0].marker} ${params[0].seriesName}：${params[0].value}
-
+               ${params[0].marker} ${params[0].seriesName}：${params[0].value * 100}%
                `;
           },
         },
@@ -110,7 +108,7 @@ export default {
           type: 'value',
           name: '百分比(%)',
           axisLabel: {
-            formatter: '{value}',
+            formatter: value => value * 100,
           },
           splitLine: { show: false },
           axisTick: {

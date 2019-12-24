@@ -81,21 +81,6 @@
         </div>
       </el-col>
     </el-row>
-    <!-- <el-row class="progress"> 文本解释判据: {{ explain }} </el-row>
-    <el-row class="target">
-      <el-col>
-        <el-row>
-          模型如下：
-        </el-row>
-        <markdown-it-vue :content="model" />
-      </el-col>
-      <el-col>
-        <el-row>
-          目标函数为：
-        </el-row>
-        <markdown-it-vue :content="targetFuc" />
-      </el-col>
-    </el-row> -->
     <template v-if="resultType === 1">
       <el-row class="progress"
               v-html="explain1"> </el-row>
@@ -153,6 +138,7 @@
 </template>
 
 <script>
+/* eslint-disable import/no-unresolved */
 /* eslint-disable global-require */
 // AsciiMath 转换
 // import MarkdownItVue from 'markdown-it-vue';
@@ -445,11 +431,6 @@ export default {
       });
     },
     getDataOther() {
-      // if (this.$store.state.modelDatasetId !== '') {
-      //   this.dataSetId = this.$store.state.modelDatasetId;
-      // } else {
-      //   this.dataSetId = this.$store.state.dataSelected;
-      // }
       this.$axios
         .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
         .then((res) => {

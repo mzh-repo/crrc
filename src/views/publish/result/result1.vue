@@ -97,6 +97,24 @@
         </el-col>
       </el-row>
     </template>
+    <el-row :gutter="19"
+            class="chart-container chart-1">
+      <el-col :span="12">
+        <div class="chart-box">
+          <mzh-line title="手柄级位"
+                    :yArea="yArea"
+                    :lineData="lineData.force"
+                    chartType="precit" />
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="chart-box">
+          <power-line chartType="precit"
+                      title="能耗kW·h"
+                      :lineData="lineData.power" />
+        </div>
+      </el-col>
+    </el-row>
     <el-row class="progress"
             v-html="explain"> </el-row>
     <el-row :gutter="30"
@@ -125,7 +143,7 @@
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <power-Line chartType="precit"
+            <power-line chartType="precit"
                         title="能耗(预测) kW·h"
                         :lineData="dynasticDataTwo" />
           </div>
@@ -138,6 +156,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Line from '../components/line.vue';
 import MovingTrain from '../components/movingTrain.vue';
 import BatteryLine from '../components/batteryLine.vue';
@@ -149,9 +168,9 @@ export default {
   components: {
     'mzh-line': Line,
     'move-train': MovingTrain,
-    'power-Line': PowerLine,
+    'power-line': PowerLine,
     BatteryLine,
-    SystemOptimize,
+    SystemOptimize
     // DashboardChart,
   },
   data() {
@@ -159,22 +178,23 @@ export default {
       explain:
         '&nbsp;&nbsp;&nbsp;&nbsp;使用深度 FCNN（Fully Connected Neural Network）模型来解决系统优化设计模型的问题。首先构建神经网络结构，确定网络层数、神经元个数、激活函数等超参数；其次结合均方误差函数确认损失函数；最后利用反向传播算法训练数据，从而调整神经网络权重参数降低损失函数，得到确定的网络模型。相较于传统规划求解的方式，其多层的神经网络结构有更加强大的表征能力，通过逐层深入的方式用较少参数来对无法认为构建的复杂函数进行逼近，从而使其模型更符合实际问题。',
       // eslint-disable-next-line global-require
+      // eslint-disable-next-line import/no-unresolved
       srcList: [require('@/assets/images/optimize.png')],
       limitList: [],
       lineData: {
         force: {},
         power: {},
-        battery: [],
+        battery: []
       },
       dynasticDataOne: {
         date_list: [],
         data_list: [],
-        predict_data_list: [],
+        predict_data_list: []
       },
       dynasticDataTwo: {
         date_list: [],
         data_list: [],
-        predict_data_list: [],
+        predict_data_list: []
         // green: [],
       },
       type: 3, // 2 间歇式, 3 非接触式
@@ -182,7 +202,7 @@ export default {
       legend: [
         '预测能耗(预测级位)',
         '实际能耗(实际级位)',
-        '预测能耗(实际级位)',
+        '预测能耗(实际级位)'
       ],
       legendone: ['预测', '实际'],
       yArea: [],
@@ -192,7 +212,7 @@ export default {
       resultList: [
         { name: '列车系统配置能耗最优', id: 2 },
         { name: '列车系统配置成本最优', id: 1 },
-        { name: '感应线圈布署策略', id: 3 },
+        { name: '感应线圈布署策略', id: 3 }
       ],
       energyData: [],
       current: 0,
@@ -201,48 +221,48 @@ export default {
         {
           tag: '成本最优配置',
           name: '储能',
-          source: '2组20Ah钛酸锂电池+1组3000F超级电容储能电源',
+          source: '2组20Ah钛酸锂电池+1组3000F超级电容储能电源'
         },
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>29.94</strong> kwh<br/> 成本为：<strong>587.5</strong> 万元',
-        },
+            '运行能耗为：<strong>29.94</strong> kwh<br/> 成本为：<strong>587.5</strong> 万元'
+        }
       ],
       configListOther: [
         {
           tag: '能耗最优配置',
           name: '储能',
-          source: '1组25Ah钛酸锂电池+2组9500F超级电容储能电源',
+          source: '1组25Ah钛酸锂电池+2组9500F超级电容储能电源'
         },
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>25.69</strong> kwh<br/> 成本为：<strong>630 </strong> 万元',
-        },
+            '运行能耗为：<strong>25.69</strong> kwh<br/> 成本为：<strong>630 </strong> 万元'
+        }
       ],
       tagList: [
         {
           prop: 'area',
-          name: '区间',
+          name: '区间'
         },
         {
           prop: 'distance',
-          name: '线路距离m',
+          name: '线路距离m'
         },
         {
           prop: 'start',
-          name: '线圈起点m',
+          name: '线圈起点m'
         },
         {
           prop: 'end',
-          name: '线圈终点m',
+          name: '线圈终点m'
         },
         {
           prop: 'length',
-          name: '线圈长度m',
-        },
-      ],
+          name: '线圈长度m'
+        }
+      ]
     };
   },
   mounted() {
@@ -257,7 +277,7 @@ export default {
           distance: '1310',
           start: '912',
           end: '1310',
-          length: '398',
+          length: '398'
         },
         {
           id: '1',
@@ -265,7 +285,7 @@ export default {
           distance: '1107',
           start: '0',
           end: '295',
-          length: '295',
+          length: '295'
         },
         {
           id: '2',
@@ -273,7 +293,7 @@ export default {
           distance: '1320',
           start: '797',
           end: '1320',
-          length: '523',
+          length: '523'
         },
         {
           id: '3',
@@ -281,12 +301,12 @@ export default {
           distance: '1256',
           start: '0',
           end: '293',
-          length: '293',
-        },
+          length: '293'
+        }
       ];
       this.resultList = [
         { name: '列车系统配置能耗最优', id: 2 },
-        { name: '列车系统配置成本最优', id: 1 },
+        { name: '列车系统配置成本最优', id: 1 }
       ];
     } else {
       this.yArea = ['8', '-8'];
@@ -298,7 +318,7 @@ export default {
           distance: '1669',
           start: '1422',
           end: '1499',
-          length: '77',
+          length: '77'
         },
         {
           id: '1',
@@ -306,7 +326,7 @@ export default {
           distance: '1310',
           start: '13',
           end: '488',
-          length: '475',
+          length: '475'
         },
         {
           id: '2',
@@ -314,7 +334,7 @@ export default {
           distance: '1310',
           start: '1239',
           end: '1310',
-          length: '71',
+          length: '71'
         },
         {
           id: '3',
@@ -322,7 +342,7 @@ export default {
           distance: '1107',
           start: '142',
           end: '666',
-          length: '524',
+          length: '524'
         },
         {
           id: '4',
@@ -330,7 +350,7 @@ export default {
           distance: '1107',
           start: '1012',
           end: '1107',
-          length: '95',
+          length: '95'
         },
         {
           id: '5',
@@ -338,7 +358,7 @@ export default {
           distance: '1320',
           start: '876',
           end: '1320',
-          length: '444',
+          length: '444'
         },
         {
           id: '6',
@@ -346,8 +366,8 @@ export default {
           distance: '1256',
           start: '0',
           end: '224',
-          length: '224',
-        },
+          length: '224'
+        }
       ];
     }
     this.getData();
@@ -358,31 +378,31 @@ export default {
         'AW2下平均加速度（m/s2）：0.6',
         'AW3下常用制动平均减速度（m/s2）：1.1',
         '车辆最低电压（V）：500',
-        '车辆最高电压（V）：900',
+        '车辆最高电压（V）：900'
       ];
       this.configList = [
         {
           tag: '成本最优配置',
           source:
-            '储能系统：电池串联数392、电池并联数5<br/>牵引系统：两动配置<br/>供电系统：4组接收板',
+            '储能系统：电池串联数392、电池并联数5<br/>牵引系统：两动配置<br/>供电系统：4组接收板'
         },
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>1085</strong> 万元',
-        },
+            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>1085</strong> 万元'
+        }
       ];
       this.configListOther = [
         {
           tag: '能耗最优配置',
           source:
-            '储能系统：电池串联数358、电池并联数6<br/>牵引系统：两动配置<br/>供电系统：6组接收板',
+            '储能系统：电池串联数358、电池并联数6<br/>牵引系统：两动配置<br/>供电系统：6组接收板'
         },
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>31.72</strong> kwh<br/> 成本为：<strong>1158.5 </strong> 万元',
-        },
+            '运行能耗为：<strong>31.72</strong> kwh<br/> 成本为：<strong>1158.5 </strong> 万元'
+        }
       ];
     } else {
       this.limitList = [
@@ -391,7 +411,7 @@ export default {
         '平均最小加速度（m/s2）：0.6',
         '常用制动平均减速度（m/s2）：1.1',
         '车辆最低电压（V）：500',
-        '车辆最高电压（V）：900',
+        '车辆最高电压（V）：900'
       ];
     }
   },
@@ -418,26 +438,43 @@ export default {
       this.$router.push('/report');
     },
     chooseResult() {
+      for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
+        clearTimeout(this.time[i]);
+      }
+      this.dynasticDataOne = {
+        date_list: [],
+        data_list: [],
+        predict_data_list: []
+      };
+      this.dynasticDataTwo = {
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+        green: []
+      };
       this.showDynastic = false;
       this.showStatics = false;
+      this.getData();
     },
     getData() {
-      // if (this.$store.state.modelDatasetId !== '') {
-      //   this.dataSetId = this.$store.state.modelDatasetId;
-      // } else {
-      //   this.dataSetId = this.$store.state.dataSelected;
-      // }
       this.dataSetId = this.$store.state.reportData.dataSetId;
       this.$axios
-        .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
-        .then((res) => {
-          if (this.type === 2) {
+        .get(
+          `form/graph?model_type=${this.type === 2 ? '4' : '5'}&dataset_id=${
+            this.dataSetId
+          }`
+        )
+        .then(res => {
+          if (this.type === 3) {
             this.lineData.battery = res.battery;
-          } else {
-            this.lineData.battery = res.battery_speed;
           }
-          this.lineData.force = res.level;
-          this.lineData.power = res.energy_consumption;
+          if (this.resultName === '列车系统配置能耗最优') {
+            this.lineData.force = res.level;
+            this.lineData.power = res.energy_consumption;
+          } else {
+            this.lineData.force = res.level_speed;
+            this.lineData.power = res.energy_consumption_speed;
+          }
           this.renderData(res);
         });
     },
@@ -454,22 +491,22 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
+                val.level.data_list[i]
               ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i],
-              ],
+                val.level.predict_data_list[i]
+              ]
             };
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
+                val.energy_consumption.data_list[i]
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i],
-              ],
+                val.energy_consumption.predict_data_list[i]
+              ]
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -477,33 +514,33 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
+                val.level.data_list[i]
               ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i],
-              ],
+                val.level.predict_data_list[i]
+              ]
             };
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
+                val.energy_consumption.data_list[i]
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i],
-              ],
+                val.energy_consumption.predict_data_list[i]
+              ]
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
         }, 100 * i);
       }
-    },
+    }
   },
   beforeDestroy() {
     clearTimeout(this.time);
-  },
+  }
 };
 </script>
 
@@ -552,8 +589,9 @@ export default {
 }
 
 .limit-container {
-  height: 350px;
-  margin-bottom: 60px;
+  height: 390px;
+  // margin-bottom: 60px;
+  padding-bottom: 40px;
 
   .el-col {
     height: 100%;
@@ -716,7 +754,7 @@ export default {
 .progress {
   display: flex;
   flex-direction: row;
-  // margin-top: 60px;
+  margin-top: 40px;
   margin-bottom: 16px;
   font-size: 20px;
   font-weight: 400;
