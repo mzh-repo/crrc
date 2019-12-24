@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="forecast-data title-1">
-      车次: {{ databasetype == 1 ? "间歇式供电列车" : "非接触式供电列车" }}
+      车次: {{ databaseType == 1 ? "间歇式供电列车" : "非接触式供电列车" }}
     </div>
     <div class="forecast-data">行车线路: 香山——颐和园南门</div>
     <div class="forecast-data">
@@ -95,7 +95,7 @@ export default {
   },
   mounted() {
     // 车次
-    this.databasetype = this.$store.state.dataBase;
+    this.databaseType = this.$store.state.dataBase;
     // TODO: 获取不同模型的id 或 类型
     if (this.$route.query.id) {
       this.modelId = Number(this.$route.query.id);

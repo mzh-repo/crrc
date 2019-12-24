@@ -14,7 +14,7 @@
         </template>
       </el-tabs>
     </el-row>
-    <template v-if="resultName !== '线路充电策略优化'">
+    <template v-if="resultName !== '感应线圈布署策略'">
       <el-row :gutter="19"
               class="limit-container">
         <el-col :span="12">
@@ -188,11 +188,11 @@ export default {
       yArea: [],
       dataSetId: '',
       showDynastic: false,
-      resultName: '列车系统配置成本最优',
+      resultName: '列车系统配置能耗最优',
       resultList: [
-        { name: '列车系统配置成本最优', id: 1 },
         { name: '列车系统配置能耗最优', id: 2 },
-        { name: '线路充电策略优化', id: 3 },
+        { name: '列车系统配置成本最优', id: 1 },
+        { name: '感应线圈布署策略', id: 3 },
       ],
       energyData: [],
       current: 0,
@@ -283,6 +283,10 @@ export default {
           end: '293',
           length: '293',
         },
+      ];
+      this.resultList = [
+        { name: '列车系统配置能耗最优', id: 2 },
+        { name: '列车系统配置成本最优', id: 1 },
       ];
     } else {
       this.yArea = ['8', '-8'];
