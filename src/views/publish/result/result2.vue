@@ -207,7 +207,7 @@ export default {
       resultId: '1', // 劣化tab 初始值   activeTb must be string
       resultList: [
         { name: '最佳能耗', id: 1 },
-        { name: '最快旅行速度', id: 2 },
+        { name: '最小旅行时间', id: 2 },
       ],
       showAgain: true,
       yArea: [],

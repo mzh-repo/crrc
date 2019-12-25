@@ -41,7 +41,7 @@
               <el-col>
                 <el-tag>{{ item.tag }}</el-tag>
               </el-col>
-              <el-col v-if="type === 2">
+              <el-col>
                 {{ item.name }}
               </el-col>
             </el-row>
@@ -58,7 +58,7 @@
               <el-col>
                 <el-tag>{{ item.tag }}</el-tag>
               </el-col>
-              <el-col v-if="type === 2">
+              <el-col>
                 {{ item.name }}
               </el-col>
             </el-row>
@@ -226,19 +226,21 @@ export default {
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>29.94</strong> kwh<br/> 成本为：<strong>587.5</strong> 万元'
+            '运行能耗为：<strong>29.94</strong> kwh<br/> 成本为：<strong>293</strong> 万元'
         }
       ],
       configListOther: [
         {
           tag: '能耗最优配置',
           name: '储能',
-          source: '1组25Ah钛酸锂电池+2组9500F超级电容储能电源'
+          // source: '1组25Ah钛酸锂电池+2组9500F超级电容储能电源'
+          source:
+            '1套动力电池箱, 每套: 采用25Ah单体, 144串4并。<br/> &nbsp;2套超级电容箱, 每套: 采用9500F模组, 344串2并。'
         },
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>25.69</strong> kwh<br/> 成本为：<strong>630 </strong> 万元'
+            '运行能耗为：<strong>25.69</strong> kwh<br/> 成本为：<strong>315 </strong> 万元'
         }
       ],
       tagList: [
@@ -383,25 +385,27 @@ export default {
       this.configList = [
         {
           tag: '成本最优配置',
-          source:
-            '储能系统：电池串联数392、电池并联数5<br/>牵引系统：两动配置<br/>供电系统：4组接收板'
+          name: '储能',
+          // source: '电池串联数392、电池并联数5'
+          source: '采用25Ah单体, 电池串联数392, 并联数5'
         },
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>1085</strong> 万元'
+            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>245</strong> 万元'
         }
       ];
       this.configListOther = [
         {
           tag: '能耗最优配置',
-          source:
-            '储能系统：电池串联数358、电池并联数6<br/>牵引系统：两动配置<br/>供电系统：6组接收板'
+          name: '储能',
+          // source: '电池串联数358、电池并联数6'
+          source: '采用25Ah单体, 电池串联数358, 并联数6'
         },
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>31.72</strong> kwh<br/> 成本为：<strong>1158.5 </strong> 万元'
+            '运行能耗为：<strong>31.72</strong> kwh<br/> 成本为：<strong>268.5 </strong> 万元'
         }
       ];
     } else {
