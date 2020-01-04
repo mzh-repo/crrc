@@ -8,7 +8,9 @@
     <div class="forecast-data title-1">
       车次: {{ databaseType == 1 ? "间歇式供电列车" : "非接触式供电列车" }}
     </div>
-    <div class="forecast-data">行车线路: 香山——颐和园南门</div>
+    <div class="forecast-data">
+      行车线路: {{ databaseType == 1 ? "广州塔——会展西" : "香山——颐和园南门" }}
+    </div>
     <div class="forecast-data">
       <span>预测总数据大小: {{ "128" }}M</span>
     </div>

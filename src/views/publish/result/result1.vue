@@ -130,7 +130,8 @@
       <el-button @click="goCase">查看实例报告</el-button>
     </el-row>
     <template v-if="showDynastic">
-      <move-train :current="current" />
+      <move-train :current="current"
+                  :lineType="type === 2 ? 0 : 1" />
       <el-row :gutter="19"
               class="chart-container">
         <el-col :span="24">

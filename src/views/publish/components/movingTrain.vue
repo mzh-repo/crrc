@@ -21,8 +21,8 @@
         </template>
         <template v-else>
           <div class="point"
-               :style="{ left: `${4 * index}%`, background: current / 4
-               >= index ? 'red' : '' }"></div>
+               :style="{ left: `${4 * index}%`, background: current / 4 >= index
+               ? 'red' : '' }"></div>
         </template>
       </div>
     </el-row>
@@ -32,51 +32,95 @@
 <script>
 const primaryColor = '#FF2020';
 const otherColor = '#00C4C0';
+const line = [
+  {
+    name: '香山站',
+    color: otherColor,
+    left: '0%',
+  },
+  {
+    name: '植物园站',
+    color: otherColor,
+    left: '20%',
+  },
+  {
+    name: '万安公墓站',
+    color: otherColor,
+    left: '40%',
+  },
+  {
+    name: '玉泉郊野公园',
+    color: otherColor,
+    left: '60%',
+  },
+  {
+    name: '颐和园西门',
+    color: otherColor,
+    left: '80%',
+  },
+  {
+    name: '颐和园南门',
+    color: otherColor,
+    left: '100%',
+  },
+];
+
+const otherLine = [
+  {
+    name: '广州塔',
+    color: otherColor,
+    left: '0%',
+  },
+  {
+    name: '艺苑东路',
+    color: otherColor,
+    left: '20%',
+  },
+  {
+    name: '猎德大桥',
+    color: otherColor,
+    left: '40%',
+  },
+  {
+    name: '啤酒博物馆',
+    color: otherColor,
+    left: '60%',
+  },
+  {
+    name: '华南大桥',
+    color: otherColor,
+    left: '80%',
+  },
+  {
+    name: '会展西',
+    color: otherColor,
+    left: '100%',
+  },
+];
 
 export default {
   props: {
     current: {
       type: Number,
     },
+    // 0 间歇式  1 非接触式
+    lineType: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
-      pointList: [
-        {
-          name: '香山站',
-          color: otherColor,
-          left: '0%',
-        },
-        {
-          name: '植物园站',
-          color: otherColor,
-          left: '20%',
-        },
-        {
-          name: '万安公墓站',
-          color: otherColor,
-          left: '40%',
-        },
-        {
-          name: '玉泉郊野公园',
-          color: otherColor,
-          left: '60%',
-        },
-        {
-          name: '颐和园西门',
-          color: otherColor,
-          left: '80%',
-        },
-        {
-          name: '颐和园南门',
-          color: otherColor,
-          left: '100%',
-        },
-      ],
+      pointList: line,
     };
   },
   mounted() {
     this.dataBaseId = Number(this.$store.state.reportData.dataBaseId);
+    if (this.lineType === 0) {
+      this.pointList = otherLine;
+    } else {
+      this.pointList = line;
+    }
   },
   methods: {
     getData(val) {
