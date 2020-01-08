@@ -71,6 +71,11 @@
         <markdown-it-vue :content="model2" />
       </el-row>
     </div> -->
+    <div v-if="type === 0"
+         class="strategy-box">
+      <span>检修策略</span>
+      <el-row v-html="strategy"></el-row>
+    </div>
     <el-row class="progress"
             v-html="explain"> </el-row>
     <el-row :gutter="30"
@@ -103,6 +108,7 @@ export default {
   },
   data() {
     return {
+      strategy: '',
       explain:
         '&nbsp;&nbsp;&nbsp;&nbsp;孤立森林（Isolation Forest）模型通过构建多棵 𝑖𝑇𝑟𝑒𝑒 进行决策投票的方法进行异常检测。直观上来讲，可以观察到对于数据空间中数据分布密度较高的区域，需要对其进行多次切割才会停止，而那些密度很低的区域很容易较早便切割停到叶子结点了。因为异常点一般都是非常稀有的，所以在 𝑖𝑇𝑟𝑒𝑒 中会很快被划分到叶子节点，使用叶子节点到根节点的路径 ℎ(𝑥) 长度计算一条记录 𝑥 是否异常的概率。最后结合异常概率序列的时序信息，将过去及当前时刻的异常概率输入到循环神经网络的变种 GRU （Gate Recurrent Unit）网络中，从而预测未来时刻的异常概率。',
       srcList: [
@@ -149,6 +155,8 @@ export default {
     const { dataBase } = this.$store.state;
     if (Number(dataBase) === 1) {
       this.type = 0;
+      // this.getStrategy();
+      this.strategy = '某个电芯温度比其他电芯高20℃，则该电芯内阻过大需要更换电池模组';
     } else {
       this.type = 1;
     }
@@ -188,6 +196,10 @@ export default {
   date.getMinutes(),
 )}:${this.convertNum(date.getSeconds())}`;
     },
+    // 检修策略对应 Map
+    // getStrategy() {
+    //   this.$axios.get('/maintenance_policy').then((res) => {});
+    // },
     convertNum(val) {
       if (val >= 10) {
         return val;
@@ -218,7 +230,7 @@ export default {
 
 .early-warning {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding: 0 40px;
   height: 850px;
   border-radius: 8px;
@@ -329,6 +341,21 @@ span {
 
   .el-image {
     @include set-size(300px, 200px);
+  }
+}
+
+.strategy-box {
+  background: #fff;
+  text-align: left;
+  padding: 40px;
+  margin-bottom: 30px;
+  margin-right: -8px;
+  border-radius: 8px;
+
+  span {
+    font-weight: bold;
+    font-size: 24px;
+    padding-top: 0;
   }
 }
 </style>

@@ -281,6 +281,9 @@ export default {
             ).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
+            if (this.type === 3) {
+              delete this.lineData.power.green;
+            }
             this.renderData(res);
           });
       } else {
@@ -304,11 +307,11 @@ export default {
           if (i > 200) {
             this.dynasticDataOne.data_list.shift();
             this.dynasticDataOne.predict_data_list.shift();
-            // this.dynasticDataOne.date_list.shift();
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
-            this.dynasticDataTwo.green.shift();
-            // this.dynasticDataTwo.date_list.shift();
+            if (this.type === 2) {
+              this.dynasticDataTwo.green.shift();
+            }
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
@@ -328,11 +331,19 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              // green: [
+              //   ...this.dynasticDataTwo.green,
+              //   val.energy_consumption.green[i],
+              // ],
             };
+            if (this.type === 2) {
+              Object.assign(powerData, {
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
+              });
+            }
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           } else {
@@ -341,7 +352,6 @@ export default {
                 ...this.dynasticDataOne.data_list,
                 val.level.data_list[i],
               ],
-
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
@@ -356,11 +366,16 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              // green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
             };
+            if (this.type === 2) {
+              Object.assign(powerData, {
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
+              });
+            }
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
@@ -437,6 +452,9 @@ export default {
         .then((res) => {
           this.lineData.force = res.level_speed;
           this.lineData.power = res.energy_consumption_speed;
+          if (this.type === 3) {
+            delete this.lineData.power.green;
+          }
           this.renderDataOther(res);
         });
     },
@@ -448,11 +466,11 @@ export default {
           if (i > 200) {
             this.dynasticDataOne.data_list.shift();
             this.dynasticDataOne.predict_data_list.shift();
-            // this.dynasticDataOne.date_list.shift();
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
-            this.dynasticDataTwo.green.shift();
-            // this.dynasticDataTwo.date_list.shift();
+            if (this.type === 2) {
+              this.dynasticDataTwo.green.shift();
+            }
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
@@ -472,11 +490,16 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption_speed.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption_speed.green[i],
-              ],
+              // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
             };
+            if (this.type === 2) {
+              Object.assign(powerData, {
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
+              });
+            }
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           } else {
@@ -499,11 +522,16 @@ export default {
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption_speed.predict_data_list[i],
               ],
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption_speed.green[i],
-              ],
+              // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
             };
+            if (this.type === 2) {
+              Object.assign(powerData, {
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
+              });
+            }
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
