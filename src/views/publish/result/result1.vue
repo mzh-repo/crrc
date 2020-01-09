@@ -124,8 +124,8 @@
     </el-row>
     <el-row id="scroll-1"
             style="margin-top: 30px">
-      <el-button type="primary"
-                 @click="goStatics">查看统计信息</el-button>
+      <!-- <el-button type="primary"
+                 @click="goStatics">查看统计信息</el-button> -->
       <el-button @click="goDynastic">实时运行图表</el-button>
       <el-button @click="goCase">查看实例报告</el-button>
     </el-row>
@@ -227,7 +227,7 @@ export default {
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>29.94</strong> kwh<br/> 成本为：<strong>293</strong> 万元'
+            '运行能耗为：<strong>17.45</strong> kwh<br/> 成本为：<strong>293</strong> 万元'
         }
       ],
       configListOther: [
@@ -241,7 +241,7 @@ export default {
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>25.69</strong> kwh<br/> 成本为：<strong>315 </strong> 万元'
+            '运行能耗为：<strong>14.36</strong> kwh<br/> 成本为：<strong>315 </strong> 万元'
         }
       ],
       tagList: [

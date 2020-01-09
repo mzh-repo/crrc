@@ -1,6 +1,5 @@
 <template>
-  <div :class="className"
-       :style="{ height: height, width: width }" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -85,15 +84,13 @@ export default {
           trigger: 'axis',
           formatter(params) {
             return `
-               ${params[0].marker} ${params[0].seriesName}：${Number(
-  params[0].value,
-).toFixed(2)}<br/>
-                ${params[1].marker} ${params[1].seriesName}：${Number(
-  params[1].value,
-).toFixed(2)}<br/>
-               ${params[2].marker} ${params[2].seriesName}：${Number(
-  params[2].value,
-).toFixed(2)}
+               ${params[0].marker} ${params[0].seriesName}：${Number(params[0].value).toFixed(
+  2,
+)}<br/>
+                ${params[1].marker} ${params[1].seriesName}：${Number(params[1].value).toFixed(
+  2,
+)}<br/>
+               ${params[2].marker} ${params[2].seriesName}：${Number(params[2].value).toFixed(2)}
                `;
           },
         },
@@ -155,40 +152,40 @@ export default {
           },
         ],
       };
-      if (this.lineData.green) {
-        Object.assign(option, {
-          series: [
-            {
-              name: this.legend[0],
-              type: 'line',
-              data: this.lineData.predict_data_list,
-              symbol: 'none',
-            },
-            {
-              name: this.legend[1],
-              type: 'line',
-              data: this.lineData.data_list,
-              symbol: 'none',
-            },
-            {
-              name: this.legend[2],
-              type: 'line',
-              data: this.lineData.green,
-              symbol: 'none',
-            },
-          ],
-        });
-        if (this.lineData.ratio) {
-          Object.assign(option, {
-            title: {
-              text: this.title,
-              subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${
-                this.lineData.ratio
-              }`,
-            },
-          });
-        }
-      }
+      // if (this.lineData.green) {
+      //   Object.assign(option, {
+      //     series: [
+      //       {
+      //         name: this.legend[0],
+      //         type: 'line',
+      //         data: this.lineData.predict_data_list,
+      //         symbol: 'none',
+      //       },
+      //       {
+      //         name: this.legend[1],
+      //         type: 'line',
+      //         data: this.lineData.data_list,
+      //         symbol: 'none',
+      //       },
+      //       {
+      //         name: this.legend[2],
+      //         type: 'line',
+      //         data: this.lineData.green,
+      //         symbol: 'none',
+      //       },
+      //     ],
+      //   });
+      //   if (this.lineData.ratio) {
+      //     Object.assign(option, {
+      //       title: {
+      //         text: this.title,
+      //         subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${
+      //           this.lineData.ratio
+      //         }`,
+      //       },
+      //     });
+      //   }
+      // }
       if (this.chartType === 'precit') {
         Object.assign(option, {
           tooltip: {

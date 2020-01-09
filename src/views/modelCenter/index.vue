@@ -3,25 +3,23 @@
     <el-row>
       <bread-crumb />
     </el-row>
-    <el-row class="step"
-            :class="newModel? 'create': ''">
-      <step-bar :active="active"
-                :stepList="stepList" />
+    <el-row class="step" :class="newModel ? 'create' : ''">
+      <step-bar :active="active" :stepList="stepList" />
     </el-row>
     <div class="scroll">
       <div class="layout">
         <router-view ref="model" />
       </div>
     </div>
-    <footer-bar v-if="newModel"
-                :pre="showPre"
-                :type="footerType"
-                @handle-pre="handlePre"
-                @next="next"
-                @complete="complete" />
-    <footer-bar v-if="modelReport"
-                :type="footerType"
-                @next="report" />
+    <footer-bar
+      v-if="newModel"
+      :pre="showPre"
+      :type="footerType"
+      @handle-pre="handlePre"
+      @next="next"
+      @complete="complete"
+    />
+    <footer-bar v-if="modelReport" :type="footerType" @next="report" />
   </el-container>
 </template>
 
@@ -115,14 +113,7 @@ export default {
             message: '请选择数据集',
             type: 'warning',
           });
-        }
-        // else if (data.input.length === 0) {
-        //   this.$message({
-        //     message: '请选择输入',
-        //     type: 'warning',
-        //   });
-        // }
-        else {
+        } else {
           this.$store.commit('setBasic', {
             name: data.name,
             scene: data.scene,
