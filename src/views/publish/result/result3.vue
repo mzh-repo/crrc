@@ -5,7 +5,7 @@
                  @click="$router.push('/upload')">强化训练</el-button>
     </el-row>
     <el-row :gutter="16">
-      <el-col :span="18">
+      <el-col :span="24">
         <div class="early-warning">
           <span>状态监测</span>
           <el-row>原始指标</el-row>
@@ -29,9 +29,13 @@
               <el-row>{{ item.value }}</el-row>
             </el-col>
           </div>
+          <el-row>故障概率</el-row>
+          <div class="error-box">{{ type === 0 ? "11.85" : "5.63" }}<span>(%)</span></div>
+          <el-row>检修里程</el-row>
+          <div class="error-box">{{ type === 0 ? "264.45" : "283.11" }}<span>(km)</span></div>
         </div>
       </el-col>
-      <el-col :span="6"
+      <!-- <el-col :span="6"
               class="early-situation">
         <span>故障预警</span>
         <span>今日异常概率</span>
@@ -58,19 +62,8 @@
                            :number="Number(number[2])"
                            :unit="progress.unit" />
         </div>
-      </el-col>
+      </el-col> -->
     </el-row>
-    <!-- <div class="explain-container">
-      <el-row> 解释判据: {{ type === 1 ? explain1 : explain2 }}。 </el-row>
-      <el-row>
-        其构建的iTree的平均路径长度 c(n)为:
-        <markdown-it-vue :content="model1" />
-      </el-row>
-      <el-row>
-        定义样本x 的异常系数为:
-        <markdown-it-vue :content="model2" />
-      </el-row>
-    </div> -->
     <div v-if="type === 0"
          class="strategy-box">
       <span>检修策略</span>
@@ -98,12 +91,12 @@
 <script>
 /* eslint-disable global-require */
 // import MarkdownItVue from 'markdown-it-vue';
-import circleProgress from '@/components/circleProgress.vue';
+// import circleProgress from '@/components/circleProgress.vue';
 // import 'markdown-it-vue/dist/markdown-it-vue.css';
 
 export default {
   components: {
-    'circle-progress': circleProgress,
+    // 'circle-progress': circleProgress,
     // MarkdownItVue,
   },
   data() {
@@ -231,7 +224,7 @@ export default {
 .early-warning {
   text-align: left;
   margin-bottom: 10px;
-  padding: 0 40px;
+  padding: 0 30px;
   height: 850px;
   border-radius: 8px;
   background: #fff;
@@ -244,13 +237,15 @@ export default {
   width: 100%;
   flex-wrap: wrap;
 }
+
 .early {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   margin: 20px 5px;
-  width: 180px;
+  // width: 180px;
+  width: 170px;
   height: 160px;
   color: #fff;
   border: 1px solid #ccc;
@@ -356,6 +351,17 @@ span {
     font-weight: bold;
     font-size: 24px;
     padding-top: 0;
+  }
+}
+
+.error-box {
+  margin: 20px 30px;
+  font-size: 30px;
+  display: flex;
+  align-items: baseline;
+
+  span {
+    font-size: 16px;
   }
 }
 </style>
