@@ -22,8 +22,8 @@ export default new Router({
           path: '/chooseModel',
           name: '模型中心',
           selectIcon: '模型中心-选中',
-          component: () => import('./views/modelCenter'),
-          // component: () => import('./views/dashboard/case'),
+          component: () => import('./views/createModel'),
+          // component: () => import('./views/modelCenter'),
           children: [
             {
               path: '/chooseModel',
@@ -56,7 +56,8 @@ export default new Router({
           path: '/chooseData',
           name: '创建训练',
           selectIcon: '创建训练-选中',
-          component: () => import('./views/traning'),
+          // component: () => import('./views/traning'),
+          component: () => import('./views/createTrain'),
           children: [
             {
               path: '/chooseData',
@@ -75,39 +76,40 @@ export default new Router({
             },
           ],
         },
-        {
-          path: '/modelPublish',
-          name: '模型部署',
-          selectIcon: '模型部署-选中',
-          component: () => import('./views/publish'),
-          children: [
-            {
-              path: '',
-              name: '选择数据集',
-              component: () => import('./views/publish/selectData'),
-            },
-            {
-              path: 'selectModel',
-              name: '模型选择',
-              component: () => import('./views/publish/selectModel'),
-            },
-            {
-              path: 'modelPublishForecast',
-              name: '模型部署与预测',
-              component: () => import('./views/publish/modelPublishForecast'),
-            },
-            {
-              path: 'exampleSelect',
-              name: '实例选择',
-              component: () => import('./views/publish/exampleSelect'),
-            },
-          ],
-        },
+        // {
+        //   path: '/modelPublish',
+        //   name: '模型部署',
+        //   selectIcon: '模型部署-选中',
+        //   component: () => import('./views/publish'),
+        //   children: [
+        //     {
+        //       path: '',
+        //       name: '选择数据集',
+        //       component: () => import('./views/publish/selectData'),
+        //     },
+        //     {
+        //       path: 'selectModel',
+        //       name: '模型选择',
+        //       component: () => import('./views/publish/selectModel'),
+        //     },
+        //     {
+        //       path: 'modelPublishForecast',
+        //       name: '模型部署与预测',
+        //       component: () => import('./views/publish/modelPublishForecast'),
+        //     },
+        //     {
+        //       path: 'exampleSelect',
+        //       name: '实例选择',
+        //       component: () => import('./views/publish/exampleSelect'),
+        //     },
+        //   ],
+        // },
         {
           path: '/importData',
           name: '数据导入',
           selectIcon: '数据导入-选中',
-          component: () => import('./views/dataImport'),
+          // component: () => import('./views/dataImport'),
+          component: () => import('./views/importData'),
           children: [
             {
               path: '/importData',

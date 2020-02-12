@@ -1,12 +1,11 @@
 <template>
-  <div class="case-example" :style="{ 'z-index': zIndex }">
-    <div
-      class="case-box"
-      :class="show ? 'active' : ''"
-      @mouseover="showContent"
-      @mouseout="closeContent"
-      @click="goDetail"
-    >
+  <div class="case-example"
+       :style="{ 'z-index': zIndex }">
+    <div class="case-box"
+         :class="show ? 'active' : ''"
+         @mouseover="showContent"
+         @mouseout="closeContent"
+         @click="goDetail">
       <div class="title">{{ data.title }}</div>
       <div class="sulation">
         <svg-icon icon-class="case_train" />
@@ -20,7 +19,8 @@
         <svg-icon icon-class="case_date" />
         训练日期: {{ data.dataset_train_date }}
       </div>
-      <svg-icon class="algorithm" :icon-class="getIcon(data.type)" />
+      <svg-icon class="algorithm"
+                :icon-class="getIcon(data.type)" />
     </div>
     <template v-if="show">
       <transition name="intro">
@@ -54,12 +54,12 @@ export default {
     };
   },
   methods: {
-    showContent() {
-      this.show = true;
-    },
-    closeContent() {
-      this.show = false;
-    },
+    // showContent() {
+    //   this.show = true;
+    // },
+    // closeContent() {
+    //   this.show = false;
+    // },
     goDetail() {
       this.$store.commit('setReportData', {
         name: this.data.model.name,

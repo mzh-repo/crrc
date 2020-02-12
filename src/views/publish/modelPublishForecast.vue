@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import line from './components/line.vue';
 import Mzhtable from '@/components/table.vue';
+import line from './components/line.vue';
 import forecastOne from './result/result1.vue';
 import forecastTwo from './result/result2.vue';
 import forecastThree from './result/result3.vue';
