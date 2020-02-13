@@ -1,40 +1,55 @@
 <template>
   <el-container class="wrap">
-    <el-row class="select" type="flex" justify="start" align="middle">
-      <label>选择数据库</label>
-      <el-select v-model="value" placeholder="">
-        <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.id">
-        </el-option>
-      </el-select>
-    </el-row>
+    <h2>数据导入</h2>
     <label class="file-label">选择文件</label>
-    <el-row v-if="fileStatus === 0" type="flex" class="file-box center" align="middle">
+    <el-row v-if="fileStatus === 0"
+            type="flex"
+            class="file-box center"
+            align="middle">
       <svg-icon icon-class="绿色加号" />
       <div class="upload">上传文件</div>
-      <input type="file" class="input-file" accept=".csv" @change="fileChange" />
+      <input type="file"
+             class="input-file"
+             accept=".csv"
+             @change="fileChange" />
     </el-row>
-    <el-row v-if="fileStatus === 1" type="flex" class="start show" align="middle">
-      <svg-icon icon-class="数据导入-文件" class="import-file" />
+    <el-row v-if="fileStatus === 1"
+            type="flex"
+            class="start show"
+            align="middle">
+      <svg-icon icon-class="数据导入-文件"
+                class="import-file" />
       <div class="delete">{{ file[0].name }}</div>
-      <div @click="deleteFile()" class="import-delete">
+      <div @click="deleteFile()"
+           class="import-delete">
         <svg-icon icon-class="数据导入-取消" />
       </div>
     </el-row>
-    <label v-if="fileStatus === 1" class="file-label">数据集配置</label>
-    <div v-if="fileStatus === 1" class="data-set">
-      <compound-input
-        v-for="(item, index) in array"
-        :title="item"
-        :key="item"
-        :index="index"
-        :select="sqlSettings[index]"
-        :options="compoundInput"
-        @selected="handleSelectChange"
-      />
+    <label v-if="fileStatus === 1"
+           class="file-label">数据集配置</label>
+    <div v-if="fileStatus === 1"
+         class="data-set">
+      <compound-input v-for="(item, index) in array"
+                      :title="item"
+                      :key="item"
+                      :index="index"
+                      :select="sqlSettings[index]"
+                      :options="compoundInput"
+                      @selected="handleSelectChange" />
     </div>
-    <el-row v-if="fileStatus === 1" class="db-name" type="flex" justify="start" align="middle">
+    <el-row v-if="fileStatus === 1"
+            class="db-name"
+            type="flex"
+            justify="start"
+            align="middle">
       <label>数据集名称</label>
-      <el-input v-model="DBName" placeholder=""></el-input>
+      <el-input v-model="DBName"
+                placeholder=""></el-input>
+    </el-row>
+    <el-row v-if="fileStatus === 1"
+            class="submit-btn">
+      <el-button type="primary"
+                 @click="submit">导入数据</el-button>
     </el-row>
   </el-container>
 </template>
@@ -59,6 +74,7 @@ export default {
     };
   },
   mounted() {
+    this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
     this.initData();
   },
   beforeDestroy() {
@@ -141,6 +157,21 @@ export default {
             message: '已取消删除',
           });
         });
+    },
+    submit() {
+      const data = {
+        header_mappings: this.importData.options,
+        name: this.DBName,
+        database_id: this.databaseId,
+        id: this.id,
+      };
+      this.$axios.put('/dataset', data).then(() => {
+        this.$message({
+          message: '导入成功',
+          type: 'success',
+        });
+        this.$router.push('./dashboard');
+      });
     },
   },
 };
@@ -259,5 +290,17 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.submit-btn {
+  margin: 50px 0;
+  text-align: right;
+  width: 100%;
+
+  .el-button {
+    width: 200px;
+    height: 60px;
+    font-size: 24px;
+  }
 }
 </style>

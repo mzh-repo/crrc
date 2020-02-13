@@ -8,6 +8,15 @@
         <el-row class="title">新型供电列车</el-row>
         <el-row class="title sub">大数据运用支撑系统</el-row>
       </el-form-item>
+      <el-form-item prop="type">
+        <el-select v-model="formData.type">
+          <el-option v-for="(item,index) in typeList"
+                     :key="index"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item prop="name">
         <el-input v-model="formData.name"
                   placeholder="账户">
@@ -34,19 +43,32 @@ export default {
   data() {
     return {
       formData: {
+        type: '',
         name: '',
         password: '',
       },
       rules: {
+        type: [{ required: true, message: '请选择系统', trigger: 'change' }],
         name: [{ required: true, message: '请输入账户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
       },
+      typeList: [
+        {
+          name: '间歇式供电列车系统',
+          id: 1,
+        },
+        {
+          name: '非接触式供电列车系统',
+          id: 2,
+        },
+      ],
     };
   },
   methods: {
     loginIn(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          sessionStorage.setItem('dataBaseId', this.formData.type);
           this.$store.commit('setUsername', this.formData.name);
           const date = new Date();
           const loginTime = localStorage.getItem('loginTime') || date;
@@ -89,6 +111,10 @@ export default {
 }
 
 .el-button {
+  width: 100%;
+}
+
+.el-select {
   width: 100%;
 }
 </style>

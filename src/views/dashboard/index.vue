@@ -88,11 +88,11 @@
 </template>
 
 <script>
-import UserInfo from '../../components/userInfo.vue';
 import BarChart from '@/components/barChart.vue';
 import ModelTrain from '@/components/modelTrain.vue';
 import CircleProgress from '@/components/circleProgress.vue';
 import Bar from '@/components/bar.vue';
+import UserInfo from '../../components/userInfo.vue';
 
 export default {
   components: {

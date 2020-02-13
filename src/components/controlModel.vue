@@ -1,10 +1,10 @@
 <template>
   <el-row class="card-container"
-          :class="this.$store.state.trainSelected===modelList.id? 'active': ''"
+          :class="current===modelList.id? 'active': ''"
           @click.native="setChoice(modelList)">
     <el-row class="title">{{modelList.name}}</el-row>
     <el-tag v-if="modelList"
-            size="small">推荐配置</el-tag>
+            size="small">配置</el-tag>
     <div v-if="modelList.newTab"
          class="tab">新</div>
     <el-row>
@@ -60,7 +60,7 @@
 
     </el-row>
     <el-row class="features">
-      <img v-if="this.$store.state.trainSelected===modelList.id"
+      <img v-if="current===modelList.id"
            src="@/assets/images/choiced.png">
       <!-- @click="setChoice(modelList.id)"> -->
       <div v-else
@@ -81,6 +81,10 @@ export default {
     showChoice: {
       type: Boolean,
       default: true,
+    },
+    // 当前选中
+    current: {
+      type: Number,
     },
   },
   data() {
@@ -106,13 +110,13 @@ export default {
   background: #fff;
   border-radius: 8px;
   cursor: pointer;
-  opacity: 0.6;
+  // opacity: 0.6;
   z-index: 1;
 
   &:hover,
   &.active {
     opacity: 1;
-    box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.2);
+    box-shadow: 0 8px 6px 0 rgba(27, 22, 22, 0.2);
     border-bottom-left-radius: 0%;
     border-bottom-right-radius: 0%;
   }

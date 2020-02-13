@@ -1,81 +1,88 @@
 <template>
   <el-container class="case-container">
     <el-row class="case-main">
+      <!-- <el-col :span="2" class="progress">
+        <svg-icon icon-class="progress"></svg-icon>
+      </el-col> -->
       <el-col :span="4">
         <user-info />
       </el-col>
-      <el-col :span="20" class="case">
-        <!-- <el-col :span="24" class="case-1"> -->
-        <div class="title">间歇式供电列车</div>
-        <div class="search">
-          <el-col>
-            <el-input
-              v-model="input"
-              placeholder="请输入"
-              prefix-icon="el-icon-search"
-              @change="getData"
-            >
-            </el-input>
-          </el-col>
-          <el-col>
-            <span>状态:</span>
-            <el-select v-model="choose" @change="getData">
-              <el-option
-                v-for="(item, index) in statusList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col>
-            <el-button type="primary" @click="newModel">新建模型</el-button>
-          </el-col>
-        </div>
-        <!-- <el-row :gutter="16">
-          <el-col :span="12">
-            <template v-for="(item, index) in dataList.list1.operation_control">
-              <case-box :key="index"
-                        :zIndex="2019 - index"
-                        :data="item"
-                        id="1" />
-            </template>
-          </el-col>
-          <el-col :span="12">
-            <template v-for="(item, index) in dataList.list1.fault_warning">
-              <case-box :key="index"
-                        :zIndex="2019 - index"
-                        :data="item"
-                        id="1" />
-            </template>
-            <div class="newModel" @click="newModel">
-                <svg-icon icon-class="add-model" class="add-img" />
+      <el-col :span="20"
+              class="case">
+        <el-col :span="6"
+                class="case-1">
+          <div class="title">间歇式供电列车</div>
+          <el-row :gutter="16">
+            <el-col :span="12">
+              <template v-for="(item, index) in dataList.list1.operation_control">
+                <case-box :key="index"
+                          :zIndex="2019 - index"
+                          :data="item"
+                          id="1" />
+              </template>
+            </el-col>
+            <el-col :span="12">
+              <template v-for="(item, index) in dataList.list1.fault_warning">
+                <case-box :key="index"
+                          :zIndex="2019 - index"
+                          :data="item"
+                          id="1" />
+              </template>
+              <div class="newModel"
+                   @click="newModel">
+                <svg-icon icon-class="add-model"
+                          class="add-img" />
                 <div>新建模型</div>
-            </div>
-          </el-col>
-        </el-row> -->
-        <el-row class="model-container"></el-row>
-        <el-pagination
-          background
-          small
-          layout="prev, pager, next"
-          :total="50"
-          @current-change="handleChange"
-        >
-        </el-pagination>
+              </div>
+            </el-col>
+          </el-row>
+        </el-col>
+        <el-col :span="6"
+                class="case-2">
+          <div class="title">非接触式供电列车</div>
+          <el-row :gutter="16">
+            <!-- <el-col v-for="(item, index) in caseList" :key="index" :span="12">
+              <case-box />
+            </el-col> -->
+            <el-col :span="12">
+              <template v-for="(item, index) in dataList.list2.operation_control">
+                <case-box :key="index"
+                          :zIndex="2019 - index"
+                          :data="item"
+                          id="2" />
+              </template>
+            </el-col>
+            <el-col :span="12">
+              <template v-for="(item, index) in dataList.list2.fault_warning">
+                <case-box :key="index"
+                          :zIndex="2019 - index"
+                          :data="item"
+                          id="2" />
+              </template>
+              <div class="newModel"
+                   @click="newModel">
+                <svg-icon icon-class="add-model"
+                          class="add-img" />
+                <div>新建模型</div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-col>
       </el-col>
-      <!-- </el-col> -->
+    </el-row>
+    <el-row class="train">
+      <svg-icon icon-class="火车" />
     </el-row>
   </el-container>
 </template>
 
 <script>
-// import CaseBox from '@/components/case.vue';
+import CaseBox from '@/components/case.vue';
 import UserInfo from '../../components/userInfo.vue';
 
 export default {
   components: {
-    // CaseBox,
+    CaseBox,
     UserInfo,
   },
   data() {
@@ -91,24 +98,10 @@ export default {
         },
       },
       caseList: ['', '', ''],
-      statusList: [
-        {
-          id: 1,
-          name: '训练中',
-        },
-        {
-          id: 2,
-          name: '已取消',
-        },
-      ],
-      input: '',
-      choose: '',
-      page: 1,
     };
   },
   mounted() {
-    // eslint-disable-next-line arrow-parens
-    this.$axios.get('/case').then(res => {
+    this.$axios.get('/case').then((res) => {
       this.dataList = res;
     });
   },
@@ -116,11 +109,6 @@ export default {
     newModel() {
       this.$router.push('/createModel/step1');
     },
-    handleChange(e) {
-      this.page = e;
-    },
-    // TODO
-    getData() {},
   },
 };
 </script>
@@ -154,33 +142,34 @@ export default {
   font-size: 28px;
   color: #333;
   margin-bottom: 30px;
-  text-align: left;
 }
 
 .case {
-  // height: 760px;
-  @include flex-column();
-  height: 100%;
-  padding: 60px 40px 0 40px;
+  // height: 822px;
+  height: 760px;
+  display: flex;
 
   .case-1,
   .case-2 {
     height: 100%;
     text-align: left;
+    // padding: 0 25px;
     padding: 0 10px;
     display: flex;
     flex-wrap: wrap;
+    // min-width: 828px;
     min-width: 770px;
-  }
-}
 
-.model-container {
-  min-height: 760px;
+    &:first-child {
+      border-right: 1px solid #d8d8d8;
+    }
+  }
 }
 
 .train {
   width: 100%;
   text-align: right;
+  // margin-top: 10px;
   margin-top: -70px;
   padding-right: 30px;
 
@@ -189,33 +178,15 @@ export default {
   }
 }
 
-.search {
-  @include flex-row();
-
-  .el-col {
-    width: 360px;
-
-    &:last-child {
-      text-align: left;
-    }
-  }
-
-  .el-select {
-    margin-left: 10px;
-  }
+.newModel {
+  // position: relative;
+  width: 370px;
+  // margin: 16px 6px 0 0;
+  border-radius: 5px;
+  background: #fff;
+  @include box-center;
+  height: 220px;
+  flex-direction: column;
+  cursor: pointer;
 }
-
-.el-pagination {
-  text-align: right;
-}
-
-// .newModel {
-//   width: 370px;
-//   border-radius: 5px;
-//   background: #fff;
-//   @include box-center;
-//   height: 220px;
-//   flex-direction: column;
-//   cursor: pointer;
-// }
 </style>

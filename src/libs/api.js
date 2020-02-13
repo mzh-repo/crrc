@@ -17,15 +17,22 @@ axios.defaults.baseURL = config.baseUrl;
 // });
 
 axios.interceptors.response.use(
-  res => res.data,
-  error =>
-    // if (error.response.status === 401) {
-    //   router.push('/login');
-    // } else if (error.response.status === 404) {
-    //   router.push('/404');
-    // }
-    // eslint-disable-next-line implicit-arrow-linebreak
-    error.response,
+  // eslint-disable-next-line arrow-parens
+  (res) => res.data,
+  // error =>
+  //   // if (error.response.status === 401) {
+  //   //   router.push('/login');
+  //   // } else if (error.response.status === 404) {
+  //   //   router.push('/404');
+  //   // }
+  //   // eslint-disable-next-line implicit-arrow-linebreak
+  //   error.response,
+  (error) => {
+    if (error.response.status !== 200) {
+      return Promise.reject(error.response);
+    }
+    return Promise.reject();
+  },
 );
 
 export default axios;

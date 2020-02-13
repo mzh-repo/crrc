@@ -3,24 +3,22 @@
        :style="{ 'z-index': zIndex }">
     <div class="case-box"
          :class="show ? 'active' : ''"
-         @mouseover="showContent"
-         @mouseout="closeContent"
          @click="goDetail">
-      <div class="title">{{ data.title }}</div>
+      <div class="title">{{ data.case.title }}</div>
       <div class="sulation">
         <svg-icon icon-class="case_train" />
-        {{ data.text1 }}
+        {{ data.case.text1 }}
       </div>
       <div class="sulation">
         <svg-icon icon-class="case_line" />
-        {{ data.text2 }}
+        {{ data.case.text2 }}
       </div>
       <div class="sulation">
         <svg-icon icon-class="case_date" />
-        训练日期: {{ data.dataset_train_date }}
+        训练日期: {{ data.case.dataset_train_date }}
       </div>
       <svg-icon class="algorithm"
-                :icon-class="getIcon(data.type)" />
+                :icon-class="getIcon(data.case.type)" />
     </div>
     <template v-if="show">
       <transition name="intro">
@@ -102,7 +100,7 @@ export default {
 
   &.active {
     opacity: 1;
-    box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.356);
+    box-shadow: 0 8px 6px 0 rgba(27, 22, 22, 0.356);
   }
 }
 
