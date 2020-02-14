@@ -217,7 +217,7 @@ export default {
       chooseType: '',
       chooseCar: '',
       chooseWay: '',
-      typeList: ['车辆配置不变', '车辆配置可变'],
+      typeList: [],
       wayList: ['香山——颐和园南门', '广州塔——会展西'],
       algorithmId: '',
       algorithmList: [],
@@ -281,6 +281,11 @@ export default {
   mounted() {
     // 上传数据集回退更新
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
+    if (this.databaseId === 1) {
+      this.typeList = ['间歇式1号车', '间歇式2号车'];
+    } else {
+      this.typeList = ['非接触式1号车', '非接触式2号车'];
+    }
     this.initData();
     this.$axios.get('/algorithm/list').then((res) => {
       this.algorithmList = res;
