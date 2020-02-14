@@ -60,19 +60,20 @@ export default {
     //   this.show = false;
     // },
     goDetail() {
-      // this.$store.commit('setReportData', {
-      //   name: this.data.model.name,
-      //   scene: this.data.model.applicable_scene,
-      //   describe: this.data.model.introduction,
-      //   total: this.data.model.deploy_number,
-      //   id: this.data.model.id,
-      //   dataSetId: this.data.model.dataset_id,
-      //   dateSetName: this.data.model.dataset_name,
-      //   dataBaseId: this.id,
-      // });
+      this.$store.commit('setReportData', {
+        // name: this.data.model.name,
+        // scene: this.data.model.applicable_scene,
+        // describe: this.data.model.introduction,
+        // total: this.data.model.deploy_number,
+        // id: this.data.model.id,
+        dataSetId: this.data.dataset.id,
+        route: this.data.route,
+        // dateSetName: this.data.model.dataset_name,
+        // dataBaseId: this.id,
+      });
       // this.$store.commit('chooseDataBase', Number(this.id));
       this.$router.push({
-        path: `/result?id=${this.data.graph_id}`,
+        path: `/result?id=${this.data.case.id}`,
       });
     },
     getIcon(type) {

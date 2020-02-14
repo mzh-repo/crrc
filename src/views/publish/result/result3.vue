@@ -145,11 +145,13 @@ export default {
     if (this.time) {
       clearTimeout(this.time);
     }
-    const { dataBase } = this.$store.state;
+    // const { dataBase } = this.$store.state;
+    const dataBase = sessionStorage.getItem('dataBaseId');
     if (Number(dataBase) === 1) {
       this.type = 0;
       // this.getStrategy();
-      this.strategy = '某个电芯温度比其他电芯高20℃，则该电芯内阻过大需要更换电池模组';
+      this.strategy =
+        '某个电芯温度比其他电芯高20℃，则该电芯内阻过大需要更换电池模组';
     } else {
       this.type = 1;
     }
@@ -186,8 +188,8 @@ export default {
         date.getMonth() + 1,
       )}/${this.convertNum(date.getDate())}
          ${this.convertNum(date.getHours())}:${this.convertNum(
-  date.getMinutes(),
-)}:${this.convertNum(date.getSeconds())}`;
+        date.getMinutes(),
+      )}:${this.convertNum(date.getSeconds())}`;
     },
     // 检修策略对应 Map
     // getStrategy() {

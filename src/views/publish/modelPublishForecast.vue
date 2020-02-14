@@ -9,7 +9,7 @@
       车次: {{ databaseType == 1 ? "间歇式供电列车" : "非接触式供电列车" }}
     </div>
     <div class="forecast-data">
-      行车线路: {{ databaseType == 1 ? "广州塔——会展西" : "香山——颐和园南门" }}
+      行车线路: {{ route }}
     </div>
     <div class="forecast-data">
       <span>预测总数据大小: {{ "128" }}M</span>
@@ -93,28 +93,30 @@ export default {
       modelId: '',
       databaseType: 1,
       type: 1, // 区分 列车运行控制 A和 B 对应的结果集
+      route: '',
     };
   },
   mounted() {
     // 车次
-    this.databaseType = this.$store.state.dataBase;
+    this.databaseType = Number(sessionStorage.getItem('dataBaseId'));
+    this.route = this.$store.state.reportData.route;
     // TODO: 获取不同模型的id 或 类型
     if (this.$route.query.id) {
       this.modelId = Number(this.$route.query.id);
     } else {
       this.modelId = this.$store.state.modelSelected.id;
     }
-    if (this.modelId === 1 || this.modelId === 2) {
-      // 列车运行控制  A
+    if (this.modelId === 1 || this.modelId === 5) {
+      // 列车运行控制
       this.result = 4;
-    } else if (this.modelId === 3 || this.modelId === 4) {
+    } else if (this.modelId === 4 || this.modelId === 8) {
       // 故障预警
       this.result = 5;
-    } else if (this.modelId === 5 || this.modelId === 6) {
-      // 列车运行控制  C
+    } else if (this.modelId === 3 || this.modelId === 7) {
+      // 系统优化
       this.result = 3;
-    } else if (this.modelId === 7 || this.modelId === 8) {
-      // 列车运行控制  B
+    } else if (this.modelId === 2 || this.modelId === 6) {
+      // 劣化
       this.result = 4;
       this.type = 2;
     } else {
@@ -124,8 +126,8 @@ export default {
     // this.getRandom();
     // this.b();
     const nowDate = new Date();
-    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
-      + 1}-${nowDate.getDate()}`;
+    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth() +
+      1}-${nowDate.getDate()}`;
     this.time = `${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
   },
   methods: {

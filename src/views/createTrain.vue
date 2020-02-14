@@ -193,7 +193,7 @@ export default {
       };
       this.$axios.post('/form/train', obj).then(() => {
         this.$message({
-          message: '创建成功',
+          message: '创建训练成功',
           type: 'success',
         });
         this.$router.push('./dashboard');

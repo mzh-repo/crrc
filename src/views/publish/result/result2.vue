@@ -239,7 +239,8 @@ export default {
         },
       ];
     }
-    const { dataBase } = this.$store.state;
+    // const { dataBase } = this.$store.state;
+    const dataBase = Number(sessionStorage.getItem('dataBaseId'));
     if (dataBase === 1) {
       this.type = 2;
       this.percent = [60, 90, 96];

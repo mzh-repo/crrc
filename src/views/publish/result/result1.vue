@@ -171,7 +171,7 @@ export default {
     'move-train': MovingTrain,
     'power-line': PowerLine,
     BatteryLine,
-    SystemOptimize
+    SystemOptimize,
     // DashboardChart,
   },
   data() {
@@ -185,17 +185,17 @@ export default {
       lineData: {
         force: {},
         power: {},
-        battery: []
+        battery: [],
       },
       dynasticDataOne: {
         date_list: [],
         data_list: [],
-        predict_data_list: []
+        predict_data_list: [],
       },
       dynasticDataTwo: {
         date_list: [],
         data_list: [],
-        predict_data_list: []
+        predict_data_list: [],
         // green: [],
       },
       type: 3, // 2 间歇式, 3 非接触式
@@ -203,7 +203,7 @@ export default {
       legend: [
         '预测能耗(预测级位)',
         '实际能耗(实际级位)',
-        '预测能耗(实际级位)'
+        '预测能耗(实际级位)',
       ],
       legendone: ['预测', '实际'],
       yArea: [],
@@ -213,7 +213,7 @@ export default {
       resultList: [
         { name: '列车系统配置能耗最优', id: 2 },
         { name: '列车系统配置成本最优', id: 1 },
-        { name: '感应线圈布署策略', id: 3 }
+        { name: '感应线圈布署策略', id: 3 },
       ],
       energyData: [],
       current: 0,
@@ -222,13 +222,13 @@ export default {
         {
           tag: '成本最优配置',
           name: '储能',
-          source: '2组20Ah钛酸锂电池+1组3000F超级电容储能电源'
+          source: '2组20Ah钛酸锂电池+1组3000F超级电容储能电源',
         },
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>17.45</strong> kwh<br/> 成本为：<strong>293</strong> 万元'
-        }
+            '运行能耗为：<strong>17.45</strong> kwh<br/> 成本为：<strong>293</strong> 万元',
+        },
       ],
       configListOther: [
         {
@@ -236,41 +236,42 @@ export default {
           name: '储能',
           // source: '1组25Ah钛酸锂电池+2组9500F超级电容储能电源'
           source:
-            '1套动力电池箱, 每套: 采用25Ah单体, 144串4并。<br/> &nbsp;2套超级电容箱, 每套: 采用9500F模组, 344串2并。'
+            '1套动力电池箱, 每套: 采用25Ah单体, 144串4并。<br/> &nbsp;2套超级电容箱, 每套: 采用9500F模组, 344串2并。',
         },
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>14.36</strong> kwh<br/> 成本为：<strong>315 </strong> 万元'
-        }
+            '运行能耗为：<strong>14.36</strong> kwh<br/> 成本为：<strong>315 </strong> 万元',
+        },
       ],
       tagList: [
         {
           prop: 'area',
-          name: '区间'
+          name: '区间',
         },
         {
           prop: 'distance',
-          name: '线路距离m'
+          name: '线路距离m',
         },
         {
           prop: 'start',
-          name: '线圈起点m'
+          name: '线圈起点m',
         },
         {
           prop: 'end',
-          name: '线圈终点m'
+          name: '线圈终点m',
         },
         {
           prop: 'length',
-          name: '线圈长度m'
-        }
-      ]
+          name: '线圈长度m',
+        },
+      ],
     };
   },
   mounted() {
-    const { dataBase } = this.$store.state;
-    if (Number(dataBase) === 1) {
+    // const { dataBase } = this.$store.state;
+    const dataBase = Number(sessionStorage.getItem('dataBaseId'));
+    if (dataBase === 1) {
       this.type = 2;
       this.yArea = ['100', '-100'];
       this.energyData = [
@@ -280,7 +281,7 @@ export default {
           distance: '1310',
           start: '912',
           end: '1310',
-          length: '398'
+          length: '398',
         },
         {
           id: '1',
@@ -288,7 +289,7 @@ export default {
           distance: '1107',
           start: '0',
           end: '295',
-          length: '295'
+          length: '295',
         },
         {
           id: '2',
@@ -296,7 +297,7 @@ export default {
           distance: '1320',
           start: '797',
           end: '1320',
-          length: '523'
+          length: '523',
         },
         {
           id: '3',
@@ -304,12 +305,12 @@ export default {
           distance: '1256',
           start: '0',
           end: '293',
-          length: '293'
-        }
+          length: '293',
+        },
       ];
       this.resultList = [
         { name: '列车系统配置能耗最优', id: 2 },
-        { name: '列车系统配置成本最优', id: 1 }
+        { name: '列车系统配置成本最优', id: 1 },
       ];
     } else {
       this.yArea = ['8', '-8'];
@@ -321,7 +322,7 @@ export default {
           distance: '1669',
           start: '1422',
           end: '1499',
-          length: '77'
+          length: '77',
         },
         {
           id: '1',
@@ -329,7 +330,7 @@ export default {
           distance: '1310',
           start: '13',
           end: '488',
-          length: '475'
+          length: '475',
         },
         {
           id: '2',
@@ -337,7 +338,7 @@ export default {
           distance: '1310',
           start: '1239',
           end: '1310',
-          length: '71'
+          length: '71',
         },
         {
           id: '3',
@@ -345,7 +346,7 @@ export default {
           distance: '1107',
           start: '142',
           end: '666',
-          length: '524'
+          length: '524',
         },
         {
           id: '4',
@@ -353,7 +354,7 @@ export default {
           distance: '1107',
           start: '1012',
           end: '1107',
-          length: '95'
+          length: '95',
         },
         {
           id: '5',
@@ -361,7 +362,7 @@ export default {
           distance: '1320',
           start: '876',
           end: '1320',
-          length: '444'
+          length: '444',
         },
         {
           id: '6',
@@ -369,8 +370,8 @@ export default {
           distance: '1256',
           start: '0',
           end: '224',
-          length: '224'
-        }
+          length: '224',
+        },
       ];
     }
     this.getData();
@@ -381,33 +382,33 @@ export default {
         'AW2下平均加速度（m/s2）：0.6',
         'AW3下常用制动平均减速度（m/s2）：1.1',
         '车辆最低电压（V）：500',
-        '车辆最高电压（V）：900'
+        '车辆最高电压（V）：900',
       ];
       this.configList = [
         {
           tag: '成本最优配置',
           name: '储能',
           // source: '电池串联数392、电池并联数5'
-          source: '采用25Ah单体, 电池串联数392, 并联数5'
+          source: '采用25Ah单体, 电池串联数392, 并联数5',
         },
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>245</strong> 万元'
-        }
+            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>245</strong> 万元',
+        },
       ];
       this.configListOther = [
         {
           tag: '能耗最优配置',
           name: '储能',
           // source: '电池串联数358、电池并联数6'
-          source: '采用25Ah单体, 电池串联数358, 并联数6'
+          source: '采用25Ah单体, 电池串联数358, 并联数6',
         },
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>31.72</strong> kwh<br/> 成本为：<strong>268.5 </strong> 万元'
-        }
+            '运行能耗为：<strong>31.72</strong> kwh<br/> 成本为：<strong>268.5 </strong> 万元',
+        },
       ];
     } else {
       this.limitList = [
@@ -416,7 +417,7 @@ export default {
         '平均最小加速度（m/s2）：0.6',
         '常用制动平均减速度（m/s2）：1.1',
         '车辆最低电压（V）：500',
-        '车辆最高电压（V）：900'
+        '车辆最高电压（V）：900',
       ];
     }
   },
@@ -449,13 +450,13 @@ export default {
       this.dynasticDataOne = {
         date_list: [],
         data_list: [],
-        predict_data_list: []
+        predict_data_list: [],
       };
       this.dynasticDataTwo = {
         date_list: [],
         data_list: [],
         predict_data_list: [],
-        green: []
+        green: [],
       };
       this.showDynastic = false;
       this.showStatics = false;
@@ -467,9 +468,9 @@ export default {
         .get(
           `form/graph?model_type=${this.type === 2 ? '4' : '5'}&dataset_id=${
             this.dataSetId
-          }`
+          }`,
         )
-        .then(res => {
+        .then((res) => {
           if (this.type === 3) {
             this.lineData.battery = res.battery;
           }
@@ -496,22 +497,22 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level.data_list[i]
+                val.level.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i]
-              ]
+                val.level.predict_data_list[i],
+              ],
             };
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i]
+                val.energy_consumption.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i]
-              ]
+                val.energy_consumption.predict_data_list[i],
+              ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
@@ -519,33 +520,33 @@ export default {
             const data = {
               data_list: [
                 ...this.dynasticDataOne.data_list,
-                val.level.data_list[i]
+                val.level.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i]
-              ]
+                val.level.predict_data_list[i],
+              ],
             };
             const powerData = {
               data_list: [
                 ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i]
+                val.energy_consumption.data_list[i],
               ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i]
-              ]
+                val.energy_consumption.predict_data_list[i],
+              ],
             };
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           }
         }, 100 * i);
       }
-    }
+    },
   },
   beforeDestroy() {
     clearTimeout(this.time);
-  }
+  },
 };
 </script>
 
