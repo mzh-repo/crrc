@@ -169,7 +169,7 @@ export default {
   // height: 760px;
   @include flex-column();
   height: 100%;
-  padding: 20px 40px 0 40px;
+  padding: 50px 40px 0 40px;
 
   .case-1,
   .case-2 {

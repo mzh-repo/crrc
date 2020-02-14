@@ -379,13 +379,12 @@ export default {
       const modelData = {
         name: this.name,
         // applicable_scene: this.chooseType,
+        // case id 1-8 分别代表不同结果集
         case: {
-          id: this.chooseType,
-          // text1: this.chooseCar,
-          // text2: this.chooseWay,
-          // title: this.name,
-          // type: this.chooseType <= 2 ? 1 : this.chooseType,
+          id: this.databaseId === 1 ? this.chooseType : 4 + this.chooseType,
         },
+        car_type: this.chooseCar,
+        route: this.chooseWay,
         introduction: this.describe,
         dataset_id: this.$store.state.basic.datasetId,
         algorithm_id: this.algorithmId,
@@ -403,6 +402,7 @@ export default {
             message: '创建成功',
             type: 'success',
           });
+          this.$router.push('./dashboard');
         })
         .catch(() => {
           this.$message({

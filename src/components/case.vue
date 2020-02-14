@@ -4,14 +4,15 @@
     <div class="case-box"
          :class="show ? 'active' : ''"
          @click="goDetail">
-      <div class="title">{{ data.case.title }}</div>
+      <div class="title">{{ data.name }}</div>
+      <div class="sub-title">{{ data.case.title }}</div>
       <div class="sulation">
         <svg-icon icon-class="case_train" />
-        {{ data.case.text1 }}
+        {{ data.car_type }}
       </div>
       <div class="sulation">
         <svg-icon icon-class="case_line" />
-        {{ data.case.text2 }}
+        {{ data.route }}
       </div>
       <div class="sulation">
         <svg-icon icon-class="case_date" />
@@ -20,7 +21,7 @@
       <svg-icon class="algorithm"
                 :icon-class="getIcon(data.case.type)" />
     </div>
-    <template v-if="show">
+    <!-- <template v-if="show">
       <transition name="intro">
         <div class="show-content">
           <div class="model">数据集：{{ data.model.dataset_name }}</div>
@@ -28,7 +29,7 @@
           <div class="intro">简介：{{ data.summary }}</div>
         </div>
       </transition>
-    </template>
+    </template> -->
   </div>
 </template>
 
@@ -59,20 +60,19 @@ export default {
     //   this.show = false;
     // },
     goDetail() {
-      this.$store.commit('setReportData', {
-        name: this.data.model.name,
-        scene: this.data.model.applicable_scene,
-        describe: this.data.model.introduction,
-        total: this.data.model.deploy_number,
-        id: this.data.model.id,
-        dataSetId: this.data.model.dataset_id,
-        dateSetName: this.data.model.dataset_name,
-        dataBaseId: this.id,
-      });
-      this.$store.commit('chooseDataBase', Number(this.id));
-      // this.$router.push({ path: '/report' });
+      // this.$store.commit('setReportData', {
+      //   name: this.data.model.name,
+      //   scene: this.data.model.applicable_scene,
+      //   describe: this.data.model.introduction,
+      //   total: this.data.model.deploy_number,
+      //   id: this.data.model.id,
+      //   dataSetId: this.data.model.dataset_id,
+      //   dateSetName: this.data.model.dataset_name,
+      //   dataBaseId: this.id,
+      // });
+      // this.$store.commit('chooseDataBase', Number(this.id));
       this.$router.push({
-        path: `/result?id=${this.data.model.id}`,
+        path: `/result?id=${this.data.graph_id}`,
       });
     },
     getIcon(type) {
@@ -105,16 +105,17 @@ export default {
 }
 
 .title {
-  margin-bottom: 13px;
+  margin-bottom: 10px;
   font-size: 24px;
   width: 240px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-align: left;
 }
 
 .sulation {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   align-items: center;
 
@@ -168,5 +169,14 @@ export default {
 
 .intro-move {
   transition: transform 0.3s;
+}
+
+.sub-title {
+  text-align: left;
+  font-size: 16px;
+  width: 240px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
