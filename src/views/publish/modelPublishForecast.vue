@@ -126,8 +126,8 @@ export default {
     // this.getRandom();
     // this.b();
     const nowDate = new Date();
-    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth() +
-      1}-${nowDate.getDate()}`;
+    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
+      + 1}-${nowDate.getDate()}`;
     this.time = `${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
   },
   methods: {

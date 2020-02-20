@@ -1,57 +1,65 @@
 <template>
-  <el-container class="wrap">
-    <h2>数据导入</h2>
-    <label class="file-label">选择文件</label>
-    <el-row v-if="fileStatus === 0"
-            type="flex"
-            class="file-box center"
-            align="middle">
-      <svg-icon icon-class="绿色加号" />
-      <div class="upload">上传文件</div>
-      <input type="file"
-             class="input-file"
-             accept=".csv"
-             @change="fileChange" />
-    </el-row>
-    <el-row v-if="fileStatus === 1"
-            type="flex"
-            class="start show"
-            align="middle">
-      <svg-icon icon-class="数据导入-文件"
-                class="import-file" />
-      <div class="delete">{{ file[0].name }}</div>
-      <div @click="deleteFile()"
-           class="import-delete">
-        <svg-icon icon-class="数据导入-取消" />
+  <div class="main">
+    <el-container class="wrap">
+      <h2>数据导入</h2>
+      <el-row class="select-container">
+        <el-col :span="12">
+          <el-col :span="4">
+            选择列车
+          </el-col>
+          <el-col :span="16">
+            <el-select v-model="chooseCar" placeholder="请选择列车">
+              <el-option v-for="(item, index) in typeList" :key="index" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-col>
+        <el-col :span="12">
+          <el-col :span="4">
+            选择线路
+          </el-col>
+          <el-col :span="20">
+            <el-select v-model="chooseWay" placeholder="请选择线路">
+              <el-option v-for="(item, index) in wayList" :key="index" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-col>
+      </el-row>
+      <label class="file-label">选择文件</label>
+      <el-row v-if="fileStatus === 0" type="flex" class="file-box center" align="middle">
+        <svg-icon icon-class="绿色加号" />
+        <div class="upload">上传文件</div>
+        <input type="file" class="input-file" accept=".csv" @change="fileChange" />
+      </el-row>
+      <el-row v-if="fileStatus === 1" type="flex" class="start show" align="middle">
+        <svg-icon icon-class="数据导入-文件" class="import-file" />
+        <div class="delete">{{ file[0].name }}</div>
+        <div @click="deleteFile()" class="import-delete">
+          <svg-icon icon-class="数据导入-取消" />
+        </div>
+      </el-row>
+      <label v-if="fileStatus === 1" class="file-label">数据集配置</label>
+      <div v-if="fileStatus === 1" class="data-set">
+        <compound-input
+          v-for="(item, index) in array"
+          :title="item"
+          :key="item"
+          :index="index"
+          :select="sqlSettings[index]"
+          :options="compoundInput"
+          @selected="handleSelectChange"
+        />
       </div>
+      <el-row v-if="fileStatus === 1" class="db-name" type="flex" justify="start" align="middle">
+        <label>数据集名称</label>
+        <el-input v-model="DBName" placeholder=""></el-input>
+      </el-row>
+    </el-container>
+    <el-row v-if="fileStatus === 1" class="submit-btn">
+      <el-button type="primary" @click="submit">导入数据</el-button>
     </el-row>
-    <label v-if="fileStatus === 1"
-           class="file-label">数据集配置</label>
-    <div v-if="fileStatus === 1"
-         class="data-set">
-      <compound-input v-for="(item, index) in array"
-                      :title="item"
-                      :key="item"
-                      :index="index"
-                      :select="sqlSettings[index]"
-                      :options="compoundInput"
-                      @selected="handleSelectChange" />
-    </div>
-    <el-row v-if="fileStatus === 1"
-            class="db-name"
-            type="flex"
-            justify="start"
-            align="middle">
-      <label>数据集名称</label>
-      <el-input v-model="DBName"
-                placeholder=""></el-input>
-    </el-row>
-    <el-row v-if="fileStatus === 1"
-            class="submit-btn">
-      <el-button type="primary"
-                 @click="submit">导入数据</el-button>
-    </el-row>
-  </el-container>
+  </div>
 </template>
 
 <script>
@@ -61,20 +69,27 @@ export default {
   components: { CompoundInput },
   data() {
     return {
-      // array: ['ID', '时间', '坡度', '曲线', '速度', '位置', '客流预测'],
       array: [],
       arrayOptions: ['String', 'Int', 'Float', 'Date'],
       fileStatus: 0,
       file: [],
       options: [],
       sqlSettings: [],
-      // settingsComplete: false,
       value: '',
       DBName: '',
+      typeList: [],
+      wayList: ['香山——颐和园南门', '广州塔——会展西'],
+      chooseCar: '',
+      chooseWay: '',
     };
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
+    if (this.databaseId === 1) {
+      this.typeList = ['间歇式1号车', '间歇式2号车'];
+    } else {
+      this.typeList = ['非接触式1号车', '非接触式2号车'];
+    }
     this.initData();
   },
   beforeDestroy() {
@@ -159,6 +174,14 @@ export default {
         });
     },
     submit() {
+      if (this.chooseCar === '' || this.chooseWay === '') {
+        this.$message.error('请先选择列车和线路');
+        return;
+      }
+      if (this.DBName === '') {
+        this.$message.error('请先输入数据集名称');
+        return;
+      }
       const data = {
         header_mappings: this.importData.options,
         name: this.DBName,
@@ -178,16 +201,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
 .wrap {
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  margin: 0 auto;
-  align-items: flex-start;
+  @include flex-column;
+  padding: 10px 70px;
+  text-align: left;
+  overflow: auto;
+  height: 90%;
 }
 
 label {
-  font-size: 24px;
+  // font-size: 24px;
   margin-right: 38px;
   color: #666;
   white-space: nowrap;
@@ -250,6 +279,9 @@ label {
 
 .start {
   justify-content: flex-start;
+  width: 300px;
+  height: 66px;
+  line-height: 66px;
 }
 
 .upload {
@@ -293,14 +325,40 @@ label {
 }
 
 .submit-btn {
-  margin: 50px 0;
-  text-align: right;
+  position: absolute;
+  bottom: 0;
   width: 100%;
+  height: 66px;
+  background: #fff;
+  padding: 10px 30px;
+  text-align: right;
+}
 
-  .el-button {
-    width: 200px;
-    height: 60px;
-    font-size: 24px;
+.select-container {
+  .el-col {
+    display: flex;
+    align-items: center;
+  }
+
+  /deep/ .el-select {
+    width: 100%;
+    max-height: 66px;
+    overflow: auto;
+
+    .el-select__tags {
+      max-height: 66px;
+      overflow: auto;
+    }
+  }
+  /deep/ .el-input {
+    width: 100%;
+    max-height: 66px;
+    overflow: hidden;
+  }
+  /deep/.el-input__inner {
+    width: 100%;
+    height: 66px;
+    color: #333;
   }
 }
 </style>

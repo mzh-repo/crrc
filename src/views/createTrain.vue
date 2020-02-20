@@ -1,202 +1,253 @@
 <template>
-  <el-container class="container">
-    <h2>创建训练</h2>
-    <el-row>请选择模型</el-row>
-    <div class="model-case">
-      <div v-for="(item,index) in modelList"
-           :key="index"
-           class="model-data"
-           :class="item.id===selectModelId?
-            'select-data':'control-data'">
-        <control-model :modelList="item"
-                       :current="selectModelId"
-                       @set-choice="choose" />
-      </div>
-    </div>
-    <el-row class="foot">
-      <el-pagination background
-                     small
-                     layout="prev, pager, next"
-                     :total="total"
-                     :page-size="pageSize"
-                     @current-change="handleChange">
-      </el-pagination>
-    </el-row>
-    <el-row>请选择数据进行训练</el-row>
-    <el-row class="collapse">
-      <el-collapse v-for="(item, index) in collapseList"
-                   v-model="activeName"
-                   :key="index"
-                   accordion>
-        <el-collapse-item :name="index">
-          <template slot="title">
-            <div>{{ item.name }}</div>
-            <span>共{{ item.line }}条</span>
+  <div class="train-continer">
+    <div class="main">
+      <h1>创建训练</h1>
+      <el-row class="title">
+        请选择模型
+        <el-button size="mini" type="primary" @click="newModel">新建模型</el-button>
+      </el-row>
+      <el-row class="filter">
+        <el-form :inline="true">
+          <template v-for="(item, index) in filterForm">
+            <el-form-item :key="index" :label="item.label">
+              <el-select v-model="item.value" :placeholder="'请选择' + item.label">
+                <el-option
+                  v-for="(i, j) in item.arr"
+                  :label="i.label"
+                  :key="j"
+                  :value="i.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </template>
-          <el-row @click.native="setSelect(item.id)">
-            <el-col v-for="(histogramList, i) in item.graph"
-                    :span="8"
-                    :key="i"
-                    class="echarts">
-              <histogram :colors="colors[i]"
-                         :title="titleList[i]"
-                         :lineData="histogramList" />
-            </el-col>
-            <img v-if="item.id === selected"
-                 src="@/assets/images/choiced.png"
-                 class="stamp" />
-            <div v-else
-                 class="select"></div>
-          </el-row>
-        </el-collapse-item>
-      </el-collapse>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm">筛选</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
+      <div class="model">
+        <div class="line"></div>
+        <el-row>
+          <el-table
+            :data="modelData"
+            :header-row-style="{ color: '#333' }"
+            height="288px"
+            style="width: 100%"
+            highlight-current-row
+            @current-change="handleCurrentChange"
+          >
+            <el-table-column width="50" label="选择">
+              <template slot-scope="scope">
+                <svg-icon :icon-class="scope.row.id === chooseId ? 'choose' : 'unchoose'" />
+              </template>
+            </el-table-column>
+            <el-table-column type="index" width="50" label="序号"> </el-table-column>
+            <template v-for="item in modelTagList">
+              <el-table-column :prop="item.prop" :label="item.label" :key="item.prop">
+              </el-table-column>
+            </template>
+          </el-table>
+        </el-row>
+        <el-row class="task-footer">
+          <el-pagination
+            background
+            layout="total, prev, pager, next"
+            :current-page.sync="page"
+            :page-size="pageSize"
+            :total="total"
+            @current-change="handleChange"
+          >
+          </el-pagination>
+        </el-row>
+      </div>
+      <template v-if="chooseId !== 0">
+        <el-row class="title">
+          请选择数据进行训练
+        </el-row>
+        <el-form :inline="true" class="static-form">
+          <template v-for="(item, index) in staticForm">
+            <el-form-item :key="index" :label="item.label">
+              <el-date-picker
+                v-if="item.type === 'time'"
+                v-model="item.value"
+                type="datetime"
+                :placeholder="'请选择' + item.label"
+              ></el-date-picker>
+              <el-input v-else v-model="item.value" disabled> </el-input>
+            </el-form-item>
+          </template>
+        </el-form>
+        <el-row v-if="staticForm[2].value !== '' && staticForm[3].value !== ''" class="static"
+          >共{{ staticNumber }}条数据</el-row
+        >
+      </template>
+    </div>
+    <el-row class="train-btn">
+      <el-button type="primary" @click="onSubmit">提交训练</el-button>
     </el-row>
-    <el-row class="submit-btn">
-      <el-button type="primary"
-                 @click="submit">提交训练</el-button>
-    </el-row>
-  </el-container>
-
+  </div>
 </template>
 
 <script>
-import Histogram from '../components/histogram.vue';
-import ControlModel from '../components/controlModel.vue';
-
+const modelTagList = [
+  {
+    prop: 'name',
+    label: '模型名称',
+  },
+  {
+    prop: 'scene',
+    label: '场景',
+  },
+  {
+    prop: 'car_type',
+    label: '列车信息',
+  },
+  {
+    prop: 'route',
+    label: '路线信息',
+  },
+  {
+    prop: 'intro',
+    label: '简介',
+  },
+];
 export default {
-  components: { Histogram, ControlModel },
   data() {
     return {
-      dataBaseList: [],
-      databaseName: '',
-      databaseId: '',
-      colors: ['#8FD866', '#00C4C0'],
-      totalNum: 129,
-      activeName: 0,
-      collapseList: [],
-      selected: 0,
-      lineDataList: [{ lineData: {} }, { lineData: {} }],
-      dataList: [],
-      titleList: ['关键指标<速度>分布', '关键指标<坡度>分布'],
-      modelList: [],
+      filterForm: [
+        {
+          label: '应用场景',
+          value: '',
+          arr: [
+            {
+              label: '多目标优化列车运行控制',
+              value: 1,
+            },
+            {
+              label: '故障预警',
+              value: 2,
+            },
+          ],
+        },
+        {
+          label: '列车信息',
+          value: '',
+          arr: [
+            {
+              label: '多目标优化列车运行控制',
+              value: 1,
+            },
+            {
+              label: '故障预警',
+              value: 2,
+            },
+          ],
+        },
+        {
+          label: '列车线路',
+          value: '',
+          arr: [
+            {
+              label: '多目标优化列车运行控制',
+              value: 1,
+            },
+            {
+              label: '故障预警',
+              value: 2,
+            },
+          ],
+        },
+      ],
+      modelData: [],
+      modelTagList,
       page: 1,
-      pageSize: 3,
-      total: 1,
-      selectModelId: 0, // 选中模型id
-      selectDatasetId: 0, // 选中数据集id
+      pageSize: 5,
+      total: 20,
+      chooseId: 0,
+      staticForm: [
+        {
+          label: '数据源',
+          value: '',
+        },
+        {
+          label: '线路',
+          value: '',
+        },
+        {
+          label: '开始时间',
+          value: '',
+          type: 'time',
+        },
+        {
+          label: '结束时间',
+          value: '',
+          type: 'time',
+        },
+      ],
+      staticNumber: 203,
+      databaseId: 1,
     };
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
     this.getModel();
-    if (this.$store.state.chooseData) {
-      this.dataList.forEach((item, num) => {
-        if (this.$store.state.chooseData === item.id) {
-          this.dataList[num].selected = true;
-        }
-      });
-    }
-    // this.getDataList();
-    this.getData();
-    this.getlineDataList();
   },
   methods: {
-    chooseDatabase() {
-      this.dataBaseList.forEach((item) => {
-        if (item.name === this.databaseName) {
-          this.databaseId = item.id;
-        }
+    newModel() {
+      this.$router.push('./newModel');
+    },
+    submitForm() {},
+    resetForm() {
+      this.filterForm.forEach((item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.value = '';
       });
-      this.getData();
-      this.getlineDataList();
-    },
-    setSelect(index) {
-      this.selectDatasetId = index;
-      if (this.$store.state.chooseData !== index) {
-        this.$store.commit('setChoose', index);
-        this.selected = index;
-      } else {
-        this.$store.commit('setChoose', 0);
-        this.selected = 0;
-      }
-    },
-    getlineDataList() {
-      this.$axios
-        .get(`/dataset/graph?database_id=${this.databaseId}`)
-        .then((res) => {
-          const temp = JSON.parse(JSON.stringify(this.lineDataList));
-          for (let i = 0; i < res.length; i += 1) {
-            temp[i].lineData.data = [...JSON.parse(res[i]).data];
-            temp[i].lineData.bins = [...JSON.parse(res[i]).bins];
-          }
-          this.lineDataList = temp;
-        });
-    },
-    getDataList() {
-      this.$axios.get('/database/list').then((res) => {
-        this.dataBaseList = res;
-        this.databaseId = res[0].id;
-        this.databaseName = res[0].name;
-        this.getData();
-        this.getlineDataList();
-      });
-    },
-    getData() {
-      this.$axios
-        .get(`/dataset/list?database_id=${this.databaseId}`)
-        .then((res) => {
-          this.collapseList = res.data_list;
-        });
-    },
-    handleChange(e) {
-      this.page = e;
       this.getModel();
     },
-    getModel() {
-      this.$axios
-        .get(
-          // eslint-disable-next-line operator-linebreak
-          `/model/list?database_id=${this.databaseId}&page=${this.page -
-            1}&page_size=${this.pageSize}`,
-        )
-        .then((res) => {
-          this.modelList = res.data_list;
-          this.total = res.total_number;
-        });
+    handleCurrentChange(val) {
+      this.chooseId = val.id;
+      this.staticForm[0].value = val.car_type;
+      this.staticForm[1].value = val.route;
     },
-    choose(item) {
-      if (this.selectModelId === item.id) {
-        this.selectModelId = '';
-      } else {
-        this.selectModelId = item.id;
-      }
-    },
-
-    submit() {
-      if (this.selectModelId === 0) {
-        this.$message({
-          message: '请先选择模型',
-          type: 'error',
-        });
+    onSubmit() {
+      if (this.chooseId === 0) {
+        this.$message.error('请先选择模型');
         return;
       }
-      if (this.selectDatasetId === 0) {
-        this.$message({
-          message: '请先选择数据集',
-          type: 'error',
-        });
+      if (this.staticForm[2].value === '') {
+        this.$message.error('请选择开始时间');
         return;
       }
+      if (this.staticForm[3].value === '') {
+        this.$message.error('请选择截止日期');
+        return;
+      }
+      // TODO： 数据起止时间
       const obj = {
-        model_id: this.selectModelId,
-        dataset_id: this.selectDatasetId,
+        model_id: this.chooseId,
       };
       this.$axios.post('/form/train', obj).then(() => {
         this.$message({
           message: '创建训练成功',
           type: 'success',
         });
-        this.$router.push('./dashboard');
+        this.$router.push('./training');
+      });
+    },
+    getModel() {
+      const query = `/model/list?database_id=${this.databaseId}&page=${this.page - 1}&page_size=${
+        this.pageSize
+      }`;
+      // if (this.input !== '') {
+      //   query += `&keyword=${this.input}`;
+      // }
+      // if (this.choose !== '') {
+      //   query += `&status=${this.choose}`;
+      // }
+      this.$axios.get(query).then((res) => {
+        this.modelData = res.data_list;
+        this.total = res.total_number;
       });
     },
   },
@@ -204,147 +255,81 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  @include flex-column;
-  width: 100%;
-  height: auto;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 33px 103px 0 70px;
-  font-size: 22px;
-  line-height: 30px;
-}
-.choice {
-  font-size: 24px;
-  line-height: 30px;
-  margin-bottom: 33px;
-}
-.data-choice {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  font-size: 22px;
-  line-height: 30px;
+.train-continer {
   position: relative;
-
-  /deep/ .el-tabs {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-
-    .el-tab-pane {
-      display: flex;
-      align-items: center;
-    }
-
-    span {
-      color: #666;
-      font-size: 20px;
-    }
-
-    .el-tabs__item {
-      font-size: 24px;
-    }
-    // }
-  }
-}
-.active {
-  font-size: 28px;
-  font-weight: bold;
-  line-height: 40px;
-}
-.totalNum {
-  color: #999;
-  font-size: 18px;
-  line-height: 25px;
-  margin-right: 50px;
-}
-.collapse {
-  width: 100%;
-  margin-top: 10px;
-  span {
-    color: #999;
-    font-size: 18px;
-    line-height: 25px;
-    float: right;
-    position: absolute;
-    right: 50px;
-  }
-}
-.echarts {
-  display: flex;
-}
-.collapse /deep/ {
-  .el-collapse-item__header.is-active {
-    border-bottom: 1px solid #ebeef5;
-  }
-  .el-collapse-item__header {
-    font-size: 22px;
-    line-height: 30px;
-    padding: 40px 0 34px 29px;
-    position: relative;
-  }
-  .el-collapse {
-    border-radius: 50px;
-  }
-  .el-collapse-item {
-    position: relative;
-  }
-}
-.select {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  position: absolute;
-  border: 1px solid rgba(227, 227, 227, 1);
-  bottom: 30px;
-  right: 30px;
-  z-index: 2000;
-}
-img {
-  width: 36px;
-  height: 36px;
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
+  height: 100%;
+  overflow: hidden;
 }
 
-.model-case {
-  height: 300px;
-  .model-data {
-    float: left;
-    word-wrap: break-word;
-    word-break: normal;
-    position: relative;
-    opacity: 1;
-  }
+.main {
+  padding: 20px 70px;
+  text-align: left;
+  min-height: 960px;
+  overflow: auto;
 }
 
-// .control-data {
-//   opacity: 0.8;
-// }
-
-.select-data {
-  opacity: 1;
-  height: 455px;
+.model {
+  background: #fff;
+  padding: 20px 30px 30px 30px;
+  border-radius: 6px;
+  margin-bottom: 60px;
 }
 
-.foot {
+.line {
+  background: #666666;
+  height: 3px;
+}
+
+.task-footer {
   text-align: right;
-  margin-bottom: 30px;
-  width: 100%;
+  font-size: 13px;
+  margin-top: 30px;
 }
 
-.submit-btn {
-  margin: 50px 0;
-  text-align: right;
+.train-btn {
+  position: absolute;
+  bottom: 0;
   width: 100%;
+  height: 66px;
+  background: #fff;
+  padding: 10px 30px;
+  text-align: right;
+}
+
+.filter {
+  background: #ebeef7;
+  margin-top: 20px;
+  @include flex-row;
+  flex-wrap: wrap;
+  padding: 15px 30px 0 30px;
+
+  /deep/ .el-form-item {
+    margin-right: 50px;
+  }
+}
+
+.title {
+  color: #666;
+  margin-bottom: 20px;
 
   .el-button {
-    width: 200px;
-    height: 60px;
-    font-size: 24px;
+    margin-left: 10px;
+  }
+}
+
+.source {
+  @include flex-row;
+  margin-bottom: 40px;
+}
+
+.static {
+  color: #999;
+  font-size: 14px;
+}
+
+.static-form {
+  /deep/ .el-form-item {
+    margin-right: 50px;
   }
 }
 </style>

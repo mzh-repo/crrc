@@ -20,7 +20,7 @@ export default new Router({
           component: () => import('./views/dashboard'),
         },
         {
-          path: '/chooseModel',
+          path: '/newModel',
           name: '模型中心',
           selectIcon: '模型中心-选中',
           component: () => import('./views/createModel'),
