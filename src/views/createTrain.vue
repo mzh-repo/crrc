@@ -13,9 +13,9 @@
               <el-select v-model="item.value" :placeholder="'请选择' + item.label">
                 <el-option
                   v-for="(i, j) in item.arr"
-                  :label="i.label"
+                  :label="i.name"
                   :key="j"
-                  :value="i.value"
+                  :value="i.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -45,6 +45,16 @@
             <el-table-column type="index" width="50" label="序号"> </el-table-column>
             <template v-for="item in modelTagList">
               <el-table-column :prop="item.prop" :label="item.label" :key="item.prop">
+                <template slot-scope="scope">
+                  <div
+                    v-if="item.prop === 'name' || item.prop === 'introduction'"
+                    class="limit-column"
+                    :title="scope.row[item.prop]"
+                  >
+                    {{ scope.row[item.prop] }}
+                  </div>
+                  <span v-else>{{ scope.row[item.prop] }}</span>
+                </template>
               </el-table-column>
             </template>
           </el-table>
@@ -72,6 +82,7 @@
                 v-if="item.type === 'time'"
                 v-model="item.value"
                 type="datetime"
+                value-format="yyyy-MM-dd hh:mm:ss"
                 :placeholder="'请选择' + item.label"
               ></el-date-picker>
               <el-input v-else v-model="item.value" disabled> </el-input>
@@ -108,7 +119,7 @@ const modelTagList = [
     label: '路线信息',
   },
   {
-    prop: 'intro',
+    prop: 'introduction',
     label: '简介',
   },
 ];
@@ -119,42 +130,24 @@ export default {
         {
           label: '应用场景',
           value: '',
-          arr: [
-            {
-              label: '多目标优化列车运行控制',
-              value: 1,
-            },
-            {
-              label: '故障预警',
-              value: 2,
-            },
-          ],
+          arr: [],
         },
         {
           label: '列车信息',
           value: '',
-          arr: [
-            {
-              label: '多目标优化列车运行控制',
-              value: 1,
-            },
-            {
-              label: '故障预警',
-              value: 2,
-            },
-          ],
+          arr: [],
         },
         {
           label: '列车线路',
           value: '',
           arr: [
             {
-              label: '多目标优化列车运行控制',
-              value: 1,
+              name: '香山——颐和园南门',
+              id: 1,
             },
             {
-              label: '故障预警',
-              value: 2,
+              name: '广州塔——会展西',
+              id: 2,
             },
           ],
         },
@@ -191,9 +184,28 @@ export default {
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
+
     this.getModel();
+    this.getScene();
+    this.getTrain();
+    this.getRoute();
   },
   methods: {
+    getScene() {
+      this.$axios.get(`/scene?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[0].arr = res;
+      });
+    },
+    getTrain() {
+      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[1].arr = res;
+      });
+    },
+    getRoute() {
+      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[2].arr = res;
+      });
+    },
     newModel() {
       this.$router.push('./newModel');
     },
@@ -203,6 +215,10 @@ export default {
         // eslint-disable-next-line no-param-reassign
         item.value = '';
       });
+      this.getModel();
+    },
+    handleChange(e) {
+      this.page = e;
       this.getModel();
     },
     handleCurrentChange(val) {
@@ -221,6 +237,10 @@ export default {
       }
       if (this.staticForm[3].value === '') {
         this.$message.error('请选择截止日期');
+        return;
+      }
+      if (this.staticForm[2].value > this.staticForm[3].value) {
+        this.$message.error('开始时间要晚于截止时间');
         return;
       }
       // TODO： 数据起止时间
@@ -331,5 +351,12 @@ export default {
   /deep/ .el-form-item {
     margin-right: 50px;
   }
+}
+
+.limit-column {
+  width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

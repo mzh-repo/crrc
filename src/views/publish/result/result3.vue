@@ -71,7 +71,7 @@
       <span>检修策略</span>
       <el-row v-html="strategy"></el-row>
     </div>
-    <el-row class="progress" v-html="explain"> </el-row>
+    <!-- <el-row class="progress" v-html="explain"> </el-row>
     <el-row :gutter="30" class="progress-img">
       <el-col :span="12">
         <el-image :src="srcList[0]" :preview-src-list="[srcList[0]]" />
@@ -79,7 +79,7 @@
       <el-col :span="12">
         <el-image :src="srcList[1]" :preview-src-list="[srcList[1]]" />
       </el-col>
-    </el-row>
+    </el-row> -->
     <el-row style="padding-top: 40px">
       <el-button @click="goCase">查看实例报告</el-button>
     </el-row>

@@ -115,13 +115,13 @@
         </div>
       </el-col>
     </el-row>
-    <el-row class="progress"
+    <!-- <el-row class="progress"
             v-html="explain"> </el-row>
     <el-row :gutter="30"
             class="progress-img">
       <el-image :src="srcList[0]"
                 :preview-src-list="[srcList[0]]" />
-    </el-row>
+    </el-row> -->
     <el-row id="scroll-1"
             style="margin-top: 30px">
       <!-- <el-button type="primary"

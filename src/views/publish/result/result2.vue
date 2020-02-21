@@ -81,7 +81,7 @@
         </div>
       </el-col>
     </el-row>
-    <template v-if="resultType === 1">
+    <!-- <template v-if="resultType === 1">
       <el-row class="progress"
               v-html="explain1"> </el-row>
       <el-row :gutter="30"
@@ -106,7 +106,7 @@
         <el-image :src="srcList2[0]"
                   :preview-src-list="[srcList2[0]]" />
       </el-row>
-    </template>
+    </template> -->
     <el-button id="scroll"
                @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>

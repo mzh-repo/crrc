@@ -9,7 +9,12 @@
           </el-col>
           <el-col :span="16">
             <el-select v-model="chooseCar" placeholder="请选择列车">
-              <el-option v-for="(item, index) in typeList" :key="index" :label="item" :value="item">
+              <el-option
+                v-for="(item, index) in typeList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              >
               </el-option>
             </el-select>
           </el-col>
@@ -20,7 +25,12 @@
           </el-col>
           <el-col :span="20">
             <el-select v-model="chooseWay" placeholder="请选择线路">
-              <el-option v-for="(item, index) in wayList" :key="index" :label="item" :value="item">
+              <el-option
+                v-for="(item, index) in wayList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              >
               </el-option>
             </el-select>
           </el-col>
@@ -85,12 +95,9 @@ export default {
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
-    if (this.databaseId === 1) {
-      this.typeList = ['间歇式1号车', '间歇式2号车'];
-    } else {
-      this.typeList = ['非接触式1号车', '非接触式2号车'];
-    }
     this.initData();
+    this.getTrain();
+    this.getRoute();
   },
   beforeDestroy() {
     this.saveData();
@@ -101,6 +108,16 @@ export default {
     },
   },
   methods: {
+    getTrain() {
+      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
+        this.typeList = res;
+      });
+    },
+    getRoute() {
+      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
+        this.wayList = res;
+      });
+    },
     initData() {
       this.$axios.get('/database/list').then((res) => {
         this.options = res;

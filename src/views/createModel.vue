@@ -17,7 +17,7 @@
               选择适用场景
             </el-col>
             <el-col :span="16">
-              <el-select v-model="chooseType" placeholder="请选择适用场景">
+              <el-select v-model="chooseType" placeholder="请选择适用场景" @change="validateForm">
                 <el-option
                   v-for="(item, index) in sceneList"
                   :key="index"
@@ -44,8 +44,13 @@
             选择列车
           </el-col>
           <el-col :span="16">
-            <el-select v-model="chooseCar" placeholder="请选择列车">
-              <el-option v-for="(item, index) in typeList" :key="index" :label="item" :value="item">
+            <el-select v-model="chooseCar" placeholder="请选择列车" @change="validateForm">
+              <el-option
+                v-for="(item, index) in typeList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              >
               </el-option>
             </el-select>
           </el-col>
@@ -55,76 +60,83 @@
             选择线路
           </el-col>
           <el-col :span="20">
-            <el-select v-model="chooseWay" placeholder="请选择线路">
-              <el-option v-for="(item, index) in wayList" :key="index" :label="item" :value="item">
+            <el-select v-model="chooseWay" placeholder="请选择线路" @change="validateForm">
+              <el-option
+                v-for="(item, index) in wayList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              >
               </el-option>
             </el-select>
           </el-col>
         </el-col>
       </el-row>
-      <el-row class="show-input">
-        <el-col :span="10">
-          <span>输入</span>
-          <div class="input-area">
-            <el-table
-              height="247px"
-              :data="
-                inputData.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()))
-              "
-              style="width: 100%"
-            >
-              <el-table-column type="index" label="序号"> </el-table-column>
-              <el-table-column label="输入项" prop="name"> </el-table-column>
-              <el-table-column label="类型" prop="type"> </el-table-column>
-              <el-table-column align="right">
-                <template slot="header">
-                  <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-col>
-        <el-col :span="4" class="arrow-img">
-          <img src="@/assets/images/arrow.png" />
-        </el-col>
-        <el-col :span="10">
-          <span>输出</span>
-          <div class="input-area">
-            <el-table height="247px" :data="outputData" style="width: 100%">
-              <el-table-column type="index" label="序号"> </el-table-column>
-              <el-table-column label="输出项" prop="name"> </el-table-column>
-              <el-table-column label="类型" prop="type"> </el-table-column>
-            </el-table>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row class="input-title algorithm">请选择算法</el-row>
-      <el-row class="alg-row" :gutter="20">
-        <el-col
-          v-for="(item, index) in algorithmList"
-          :key="index"
-          :span="6"
-          @click.native="setChoice(item)"
-        >
-          <div class="algorithm-container" :class="item.id === algorithmId ? 'active' : ''">
-            <div class="algorithm-box">
-              <el-row>{{ item.name }}</el-row>
-              <el-row>模型: {{ item.model_name }}</el-row>
-              <el-row>适用问题: {{ item.applicable_problem }}</el-row>
-              <el-row>使用框架: {{ item.frame_name }}</el-row>
-              <el-row>使用次数: {{ item.used_counter }}次</el-row>
-              <div class="tag">
-                <img :src="getUrl(item.id)" alt="" />
-              </div>
-              <div v-if="item.id === algorithmId" class="choose">
-                <img class="choose-img" src="@/assets/images/choiced.png" />
-              </div>
-              <div v-else class="choose"></div>
+      <template v-if="showInput">
+        <el-row class="show-input">
+          <el-col :span="10">
+            <span>输入</span>
+            <div class="input-area">
+              <el-table
+                height="247px"
+                :data="
+                  inputData.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()))
+                "
+                style="width: 100%"
+              >
+                <el-table-column type="index" label="序号"> </el-table-column>
+                <el-table-column label="输入项" prop="name"> </el-table-column>
+                <el-table-column label="类型" prop="type"> </el-table-column>
+                <el-table-column align="right">
+                  <template slot="header">
+                    <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+                  </template>
+                </el-table-column>
+              </el-table>
             </div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row v-if="algorithmId !== ''">模型简介：{{ modelIntro }}</el-row>
+          </el-col>
+          <el-col :span="4" class="arrow-img">
+            <img src="@/assets/images/arrow.png" />
+          </el-col>
+          <el-col :span="10">
+            <span>输出</span>
+            <div class="input-area">
+              <el-table height="247px" :data="outputData" style="width: 100%">
+                <el-table-column type="index" label="序号"> </el-table-column>
+                <el-table-column label="输出项" prop="name"> </el-table-column>
+                <el-table-column label="类型" prop="type"> </el-table-column>
+              </el-table>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row class="input-title algorithm">请选择算法</el-row>
+        <el-row class="alg-row" :gutter="20">
+          <el-col
+            v-for="(item, index) in algorithmList"
+            :key="index"
+            :span="6"
+            @click.native="setChoice(item)"
+          >
+            <div class="algorithm-container" :class="item.id === algorithmId ? 'active' : ''">
+              <div class="algorithm-box">
+                <el-row>{{ item.name }}</el-row>
+                <el-row>模型: {{ item.model_name }}</el-row>
+                <!-- <el-row>适用问题: {{ item.applicable_problem }}</el-row> -->
+                <el-row>使用框架: {{ item.frame_name }}</el-row>
+                <el-row>使用次数: {{ item.used_counter }}次</el-row>
+                <div class="tag">
+                  <img :src="getUrl(item.id)" alt="" />
+                </div>
+                <div v-if="item.id === algorithmId" class="choose">
+                  <img class="choose-img" src="@/assets/images/choiced.png" />
+                </div>
+                <div v-else class="choose"></div>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row v-if="algorithmId !== ''">算法简介：{{ modelIntro }}</el-row>
+      </template>
     </el-row>
     <el-row class="submit-btn">
       <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -139,15 +151,13 @@ const imgUrl = [
   require('../assets/images/tensorflow.png'),
   require('../assets/images/sklearn.png'),
   require('../assets/images/keras.png'),
+  require('../assets/images/keras.png'),
 ];
 
 export default {
   data() {
     return {
-      databaseId: '',
-      databaseName: '',
-      dataActive: true,
-      arrayOptions: [],
+      databaseId: 1,
       name: '',
       scene: '',
       describe: '',
@@ -157,27 +167,10 @@ export default {
       chooseCar: '',
       chooseWay: '',
       typeList: [],
-      wayList: ['香山——颐和园南门', '广州塔——会展西'],
+      wayList: [],
       algorithmId: '',
       algorithmList: [],
-      sceneList: [
-        {
-          id: 1,
-          name: '多目标优化列车运行控制',
-        },
-        {
-          id: 2,
-          name: '车载储能系统性能劣化条件下的列车运行控制',
-        },
-        {
-          id: 3,
-          name: '系统优化设计',
-        },
-        {
-          id: 4,
-          name: '供电系统状态监测及故障预警',
-        },
-      ],
+      sceneList: [],
       inputData: [
         {
           name: '日期',
@@ -217,20 +210,52 @@ export default {
       ],
       modelIntro:
         '对多目标优化问题设计函数映射并使用LSTM（Long Short Term Memory Network）模型求解列车运行过程多目标方程函数：定义为每个时刻 𝑡 的信息状态，每个时刻的信息状态包含该时刻下的驾驶信 息和环境信息，即 = [驾驶信息, 环境信息]，定义一个列车信息序列为，这个列车信息序列包括列车前 𝑙 时刻内的信息状态。LSTM模型解决序列相关的问题，其特别之处是其输入不仅仅考虑了当前时刻的输入，也考 虑了上一时刻的输出，从而捕获到了序列之间的关联信息。它通过增加多一个单元状态解决了普通 RNN 无法捕获长期依赖的问题，而且巧妙地提出了遗忘门办法来对长期单元状态进行控制，将重要特征保留下来，保 证了在长期传播的过程中不会丢失数据中重要的时序信息。',
+      showInput: false,
     };
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
-    if (this.databaseId === 1) {
-      this.typeList = ['间歇式1号车', '间歇式2号车'];
-    } else {
-      this.typeList = ['非接触式1号车', '非接触式2号车'];
-    }
-    this.$axios.get('/algorithm/list').then((res) => {
-      this.algorithmList = res;
-    });
+    this.getScene();
+    this.getTrain();
+    this.getRoute();
   },
   methods: {
+    validateForm() {
+      if (this.chooseType !== '' && this.chooseCar !== '' && this.chooseWay !== '') {
+        this.showInput = true;
+        this.getAlgList();
+        //TODO 输入输出
+      } else {
+        this.showInput = false;
+      }
+    },
+    getScene() {
+      this.$axios.get(`/scene?database_id=${this.databaseId}`).then((res) => {
+        this.sceneList = res;
+      });
+    },
+    getTrain() {
+      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
+        this.typeList = res;
+      });
+    },
+    getRoute() {
+      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
+        this.wayList = res;
+      });
+    },
+    getAlgList() {
+      this.$axios.get(`/algorithm/list?scene_id=${this.chooseType}`).then((res) => {
+        this.algorithmList = res;
+      });
+      this.$axios
+        .get(`/model/columns?scene_id=${this.chooseType}&database_id=${this.databaseId}`)
+        .then((res) => {
+          // this.algorithmList = res;
+          this.inputData = res.input;
+          this.outputData = res.output;
+        });
+    },
     handleSelectChange(e) {
       this.input = e.select;
     },
@@ -250,6 +275,26 @@ export default {
     },
     // TODO case
     onSubmit() {
+      if (this.name === '') {
+        this.$message.error('请先输入模型名称');
+        return;
+      }
+      if (this.chooseType === '') {
+        this.$message.error('请先选择适用场景');
+        return;
+      }
+      if (this.chooseCar === '') {
+        this.$message.error('请先选择列车');
+        return;
+      }
+      if (this.chooseWay === '') {
+        this.$message.error('请先选择线路');
+        return;
+      }
+      if (this.algorithmId === '') {
+        this.$message.error('请先选择算法');
+        return;
+      }
       const modelData = {
         name: this.name,
         // applicable_scene: this.chooseType,

@@ -132,97 +132,11 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.case-container {
-  @include flex-column;
-}
-
-.case-main {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  .svg-icon {
-    @include set-size(70px);
-    margin-bottom: 23px;
-  }
-}
-
-.progress {
-  margin-right: 36px;
-  text-align: right;
-}
-
-.title {
-  font-size: 28px;
-  color: #333;
-  margin-bottom: 30px;
-  text-align: left;
-}
-
-.case {
-  @include flex-column();
-  height: 100%;
-  padding: 50px 40px 0 40px;
-
-  .case-1,
-  .case-2 {
-    height: 100%;
-    text-align: left;
-    padding: 0 10px;
-    display: flex;
-    flex-wrap: wrap;
-    min-width: 770px;
-  }
-}
-
-.model-container {
-  display: flex;
-  flex-wrap: wrap;
-  overflow: auto;
-}
-
-.train {
-  width: 100%;
-  text-align: right;
-  margin-top: -70px;
-  padding-right: 30px;
-
-  .svg-icon {
-    @include set-size(331px, 73px);
-  }
-}
-
-.search {
-  @include flex-row();
-  margin-bottom: 30px;
-  .el-col {
-    width: 360px;
-
-    &:last-child {
-      text-align: left;
-    }
-  }
-
-  .el-select {
-    margin-left: 10px;
-  }
-}
-
-.el-pagination {
-  text-align: right;
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-}
-</style>
 -->
 
 <template>
   <div class="main">
-    <h1>{{ title }}</h1>
+    <h1>{{ title }}供电列车大数据运用支撑系统</h1>
     <div class="task">
       <h1>我的任务</h1>
       <div class="line"></div>
@@ -244,7 +158,9 @@ export default {
       </el-row>
       <el-row class="task-footer">
         共 {{ taskData.length }} 条
-        <el-button size="mini" type="primary" @click="handleAll">执行全部</el-button>
+        <el-button size="mini" type="primary" :loading="showAllLoading" @click="handleAll"
+          >执行全部</el-button
+        >
       </el-row>
     </div>
     <div class="task instance">
@@ -265,9 +181,9 @@ export default {
               <el-select v-else v-model="item.value" :placeholder="'请选择' + item.label">
                 <el-option
                   v-for="(i, j) in item.arr"
-                  :label="i.label"
+                  :label="i.name"
                   :key="j"
-                  :value="i.value"
+                  :value="i.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -289,6 +205,20 @@ export default {
           <el-table-column type="index" width="50" label="序号"> </el-table-column>
           <template v-for="item in instanceTagList">
             <el-table-column :prop="item.prop" :label="item.label" :key="item.prop">
+              <template slot-scope="scope">
+                <div v-if="item.prop === 'status'">
+                  <span v-if="scope.row.status === 1" class="train-text">训练中...</span>
+                  <span v-else>已完成</span>
+                </div>
+                <div
+                  v-else-if="item.prop === 'name'"
+                  class="limit-column"
+                  :title="scope.row[item.prop]"
+                >
+                  {{ scope.row[item.prop] }}
+                </div>
+                <span v-else>{{ scope.row[item.prop] }}</span>
+              </template>
             </el-table-column>
           </template>
           <el-table-column fixed="right" label="操作" width="100">
@@ -323,19 +253,19 @@ export default {
 <script>
 const taskTagList = [
   {
-    prop: 'name',
+    prop: 'model_name',
     label: '模型名称',
   },
   {
-    prop: 'scene',
+    prop: 'application_scene_name',
     label: '场景',
   },
   {
-    prop: 'id',
+    prop: 'train_name',
     label: '列车信息',
   },
   {
-    prop: 'route',
+    prop: 'route_name',
     label: '路线信息',
   },
   {
@@ -343,11 +273,11 @@ const taskTagList = [
     label: '创建时间',
   },
   {
-    prop: 'algo',
+    prop: 'algorithm_name',
     label: '使用算法',
   },
   {
-    prop: 'number',
+    prop: 'update_number',
     label: '新增数据条数',
   },
 ];
@@ -361,7 +291,7 @@ const instanceTagList = [
     label: '场景',
   },
   {
-    prop: 'id',
+    prop: 'car_type',
     label: '列车信息',
   },
   {
@@ -388,7 +318,7 @@ const instanceTagList = [
 export default {
   data() {
     return {
-      title: '间歇式列车大数据运用支撑系统',
+      title: '间歇式',
       taskData: [
         {
           name: '多目标',
@@ -459,31 +389,13 @@ export default {
           label: '应用场景',
           prop: 'application_scene',
           value: '',
-          arr: [
-            {
-              label: '多目标优化列车运行控制',
-              value: 1,
-            },
-            {
-              label: '故障预警',
-              value: 2,
-            },
-          ],
+          arr: [],
         },
         {
           label: '列车信息',
           prop: 'train_tag',
           value: '',
-          arr: [
-            {
-              label: '多目标优化列车运行控制',
-              value: 1,
-            },
-            {
-              label: '故障预警',
-              value: 2,
-            },
-          ],
+          arr: [],
         },
         {
           label: '列车线路',
@@ -491,27 +403,27 @@ export default {
           value: '',
           arr: [
             {
-              label: '多目标优化列车运行控制',
-              value: 1,
+              name: '香山——颐和园南门',
+              id: 1,
             },
             {
-              label: '故障预警',
-              value: 2,
+              name: '广州塔——会展西',
+              id: 2,
             },
           ],
         },
         {
           label: '状态',
-          prop: 'statusg',
+          prop: 'status',
           value: '',
           arr: [
             {
-              label: '训练中',
-              value: 1,
+              name: '训练中',
+              id: 1,
             },
             {
-              label: '训练完成',
-              value: 2,
+              name: '训练完成',
+              id: 2,
             },
           ],
         },
@@ -539,17 +451,56 @@ export default {
         number: 123,
       },
       databaseId: 1,
+      showAllLoading: false,
     };
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
+    if (this.databaseId === 1) {
+      this.title = '间歇式';
+    } else {
+      this.title = '非接触式';
+    }
     this.getTask();
     this.getInstance();
+    this.getScene();
+    this.getTrain();
+    this.getRoute();
   },
   methods: {
-    handleTrain() {},
-    handleAll() {},
-    goDetail() {},
+    handleTrain() {
+      setTimeout(() => {
+        this.$router.push('./training');
+      }, 500);
+    },
+    handleAll() {
+      this.showAllLoading = true;
+    },
+    getScene() {
+      this.$axios.get(`/scene?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[0].arr = res;
+      });
+    },
+    getTrain() {
+      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[1].arr = res;
+      });
+    },
+    getRoute() {
+      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[2].arr = res;
+      });
+    },
+    goDetail(row) {
+      if (row.status === 1) {
+        this.$router.push('./training');
+      } else {
+        // TODO 训练结果
+        this.$router.push({
+          path: `/result?id=${this.instanceType}`,
+        });
+      }
+    },
     submitForm() {
       this.getInstance();
     },
@@ -564,10 +515,13 @@ export default {
       this.page = e;
       this.getInstance();
     },
-    getTask() {},
+    getTask() {
+      this.$axios.get('/task').then((res) => {
+        this.taskData = res;
+      });
+    },
     getInstance() {
       const obj = {
-        database_id: this.databaseId,
         page: this.page - 1,
         page_size: this.pageSize,
       };
@@ -583,7 +537,7 @@ export default {
           });
         }
       });
-      this.$axios.post('/model/instance/list', obj).then((res) => {
+      this.$axios.post(`/model/instance/list?database_id=${this.databaseId}`, obj).then((res) => {
         this.instanceData = res.data_list;
         this.total = res.total_number;
       });
@@ -642,6 +596,7 @@ export default {
   text-decoration: underline;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   .svg-icon {
     margin-right: 3px;
@@ -651,5 +606,16 @@ export default {
 .statistics {
   font-size: 14px;
   color: #999999;
+}
+
+.train-text {
+  color: $primary-color;
+}
+
+.limit-column {
+  width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

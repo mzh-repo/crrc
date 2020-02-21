@@ -1,36 +1,30 @@
 <template>
   <el-container>
     <img src="@/assets/images/login.png" />
-    <el-form ref="loginForm"
-             :model="formData"
-             :rules="rules">
+    <el-form ref="loginForm" :model="formData" :rules="rules">
       <el-form-item>
-        <el-row class="title">新型供电列车</el-row>
+        <el-row class="title">{{ title }}供电列车</el-row>
         <el-row class="title sub">大数据运用支撑系统</el-row>
       </el-form-item>
-      <el-form-item prop="type">
+      <!-- <el-form-item prop="type">
         <el-select v-model="formData.type">
-          <el-option v-for="(item,index) in typeList"
-                     :key="index"
-                     :label="item.name"
-                     :value="item.id">
+          <el-option
+            v-for="(item, index) in typeList"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+          >
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item prop="name">
-        <el-input v-model="formData.name"
-                  placeholder="账户">
-        </el-input>
+        <el-input v-model="formData.name" placeholder="账户"> </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password"
-                  placeholder="密码"
-                  show-password>
-        </el-input>
+        <el-input v-model="formData.password" placeholder="密码" show-password> </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary"
-                   @click="loginIn('loginForm')">
+        <el-button type="primary" @click="loginIn('loginForm')">
           登录
         </el-button>
       </el-form-item>
@@ -48,7 +42,7 @@ export default {
         password: '',
       },
       rules: {
-        type: [{ required: true, message: '请选择系统', trigger: 'change' }],
+        // type: [{ required: true, message: '请选择系统', trigger: 'change' }],
         name: [{ required: true, message: '请输入账户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
       },
@@ -62,13 +56,22 @@ export default {
           id: 2,
         },
       ],
+      title: '间歇式',
+      type: 1,
     };
+  },
+  mounted() {
+    sessionStorage.setItem('dataBaseId', this.type);
+    if (this.type === 1) {
+      this.title = '间歇式';
+    } else {
+      this.title = '非接触式';
+    }
   },
   methods: {
     loginIn(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          sessionStorage.setItem('dataBaseId', this.formData.type);
           this.$store.commit('setUsername', this.formData.name);
           const date = new Date();
           const loginTime = localStorage.getItem('loginTime') || date;
