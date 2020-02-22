@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>训练中</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页-copy-2" transform="translate(-531.000000, -617.000000)">
+            <rect fill="#F2F2F2" x="0" y="0" width="1920" height="1530"></rect>
+            <rect id="矩形-copy-22" fill="#FFFFFF" x="131" y="506" width="1723" height="220" rx="6"></rect>
+            <g id="训练中" transform="translate(531.000000, 617.000000)">
+                <rect id="矩形" fill="#BADEFF" x="0" y="0" width="20" height="20" rx="2"></rect>
+                <rect id="矩形-copy-2" fill="#1E88ED" x="20" y="20" width="20" height="20" rx="2"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

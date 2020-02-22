@@ -77,21 +77,23 @@
           <el-col :span="10">
             <span>输入</span>
             <div class="input-area">
-              <el-table
-                height="247px"
-                :data="
-                  inputData.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()))
-                "
-                style="width: 100%"
-              >
+              <el-table height="247px" :data="inputData" style="width: 100%">
+                <el-table-column type="expand">
+                  <template slot-scope="props">
+                    <el-table :data="props.row.arr">
+                      <el-table-column label="输入项" prop="name"> </el-table-column>
+                      <el-table-column label="类型" prop="type"> </el-table-column>
+                    </el-table>
+                  </template>
+                </el-table-column>
                 <el-table-column type="index" label="序号"> </el-table-column>
-                <el-table-column label="输入项" prop="name"> </el-table-column>
-                <el-table-column label="类型" prop="type"> </el-table-column>
+                <el-table-column label="输入项分类" prop="name"> </el-table-column>
+                <!-- <el-table-column label="类型" prop="type"> </el-table-column>
                 <el-table-column align="right">
                   <template slot="header">
                     <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
                   </template>
-                </el-table-column>
+                </el-table-column> -->
               </el-table>
             </div>
           </el-col>
@@ -110,13 +112,13 @@
           </el-col>
         </el-row>
         <el-row class="input-title algorithm">请选择算法</el-row>
-        <el-row class="alg-row" :gutter="20">
-          <el-col
-            v-for="(item, index) in algorithmList"
-            :key="index"
-            :span="6"
-            @click.native="setChoice(item)"
-          >
+        <el-row
+          class="alg-row"
+          v-for="(item, index) in algorithmList"
+          :key="index"
+          @click.native="setChoice(item)"
+        >
+          <el-col :span="6">
             <div class="algorithm-container" :class="item.id === algorithmId ? 'active' : ''">
               <div class="algorithm-box">
                 <el-row>{{ item.name }}</el-row>
@@ -134,8 +136,8 @@
               </div>
             </div>
           </el-col>
+          <el-col :span="18" class="algo-intro"> 算法简介: {{ item.introduction }} </el-col>
         </el-row>
-        <el-row v-if="algorithmId !== ''">算法简介：{{ modelIntro }}</el-row>
       </template>
     </el-row>
     <el-row class="submit-btn">
@@ -173,16 +175,30 @@ export default {
       sceneList: [],
       inputData: [
         {
-          name: '日期',
-          type: 'Stirng',
+          name: '运行数据',
+          arr: [
+            {
+              name: '日期',
+              type: 'Stirng',
+            },
+            {
+              name: '时间',
+              type: 'Date',
+            },
+          ],
         },
         {
-          name: '时间',
-          type: 'Date',
-        },
-        {
-          name: '日期',
-          type: 'Stirng',
+          name: '线路数据',
+          arr: [
+            {
+              name: '日期',
+              type: 'Stirng',
+            },
+            {
+              name: '时间',
+              type: 'Date',
+            },
+          ],
         },
       ],
       search: '',
@@ -208,8 +224,6 @@ export default {
           type: 'Date',
         },
       ],
-      modelIntro:
-        '对多目标优化问题设计函数映射并使用LSTM（Long Short Term Memory Network）模型求解列车运行过程多目标方程函数：定义为每个时刻 𝑡 的信息状态，每个时刻的信息状态包含该时刻下的驾驶信 息和环境信息，即 = [驾驶信息, 环境信息]，定义一个列车信息序列为，这个列车信息序列包括列车前 𝑙 时刻内的信息状态。LSTM模型解决序列相关的问题，其特别之处是其输入不仅仅考虑了当前时刻的输入，也考 虑了上一时刻的输出，从而捕获到了序列之间的关联信息。它通过增加多一个单元状态解决了普通 RNN 无法捕获长期依赖的问题，而且巧妙地提出了遗忘门办法来对长期单元状态进行控制，将重要特征保留下来，保 证了在长期传播的过程中不会丢失数据中重要的时序信息。',
       showInput: false,
     };
   },
@@ -251,8 +265,7 @@ export default {
       this.$axios
         .get(`/model/columns?scene_id=${this.chooseType}&database_id=${this.databaseId}`)
         .then((res) => {
-          // this.algorithmList = res;
-          this.inputData = res.input;
+          // this.inputData = res.input;
           this.outputData = res.output;
         });
     },
@@ -307,20 +320,32 @@ export default {
         introduction: this.describe,
         algorithm_id: this.algorithmId,
       };
-      this.$axios
-        .post('/model', modelData)
+      // TODO
+      // this.$axios
+      //   .post('/model', modelData)
+      //   .then(() => {
+      //     this.$message({
+      //       message: '创建成功',
+      //       type: 'success',
+      //     });
+      //     this.$router.push('./dashboard');
+      //   })
+      //   .catch(() => {
+      //     this.$message({
+      //       message: '创建失败，请输入模型完整信息',
+      //       type: 'error',
+      //     });
+      //   });
+      this.$confirm('模型创建成功, 是否立即进行训练?', '提示', {
+        confirmButtonText: '立即训练',
+        cancelButtonText: '取消',
+        type: 'success',
+      })
         .then(() => {
-          this.$message({
-            message: '创建成功',
-            type: 'success',
-          });
-          this.$router.push('./dashboard');
+          this.$router.push('./chooseData');
         })
         .catch(() => {
-          this.$message({
-            message: '创建失败，请输入模型完整信息',
-            type: 'error',
-          });
+          this.$router.push('./dashboard');
         });
     },
   },
@@ -392,7 +417,7 @@ export default {
 
 .alg-row {
   @include flex-row;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
 }
 
 .algorithm-container {
@@ -518,5 +543,10 @@ export default {
   /deep/ td {
     border-bottom: 0;
   }
+}
+
+.algo-intro {
+  @include box-center;
+  margin-left: 40px;
 }
 </style>

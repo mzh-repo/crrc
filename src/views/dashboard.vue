@@ -1,139 +1,3 @@
-<!--
-<template>
-  <el-container class="case-container">
-    <el-row class="case-main">
-      <el-col :span="4">
-        <user-info />
-      </el-col>
-      <el-col :span="20" class="case">
-        <div class="title">
-          {{ databaseId === 1 ? '间歇式供电列车系统' : '非接触式供电列车系统' }}
-        </div>
-        <div class="search">
-          <el-col>
-            <el-input
-              v-model="input"
-              placeholder="请输入"
-              prefix-icon="el-icon-search"
-              @change="getData"
-            >
-            </el-input>
-          </el-col>
-          <el-col>
-            <span>状态:</span>
-            <el-select v-model="choose" @change="getData">
-              <el-option
-                v-for="(item, index) in statusList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col>
-            <el-button type="primary" @click="newModel">新建模型</el-button>
-          </el-col>
-        </div>
-        <el-row class="model-container" :gutter="20">
-          <el-col v-for="(item, index) in modelList" :key="index" :span="8">
-            <case-box :data="item" id="1" />
-          </el-col>
-        </el-row>
-        <el-pagination
-          background
-          small
-          layout="prev, pager, next"
-          :total="total"
-          :page-size="pageSize"
-          @current-change="handleChange"
-        >
-        </el-pagination>
-      </el-col>
-    </el-row>
-  </el-container>
-</template>
-
-<script>
-import CaseBox from '@/components/case.vue';
-import UserInfo from '../components/userInfo.vue';
-
-export default {
-  components: {
-    CaseBox,
-    UserInfo,
-  },
-  data() {
-    return {
-      dataList: {
-        list1: {
-          operation_control: [],
-          fault_warning: [],
-        },
-        list2: {
-          operation_control: [],
-          fault_warning: [],
-        },
-      },
-      caseList: ['', '', ''],
-      statusList: [
-        {
-          id: 5,
-          name: '训练中',
-        },
-        {
-          id: 1,
-          name: '已完成',
-        },
-        {
-          id: 3,
-          name: '已取消',
-        },
-        {
-          id: 4,
-          name: '训练失败',
-        },
-      ],
-      input: '',
-      choose: '',
-      page: 1,
-      pageSize: 9,
-      total: 1,
-      modelList: [],
-      databaseId: null,
-    };
-  },
-  mounted() {
-    this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
-    this.getData();
-  },
-  methods: {
-    newModel() {
-      this.$router.push('/createModel/step1');
-    },
-    handleChange(e) {
-      this.page = e;
-      this.getData();
-    },
-    getData() {
-      let query = `/model/list?database_id=${this.databaseId}&page=${this.page - 1}&page_size=${
-        this.pageSize
-      }`;
-      if (this.input !== '') {
-        query += `&keyword=${this.input}`;
-      }
-      if (this.choose !== '') {
-        query += `&status=${this.choose}`;
-      }
-      this.$axios.get(query).then((res) => {
-        this.modelList = res.data_list;
-        this.total = res.total_number;
-      });
-    },
-  },
-};
-</script>
--->
-
 <template>
   <div class="main">
     <h1>{{ title }}供电列车大数据运用支撑系统</h1>
@@ -163,6 +27,18 @@ export default {
         >
       </el-row>
     </div>
+    <div class="task sys-status">
+      <h1>系统状态</h1>
+      <el-row class="status-container">
+        <el-col v-for="(item, index) in statusList" :key="index">
+          <svg-icon :icon-class="item.icon" />
+          <span class="value">{{ item.value }} </span>
+          <span class="unit">{{ item.unit }}</span>
+          <br />
+          <span class="status-title">{{ item.title }}</span>
+        </el-col>
+      </el-row>
+    </div>
     <div class="task instance">
       <h1>系统运行实例</h1>
       <el-row class="filter">
@@ -188,7 +64,7 @@ export default {
               </el-select>
             </el-form-item>
           </template>
-          <el-form-item>
+          <el-form-item class="btn">
             <el-button type="primary" @click="submitForm">筛选</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
@@ -242,11 +118,11 @@ export default {
         </el-pagination>
       </el-row>
     </div>
-    <el-row class="statistics"
+    <!-- <el-row class="statistics"
       >{{ statistics.training }}个模型正在训练, {{ statistics.complete }}个模型已完成训练,累计使用{{
         statistics.number
       }}条数据</el-row
-    >
+    > -->
   </div>
 </template>
 
@@ -452,6 +328,38 @@ export default {
       },
       databaseId: 1,
       showAllLoading: false,
+      statusList: [
+        {
+          icon: 'sys_1',
+          value: '4',
+          unit: '个',
+          title: '已完成',
+        },
+        {
+          icon: 'sys_2',
+          value: '10',
+          unit: '个',
+          title: '训练中',
+        },
+        {
+          icon: 'sys_3',
+          value: '10246',
+          unit: '条',
+          title: '使用条数',
+        },
+        {
+          icon: 'sys_4',
+          value: '26.7',
+          unit: 'G',
+          title: '已使用内存',
+        },
+        {
+          icon: 'sys_5',
+          value: '32.6',
+          unit: '%',
+          title: '计算机资源使用',
+        },
+      ],
     };
   },
   mounted() {
@@ -558,8 +466,12 @@ export default {
   border-radius: 6px;
 
   &.instance {
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 30px;
+  }
+
+  &.sys-status {
+    margin-top: 30px;
   }
 }
 
@@ -589,6 +501,10 @@ export default {
   /deep/ .el-form-item {
     margin-right: 50px;
   }
+
+  .btn {
+    margin-left: 80px;
+  }
 }
 
 .pre-btn {
@@ -617,5 +533,25 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.status-container {
+  @include flex-row;
+  font-size: 20px;
+
+  .svg-icon {
+    @include set-size(40px);
+    margin-right: 20px;
+  }
+
+  .value {
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  .status-title {
+    margin-left: 60px;
+    color: #666;
+  }
 }
 </style>

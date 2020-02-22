@@ -73,7 +73,6 @@ export default {
   width: 280px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /deep/ .el-select {

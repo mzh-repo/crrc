@@ -4,7 +4,7 @@
       <h1>创建训练</h1>
       <el-row class="title">
         请选择模型
-        <el-button size="mini" type="primary" @click="newModel">新建模型</el-button>
+        <!-- <el-button size="mini" type="primary" @click="newModel">新建模型</el-button> -->
       </el-row>
       <el-row class="filter">
         <el-form :inline="true">
@@ -32,7 +32,7 @@
           <el-table
             :data="modelData"
             :header-row-style="{ color: '#333' }"
-            height="288px"
+            height="576px"
             style="width: 100%"
             highlight-current-row
             @current-change="handleCurrentChange"
@@ -71,7 +71,7 @@
           </el-pagination>
         </el-row>
       </div>
-      <template v-if="chooseId !== 0">
+      <!-- <template v-if="chooseId !== 0">
         <el-row class="title">
           请选择数据进行训练
         </el-row>
@@ -92,10 +92,10 @@
         <el-row v-if="staticForm[2].value !== '' && staticForm[3].value !== ''" class="static"
           >共{{ staticNumber }}条数据</el-row
         >
-      </template>
+      </template> -->
     </div>
     <el-row class="train-btn">
-      <el-button type="primary" @click="onSubmit">提交训练</el-button>
+      <el-button type="primary" @click="onSubmit">下一步</el-button>
     </el-row>
   </div>
 </template>
@@ -155,7 +155,7 @@ export default {
       modelData: [],
       modelTagList,
       page: 1,
-      pageSize: 5,
+      pageSize: 10,
       total: 20,
       chooseId: 0,
       staticForm: [
@@ -184,7 +184,6 @@ export default {
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
-
     this.getModel();
     this.getScene();
     this.getTrain();
@@ -206,10 +205,12 @@ export default {
         this.filterForm[2].arr = res;
       });
     },
-    newModel() {
-      this.$router.push('./newModel');
+    // newModel() {
+    //   this.$router.push('./newModel');
+    // },
+    submitForm() {
+      this.getModel();
     },
-    submitForm() {},
     resetForm() {
       this.filterForm.forEach((item) => {
         // eslint-disable-next-line no-param-reassign
@@ -225,35 +226,42 @@ export default {
       this.chooseId = val.id;
       this.staticForm[0].value = val.car_type;
       this.staticForm[1].value = val.route;
+      const data = {
+        id: val.id,
+        train: val.car_type,
+        route: val.route,
+      };
+      sessionStorage.setItem('Model', JSON.stringify(data));
     },
     onSubmit() {
       if (this.chooseId === 0) {
         this.$message.error('请先选择模型');
         return;
       }
-      if (this.staticForm[2].value === '') {
-        this.$message.error('请选择开始时间');
-        return;
-      }
-      if (this.staticForm[3].value === '') {
-        this.$message.error('请选择截止日期');
-        return;
-      }
-      if (this.staticForm[2].value > this.staticForm[3].value) {
-        this.$message.error('开始时间要晚于截止时间');
-        return;
-      }
-      // TODO： 数据起止时间
-      const obj = {
-        model_id: this.chooseId,
-      };
-      this.$axios.post('/form/train', obj).then(() => {
-        this.$message({
-          message: '创建训练成功',
-          type: 'success',
-        });
-        this.$router.push('./training');
-      });
+      this.$router.push('./trainConfig');
+      // if (this.staticForm[2].value === '') {
+      //   this.$message.error('请选择开始时间');
+      //   return;
+      // }
+      // if (this.staticForm[3].value === '') {
+      //   this.$message.error('请选择截止日期');
+      //   return;
+      // }
+      // if (this.staticForm[2].value > this.staticForm[3].value) {
+      //   this.$message.error('开始时间要晚于截止时间');
+      //   return;
+      // }
+      // // TODO： 数据起止时间
+      // const obj = {
+      //   model_id: this.chooseId,
+      // };
+      // this.$axios.post('/form/train', obj).then(() => {
+      //   this.$message({
+      //     message: '创建训练成功',
+      //     type: 'success',
+      //   });
+      //   this.$router.push('./training');
+      // });
     },
     getModel() {
       const query = `/model/list?database_id=${this.databaseId}&page=${this.page - 1}&page_size=${

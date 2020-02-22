@@ -25,33 +25,33 @@ export default new Router({
           selectIcon: '模型中心-选中',
           component: () => import('./views/createModel'),
           // component: () => import('./views/modelCenter'),
-          children: [
-            {
-              path: '/chooseModel',
-              name: '模型选择',
-              component: () => import('./views/modelCenter/model/chooseModel'),
-            },
-            {
-              path: '/modelReport',
-              name: '查看模型报告',
-              component: () => import('./views/modelCenter/model/modelReport'),
-            },
-            {
-              path: '/createModel/step1',
-              name: '新建模型',
-              component: () => import('./views/modelCenter/newModel/create1'),
-            },
-            {
-              path: '/createModel/step2',
-              name: '新建模型',
-              component: () => import('./views/modelCenter/newModel/create2'),
-            },
-            {
-              path: '/createModel/step3',
-              name: '新建模型',
-              component: () => import('./views/modelCenter/newModel/create3'),
-            },
-          ],
+          // children: [
+          //   {
+          //     path: '/chooseModel',
+          //     name: '模型选择',
+          //     component: () => import('./views/modelCenter/model/chooseModel'),
+          //   },
+          //   {
+          //     path: '/modelReport',
+          //     name: '查看模型报告',
+          //     component: () => import('./views/modelCenter/model/modelReport'),
+          //   },
+          //   {
+          //     path: '/createModel/step1',
+          //     name: '新建模型',
+          //     component: () => import('./views/modelCenter/newModel/create1'),
+          //   },
+          //   {
+          //     path: '/createModel/step2',
+          //     name: '新建模型',
+          //     component: () => import('./views/modelCenter/newModel/create2'),
+          //   },
+          //   {
+          //     path: '/createModel/step3',
+          //     name: '新建模型',
+          //     component: () => import('./views/modelCenter/newModel/create3'),
+          //   },
+          // ],
         },
         {
           path: '/chooseData',
@@ -59,23 +59,23 @@ export default new Router({
           selectIcon: '创建训练-选中',
           // component: () => import('./views/traning'),
           component: () => import('./views/createTrain'),
-          children: [
-            {
-              path: '/chooseData',
-              name: '数据选择',
-              component: () => import('./views/traning/createTraning/chooseData'),
-            },
-            {
-              path: '/config',
-              name: '参数配置',
-              component: () => import('./views/traning/createTraning/config'),
-            },
-            {
-              path: '/model',
-              name: '训练模型',
-              component: () => import('./views/traning/createTraning/model'),
-            },
-          ],
+          // children: [
+          //   {
+          //     path: '/chooseData',
+          //     name: '数据选择',
+          //     component: () => import('./views/traning/createTraning/chooseData'),
+          //   },
+          //   {
+          //     path: '/config',
+          //     name: '参数配置',
+          //     component: () => import('./views/traning/createTraning/config'),
+          //   },
+          //   {
+          //     path: '/model',
+          //     name: '训练模型',
+          //     component: () => import('./views/traning/createTraning/model'),
+          //   },
+          // ],
         },
         // {
         //   path: '/modelPublish',
@@ -111,23 +111,23 @@ export default new Router({
           selectIcon: '数据导入-选中',
           // component: () => import('./views/dataImport'),
           component: () => import('./views/importData'),
-          children: [
-            {
-              path: '/importData',
-              name: '表格上传',
-              component: () => import('./views/dataImport/steps/tableUpload'),
-            },
-            {
-              path: '/analyze',
-              name: '分析报告',
-              component: () => import('./views/dataImport/steps/analyze'),
-            },
-            {
-              path: '/recommend',
-              name: '模型推荐',
-              component: () => import('./views/dataImport/steps/recommend'),
-            },
-          ],
+          // children: [
+          //   {
+          //     path: '/importData',
+          //     name: '表格上传',
+          //     component: () => import('./views/dataImport/steps/tableUpload'),
+          //   },
+          //   {
+          //     path: '/analyze',
+          //     name: '分析报告',
+          //     component: () => import('./views/dataImport/steps/analyze'),
+          //   },
+          //   {
+          //     path: '/recommend',
+          //     name: '模型推荐',
+          //     component: () => import('./views/dataImport/steps/recommend'),
+          //   },
+          // ],
         },
         {
           path: '/report',
@@ -146,6 +146,10 @@ export default new Router({
         {
           path: '/training',
           component: () => import('./views/case/trainResult.vue'),
+        },
+        {
+          path: '/trainConfig',
+          component: () => import('./views/dataConfig.vue'),
         },
       ],
     },

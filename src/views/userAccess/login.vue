@@ -99,13 +99,14 @@ export default {
 
   .title {
     color: #fff;
-    font-size: 32px;
+    font-size: 48px;
+    margin-bottom: 30px;
   }
 
   .sub {
-    font-size: 48px;
+    font-size: 30px;
     margin-top: 10px;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
   }
 
   form {
