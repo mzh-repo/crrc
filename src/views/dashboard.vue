@@ -87,7 +87,7 @@
                   <span v-else>已完成</span>
                 </div>
                 <div
-                  v-else-if="item.prop === 'name'"
+                  v-else-if="item.prop === 'model_name'"
                   class="limit-column"
                   :title="scope.row[item.prop]"
                 >
@@ -159,19 +159,19 @@ const taskTagList = [
 ];
 const instanceTagList = [
   {
-    prop: 'name',
+    prop: 'model_name',
     label: '模型名称',
   },
   {
-    prop: 'scene',
+    prop: 'scene_name',
     label: '场景',
   },
   {
-    prop: 'car_type',
+    prop: 'car_name',
     label: '列车信息',
   },
   {
-    prop: 'route',
+    prop: 'route_info',
     label: '路线信息',
   },
   {
@@ -183,7 +183,7 @@ const instanceTagList = [
     label: '更新时间',
   },
   {
-    prop: 'algo',
+    prop: 'algorithm_name',
     label: '使用算法',
   },
   {
@@ -374,6 +374,7 @@ export default {
     this.getScene();
     this.getTrain();
     this.getRoute();
+    this.getSysStatus();
   },
   methods: {
     handleTrain() {
@@ -399,13 +400,30 @@ export default {
         this.filterForm[2].arr = res;
       });
     },
+    getSysStatus() {
+      this.$axios.get(`/system/status?database_id=${this.databaseId}`).then((res) => {
+        this.statusList[0].value = res.model_train_finished;
+        this.statusList[1].value = res.model_training;
+        this.statusList[2].value = res.data_used_number;
+        this.statusList[3].value = res.memory_used;
+        this.statusList[4].value = res.resource_used;
+      });
+    },
     goDetail(row) {
       if (row.status === 1) {
-        this.$router.push('./training');
+        this.$alert('模型正在训练中,请耐心等待', '提示', {
+          confirmButtonText: '确定',
+          type: 'info',
+        });
       } else {
-        // TODO 训练结果
+        const data = {
+          train: row.car_name,
+          route: row.route_info,
+          id: row.model_id, // 模型id ,查看实例报告
+        };
+        sessionStorage.setItem('Result', JSON.stringify(data));
         this.$router.push({
-          path: `/result?id=${this.instanceType}`,
+          path: `/result?id=${row.type}`,
         });
       }
     },

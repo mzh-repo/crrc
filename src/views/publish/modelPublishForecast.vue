@@ -5,47 +5,35 @@
         <span>{{ this.$store.state.reportData.name }}</span>
       </div>
     </div>
-    <div class="forecast-data title-1">
-      车次: {{ databaseType == 1 ? "间歇式供电列车" : "非接触式供电列车" }}
-    </div>
+    <div class="forecast-data title-1">车次: {{ basicInfo.train }}</div>
+    <div class="forecast-data">行车线路: {{ basicInfo.route }}</div>
     <div class="forecast-data">
-      行车线路: {{ route }}
+      <span>预测总数据大小: {{ '128' }}M</span>
     </div>
-    <div class="forecast-data">
-      <span>预测总数据大小: {{ "128" }}M</span>
-    </div>
-    <el-row v-if="result === 0"
-            class="line-area">
+    <el-row v-if="result === 0" class="line-area">
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.power"
-                    :title="'能耗对比 kW·h'"
-                    :yTitle="'预测'" />
+          <Mzh-line :lineData="lineData.power" :title="'能耗对比 kW·h'" :yTitle="'预测'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper">
-          <Mzh-line :lineData="lineData.speed"
-                    :title="'速度 km/h'" />
+          <Mzh-line :lineData="lineData.speed" :title="'速度 km/h'" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="chart-wrapper nopadding">
-          <Mzh-line :lineData="lineData.force"
-                    :title="'牵引力 KN'" />
+          <Mzh-line :lineData="lineData.force" :title="'牵引力 KN'" />
         </div>
       </el-col>
     </el-row>
-    <el-row v-if="result === 3"
-            class="forcecast-container">
+    <el-row v-if="result === 3" class="forcecast-container">
       <forcecast-one />
     </el-row>
-    <el-row v-if="result === 4"
-            class="forcecast-container">
+    <el-row v-if="result === 4" class="forcecast-container">
       <forcecast-two :result-type="type" />
     </el-row>
-    <el-row v-if="result === 5"
-            class="forcecast-container">
+    <el-row v-if="result === 5" class="forcecast-container">
       <forcecast-three />
     </el-row>
     <Mzh-table v-if="result === 0 || result === 1 || result === 2" />
@@ -93,13 +81,16 @@ export default {
       modelId: '',
       databaseType: 1,
       type: 1, // 区分 列车运行控制 A和 B 对应的结果集
-      route: '',
+      basicInfo: {
+        train: '',
+        route: '',
+      },
     };
   },
   mounted() {
     // 车次
     this.databaseType = Number(sessionStorage.getItem('dataBaseId'));
-    this.route = this.$store.state.reportData.route;
+    this.basicInfo = JSON.parse(sessionStorage.getItem('Result'));
     // TODO: 获取不同模型的id 或 类型
     if (this.$route.query.id) {
       this.modelId = Number(this.$route.query.id);
@@ -126,8 +117,7 @@ export default {
     // this.getRandom();
     // this.b();
     const nowDate = new Date();
-    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth()
-      + 1}-${nowDate.getDate()}`;
+    this.date = `${nowDate.getFullYear()}-${nowDate.getMonth() + 1}-${nowDate.getDate()}`;
     this.time = `${nowDate.getHours()}:${nowDate.getMinutes()}:${nowDate.getSeconds()}`;
   },
   methods: {

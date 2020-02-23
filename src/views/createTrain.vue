@@ -107,7 +107,7 @@ const modelTagList = [
     label: '模型名称',
   },
   {
-    prop: 'scene',
+    prop: 'applicable_scene',
     label: '场景',
   },
   {
@@ -129,27 +129,21 @@ export default {
       filterForm: [
         {
           label: '应用场景',
+          prop: 'scene_id',
           value: '',
           arr: [],
         },
         {
           label: '列车信息',
+          prop: 'train_id',
           value: '',
           arr: [],
         },
         {
           label: '列车线路',
+          prop: 'route_id',
           value: '',
-          arr: [
-            {
-              name: '香山——颐和园南门',
-              id: 1,
-            },
-            {
-              name: '广州塔——会展西',
-              id: 2,
-            },
-          ],
+          arr: [],
         },
       ],
       modelData: [],
@@ -158,28 +152,8 @@ export default {
       pageSize: 10,
       total: 20,
       chooseId: 0,
-      staticForm: [
-        {
-          label: '数据源',
-          value: '',
-        },
-        {
-          label: '线路',
-          value: '',
-        },
-        {
-          label: '开始时间',
-          value: '',
-          type: 'time',
-        },
-        {
-          label: '结束时间',
-          value: '',
-          type: 'time',
-        },
-      ],
-      staticNumber: 203,
       databaseId: 1,
+      chooseModel: {},
     };
   },
   mounted() {
@@ -223,56 +197,33 @@ export default {
       this.getModel();
     },
     handleCurrentChange(val) {
+      this.chooseModel = val;
       this.chooseId = val.id;
-      this.staticForm[0].value = val.car_type;
-      this.staticForm[1].value = val.route;
-      const data = {
-        id: val.id,
-        train: val.car_type,
-        route: val.route,
-      };
-      sessionStorage.setItem('Model', JSON.stringify(data));
     },
     onSubmit() {
       if (this.chooseId === 0) {
         this.$message.error('请先选择模型');
         return;
       }
+      const data = {
+        id: this.chooseModel.id,
+        train: this.chooseModel.car_type,
+        route: this.chooseModel.route,
+        start: this.chooseModel.data_date_lower_bound,
+        end: this.chooseModel.data_date_upper_bound,
+      };
+      sessionStorage.setItem('Model', JSON.stringify(data));
       this.$router.push('./trainConfig');
-      // if (this.staticForm[2].value === '') {
-      //   this.$message.error('请选择开始时间');
-      //   return;
-      // }
-      // if (this.staticForm[3].value === '') {
-      //   this.$message.error('请选择截止日期');
-      //   return;
-      // }
-      // if (this.staticForm[2].value > this.staticForm[3].value) {
-      //   this.$message.error('开始时间要晚于截止时间');
-      //   return;
-      // }
-      // // TODO： 数据起止时间
-      // const obj = {
-      //   model_id: this.chooseId,
-      // };
-      // this.$axios.post('/form/train', obj).then(() => {
-      //   this.$message({
-      //     message: '创建训练成功',
-      //     type: 'success',
-      //   });
-      //   this.$router.push('./training');
-      // });
     },
     getModel() {
-      const query = `/model/list?database_id=${this.databaseId}&page=${this.page - 1}&page_size=${
+      let query = `/model/list?database_id=${this.databaseId}&page=${this.page - 1}&page_size=${
         this.pageSize
       }`;
-      // if (this.input !== '') {
-      //   query += `&keyword=${this.input}`;
-      // }
-      // if (this.choose !== '') {
-      //   query += `&status=${this.choose}`;
-      // }
+      this.filterForm.forEach((item) => {
+        if (item.value !== '') {
+          query += `&${item.prop}= ${item.value}`;
+        }
+      });
       this.$axios.get(query).then((res) => {
         this.modelData = res.data_list;
         this.total = res.total_number;

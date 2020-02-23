@@ -200,6 +200,10 @@ export default {
             },
           ],
         },
+        {
+          name: '配置数据',
+          arr: [],
+        },
       ],
       search: '',
       outputData: [
@@ -238,7 +242,6 @@ export default {
       if (this.chooseType !== '' && this.chooseCar !== '' && this.chooseWay !== '') {
         this.showInput = true;
         this.getAlgList();
-        //TODO 输入输出
       } else {
         this.showInput = false;
       }
@@ -265,7 +268,9 @@ export default {
       this.$axios
         .get(`/model/columns?scene_id=${this.chooseType}&database_id=${this.databaseId}`)
         .then((res) => {
-          // this.inputData = res.input;
+          this.inputData[0].arr = res.input.ROUTE;
+          this.inputData[1].arr = res.input.RUNNING;
+          this.inputData[2].arr = res.input.CONFIG;
           this.outputData = res.output;
         });
     },
@@ -286,7 +291,6 @@ export default {
     getUrl(type) {
       return imgUrl[type - 1];
     },
-    // TODO case
     onSubmit() {
       if (this.name === '') {
         this.$message.error('请先输入模型名称');
@@ -310,42 +314,37 @@ export default {
       }
       const modelData = {
         name: this.name,
-        // applicable_scene: this.chooseType,
+        application_scene_id: this.chooseType,
         // case id 1-8 分别代表不同结果集
         case: {
           id: this.databaseId === 1 ? this.chooseType : 4 + this.chooseType,
         },
-        car_type: this.chooseCar,
-        route: this.chooseWay,
+        car_type_id: this.chooseCar,
+        route_id: this.chooseWay,
         introduction: this.describe,
         algorithm_id: this.algorithmId,
       };
       // TODO
-      // this.$axios
-      //   .post('/model', modelData)
-      //   .then(() => {
-      //     this.$message({
-      //       message: '创建成功',
-      //       type: 'success',
-      //     });
-      //     this.$router.push('./dashboard');
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       message: '创建失败，请输入模型完整信息',
-      //       type: 'error',
-      //     });
-      //   });
-      this.$confirm('模型创建成功, 是否立即进行训练?', '提示', {
-        confirmButtonText: '立即训练',
-        cancelButtonText: '取消',
-        type: 'success',
-      })
+      this.$axios
+        .post(`/model?database_id=${this.databaseId}`, modelData)
         .then(() => {
-          this.$router.push('./chooseData');
+          this.$confirm('模型创建成功, 是否立即进行训练?', '提示', {
+            confirmButtonText: '立即训练',
+            cancelButtonText: '取消',
+            type: 'success',
+          })
+            .then(() => {
+              this.$router.push('./chooseData');
+            })
+            .catch(() => {
+              this.$router.push('./dashboard');
+            });
         })
         .catch(() => {
-          this.$router.push('./dashboard');
+          this.$message({
+            message: '创建失败，请输入模型完整信息',
+            type: 'error',
+          });
         });
     },
   },

@@ -110,14 +110,11 @@ export default {
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
-    // this.getModel();
-    // this.getScene();
-    // this.getTrain();
-    // this.getRoute();
     const data = JSON.parse(sessionStorage.getItem('Model'));
     this.chooseId = data.id;
     this.staticForm[0].value = data.train;
     this.staticForm[1].value = data.route;
+    this.staticForm[2].value = [data.start, data.end];
   },
   methods: {
     getScene() {
@@ -144,10 +141,6 @@ export default {
       this.staticForm[1].value = val.route;
     },
     onSubmit() {
-      // if (this.chooseId === 0) {
-      //   this.$message.error('请先选择模型');
-      //   return;
-      // }
       // if (this.staticForm[2].value === '') {
       //   this.$message.error('请选择开始时间');
       //   return;
@@ -164,19 +157,25 @@ export default {
       // TODO
       const obj = {
         model_id: this.chooseId,
+        date_lower_bound: this.staticForm[2].value[0],
+        date_upper_bound: this.staticForm[2].value[1],
+        config: {
+          gpu_spec: this.configList[0].value,
+          gpu_number: this.configList[1].value,
+          memory: this.configList[2].value,
+          concurrent_thread: this.configList[3].value,
+          train_round: this.configList[4].value,
+          max_training_time: this.configList[5].value,
+        },
       };
       this.$axios.post('/form/train', obj).then(() => {
-        this.$message({
-          message: '创建训练成功',
+        this.$alert('模型提交训练成功, 请耐心等待!', '提示', {
+          confirmButtonText: '确定',
           type: 'success',
+          callback: () => {
+            this.$router.push('./dashboard');
+          },
         });
-        this.$router.push('./training');
-      });
-      this.$alert('模型正在训练中, 预估需要2h,请耐心等待?', '提示', {
-        confirmButtonText: '确定',
-        callback: () => {
-          this.$router.push('./dashboard');
-        },
       });
     },
     getModel() {
