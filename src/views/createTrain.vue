@@ -210,19 +210,19 @@ export default {
         this.$message.error('请先选择模型');
         return;
       }
-      const data = {
-        id: this.chooseModel.id,
-        train: this.chooseModel.car_type,
-        route: this.chooseModel.route,
-        start: this.chooseModel.data_date_lower_bound,
-        end: this.chooseModel.data_date_upper_bound,
-      };
-      sessionStorage.setItem('Model', JSON.stringify(data));
+      // const data = {
+      //   id: this.chooseModel.id,
+      //   // train: this.chooseModel.car_type,
+      //   // route: this.chooseModel.route,
+      //   // start: this.chooseModel.data_date_lower_bound,
+      //   // end: this.chooseModel.data_date_upper_bound,
+      // };
+      sessionStorage.setItem('ModelId', this.chooseId);
       this.$router.push('./trainConfig');
     },
     getModel() {
-      let query = `/model/list?database_id=${this.databaseId}&page=${this.page
-        - 1}&page_size=${this.pageSize}`;
+      let query = `/model/list?database_id=${this.databaseId}&page=${this.page -
+        1}&page_size=${this.pageSize}`;
       this.filterForm.forEach((item) => {
         if (item.value !== '') {
           query += `&${item.prop}= ${item.value}`;

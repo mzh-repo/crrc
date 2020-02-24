@@ -361,14 +361,15 @@ export default {
       // TODO
       this.$axios
         .post(`/model?database_id=${this.databaseId}`, modelData)
-        .then(() => {
+        .then((res) => {
           this.$confirm('模型创建成功, 是否立即进行训练?', '提示', {
             confirmButtonText: '立即训练',
             cancelButtonText: '取消',
             type: 'success',
           })
             .then(() => {
-              this.$router.push('./chooseData');
+              sessionStorage.setItem('ModelId', res.id);
+              this.$router.push('./trainConfig');
             })
             .catch(() => {
               this.$router.push('./dashboard');

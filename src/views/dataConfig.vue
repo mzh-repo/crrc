@@ -106,11 +106,17 @@ export default {
   },
   mounted() {
     this.databaseId = Number(sessionStorage.getItem('dataBaseId'));
-    const data = JSON.parse(sessionStorage.getItem('Model'));
-    this.chooseId = data.id;
-    this.staticForm[0].value = data.train;
-    this.staticForm[1].value = data.route;
-    this.staticForm[2].value = [data.start, data.end];
+    // if (this.$route.query.id) {
+    //   this.chooseId = Number(this.$route.query.id);
+    // } else {
+    //   const data = JSON.parse(sessionStorage.getItem('Model'));
+    //   this.chooseId = data.id;
+    //   // this.staticForm[0].value = data.train;
+    //   // this.staticForm[1].value = data.route;
+    //   // this.staticForm[2].value = [data.start, data.end];
+    // }
+    this.chooseId = Number(sessionStorage.getItem('ModelId'));
+    this.getModel();
   },
   methods: {
     getScene() {
@@ -166,11 +172,19 @@ export default {
       });
     },
     getModel() {
-      const query = `/model/list?database_id=${this.databaseId}&page=${this
-        .page - 1}&page_size=${this.pageSize}`;
-      this.$axios.get(query).then((res) => {
-        this.modelData = res.data_list;
-        this.total = res.total_number;
+      // const query = `/model/list?database_id=${this.databaseId}&page=${this
+      //   .page - 1}&page_size=${this.pageSize}`;
+      // this.$axios.get(query).then((res) => {
+      //   this.modelData = res.data_list;
+      //   this.total = res.total_number;
+      // });
+      this.$axios.get(`/model/${this.chooseId}`).then((res) => {
+        this.staticForm[0].value = res.car_type;
+        this.staticForm[1].value = res.route;
+        this.staticForm[2].value = [
+          res.data_date_lower_bound,
+          res.data_date_upper_bound,
+        ];
       });
     },
   },
