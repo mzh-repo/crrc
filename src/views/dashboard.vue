@@ -23,7 +23,7 @@
             <template slot-scope="scope">
               <el-button size="mini"
                          type="primary"
-                         @click="handleTrain(scope.$index, scope.row)">强化训练</el-button>
+                         @click="handleTrain(scope.row)">强化训练</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -207,70 +207,9 @@ export default {
   data() {
     return {
       title: '间歇式',
-      taskData: [
-        {
-          name: '多目标',
-          scene: '多目标优化列车运行控制',
-          id: '1号车',
-          route: '香山',
-          create_time: '2019-12-10 12:20',
-          algo: 'keras',
-          number: '2283条',
-        },
-      ],
+      taskData: [],
       taskTagList,
-      instanceData: [
-        {
-          name: '多目标',
-          scene: '多目标优化列车运行控制',
-          id: '1号车',
-          route: '香山',
-          create_time: '2019-12-10 12:20',
-          update_time: '2019-12-10 12:20',
-          algo: 'keras',
-          status: '已完成',
-        },
-        {
-          name: '多目标',
-          scene: '多目标优化列车运行控制',
-          id: '1号车',
-          route: '香山',
-          create_time: '2019-12-10 12:20',
-          update_time: '2019-12-10 12:20',
-          algo: 'keras',
-          status: '已完成',
-        },
-        {
-          name: '多目标',
-          scene: '多目标优化列车运行控制',
-          id: '1号车',
-          route: '香山',
-          create_time: '2019-12-10 12:20',
-          update_time: '2019-12-10 12:20',
-          algo: 'keras',
-          status: '已完成',
-        },
-        {
-          name: '多目标',
-          scene: '多目标优化列车运行控制',
-          id: '1号车',
-          route: '香山',
-          create_time: '2019-12-10 12:20',
-          update_time: '2019-12-10 12:20',
-          algo: 'keras',
-          status: '已完成',
-        },
-        {
-          name: '多目标',
-          scene: '多目标优化列车运行控制',
-          id: '1号车',
-          route: '香山',
-          create_time: '2019-12-10 12:20',
-          update_time: '2019-12-10 12:20',
-          algo: 'keras',
-          status: '已完成',
-        },
-      ],
+      instanceData: [],
       instanceTagList,
       filterForm: [
         {
@@ -389,13 +328,75 @@ export default {
     this.getSysStatus();
   },
   methods: {
-    handleTrain() {
-      setTimeout(() => {
-        this.$router.push('./training');
-      }, 500);
+    handleTrain(row) {
+      this.$confirm('是否立即对该模型进行强化训练?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info',
+      })
+        .then(() => {
+          this.$axios
+            .post('/task/enhance', [row.id])
+            .then(() => {
+              this.$message({
+                type: 'success',
+                message: '模型强化训练中',
+              });
+              this.getTask();
+              this.getInstance();
+            })
+            .catch(() => {
+              this.$message({
+                message: '训练失败,请稍后重试',
+                type: 'error',
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            message: '操作取消',
+          });
+        });
     },
     handleAll() {
       this.showAllLoading = true;
+      setTimeout(() => {
+        this.$confirm('是否立即强化训练所有模型?', '提示', {
+          confirmButtonText: '训练全部',
+          cancelButtonText: '取消',
+          type: 'info',
+        })
+          .then(() => {
+            const idList = [];
+            this.taskData.forEach((item) => {
+              idList.push(item.id);
+            });
+            this.$axios
+              .post('/task/enhance', idList)
+              .then(() => {
+                this.$message({
+                  type: 'success',
+                  message: '模型强化训练中',
+                });
+                this.showAllLoading = false;
+                this.getTask();
+                this.getInstance();
+              })
+              .catch(() => {
+                this.$message({
+                  message: '训练失败,请稍后重试',
+                  type: 'error',
+                });
+                this.showAllLoading = false;
+              });
+          })
+          .catch(() => {
+            this.showAllLoading = false;
+            this.$message({
+              message: '操作取消',
+            });
+          });
+      }, 600);
     },
     getScene() {
       this.$axios.get(`/scene?database_id=${this.databaseId}`).then((res) => {

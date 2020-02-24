@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-row class="train-btn">
+    <!-- <el-row class="train-btn">
       <el-button type="primary"
                  @click="$router.push('/upload')">强化训练</el-button>
-    </el-row>
+    </el-row> -->
     <el-row class="result-tab">
       <el-tabs v-model="resultName"
                @tab-click="chooseResult">

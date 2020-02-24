@@ -39,8 +39,8 @@
       </el-row>
       <el-row class="tips">
         预测能耗为<span> {{ precit2 }} </span>kwh
-        <el-button type="primary"
-                   @click="$router.push('/upload')">强化训练</el-button>
+        <!-- <el-button type="primary"
+                   @click="$router.push('/upload')">强化训练</el-button> -->
       </el-row>
     </template>
     <template v-else>
@@ -58,8 +58,8 @@
         预测{{ tip }}: <span>{{ precit }}</span> {{ tip == '时间' ? 's' : 'kwh' }}, &nbsp;&nbsp;
         实际{{ tip }}: <span>{{ actual }}</span> {{ tip == '时间' ? 's' : 'kwh' }}, &nbsp;&nbsp;
         预测{{ tip }}为实际<span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
-        <el-button type="primary"
-                   @click="$router.push('/upload')">强化训练</el-button>
+        <!-- <el-button type="primary"
+                   @click="$router.push('/upload')">强化训练</el-button> -->
       </el-row>
     </template>
     <el-row :gutter="19"
