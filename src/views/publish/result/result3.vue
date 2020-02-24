@@ -1,7 +1,8 @@
 <template>
   <el-container class="forcast-container">
     <el-row class="train-btn">
-      <el-button type="primary" @click="$router.push('/upload')">强化训练</el-button>
+      <el-button type="primary"
+                 @click="$router.push('/upload')">强化训练</el-button>
     </el-row>
     <el-row :gutter="16">
       <el-col :span="24">
@@ -9,25 +10,21 @@
           <span>状态监测</span>
           <el-row>原始指标</el-row>
           <div class="early-data">
-            <div
-              v-for="(item, index) in earlyList"
-              :key="index"
-              :class="getColor(Number(item.abnormal))"
-              class="early"
-            >
+            <div v-for="(item, index) in earlyList"
+                 :key="index"
+                 :class="getColor(Number(item.abnormal))"
+                 class="early">
               <el-row>{{ item.name }}</el-row>
               <el-row>{{ item.value }}</el-row>
             </div>
           </div>
           <el-row>健康评估指标</el-row>
           <div class="early-data">
-            <el-col
-              v-for="(item, index) in healthList"
-              :key="index"
-              :span="8"
-              :class="getColor(item.value)"
-              class="early normal"
-            >
+            <el-col v-for="(item, index) in healthList"
+                    :key="index"
+                    :span="8"
+                    :class="getColor(item.value)"
+                    class="early normal">
               <el-row>{{ item.name }}</el-row>
               <el-row>{{ item.value }}</el-row>
             </el-col>
@@ -67,7 +64,8 @@
         </div>
       </el-col> -->
     </el-row>
-    <div v-if="type === 0" class="strategy-box">
+    <div v-if="type === 0"
+         class="strategy-box">
       <span>检修策略</span>
       <el-row v-html="strategy"></el-row>
     </div>
@@ -102,7 +100,10 @@ export default {
       strategy: '',
       explain:
         '&nbsp;&nbsp;&nbsp;&nbsp;孤立森林（Isolation Forest）模型通过构建多棵 𝑖𝑇𝑟𝑒𝑒 进行决策投票的方法进行异常检测。直观上来讲，可以观察到对于数据空间中数据分布密度较高的区域，需要对其进行多次切割才会停止，而那些密度很低的区域很容易较早便切割停到叶子结点了。因为异常点一般都是非常稀有的，所以在 𝑖𝑇𝑟𝑒𝑒 中会很快被划分到叶子节点，使用叶子节点到根节点的路径 ℎ(𝑥) 长度计算一条记录 𝑥 是否异常的概率。最后结合异常概率序列的时序信息，将过去及当前时刻的异常概率输入到循环神经网络的变种 GRU （Gate Recurrent Unit）网络中，从而预测未来时刻的异常概率。',
-      srcList: [require('@/assets/images/error1.png'), require('@/assets/images/error2.png')],
+      srcList: [
+        require('@/assets/images/error1.png'),
+        require('@/assets/images/error2.png'),
+      ],
       title: '根据历史行车数据模拟预警今日行车路线上可能的故障时刻',
       legendOne: ['储能系统健康值'],
       legendTwo: ['储能系统健康值', '非接触供电系统健康值', '总供电系统健康值'],
@@ -130,7 +131,8 @@ export default {
       time: null, // 定时器
       // errorTime: '', // 异常时刻
       explain1: '利用孤立森林模型求解供电系统状态监测及故障预警模型',
-      explain2: '利用孤立森林模型求解基于服役状态检测的车载储能装置检修策略模型',
+      explain2:
+        '利用孤立森林模型求解基于服役状态检测的车载储能装置检修策略模型',
       model1: '```AsciiMath\nc(n) = 2H(n-1) - (2(n-1))/n \n```',
       model2: '```AsciiMath\ns(x, n) = 2^(-(E(h(x)))/(c(n))) \n```',
     };
@@ -144,7 +146,8 @@ export default {
     if (Number(dataBase) === 1) {
       this.type = 0;
       // this.getStrategy();
-      this.strategy = '某个电芯温度比其他电芯高20℃，则该电芯内阻过大需要更换电池模组';
+      this.strategy =
+        '某个电芯温度比其他电芯高20℃，则该电芯内阻过大需要更换电池模组';
     } else {
       this.type = 1;
     }
@@ -177,12 +180,12 @@ export default {
       }, 1000);
     },
     covertDate(date) {
-      return `${date.getFullYear()}/${this.convertNum(date.getMonth() + 1)}/${this.convertNum(
-        date.getDate(),
-      )}
-         ${this.convertNum(date.getHours())}:${this.convertNum(
-  date.getMinutes(),
-)}:${this.convertNum(date.getSeconds())}`;
+      return `${date.getFullYear()}/${this.convertNum(
+        date.getMonth() + 1,
+      )}/${this.convertNum(date.getDate())}
+         ${this.convertNum(date.getHours())}:
+         ${this.convertNum(date.getMinutes())}:
+         ${this.convertNum(date.getSeconds())}`;
     },
     // 检修策略对应 Map
     // getStrategy() {

@@ -50,12 +50,12 @@ export default {
   methods: {
     next() {
       if (
-        (this.$route.path === '/modelPublish'
-          && this.$store.state.dataSelected)
-        || (this.$route.path === '/modelPublish/exampleSelect'
-          && this.$store.state.exampleSelected.index)
-        || (this.$route.path === '/modelPublish/selectModel'
-          && this.$store.state.modelSelected.index)
+        (this.$route.path === '/modelPublish' &&
+          this.$store.state.dataSelected) ||
+        (this.$route.path === '/modelPublish/exampleSelect' &&
+          this.$store.state.exampleSelected.index) ||
+        (this.$route.path === '/modelPublish/selectModel' &&
+          this.$store.state.modelSelected.index)
       ) {
         this.active += 1;
         this.$store.commit('setPublishActive', this.active);

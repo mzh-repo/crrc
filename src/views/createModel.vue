@@ -9,7 +9,9 @@
               输入模型名称
             </el-col>
             <el-col :span="16">
-              <el-input v-model="name" clearable placeholder="请输入模型名称"> </el-input>
+              <el-input v-model="name"
+                        clearable
+                        placeholder="请输入模型名称"> </el-input>
             </el-col>
           </el-row>
           <el-row class="input-box">
@@ -17,24 +19,27 @@
               选择适用场景
             </el-col>
             <el-col :span="16">
-              <el-select v-model="chooseType" placeholder="请选择适用场景" @change="validateForm">
-                <el-option
-                  v-for="(item, index) in sceneList"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.id"
-                >
+              <el-select v-model="chooseType"
+                         placeholder="请选择适用场景"
+                         @change="validateForm">
+                <el-option v-for="(item, index) in sceneList"
+                           :key="index"
+                           :label="item.name"
+                           :value="item.id">
                 </el-option>
               </el-select>
             </el-col>
           </el-row>
         </el-col>
         <el-col :span="12">
-          <el-col :span="4" class="text-title">
+          <el-col :span="4"
+                  class="text-title">
             模型简介
           </el-col>
           <el-col :span="20">
-            <el-input v-model="describe" type="textarea" placeholder="请输入模型简介"> </el-input>
+            <el-input v-model="describe"
+                      type="textarea"
+                      placeholder="请输入模型简介"> </el-input>
           </el-col>
         </el-col>
       </el-row>
@@ -44,13 +49,13 @@
             选择列车
           </el-col>
           <el-col :span="16">
-            <el-select v-model="chooseCar" placeholder="请选择列车" @change="validateForm">
-              <el-option
-                v-for="(item, index) in typeList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              >
+            <el-select v-model="chooseCar"
+                       placeholder="请选择列车"
+                       @change="validateForm">
+              <el-option v-for="(item, index) in typeList"
+                         :key="index"
+                         :label="item.name"
+                         :value="item.id">
               </el-option>
             </el-select>
           </el-col>
@@ -60,13 +65,13 @@
             选择线路
           </el-col>
           <el-col :span="20">
-            <el-select v-model="chooseWay" placeholder="请选择线路" @change="validateForm">
-              <el-option
-                v-for="(item, index) in wayList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              >
+            <el-select v-model="chooseWay"
+                       placeholder="请选择线路"
+                       @change="validateForm">
+              <el-option v-for="(item, index) in wayList"
+                         :key="index"
+                         :label="item.name"
+                         :value="item.id">
               </el-option>
             </el-select>
           </el-col>
@@ -77,17 +82,23 @@
           <el-col :span="10">
             <span>输入</span>
             <div class="input-area">
-              <el-table height="247px" :data="inputData" style="width: 100%">
+              <el-table height="247px"
+                        :data="inputData"
+                        style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-table :data="props.row.arr">
-                      <el-table-column label="输入项" prop="name"> </el-table-column>
-                      <el-table-column label="类型" prop="type"> </el-table-column>
+                      <el-table-column label="输入项"
+                                       prop="name"> </el-table-column>
+                      <el-table-column label="类型"
+                                       prop="type"> </el-table-column>
                     </el-table>
                   </template>
                 </el-table-column>
-                <el-table-column type="index" label="序号"> </el-table-column>
-                <el-table-column label="输入项分类" prop="name"> </el-table-column>
+                <el-table-column type="index"
+                                 label="序号"> </el-table-column>
+                <el-table-column label="输入项分类"
+                                 prop="name"> </el-table-column>
                 <!-- <el-table-column label="类型" prop="type"> </el-table-column>
                 <el-table-column align="right">
                   <template slot="header">
@@ -97,29 +108,34 @@
               </el-table>
             </div>
           </el-col>
-          <el-col :span="4" class="arrow-img">
+          <el-col :span="4"
+                  class="arrow-img">
             <img src="@/assets/images/arrow.png" />
           </el-col>
           <el-col :span="10">
             <span>输出</span>
             <div class="input-area">
-              <el-table height="247px" :data="outputData" style="width: 100%">
-                <el-table-column type="index" label="序号"> </el-table-column>
-                <el-table-column label="输出项" prop="name"> </el-table-column>
-                <el-table-column label="类型" prop="type"> </el-table-column>
+              <el-table height="247px"
+                        :data="outputData"
+                        style="width: 100%">
+                <el-table-column type="index"
+                                 label="序号"> </el-table-column>
+                <el-table-column label="输出项"
+                                 prop="name"> </el-table-column>
+                <el-table-column label="类型"
+                                 prop="type"> </el-table-column>
               </el-table>
             </div>
           </el-col>
         </el-row>
         <el-row class="input-title algorithm">请选择算法</el-row>
-        <el-row
-          class="alg-row"
-          v-for="(item, index) in algorithmList"
-          :key="index"
-          @click.native="setChoice(item)"
-        >
+        <el-row class="alg-row"
+                v-for="(item, index) in algorithmList"
+                :key="index"
+                @click.native="setChoice(item)">
           <el-col :span="6">
-            <div class="algorithm-container" :class="item.id === algorithmId ? 'active' : ''">
+            <div class="algorithm-container"
+                 :class="item.id === algorithmId ? 'active' : ''">
               <div class="algorithm-box">
                 <el-row>{{ item.name }}</el-row>
                 <el-row>模型: {{ item.model_name }}</el-row>
@@ -127,21 +143,27 @@
                 <el-row>使用框架: {{ item.frame_name }}</el-row>
                 <el-row>使用次数: {{ item.used_counter }}次</el-row>
                 <div class="tag">
-                  <img :src="getUrl(item.id)" alt="" />
+                  <img :src="getUrl(item.id)"
+                       alt="" />
                 </div>
-                <div v-if="item.id === algorithmId" class="choose">
-                  <img class="choose-img" src="@/assets/images/choiced.png" />
+                <div v-if="item.id === algorithmId"
+                     class="choose">
+                  <img class="choose-img"
+                       src="@/assets/images/choiced.png" />
                 </div>
-                <div v-else class="choose"></div>
+                <div v-else
+                     class="choose"></div>
               </div>
             </div>
           </el-col>
-          <el-col :span="18" class="algo-intro"> 算法简介: {{ item.introduction }} </el-col>
+          <el-col :span="18"
+                  class="algo-intro"> 算法简介: {{ item.introduction }} </el-col>
         </el-row>
       </template>
     </el-row>
     <el-row class="submit-btn">
-      <el-button type="primary" @click="onSubmit">确定</el-button>
+      <el-button type="primary"
+                 @click="onSubmit">确定</el-button>
     </el-row>
   </div>
 </template>
@@ -239,7 +261,11 @@ export default {
   },
   methods: {
     validateForm() {
-      if (this.chooseType !== '' && this.chooseCar !== '' && this.chooseWay !== '') {
+      if (
+        this.chooseType !== '' &&
+        this.chooseCar !== '' &&
+        this.chooseWay !== ''
+      ) {
         this.showInput = true;
         this.getAlgList();
       } else {
@@ -252,21 +278,29 @@ export default {
       });
     },
     getTrain() {
-      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
-        this.typeList = res;
-      });
+      this.$axios
+        .get(`/tag/train?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.typeList = res;
+        });
     },
     getRoute() {
-      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
-        this.wayList = res;
-      });
+      this.$axios
+        .get(`/tag/route?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.wayList = res;
+        });
     },
     getAlgList() {
-      this.$axios.get(`/algorithm/list?scene_id=${this.chooseType}`).then((res) => {
-        this.algorithmList = res;
-      });
       this.$axios
-        .get(`/model/columns?scene_id=${this.chooseType}&database_id=${this.databaseId}`)
+        .get(`/algorithm/list?scene_id=${this.chooseType}`)
+        .then((res) => {
+          this.algorithmList = res;
+        });
+      this.$axios
+        .get(
+          `/model/columns?scene_id=${this.chooseType}&database_id=${this.databaseId}`,
+        )
         .then((res) => {
           this.inputData[0].arr = res.input.ROUTE;
           this.inputData[1].arr = res.input.RUNNING;

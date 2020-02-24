@@ -5,32 +5,42 @@
       <h1>我的任务</h1>
       <div class="line"></div>
       <el-row>
-        <el-table :data="taskData" :header-row-style="{ color: '#333' }" style="width: 100%">
-          <el-table-column type="index" width="50" label="序号"> </el-table-column>
+        <el-table :data="taskData"
+                  :header-row-style="{ color: '#333' }"
+                  style="width: 100%">
+          <el-table-column type="index"
+                           width="50"
+                           label="序号"> </el-table-column>
           <template v-for="item in taskTagList">
-            <el-table-column :prop="item.prop" :label="item.label" :key="item.prop">
+            <el-table-column :prop="item.prop"
+                             :label="item.label"
+                             :key="item.prop">
             </el-table-column>
           </template>
-          <el-table-column fixed="right" label="强化训练" width="100">
+          <el-table-column fixed="right"
+                           label="强化训练"
+                           width="100">
             <template slot-scope="scope">
-              <el-button size="mini" type="primary" @click="handleTrain(scope.$index, scope.row)"
-                >强化训练</el-button
-              >
+              <el-button size="mini"
+                         type="primary"
+                         @click="handleTrain(scope.$index, scope.row)">强化训练</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-row>
       <el-row class="task-footer">
         共 {{ taskData.length }} 条
-        <el-button size="mini" type="primary" :loading="showAllLoading" @click="handleAll"
-          >执行全部</el-button
-        >
+        <el-button size="mini"
+                   type="primary"
+                   :loading="showAllLoading"
+                   @click="handleAll">执行全部</el-button>
       </el-row>
     </div>
     <div class="task sys-status">
       <h1>系统状态</h1>
       <el-row class="status-container">
-        <el-col v-for="(item, index) in statusList" :key="index">
+        <el-col v-for="(item, index) in statusList"
+                :key="index">
           <svg-icon :icon-class="item.icon" />
           <span class="value">{{ item.value }} </span>
           <span class="unit">{{ item.unit }}</span>
@@ -44,62 +54,66 @@
       <el-row class="filter">
         <el-form :inline="true">
           <template v-for="(item, index) in filterForm">
-            <el-form-item :key="index" :label="item.label">
-              <el-date-picker
-                v-if="item.type === 'time'"
-                v-model="item.value"
-                type="daterange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-              <el-select v-else v-model="item.value" :placeholder="'请选择' + item.label">
-                <el-option
-                  v-for="(i, j) in item.arr"
-                  :label="i.name"
-                  :key="j"
-                  :value="i.id"
-                ></el-option>
+            <el-form-item :key="index"
+                          :label="item.label">
+              <el-date-picker v-if="item.type === 'time'"
+                              v-model="item.value"
+                              type="daterange"
+                              range-separator="至"
+                              start-placeholder="开始日期"
+                              end-placeholder="结束日期"
+                              value-format="yyyy-MM-dd"></el-date-picker>
+              <el-select v-else
+                         v-model="item.value"
+                         :placeholder="'请选择' + item.label">
+                <el-option v-for="(i, j) in item.arr"
+                           :label="i.name"
+                           :key="j"
+                           :value="i.id"></el-option>
               </el-select>
             </el-form-item>
           </template>
           <el-form-item class="btn">
-            <el-button type="primary" @click="submitForm">筛选</el-button>
+            <el-button type="primary"
+                       @click="submitForm">筛选</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <div class="line"></div>
       <el-row>
-        <el-table
-          :data="instanceData"
-          :header-row-style="{ color: '#333' }"
-          height="288px"
-          style="width: 100%"
-        >
-          <el-table-column type="index" width="50" label="序号"> </el-table-column>
+        <el-table :data="instanceData"
+                  :header-row-style="{ color: '#333' }"
+                  height="288px"
+                  style="width: 100%">
+          <el-table-column type="index"
+                           width="50"
+                           label="序号"> </el-table-column>
           <template v-for="item in instanceTagList">
-            <el-table-column :prop="item.prop" :label="item.label" :key="item.prop">
+            <el-table-column :prop="item.prop"
+                             :label="item.label"
+                             :key="item.prop">
               <template slot-scope="scope">
                 <div v-if="item.prop === 'status'">
-                  <span v-if="scope.row.status === 1" class="train-text">训练中...</span>
+                  <span v-if="scope.row.status === 1"
+                        class="train-text">训练中...</span>
                   <span v-else>已完成</span>
                 </div>
-                <div
-                  v-else-if="item.prop === 'model_name'"
-                  class="limit-column"
-                  :title="scope.row[item.prop]"
-                >
+                <div v-else-if="item.prop === 'model_name'"
+                     class="limit-column"
+                     :title="scope.row[item.prop]">
                   {{ scope.row[item.prop] }}
                 </div>
                 <span v-else>{{ scope.row[item.prop] }}</span>
               </template>
             </el-table-column>
           </template>
-          <el-table-column fixed="right" label="操作" width="100">
+          <el-table-column fixed="right"
+                           label="操作"
+                           width="100">
             <template slot-scope="scope">
-              <div class="pre-btn" @click="goDetail(scope.row)">
+              <div class="pre-btn"
+                   @click="goDetail(scope.row)">
                 <svg-icon icon-class="preview" />查看实例
               </div>
             </template>
@@ -107,14 +121,12 @@
         </el-table>
       </el-row>
       <el-row class="task-footer">
-        <el-pagination
-          background
-          layout="total, prev, pager, next"
-          :current-page.sync="page"
-          :page-size="pageSize"
-          :total="total"
-          @current-change="handleChange"
-        >
+        <el-pagination background
+                       layout="total, prev, pager, next"
+                       :current-page.sync="page"
+                       :page-size="pageSize"
+                       :total="total"
+                       @current-change="handleChange">
         </el-pagination>
       </el-row>
     </div>
@@ -391,23 +403,29 @@ export default {
       });
     },
     getTrain() {
-      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
-        this.filterForm[1].arr = res;
-      });
+      this.$axios
+        .get(`/tag/train?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.filterForm[1].arr = res;
+        });
     },
     getRoute() {
-      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
-        this.filterForm[2].arr = res;
-      });
+      this.$axios
+        .get(`/tag/route?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.filterForm[2].arr = res;
+        });
     },
     getSysStatus() {
-      this.$axios.get(`/system/status?database_id=${this.databaseId}`).then((res) => {
-        this.statusList[0].value = res.model_train_finished;
-        this.statusList[1].value = res.model_training;
-        this.statusList[2].value = res.data_used_number;
-        this.statusList[3].value = res.memory_used;
-        this.statusList[4].value = res.resource_used;
-      });
+      this.$axios
+        .get(`/system/status?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.statusList[0].value = res.model_train_finished;
+          this.statusList[1].value = res.model_training;
+          this.statusList[2].value = res.data_used_number;
+          this.statusList[3].value = res.memory_used;
+          this.statusList[4].value = res.resource_used;
+        });
     },
     goDetail(row) {
       if (row.status === 1) {
@@ -463,10 +481,12 @@ export default {
           });
         }
       });
-      this.$axios.post(`/model/instance/list?database_id=${this.databaseId}`, obj).then((res) => {
-        this.instanceData = res.data_list;
-        this.total = res.total_number;
-      });
+      this.$axios
+        .post(`/model/instance/list?database_id=${this.databaseId}`, obj)
+        .then((res) => {
+          this.instanceData = res.data_list;
+          this.total = res.total_number;
+        });
     },
   },
 };

@@ -8,13 +8,12 @@
             选择列车
           </el-col>
           <el-col :span="16">
-            <el-select v-model="chooseCar" placeholder="请选择列车">
-              <el-option
-                v-for="(item, index) in typeList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              >
+            <el-select v-model="chooseCar"
+                       placeholder="请选择列车">
+              <el-option v-for="(item, index) in typeList"
+                         :key="index"
+                         :label="item.name"
+                         :value="item.id">
               </el-option>
             </el-select>
           </el-col>
@@ -24,50 +23,67 @@
             选择线路
           </el-col>
           <el-col :span="20">
-            <el-select v-model="chooseWay" placeholder="请选择线路">
-              <el-option
-                v-for="(item, index) in wayList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              >
+            <el-select v-model="chooseWay"
+                       placeholder="请选择线路">
+              <el-option v-for="(item, index) in wayList"
+                         :key="index"
+                         :label="item.name"
+                         :value="item.id">
               </el-option>
             </el-select>
           </el-col>
         </el-col>
       </el-row>
       <label class="file-label">选择文件</label>
-      <el-row v-if="fileStatus === 0" type="flex" class="file-box center" align="middle">
+      <el-row v-if="fileStatus === 0"
+              type="flex"
+              class="file-box center"
+              align="middle">
         <svg-icon icon-class="绿色加号" />
         <div class="upload">上传文件</div>
-        <input type="file" class="input-file" accept=".csv" @change="fileChange" />
+        <input type="file"
+               class="input-file"
+               accept=".csv"
+               @change="fileChange" />
       </el-row>
-      <el-row v-if="fileStatus === 1" type="flex" class="start show" align="middle">
-        <svg-icon icon-class="数据导入-文件" class="import-file" />
+      <el-row v-if="fileStatus === 1"
+              type="flex"
+              class="start show"
+              align="middle">
+        <svg-icon icon-class="数据导入-文件"
+                  class="import-file" />
         <div class="delete">{{ file[0].name }}</div>
-        <div @click="deleteFile()" class="import-delete">
+        <div @click="deleteFile()"
+             class="import-delete">
           <svg-icon icon-class="数据导入-取消" />
         </div>
       </el-row>
-      <label v-if="fileStatus === 1" class="file-label">数据集配置</label>
-      <div v-if="fileStatus === 1" class="data-set">
-        <compound-input
-          v-for="(item, index) in array"
-          :title="item"
-          :key="item"
-          :index="index"
-          :select="sqlSettings[index]"
-          :options="compoundInput"
-          @selected="handleSelectChange"
-        />
+      <label v-if="fileStatus === 1"
+             class="file-label">数据集配置</label>
+      <div v-if="fileStatus === 1"
+           class="data-set">
+        <compound-input v-for="(item, index) in array"
+                        :title="item"
+                        :key="item"
+                        :index="index"
+                        :select="sqlSettings[index]"
+                        :options="compoundInput"
+                        @selected="handleSelectChange" />
       </div>
-      <el-row v-if="fileStatus === 1" class="db-name" type="flex" justify="start" align="middle">
+      <el-row v-if="fileStatus === 1"
+              class="db-name"
+              type="flex"
+              justify="start"
+              align="middle">
         <label>数据集名称</label>
-        <el-input v-model="DBName" placeholder=""></el-input>
+        <el-input v-model="DBName"
+                  placeholder=""></el-input>
       </el-row>
     </el-container>
-    <el-row v-if="fileStatus === 1" class="submit-btn">
-      <el-button type="primary" @click="submit">导入数据</el-button>
+    <el-row v-if="fileStatus === 1"
+            class="submit-btn">
+      <el-button type="primary"
+                 @click="submit">导入数据</el-button>
     </el-row>
   </div>
 </template>
@@ -109,14 +125,18 @@ export default {
   },
   methods: {
     getTrain() {
-      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
-        this.typeList = res;
-      });
+      this.$axios
+        .get(`/tag/train?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.typeList = res;
+        });
     },
     getRoute() {
-      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
-        this.wayList = res;
-      });
+      this.$axios
+        .get(`/tag/route?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.wayList = res;
+        });
     },
     initData() {
       this.$axios.get('/database/list').then((res) => {

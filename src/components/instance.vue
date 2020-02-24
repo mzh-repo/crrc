@@ -170,7 +170,7 @@ export default {
   &.active {
     opacity: 1;
     cursor: pointer;
-    box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.356);
+    box-shadow: 0 8px 6px 0 rgba(27, 22, 22, 0.356);
   }
 }
 
@@ -261,7 +261,6 @@ export default {
 .bottom {
   width: 390px;
   position: absolute;
-  bottom: 0;
   font-size: 12px;
   color: #999;
   bottom: 12px;

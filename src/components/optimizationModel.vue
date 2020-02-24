@@ -58,7 +58,7 @@ const imgUrl = [
   require('../assets/images/keras.png'),
   require('../assets/images/tensorflow.png'),
   require('../assets/images/sklearn.png'),
-  require('../assets/images/keras.png')
+  require('../assets/images/keras.png'),
   /* eslint-enable */
 ];
 

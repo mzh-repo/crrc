@@ -1,7 +1,8 @@
 <template>
   <el-container class="report-container">
     <div class="title">
-      <el-button type="primary" @click="$router.go(-1)">返回上一页</el-button>
+      <el-button type="primary"
+                 @click="$router.go(-1)">返回上一页</el-button>
       实例报告
     </div>
     <el-row class="main-title">
@@ -14,31 +15,28 @@
       <!-- <el-col :span="6"> 部署实例总次数: {{ reportData.total }} 次 </el-col> -->
     </el-row>
     <el-row class="describe"> 简介: {{ model.introduction }} </el-row>
-    <el-row :gutter="16" class="chart-report">
+    <el-row :gutter="16"
+            class="chart-report">
       <el-col :span="12">
         <div class="chart">
-          <bar-chart
-            title="近期训练"
-            :dataSet="trainData"
-            :tooltipList="['训练Loss', '测试Loss']"
-            :showTip="true"
-            :showXAxis="false"
-            xName="id"
-            yName="Loss"
-          />
+          <bar-chart title="近期训练"
+                     :dataSet="trainData"
+                     :tooltipList="['训练Loss', '测试Loss']"
+                     :showTip="true"
+                     :showXAxis="false"
+                     xName="id"
+                     yName="Loss" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart">
-          <bar-chart
-            title="近期应用"
-            :colors="colors"
-            :dataSet="appData"
-            :showTip="true"
-            :showXAxis="false"
-            xName="id"
-            yName="Loss"
-          />
+          <bar-chart title="近期应用"
+                     :colors="colors"
+                     :dataSet="appData"
+                     :showTip="true"
+                     :showXAxis="false"
+                     xName="id"
+                     yName="Loss" />
         </div>
       </el-col>
     </el-row>

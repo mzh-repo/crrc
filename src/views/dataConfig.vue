@@ -5,26 +5,21 @@
       <el-row class="title">
         请选择数据集配置
       </el-row>
-      <el-form :inline="true" class="static-form">
+      <el-form :inline="true"
+               class="static-form">
         <template v-for="(item, index) in staticForm">
-          <el-form-item :key="index" :label="item.label">
-            <!-- <el-date-picker
-              v-if="item.type === 'time'"
-              v-model="item.value"
-              type="datetime"
-              value-format="yyyy-MM-dd hh:mm:ss"
-              :placeholder="'请选择' + item.label"
-            ></el-date-picker> -->
-            <el-date-picker
-              v-if="item.type === 'time'"
-              v-model="item.value"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
-            <el-input v-else v-model="item.value" disabled> </el-input>
+          <el-form-item :key="index"
+                        :label="item.label">
+            <el-date-picker v-if="item.type === 'time'"
+                            v-model="item.value"
+                            type="daterange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            value-format="yyyy-MM-dd"></el-date-picker>
+            <el-input v-else
+                      v-model="item.value"
+                      disabled> </el-input>
           </el-form-item>
         </template>
       </el-form>
@@ -32,16 +27,22 @@
       <el-row class="title resource">
         请选择训练资源配置
       </el-row>
-      <el-form :inline="true" class="static-form">
-        <el-form-item v-for="(item, index) in configList" :key="index" :label="item.title">
+      <el-form :inline="true"
+               class="static-form">
+        <el-form-item v-for="(item, index) in configList"
+                      :key="index"
+                      :label="item.title">
           <el-select v-model="item.value">
-            <el-option v-for="(i, j) in item.arr" :value="i" :key="j"></el-option>
+            <el-option v-for="(i, j) in item.arr"
+                       :value="i"
+                       :key="j"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
     </div>
     <el-row class="train-btn">
-      <el-button type="primary" @click="onSubmit">提交训练</el-button>
+      <el-button type="primary"
+                 @click="onSubmit">提交训练</el-button>
     </el-row>
   </div>
 </template>
@@ -65,11 +66,6 @@ export default {
           value: '',
           type: 'time',
         },
-        // {
-        //   label: '结束时间',
-        //   value: '',
-        //   type: 'time',
-        // },
       ],
       staticNumber: 203,
       databaseId: 1,
@@ -123,38 +119,29 @@ export default {
       });
     },
     getTrain() {
-      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
-        this.filterForm[1].arr = res;
-      });
+      this.$axios
+        .get(`/tag/train?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.filterForm[1].arr = res;
+        });
     },
     getRoute() {
-      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
-        this.filterForm[2].arr = res;
-      });
+      this.$axios
+        .get(`/tag/route?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.filterForm[2].arr = res;
+        });
     },
-    // newModel() {
-    //   this.$router.push('./newModel');
-    // },
     handleCurrentChange(val) {
       this.chooseId = val.id;
       this.staticForm[0].value = val.car_type;
       this.staticForm[1].value = val.route;
     },
     onSubmit() {
-      // if (this.staticForm[2].value === '') {
-      //   this.$message.error('请选择开始时间');
-      //   return;
-      // }
-      // if (this.staticForm[3].value === '') {
-      //   this.$message.error('请选择截止日期');
-      //   return;
-      // }
-      // if (this.staticForm[2].value > this.staticForm[3].value) {
-      //   this.$message.error('开始时间要晚于截止时间');
-      //   return;
-      // }
-      // TODO： 数据起止时间
-      // TODO
+      if (this.staticForm[2].value === '') {
+        this.$message.error('请选择数据时间范围');
+        return;
+      }
       const obj = {
         model_id: this.chooseId,
         date_lower_bound: this.staticForm[2].value[0],
@@ -179,15 +166,8 @@ export default {
       });
     },
     getModel() {
-      const query = `/model/list?database_id=${this.databaseId}&page=${this.page - 1}&page_size=${
-        this.pageSize
-      }`;
-      // if (this.input !== '') {
-      //   query += `&keyword=${this.input}`;
-      // }
-      // if (this.choose !== '') {
-      //   query += `&status=${this.choose}`;
-      // }
+      const query = `/model/list?database_id=${this.databaseId}&page=${this
+        .page - 1}&page_size=${this.pageSize}`;
       this.$axios.get(query).then((res) => {
         this.modelData = res.data_list;
         this.total = res.total_number;

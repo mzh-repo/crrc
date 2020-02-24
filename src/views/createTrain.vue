@@ -9,19 +9,20 @@
       <el-row class="filter">
         <el-form :inline="true">
           <template v-for="(item, index) in filterForm">
-            <el-form-item :key="index" :label="item.label">
-              <el-select v-model="item.value" :placeholder="'请选择' + item.label">
-                <el-option
-                  v-for="(i, j) in item.arr"
-                  :label="i.name"
-                  :key="j"
-                  :value="i.id"
-                ></el-option>
+            <el-form-item :key="index"
+                          :label="item.label">
+              <el-select v-model="item.value"
+                         :placeholder="'请选择' + item.label">
+                <el-option v-for="(i, j) in item.arr"
+                           :label="i.name"
+                           :key="j"
+                           :value="i.id"></el-option>
               </el-select>
             </el-form-item>
           </template>
           <el-form-item>
-            <el-button type="primary" @click="submitForm">筛选</el-button>
+            <el-button type="primary"
+                       @click="submitForm">筛选</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
@@ -29,28 +30,29 @@
       <div class="model">
         <div class="line"></div>
         <el-row>
-          <el-table
-            :data="modelData"
-            :header-row-style="{ color: '#333' }"
-            height="576px"
-            style="width: 100%"
-            highlight-current-row
-            @current-change="handleCurrentChange"
-          >
-            <el-table-column width="50" label="选择">
+          <el-table :data="modelData"
+                    :header-row-style="{ color: '#333' }"
+                    height="576px"
+                    style="width: 100%"
+                    highlight-current-row
+                    @current-change="handleCurrentChange">
+            <el-table-column width="50"
+                             label="选择">
               <template slot-scope="scope">
                 <svg-icon :icon-class="scope.row.id === chooseId ? 'choose' : 'unchoose'" />
               </template>
             </el-table-column>
-            <el-table-column type="index" width="50" label="序号"> </el-table-column>
+            <el-table-column type="index"
+                             width="50"
+                             label="序号"> </el-table-column>
             <template v-for="item in modelTagList">
-              <el-table-column :prop="item.prop" :label="item.label" :key="item.prop">
+              <el-table-column :prop="item.prop"
+                               :label="item.label"
+                               :key="item.prop">
                 <template slot-scope="scope">
-                  <div
-                    v-if="item.prop === 'name' || item.prop === 'introduction'"
-                    class="limit-column"
-                    :title="scope.row[item.prop]"
-                  >
+                  <div v-if="item.prop === 'name' || item.prop === 'introduction'"
+                       class="limit-column"
+                       :title="scope.row[item.prop]">
                     {{ scope.row[item.prop] }}
                   </div>
                   <span v-else>{{ scope.row[item.prop] }}</span>
@@ -60,14 +62,12 @@
           </el-table>
         </el-row>
         <el-row class="task-footer">
-          <el-pagination
-            background
-            layout="total, prev, pager, next"
-            :current-page.sync="page"
-            :page-size="pageSize"
-            :total="total"
-            @current-change="handleChange"
-          >
+          <el-pagination background
+                         layout="total, prev, pager, next"
+                         :current-page.sync="page"
+                         :page-size="pageSize"
+                         :total="total"
+                         @current-change="handleChange">
           </el-pagination>
         </el-row>
       </div>
@@ -95,7 +95,8 @@
       </template> -->
     </div>
     <el-row class="train-btn">
-      <el-button type="primary" @click="onSubmit">下一步</el-button>
+      <el-button type="primary"
+                 @click="onSubmit">下一步</el-button>
     </el-row>
   </div>
 </template>
@@ -170,14 +171,18 @@ export default {
       });
     },
     getTrain() {
-      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
-        this.filterForm[1].arr = res;
-      });
+      this.$axios
+        .get(`/tag/train?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.filterForm[1].arr = res;
+        });
     },
     getRoute() {
-      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
-        this.filterForm[2].arr = res;
-      });
+      this.$axios
+        .get(`/tag/route?database_id=${this.databaseId}`)
+        .then((res) => {
+          this.filterForm[2].arr = res;
+        });
     },
     // newModel() {
     //   this.$router.push('./newModel');
@@ -216,9 +221,8 @@ export default {
       this.$router.push('./trainConfig');
     },
     getModel() {
-      let query = `/model/list?database_id=${this.databaseId}&page=${this.page - 1}&page_size=${
-        this.pageSize
-      }`;
+      let query = `/model/list?database_id=${this.databaseId}&page=${this.page
+        - 1}&page_size=${this.pageSize}`;
       this.filterForm.forEach((item) => {
         if (item.value !== '') {
           query += `&${item.prop}= ${item.value}`;

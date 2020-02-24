@@ -102,9 +102,9 @@ export default {
       this.loginTime = `${date.getFullYear()}/${this.convertNum(
         date.getMonth() + 1,
       )}/${this.convertNum(date.getDate())}
-         ${this.convertNum(date.getHours())}:${this.convertNum(
-  date.getMinutes(),
-)}:${this.convertNum(date.getSeconds())}`;
+         ${this.convertNum(date.getHours())}:
+         ${this.convertNum(date.getMinutes())}:
+         ${this.convertNum(date.getSeconds())}`;
     },
     convertNum(val) {
       if (val >= 10) {

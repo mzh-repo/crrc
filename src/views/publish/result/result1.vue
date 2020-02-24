@@ -1,22 +1,29 @@
 <template>
   <div>
     <el-row class="train-btn">
-      <el-button type="primary" @click="$router.push('/upload')">强化训练</el-button>
+      <el-button type="primary"
+                 @click="$router.push('/upload')">强化训练</el-button>
     </el-row>
     <el-row class="result-tab">
-      <el-tabs v-model="resultName" @tab-click="chooseResult">
+      <el-tabs v-model="resultName"
+               @tab-click="chooseResult">
         <template v-for="(item, index) in resultList">
-          <el-tab-pane :key="index" :label="item.name" :name="item.name"> </el-tab-pane>
+          <el-tab-pane :key="index"
+                       :label="item.name"
+                       :name="item.name"> </el-tab-pane>
         </template>
       </el-tabs>
     </el-row>
     <template v-if="resultName !== '感应线圈布署策略'">
-      <el-row :gutter="19" class="limit-container">
+      <el-row :gutter="19"
+              class="limit-container">
         <el-col :span="12">
           <div class="limit-box">
             <el-col :span="24">
               <el-row>约束条件</el-row>
-              <el-row v-for="(item, index) in limitList" :key="index" class="limit-item">
+              <el-row v-for="(item, index) in limitList"
+                      :key="index"
+                      class="limit-item">
                 <el-col :span="20">{{ item }}</el-col>
                 <el-col :span="4">
                   <svg-icon icon-class="满足约束条件" />
@@ -25,8 +32,11 @@
             </el-col>
           </div>
         </el-col>
-        <el-col v-if="resultName === '列车系统配置成本最优'" :span="12">
-          <el-row v-for="(item, index) in configList" :key="index" class="grid-other">
+        <el-col v-if="resultName === '列车系统配置成本最优'"
+                :span="12">
+          <el-row v-for="(item, index) in configList"
+                  :key="index"
+                  class="grid-other">
             <el-row class="grid-tag">
               <el-col>
                 <el-tag>{{ item.tag }}</el-tag>
@@ -35,11 +45,15 @@
                 {{ item.name }}
               </el-col>
             </el-row>
-            <el-row class="grid-source" v-html="item.source"> </el-row>
+            <el-row class="grid-source"
+                    v-html="item.source"> </el-row>
           </el-row>
         </el-col>
-        <el-col v-else :span="12">
-          <el-row v-for="(item, index) in configListOther" :key="index" class="grid-other">
+        <el-col v-else
+                :span="12">
+          <el-row v-for="(item, index) in configListOther"
+                  :key="index"
+                  class="grid-other">
             <el-row class="grid-tag">
               <el-col>
                 <el-tag>{{ item.tag }}</el-tag>
@@ -48,7 +62,8 @@
                 {{ item.name }}
               </el-col>
             </el-row>
-            <el-row class="grid-source" v-html="item.source"> </el-row>
+            <el-row class="grid-source"
+                    v-html="item.source"> </el-row>
           </el-row>
         </el-col>
       </el-row>
@@ -61,15 +76,17 @@
     <template v-else>
       <el-row :gutter="16">
         <el-col :span="12">
-          <el-table height="336" :data="energyData" border style="width: 100%">
-            <el-table-column type="index" width="50"> </el-table-column>
+          <el-table height="336"
+                    :data="energyData"
+                    border
+                    style="width: 100%">
+            <el-table-column type="index"
+                             width="50"> </el-table-column>
             <template v-for="(item, index) in tagList">
-              <el-table-column
-                :key="index"
-                :prop="item.prop"
-                :label="item.name"
-                :width="item.prop === 'area' ? '300px' : 'auto'"
-              ></el-table-column>
+              <el-table-column :key="index"
+                               :prop="item.prop"
+                               :label="item.name"
+                               :width="item.prop === 'area' ? '300px' : 'auto'"></el-table-column>
             </template>
           </el-table>
         </el-col>
@@ -80,15 +97,21 @@
         </el-col>
       </el-row>
     </template>
-    <el-row :gutter="19" class="chart-container chart-1">
+    <el-row :gutter="19"
+            class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line title="手柄级位" :yArea="yArea" :lineData="lineData.force" chartType="precit" />
+          <mzh-line title="手柄级位"
+                    :yArea="yArea"
+                    :lineData="lineData.force"
+                    chartType="precit" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <power-line chartType="precit" title="能耗kW·h" :lineData="lineData.power" />
+          <power-line chartType="precit"
+                      title="能耗kW·h"
+                      :lineData="lineData.power" />
         </div>
       </el-col>
     </el-row>
@@ -99,28 +122,31 @@
       <el-image :src="srcList[0]"
                 :preview-src-list="[srcList[0]]" />
     </el-row> -->
-    <el-row id="scroll-1" style="margin-top: 30px">
+    <el-row id="scroll-1"
+            style="margin-top: 30px">
       <!-- <el-button type="primary"
                  @click="goStatics">查看统计信息</el-button> -->
       <el-button @click="goDynastic">实时运行图表</el-button>
       <el-button @click="goCase">查看实例报告</el-button>
     </el-row>
     <template v-if="showDynastic">
-      <move-train :current="current" :lineType="type === 2 ? 0 : 1" />
-      <el-row :gutter="19" class="chart-container">
+      <move-train :current="current"
+                  :lineType="type === 2 ? 0 : 1" />
+      <el-row :gutter="19"
+              class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <mzh-line
-              chartType="precit"
-              title="手柄级位(预测)"
-              :yArea="yArea"
-              :lineData="dynasticDataOne"
-            />
+            <mzh-line chartType="precit"
+                      title="手柄级位(预测)"
+                      :yArea="yArea"
+                      :lineData="dynasticDataOne" />
           </div>
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <power-line chartType="precit" title="能耗(预测) kW·h" :lineData="dynasticDataTwo" />
+            <power-line chartType="precit"
+                        title="能耗(预测) kW·h"
+                        :lineData="dynasticDataTwo" />
           </div>
         </el-col>
       </el-row>
@@ -174,7 +200,11 @@ export default {
       },
       type: 3, // 2 间歇式, 3 非接触式
       time: [],
-      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
+      legend: [
+        '预测能耗(预测级位)',
+        '实际能耗(实际级位)',
+        '预测能耗(实际级位)',
+      ],
       legendone: ['预测', '实际'],
       yArea: [],
       dataSetId: 1,
@@ -196,7 +226,8 @@ export default {
         },
         {
           tag: '成本最优结果',
-          source: '运行能耗为：<strong>17.45</strong> kwh<br/> 成本为：<strong>293</strong> 万元',
+          source:
+            '运行能耗为：<strong>17.45</strong> kwh<br/> 成本为：<strong>293</strong> 万元',
         },
       ],
       configListOther: [
@@ -209,7 +240,8 @@ export default {
         },
         {
           tag: '能耗最优结果',
-          source: '运行能耗为：<strong>14.36</strong> kwh<br/> 成本为：<strong>315 </strong> 万元',
+          source:
+            '运行能耗为：<strong>14.36</strong> kwh<br/> 成本为：<strong>315 </strong> 万元',
         },
       ],
       tagList: [
@@ -361,7 +393,8 @@ export default {
         },
         {
           tag: '成本最优结果',
-          source: '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>245</strong> 万元',
+          source:
+            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>245</strong> 万元',
         },
       ];
       this.configListOther = [
@@ -393,14 +426,18 @@ export default {
       this.showDynastic = false;
       this.showStatics = true;
       this.$nextTick(() => {
-        document.getElementById('scroll-1').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document
+          .getElementById('scroll-1')
+          .scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goDynastic() {
       this.showStatics = false;
       this.showDynastic = true;
       this.$nextTick(() => {
-        document.getElementById('scroll-1').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document
+          .getElementById('scroll-1')
+          .scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goCase() {
@@ -428,7 +465,11 @@ export default {
     getData() {
       // this.dataSetId = this.$store.state.reportData.dataSetId;
       this.$axios
-        .get(`form/graph?model_type=${this.type === 2 ? '4' : '5'}&dataset_id=${this.dataSetId}`)
+        .get(
+          `form/graph?model_type=${this.type === 2 ? '4' : '5'}&dataset_id=${
+            this.dataSetId
+          }`,
+        )
         .then((res) => {
           if (this.type === 3) {
             this.lineData.battery = res.battery;
@@ -454,14 +495,20 @@ export default {
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
             };
             const powerData = {
-              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
@@ -471,14 +518,20 @@ export default {
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
             };
             const powerData = {
-              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],

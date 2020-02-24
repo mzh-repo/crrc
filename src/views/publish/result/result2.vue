@@ -2,40 +2,55 @@
   <div>
     <template v-if="resultType === 2">
       <el-row class="result-tab">
-        <el-tabs v-model="resultId" @tab-click="chooseResult">
+        <el-tabs v-model="resultId"
+                 @tab-click="chooseResult">
           <template v-for="(item, index) in resultList">
-            <el-tab-pane :key="index" :label="item.name" :name="item.id.toString()"> </el-tab-pane>
+            <el-tab-pane :key="index"
+                         :label="item.name"
+                         :name="item.id.toString()"> </el-tab-pane>
           </template>
         </el-tabs>
       </el-row>
-      <el-row v-if="type === 2" class="progress">
+      <el-row v-if="type === 2"
+              class="progress">
         <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mR</el-col>
-        <el-col :span="8" class="percentage-num">
+        <el-col :span="8"
+                class="percentage-num">
           电池额定容量: &nbsp;
-          <el-progress :percentage="percent[1]" :stroke-width="18"> </el-progress>
+          <el-progress :percentage="percent[1]"
+                       :stroke-width="18"> </el-progress>
         </el-col>
-        <el-col :span="8" class="percentage-num">
+        <el-col :span="8"
+                class="percentage-num">
           电容额定容量: &nbsp;
-          <el-progress :percentage="percent[2]" :stroke-width="18"> </el-progress>
+          <el-progress :percentage="percent[2]"
+                       :stroke-width="18"> </el-progress>
         </el-col>
       </el-row>
-      <el-row v-else class="progress">
+      <el-row v-else
+              class="progress">
         <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mR</el-col>
-        <el-col :span="8" class="percentage-num">
+        <el-col :span="8"
+                class="percentage-num">
           电池额定容量: &nbsp;
-          <el-progress :percentage="percent[1]" :stroke-width="18"> </el-progress>
+          <el-progress :percentage="percent[1]"
+                       :stroke-width="18"> </el-progress>
         </el-col>
       </el-row>
       <el-row class="tips">
         预测能耗为<span> {{ precit2 }} </span>kwh
-        <el-button type="primary" @click="$router.push('/upload')">强化训练</el-button>
+        <el-button type="primary"
+                   @click="$router.push('/upload')">强化训练</el-button>
       </el-row>
     </template>
     <template v-else>
       <el-row class="result-tab">
-        <el-tabs v-model="resultName" @tab-click="chooseResult">
+        <el-tabs v-model="resultName"
+                 @tab-click="chooseResult">
           <template v-for="(item, index) in resultList">
-            <el-tab-pane :key="index" :label="item.name" :name="item.name"> </el-tab-pane>
+            <el-tab-pane :key="index"
+                         :label="item.name"
+                         :name="item.name"> </el-tab-pane>
           </template>
         </el-tabs>
       </el-row>
@@ -43,28 +58,26 @@
         预测{{ tip }}: <span>{{ precit }}</span> {{ tip == '时间' ? 's' : 'kwh' }}, &nbsp;&nbsp;
         实际{{ tip }}: <span>{{ actual }}</span> {{ tip == '时间' ? 's' : 'kwh' }}, &nbsp;&nbsp;
         预测{{ tip }}为实际<span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
-        <el-button type="primary" @click="$router.push('/upload')">强化训练</el-button>
+        <el-button type="primary"
+                   @click="$router.push('/upload')">强化训练</el-button>
       </el-row>
     </template>
-    <el-row :gutter="19" class="chart-container chart-1">
+    <el-row :gutter="19"
+            class="chart-container chart-1">
       <el-col :span="12">
         <div class="chart-box">
-          <mzh-line
-            title="手柄级位"
-            :yArea="yArea"
-            :lineData="lineData.force"
-            :chartType="resultType === 2 ? 'precit' : ''"
-          />
+          <mzh-line title="手柄级位"
+                    :yArea="yArea"
+                    :lineData="lineData.force"
+                    :chartType="resultType === 2 ? 'precit' : ''" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <power-line
-            title="能耗 kW·h"
-            :legend="legend"
-            :lineData="lineData.power"
-            :chartType="resultType === 2 ? 'precit' : ''"
-          />
+          <power-line title="能耗 kW·h"
+                      :legend="legend"
+                      :lineData="lineData.power"
+                      :chartType="resultType === 2 ? 'precit' : ''" />
         </div>
       </el-col>
     </el-row>
@@ -94,31 +107,30 @@
                   :preview-src-list="[srcList2[0]]" />
       </el-row>
     </template> -->
-    <el-button id="scroll" @click="goDynastic">实时运行图表</el-button>
+    <el-button id="scroll"
+               @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>
     <template v-if="showDynastic">
       <template v-if="showAgain">
-        <move-train :current="current" :lineType="type === 2 ? 0 : 1" />
+        <move-train :current="current"
+                    :lineType="type === 2 ? 0 : 1" />
       </template>
-      <el-row :gutter="19" class="chart-container">
+      <el-row :gutter="19"
+              class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <mzh-line
-              title="手柄级位(预测)"
-              :yArea="yArea"
-              :lineData="dynasticDataOne"
-              :chartType="resultType === 2 ? 'precit' : ''"
-            />
+            <mzh-line title="手柄级位(预测)"
+                      :yArea="yArea"
+                      :lineData="dynasticDataOne"
+                      :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <power-line
-              title="能耗(预测) kW·h"
-              :legend="legend"
-              :lineData="dynasticDataTwo"
-              :chartType="resultType === 2 ? 'precit' : ''"
-            />
+            <power-line title="能耗(预测) kW·h"
+                        :legend="legend"
+                        :lineData="dynasticDataTwo"
+                        :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
       </el-row>
@@ -161,7 +173,10 @@ export default {
       // energy: 10,
       explain1:
         '&nbsp;&nbsp;&nbsp;&nbsp;对多目标优化问题设计函数映射并使用LSTM（Long Short Term Memory Network）模型求解列车运行过程多目标方程函数：定义为每个时刻 𝑡 的信息状态，每个时刻的信息状态包含该时刻下的驾驶信息和环境信息，即 = [驾驶信息, 环境信息]，定义一个列车信息序列为，这个列车信息序列包括列车前 𝑙 时刻内的信息状态。LSTM模型解决序列相关的问题，其特别之处是其输入不仅仅考虑了当前时刻的输入，也考虑了上一时刻的输出，从而捕获到了序列之间的关联信息。它通过增加多一个单元状态解决了普通 RNN 无法捕获长期依赖的问题，而且巧妙地提出了遗忘门办法来对长期单元状态进行控制，将重要特征保留下来，保证了在长期传播的过程中不会丢失数据中重要的时序信息。',
-      srcList1: [require('@/assets/images/model1.png'), require('@/assets/images/model2.png')],
+      srcList1: [
+        require('@/assets/images/model1.png'),
+        require('@/assets/images/model2.png'),
+      ],
       explain2:
         '&nbsp;&nbsp;&nbsp;&nbsp;基于多目标优化列车运行控制模型，使用长短期记忆网络，修改数据预处理部分，对劣化条件下的静态和动态车载储能系统数据进行参数化。其中：将静态劣化条件下的储能系统数据参数化为 𝑊；将动态劣化条件下的储能系统数据参数化为 𝑄。在列车运行控制模型的基础上加入劣化条件，将储能系统中劣化条件下的静态与动态数据结合输入到长短期记忆网络中，可以使得网络模型更加有效地捕获到其运行策略中与劣化储能系统相关的状态信息，以及长短期变化依赖，更具鲁棒性。',
       srcList2: [require('@/assets/images/model3.png')],
@@ -184,7 +199,11 @@ export default {
       type: 3, // 2 间歇式, 3 非接触式
       time: [],
       timer: [],
-      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
+      legend: [
+        '预测能耗(预测级位)',
+        '实际能耗(实际级位)',
+        '预测能耗(实际级位)',
+      ],
       resultName: '最佳能耗',
       resultId: '1', // 劣化tab 初始值   activeTb must be string
       resultList: [
@@ -237,7 +256,9 @@ export default {
     goDynastic() {
       this.showDynastic = true;
       this.$nextTick(() => {
-        document.getElementById('scroll').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document
+          .getElementById('scroll')
+          .scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goCase() {
@@ -248,11 +269,17 @@ export default {
       // 劣化对应的结果集
       if (this.resultType === 1) {
         this.$axios
-          .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
+          .get(
+            `form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`,
+          )
           .then((res) => {
             this.dataSource = res;
-            this.actual = Number(res.energy_consumption.data_list.pop()).toFixed(2);
-            this.precit = Number(res.energy_consumption.predict_data_list.pop()).toFixed(2);
+            this.actual = Number(
+              res.energy_consumption.data_list.pop(),
+            ).toFixed(2);
+            this.precit = Number(
+              res.energy_consumption.predict_data_list.pop(),
+            ).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
             if (this.type === 3) {
@@ -264,7 +291,9 @@ export default {
         this.$axios
           .get(`form/graph?model_type=${this.type}&tab_id=${this.resultId}`)
           .then((res) => {
-            this.precit2 = Number(res.energy_consumption.predict_data_list.pop()).toFixed(2);
+            this.precit2 = Number(
+              res.energy_consumption.predict_data_list.pop(),
+            ).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
             this.renderData(res);
@@ -285,14 +314,20 @@ export default {
               this.dynasticDataTwo.green.shift();
             }
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
             };
             const powerData = {
-              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
@@ -304,21 +339,30 @@ export default {
             };
             if (this.type === 2) {
               Object.assign(powerData, {
-                green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
               });
             }
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
             };
             const powerData = {
-              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
+              data_list: [
+                ...this.dynasticDataTwo.data_list,
+                val.energy_consumption.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
@@ -327,7 +371,10 @@ export default {
             };
             if (this.type === 2) {
               Object.assign(powerData, {
-                green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
               });
             }
             this.dynasticDataOne = data;
@@ -379,13 +426,21 @@ export default {
         }
       } else if (this.resultName === '最佳能耗') {
         this.tip = '能耗';
-        this.actual = Number(this.dataSource.energy_consumption.data_list.pop()).toFixed(2);
-        this.precit = Number(this.dataSource.energy_consumption.predict_data_list.pop()).toFixed(2);
+        this.actual = Number(
+          this.dataSource.energy_consumption.data_list.pop(),
+        ).toFixed(2);
+        this.precit = Number(
+          this.dataSource.energy_consumption.predict_data_list.pop(),
+        ).toFixed(2);
         this.getData();
       } else {
         this.tip = '时间';
-        this.actual = Number(this.dataSource.travel_time.data_list.pop()).toFixed(2);
-        this.precit = Number(this.dataSource.travel_time.predict_data_list.pop()).toFixed(2);
+        this.actual = Number(
+          this.dataSource.travel_time.data_list.pop(),
+        ).toFixed(2);
+        this.precit = Number(
+          this.dataSource.travel_time.predict_data_list.pop(),
+        ).toFixed(2);
         this.getDataOther();
       }
       this.$nextTick(() => {
@@ -418,7 +473,10 @@ export default {
               this.dynasticDataTwo.green.shift();
             }
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level_speed.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level_speed.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level_speed.predict_data_list[i],
@@ -437,14 +495,20 @@ export default {
             };
             if (this.type === 2) {
               Object.assign(powerData, {
-                green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
               });
             }
             this.dynasticDataOne = data;
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [...this.dynasticDataOne.data_list, val.level_speed.data_list[i]],
+              data_list: [
+                ...this.dynasticDataOne.data_list,
+                val.level_speed.data_list[i],
+              ],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level_speed.predict_data_list[i],
@@ -463,7 +527,10 @@ export default {
             };
             if (this.type === 2) {
               Object.assign(powerData, {
-                green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
+                green: [
+                  ...this.dynasticDataTwo.green,
+                  val.energy_consumption.green[i],
+                ],
               });
             }
             this.dynasticDataOne = data;
