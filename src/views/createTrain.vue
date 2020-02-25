@@ -71,28 +71,6 @@
           </el-pagination>
         </el-row>
       </div>
-      <!-- <template v-if="chooseId !== 0">
-        <el-row class="title">
-          请选择数据进行训练
-        </el-row>
-        <el-form :inline="true" class="static-form">
-          <template v-for="(item, index) in staticForm">
-            <el-form-item :key="index" :label="item.label">
-              <el-date-picker
-                v-if="item.type === 'time'"
-                v-model="item.value"
-                type="datetime"
-                value-format="yyyy-MM-dd hh:mm:ss"
-                :placeholder="'请选择' + item.label"
-              ></el-date-picker>
-              <el-input v-else v-model="item.value" disabled> </el-input>
-            </el-form-item>
-          </template>
-        </el-form>
-        <el-row v-if="staticForm[2].value !== '' && staticForm[3].value !== ''" class="static"
-          >共{{ staticNumber }}条数据</el-row
-        >
-      </template> -->
     </div>
     <el-row class="train-btn">
       <el-button type="primary"
@@ -154,7 +132,6 @@ export default {
       total: 20,
       chooseId: 0,
       databaseId: 1,
-      chooseModel: {},
     };
   },
   mounted() {
@@ -202,7 +179,6 @@ export default {
       this.getModel();
     },
     handleCurrentChange(val) {
-      this.chooseModel = val;
       this.chooseId = val.id;
     },
     onSubmit() {
@@ -210,13 +186,6 @@ export default {
         this.$message.error('请先选择模型');
         return;
       }
-      // const data = {
-      //   id: this.chooseModel.id,
-      //   // train: this.chooseModel.car_type,
-      //   // route: this.chooseModel.route,
-      //   // start: this.chooseModel.data_date_lower_bound,
-      //   // end: this.chooseModel.data_date_upper_bound,
-      // };
       sessionStorage.setItem('ModelId', this.chooseId);
       this.$router.push('./trainConfig');
     },

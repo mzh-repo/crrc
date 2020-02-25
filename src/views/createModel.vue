@@ -133,9 +133,9 @@
                 v-for="(item, index) in algorithmList"
                 :key="index"
                 @click.native="setChoice(item)">
-          <el-col :span="6">
-            <div class="algorithm-container"
-                 :class="item.id === algorithmId ? 'active' : ''">
+          <div class="algorithm-container"
+               :class="item.id === algorithmId ? 'active' : ''">
+            <el-col :span="6">
               <div class="algorithm-box">
                 <el-row>{{ item.name }}</el-row>
                 <el-row>模型: {{ item.model_name }}</el-row>
@@ -154,10 +154,11 @@
                 <div v-else
                      class="choose"></div>
               </div>
-            </div>
-          </el-col>
-          <el-col :span="18"
-                  class="algo-intro"> 算法简介: {{ item.introduction }} </el-col>
+            </el-col>
+            <el-col :span="18"
+                    class="algo-intro"> 算法简介: {{ item.introduction }}
+            </el-col>
+          </div>
         </el-row>
       </template>
     </el-row>
@@ -460,6 +461,7 @@ export default {
   position: relative;
   margin: 16px 0 40px 0;
   padding: 29px 22px;
+  width: 100%;
   @include flex-row;
 
   &:hover,

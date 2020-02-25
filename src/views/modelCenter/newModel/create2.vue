@@ -108,7 +108,7 @@ export default {
   &:hover,
   &.active {
     opacity: 1;
-    box-shadow: 0px 8px 6px 0px rgba(27, 22, 22, 0.356);
+    box-shadow: 0 8px 6px 0 rgba(27, 22, 22, 0.356);
   }
 
   .box {

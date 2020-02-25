@@ -89,40 +89,75 @@ export default {
           trigger: 'axis',
           formatter(params) {
             return `
-               ${params[0].marker} ${params[0].seriesName}：${
-  params[0].value
-}<br/>
-                ${params[1].marker} ${params[1].seriesName}：${
-  params[1].value
-}<br/>
+               ${params[0].marker} ${params[0].seriesName}：${params[0].value}<br/>
+                ${params[1].marker} ${params[1].seriesName}：${params[1].value}<br/>
                `;
           },
         },
         legend: {
           data: this.legend,
         },
+        // xAxis: {
+        //   name: '路程(m)',
+        //   nameLocation: 'center',
+        //   nameTextStyle: {
+        //     padding: [20, 0, 0, 0],
+        //   },
+        //   type: 'category',
+        //   // boundaryGap: false,
+        //   data: this.lineData.date_list,
+        //   splitLine: { show: false },
+        //   axisTick: {
+        //     show: false,
+        //   },
+        //   axisLine: {
+        //     show: false,
+        //   },
+        //   axisLabel: {
+        //     show: false,
+        //     // rotate: 50,
+        //     formatter: value => Math.floor(value * 10) / 10,
+        //   },
+        //   boundaryGap: ['20%', '20%'],
+        // },
+        // yAxis: {
+        //   type: 'value',
+        //   axisLabel: {
+        //     formatter: '{value}',
+        //   },
+        //   splitLine: { show: false },
+        //   axisTick: {
+        //     // y轴刻度线
+        //     show: false,
+        //   },
+        //   axisLine: {
+        //     // y轴
+        //     show: false,
+        //   },
+        // },
         xAxis: {
-          name: '路程(m)',
+          name: '行驶路程(%)',
+          // show: false,
           nameLocation: 'center',
           nameTextStyle: {
             padding: [20, 0, 0, 0],
           },
           type: 'category',
-          // boundaryGap: false,
+          boundaryGap: false,
           data: this.lineData.date_list,
           splitLine: { show: false },
           axisTick: {
-            show: false,
-          },
-          axisLine: {
-            show: false,
+            show: true,
           },
           axisLabel: {
-            show: false,
-            // rotate: 50,
-            formatter: value => Math.floor(value * 10) / 10,
+            show: true,
+            // eslint-disable-next-line arrow-parens
+            formatter: (value) => value * 100,
           },
-          boundaryGap: ['20%', '20%'],
+          axisLine: {
+            // show: false,
+            symbol: ['none', 'arrow'],
+          },
         },
         yAxis: {
           type: 'value',
@@ -130,14 +165,7 @@ export default {
             formatter: '{value}',
           },
           splitLine: { show: false },
-          axisTick: {
-            // y轴刻度线
-            show: false,
-          },
-          axisLine: {
-            // y轴
-            show: false,
-          },
+          min: 0,
         },
         series: [
           {
@@ -203,9 +231,7 @@ export default {
         Object.assign(option, {
           title: {
             text: this.title,
-            subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${
-              this.lineData.ratio
-            }`,
+            subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${this.lineData.ratio}`,
           },
         });
       }

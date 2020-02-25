@@ -1,5 +1,6 @@
 <template>
-  <div :class="className" :style="{ height: height, width: width }" />
+  <div :class="className"
+       :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -84,13 +85,10 @@ export default {
           trigger: 'axis',
           formatter(params) {
             return `
-               ${params[0].marker} ${params[0].seriesName}：${Number(params[0].value).toFixed(
-  2,
-)}<br/>
-                ${params[1].marker} ${params[1].seriesName}：${Number(params[1].value).toFixed(
-  2,
-)}<br/>
-               ${params[2].marker} ${params[2].seriesName}：${Number(params[2].value).toFixed(2)}
+               ${params[0].marker} ${params[0].seriesName}：
+               ${Number(params[0].value).toFixed(2)}<br/>
+                ${params[1].marker} ${params[1].seriesName}：
+                ${Number(params[1].value).toFixed(2)}<br/>
                `;
           },
         },
@@ -98,7 +96,7 @@ export default {
           data: this.legend,
         },
         xAxis: {
-          name: '路程(m)',
+          name: '行驶路程(%)',
           // show: false,
           nameLocation: 'center',
           nameTextStyle: {
@@ -108,16 +106,22 @@ export default {
           boundaryGap: false,
           data: this.lineData.date_list,
           splitLine: { show: false },
+          // min: 100,
           axisTick: {
             show: false,
           },
           axisLabel: {
-            show: false,
-            // rotate: 50,
-            formatter: value => Math.floor(value * 10) / 10,
+            show: true,
+            // formatter: (value) => Math.floor(value * 10) / 10,
+            // formatter: (value, index) =>
+            //   Math.floor(((index + 1) / this.lineData.date_list.length) * 100),
+            // eslint-disable-next-line arrow-parens
+            formatter: (value) => value * 100,
+            // showMaxLabel: true,
           },
           axisLine: {
-            show: false,
+            // show: false,
+            symbol: ['none', 'arrow'],
           },
         },
         yAxis: {
@@ -126,15 +130,6 @@ export default {
             formatter: '{value}',
           },
           splitLine: { show: false },
-          axisTick: {
-            // y轴刻度线
-            show: false,
-          },
-          axisLine: {
-            // y轴
-            show: false,
-          },
-          // max: 40,
           min: 0,
         },
         series: [
