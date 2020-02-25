@@ -67,7 +67,6 @@
                         :key="item"
                         :index="index"
                         :select="sqlSettings[index]"
-                        :options="compoundInput"
                         @selected="handleSelectChange" />
       </div>
       <el-row v-if="fileStatus === 1"
@@ -224,10 +223,12 @@ export default {
         name: this.DBName,
         database_id: this.databaseId,
         id: this.id,
+        car_type_id: this.chooseCar,
+        route_id: this.chooseWay,
       };
       this.$axios.put('/dataset', data).then(() => {
         this.$message({
-          message: '导入成功',
+          message: '数据导入成功',
           type: 'success',
         });
         this.$router.push('./dashboard');

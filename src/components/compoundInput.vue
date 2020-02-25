@@ -16,7 +16,8 @@
 <script>
 export default {
   props: {
-    select: { type: Array, default: () => [] },
+    // select: { type: Array, default: () => [] },
+    select: { type: String },
     index: { type: Number, default: null },
     title: {
       type: String,
