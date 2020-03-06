@@ -439,6 +439,7 @@ export default {
           train: row.car_name,
           route: row.route_info,
           id: row.model_id, // 模型id ,查看实例报告
+          scene: row.scene_name,
         };
         sessionStorage.setItem('Result', JSON.stringify(data));
         this.$router.push({

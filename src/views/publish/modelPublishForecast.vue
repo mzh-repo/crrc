@@ -7,9 +7,10 @@
     </div>
     <div class="forecast-data title-1">车次: {{ basicInfo.train }}</div>
     <div class="forecast-data">行车线路: {{ basicInfo.route }}</div>
-    <div class="forecast-data">
+    <div class="forecast-data">场景: {{ basicInfo.scene }}</div>
+    <!-- <div class="forecast-data">
       <span>预测总数据大小: {{ '128' }}M</span>
-    </div>
+    </div> -->
     <el-row v-if="result === 0"
             class="line-area">
       <el-col :span="8">
@@ -92,6 +93,7 @@ export default {
       basicInfo: {
         train: '',
         route: '',
+        scene: '',
       },
     };
   },
