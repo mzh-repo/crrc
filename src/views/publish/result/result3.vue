@@ -1,59 +1,19 @@
 <template>
-  <!-- <el-container class="forcast-container">
-    <el-row :gutter="16">
-      <el-col :span="24">
-        <div class="early-warning">
-          <span>状态监测</span>
-          <el-row>原始指标</el-row>
-          <div class="early-data">
-            <div v-for="(item, index) in earlyList"
-                 :key="index"
-                 :class="getColor(Number(item.abnormal))"
-                 class="early">
-              <el-row>{{ item.name }}</el-row>
-              <el-row>{{ item.value }}</el-row>
-            </div>
-          </div>
-          <el-row>健康评估指标</el-row>
-          <div class="early-data">
-            <el-col v-for="(item, index) in healthList"
-                    :key="index"
-                    :span="8"
-                    :class="getColor(item.value)"
-                    class="early normal">
-              <el-row>{{ item.name }}</el-row>
-              <el-row>{{ item.value }}</el-row>
-            </el-col>
-          </div>
-          <el-row>故障概率</el-row>
-          <div class="error-box">{{ type === 0 ? '11.85' : '5.63' }}<span>(%)</span></div>
-          <el-row>检修里程</el-row>
-          <div class="error-box">{{ type === 0 ? '264.45' : '283.11' }}<span>(km)</span></div>
-        </div>
-      </el-col>
-    </el-row>
-    <div v-if="type === 0"
-         class="strategy-box">
-      <span>检修策略</span>
-      <el-row v-html="strategy"></el-row>
-    </div>
-    <el-row style="padding-top: 40px">
-      <el-button @click="goCase">查看实例报告</el-button>
-    </el-row>
-  </el-container> -->
   <div class="status-container">
     <el-row class="title">状态监测</el-row>
-    <el-row class="sub-title">储能电源1原始指标</el-row>
+    <el-row class="sub-title">原始指标</el-row>
     <el-row :gutter="20">
-      <el-col v-for="(item,index) in 3"
+      <el-col v-for="(item,index) in earlyList"
               :key="index"
               :span="8">
         <div class="status-box">
-          <Chart />
+          <Chart :title="item.name+ ':'+item.value"
+                 :yTitle="item.name.substr(5)"
+                 :nowData="item.value" />
         </div>
       </el-col>
     </el-row>
-    <el-row class="sub-title">储能电源2原始指标</el-row>
+    <!-- <el-row class="sub-title">储能电源2原始指标</el-row>
     <el-row :gutter="20">
       <el-col v-for="(item,index) in 3"
               :key="index"
@@ -72,17 +32,19 @@
           <Chart />
         </div>
       </el-col>
-    </el-row>
+    </el-row> -->
     <el-row :gutter="20">
       <el-col :span="18"
               class="sub-title">
         <el-row class="sub-title">健康评估指标</el-row>
         <el-row :gutter="20">
-          <el-col v-for="(item,index) in 6"
+          <el-col v-for="(item,index) in healthList"
                   :key="index"
                   :span="8">
+
             <div class="gauge-box">
-              <Gauge />
+              <el-row class="gauge-title">{{item.name}}</el-row>
+              <Gauge :dataSet="item" />
             </div>
           </el-col>
         </el-row>
@@ -90,7 +52,14 @@
       <el-col :span="6"
               class="sub-title">
         <el-row class="sub-title">告警记录</el-row>
-        <el-row class="record"></el-row>
+        <el-row class="record">
+          <el-row v-for="(item,index) in recordList"
+                  :key="index"
+                  class="record-box">
+            <el-col :span="16">{{item.name}}</el-col>
+            <el-col :span="8">{{item.time}}</el-col>
+          </el-row>
+        </el-row>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -107,14 +76,19 @@
         </div>
       </el-col>
       <el-col :span="12">
-        <el-row>检修策略</el-row>
-        <div v-if="type === 0"
-             class="strategy-box">
-          <el-row v-html="strategy"></el-row>
+        <div class="error">
+          <el-row>检修策略</el-row>
+          <div v-if="type === 0"
+               class="strategy-box">
+            <!-- <el-row v-html="strategy"></el-row> -->
+            {{strategy}}
+          </div>
         </div>
       </el-col>
     </el-row>
-    <el-row style="padding-top: 40px">
+    <el-row type="flex"
+            justify="center"
+            style="padding-top: 40px">
       <el-button @click="goCase">查看实例报告</el-button>
     </el-row>
   </div>
@@ -146,6 +120,16 @@ export default {
       number: [],
       type: 0, // 模型类型: 0 间歇式, 1 非接触式
       time: null, // 定时器
+      recordList: [
+        {
+          name: '储能电源1温度异常',
+          time: '2020.2.10',
+        },
+        {
+          name: '储能电源2温度异常',
+          time: '2020.1.10',
+        },
+      ],
     };
   },
   mounted() {
@@ -245,11 +229,73 @@ export default {
   background: #fff;
   border-radius: 6px;
   height: 200px;
+  padding-top: 20px;
+}
+
+.gauge-title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .record {
   background: #fff;
   border-radius: 6px;
-  height: 420px;
+  height: 456px;
+  padding: 30px;
+  overflow: scroll;
+}
+
+.record-box {
+  display: flex;
+  padding: 10px 0;
+  font-size: 18px;
+  line-height: 25px;
+  border-bottom: 1px solid #d8d8d8;
+
+  .el-col {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0;
+
+    &:last-child {
+      font-size: 14px;
+      color: #999;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.error {
+  height: 140px;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+
+  .el-row {
+    font-weight: 500;
+    font-size: 24px;
+  }
+}
+
+.error-box {
+  margin-top: 30px;
+  font-size: 30px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+
+  span {
+    font-size: 16px;
+  }
+}
+
+.strategy-box {
+  margin-top: 30px;
+  font-size: 18px;
+  display: flex;
+  justify-content: flex-start;
 }
 </style>

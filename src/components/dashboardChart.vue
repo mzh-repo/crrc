@@ -10,7 +10,7 @@ export default {
       type: Object,
       default: () => ({
         value: '50',
-        name: '电量',
+        // name: '电量',
       }),
     },
   },
@@ -38,8 +38,38 @@ export default {
           {
             name: '实时',
             type: 'gauge',
-            detail: { formatter: '{value}%' },
+            startAngle: 180,
+            endAngle: 0,
+            // detail: { formatter: '{value}%' },
+            title: {
+              show: false,
+            },
             data: [{ value: data.value, name: data.name }],
+            radius: '90%',
+            min: 60,
+            splitNumber: 8,
+            axisLine: {
+              lineStyle: {
+                color: [
+                  [0.5, '#FF5B59'],
+                  [0.75, '#FFCB33'],
+                  [1, ' #97E9D5'],
+                ],
+                width: 10,
+              },
+            },
+            splitLine: {
+              length: 20,
+              lineStyle: {
+                color: 'auto',
+                global: true,
+              },
+            },
+            axisTick: {
+              lineStyle: {
+                color: 'auto',
+              },
+            },
           },
         ],
       };
@@ -51,6 +81,6 @@ export default {
 
 <style lang="scss" scoped>
 .chart {
-  height: 230px;
+  height: 240px;
 }
 </style>

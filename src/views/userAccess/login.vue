@@ -1,7 +1,9 @@
 <template>
   <el-container>
     <img src="@/assets/images/login.png" />
-    <el-form ref="loginForm" :model="formData" :rules="rules">
+    <el-form ref="loginForm"
+             :model="formData"
+             :rules="rules">
       <el-form-item>
         <el-row class="title">{{ title }}供电列车</el-row>
         <el-row class="title sub">大数据运用支撑系统</el-row>
@@ -18,13 +20,17 @@
         </el-select>
       </el-form-item> -->
       <el-form-item prop="name">
-        <el-input v-model="formData.name" placeholder="账户"> </el-input>
+        <el-input v-model="formData.name"
+                  placeholder="账户"> </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" placeholder="密码" show-password> </el-input>
+        <el-input v-model="formData.password"
+                  placeholder="密码"
+                  show-password> </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="loginIn('loginForm')">
+        <el-button type="primary"
+                   @click="loginIn('loginForm')">
           登录
         </el-button>
       </el-form-item>

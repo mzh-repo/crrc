@@ -151,6 +151,10 @@ export default new Router({
           path: '/trainConfig',
           component: () => import('./views/dataConfig.vue'),
         },
+        {
+          path: '/instance',
+          component: () => import('./views/instaceList.vue'),
+        },
       ],
     },
     {

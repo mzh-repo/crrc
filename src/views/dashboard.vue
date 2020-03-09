@@ -40,7 +40,8 @@
       <h1>系统状态</h1>
       <el-row class="status-container">
         <el-col v-for="(item, index) in statusList"
-                :key="index">
+                :key="index"
+                @click.native="navigate(index)">
           <svg-icon :icon-class="item.icon" />
           <span class="value">{{ item.value }} </span>
           <span class="unit">{{ item.unit }}</span>
@@ -397,6 +398,17 @@ export default {
             });
           });
       }, 600);
+    },
+    navigate(index) {
+      if (index < 2) {
+        if (index === 0) {
+          // 已完成
+          this.$router.push('/instance?status=2');
+        } else {
+          // 训练中
+          this.$router.push('/instance?status=1');
+        }
+      }
     },
     getScene() {
       this.$axios.get(`/scene?database_id=${this.databaseId}`).then((res) => {
