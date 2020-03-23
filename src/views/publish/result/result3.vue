@@ -95,8 +95,9 @@
 </template>
 
 <script>
-import Chart from '../components/statusChart.vue';
 import Gauge from '@/components/dashboardChart.vue';
+import Chart from '../components/statusChart.vue';
+
 
 export default {
   components: {

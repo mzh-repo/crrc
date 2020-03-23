@@ -24,34 +24,6 @@ export default new Router({
           name: '模型中心',
           selectIcon: '模型中心-选中',
           component: () => import('./views/createModel'),
-          // component: () => import('./views/modelCenter'),
-          // children: [
-          //   {
-          //     path: '/chooseModel',
-          //     name: '模型选择',
-          //     component: () => import('./views/modelCenter/model/chooseModel'),
-          //   },
-          //   {
-          //     path: '/modelReport',
-          //     name: '查看模型报告',
-          //     component: () => import('./views/modelCenter/model/modelReport'),
-          //   },
-          //   {
-          //     path: '/createModel/step1',
-          //     name: '新建模型',
-          //     component: () => import('./views/modelCenter/newModel/create1'),
-          //   },
-          //   {
-          //     path: '/createModel/step2',
-          //     name: '新建模型',
-          //     component: () => import('./views/modelCenter/newModel/create2'),
-          //   },
-          //   {
-          //     path: '/createModel/step3',
-          //     name: '新建模型',
-          //     component: () => import('./views/modelCenter/newModel/create3'),
-          //   },
-          // ],
         },
         {
           path: '/chooseData',
@@ -59,52 +31,13 @@ export default new Router({
           selectIcon: '创建训练-选中',
           // component: () => import('./views/traning'),
           component: () => import('./views/createTrain'),
-          // children: [
-          //   {
-          //     path: '/chooseData',
-          //     name: '数据选择',
-          //     component: () => import('./views/traning/createTraning/chooseData'),
-          //   },
-          //   {
-          //     path: '/config',
-          //     name: '参数配置',
-          //     component: () => import('./views/traning/createTraning/config'),
-          //   },
-          //   {
-          //     path: '/model',
-          //     name: '训练模型',
-          //     component: () => import('./views/traning/createTraning/model'),
-          //   },
-          // ],
         },
-        // {
-        //   path: '/modelPublish',
-        //   name: '模型部署',
-        //   selectIcon: '模型部署-选中',
-        //   component: () => import('./views/publish'),
-        //   children: [
-        //     {
-        //       path: '',
-        //       name: '选择数据集',
-        //       component: () => import('./views/publish/selectData'),
-        //     },
-        //     {
-        //       path: 'selectModel',
-        //       name: '模型选择',
-        //       component: () => import('./views/publish/selectModel'),
-        //     },
-        //     {
-        //       path: 'modelPublishForecast',
-        //       name: '模型部署与预测',
-        //       component: () => import('./views/publish/modelPublishForecast'),
-        //     },
-        //     {
-        //       path: 'exampleSelect',
-        //       name: '实例选择',
-        //       component: () => import('./views/publish/exampleSelect'),
-        //     },
-        //   ],
-        // },
+        {
+          path: '/intense',
+          name: '强化训练',
+          selectIcon: '强化训练-选中',
+          component: () => import('./views/intense'),
+        },
         {
           path: '/importData',
           name: '数据导入',

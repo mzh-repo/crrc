@@ -1,10 +1,9 @@
 <template>
   <div class="train-continer">
     <div class="main">
-      <h1>初始训练</h1>
+      <h1>强化训练</h1>
       <el-row class="title">
-        请选择模型
-        <!-- <el-button size="mini" type="primary" @click="newModel">新建模型</el-button> -->
+        请选择实例
       </el-row>
       <el-row class="filter">
         <el-form :inline="true">
@@ -30,18 +29,18 @@
       <div class="model">
         <div class="line"></div>
         <el-row>
-          <el-table :data="modelData"
+          <el-table :data="taskData"
                     :header-row-style="{ color: '#333' }"
                     height="576px"
                     style="width: 100%"
                     highlight-current-row
                     @current-change="handleCurrentChange">
-            <el-table-column width="50"
+            <!-- <el-table-column width="50"
                              label="选择">
               <template slot-scope="scope">
                 <svg-icon :icon-class="scope.row.id === chooseId ? 'choose' : 'unchoose'" />
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column type="index"
                              width="50"
                              label="序号"> </el-table-column>
@@ -59,9 +58,20 @@
                 </template>
               </el-table-column>
             </template>
+            <el-table-column fixed="right"
+                             label="操作"
+                             width="120">
+              <template slot-scope="scope">
+                <el-button @click.native.prevent="handleTrain(scope.row)"
+                           type="text"
+                           size="small">
+                  强化训练
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-row>
-        <el-row class="task-footer">
+        <!-- <el-row class="task-footer">
           <el-pagination background
                          layout="total, prev, pager, next"
                          :current-page.sync="page"
@@ -69,37 +79,45 @@
                          :total="total"
                          @current-change="handleChange">
           </el-pagination>
-        </el-row>
+        </el-row> -->
       </div>
     </div>
-    <el-row class="train-btn">
+    <!-- <el-row class="train-btn">
       <el-button type="primary"
                  @click="onSubmit">下一步</el-button>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 
 <script>
 const modelTagList = [
   {
-    prop: 'name',
+    prop: 'model_name',
     label: '模型名称',
   },
   {
-    prop: 'applicable_scene',
+    prop: 'application_scene_name',
     label: '场景',
   },
   {
-    prop: 'car_type',
+    prop: 'train_name',
     label: '列车信息',
   },
   {
-    prop: 'route',
+    prop: 'route_name',
     label: '路线信息',
   },
   {
-    prop: 'introduction',
-    label: '简介',
+    prop: 'create_time',
+    label: '创建时间',
+  },
+  {
+    prop: 'algorithm_name',
+    label: '使用算法',
+  },
+  {
+    prop: 'update_number',
+    label: '新增数据条数',
   },
 ];
 export default {
@@ -125,7 +143,7 @@ export default {
           arr: [],
         },
       ],
-      modelData: [],
+      taskData: [],
       modelTagList,
       page: 1,
       pageSize: 10,
@@ -161,9 +179,9 @@ export default {
           this.filterForm[2].arr = res;
         });
     },
-    // newModel() {
-    //   this.$router.push('./newModel');
-    // },
+    handleTrain(row) {
+      // TODO 选择时间
+    },
     submitForm() {
       this.getModel();
     },
@@ -181,25 +199,17 @@ export default {
     handleCurrentChange(val) {
       this.chooseId = val.id;
     },
-    onSubmit() {
-      if (this.chooseId === 0) {
-        this.$message.error('请先选择模型');
-        return;
-      }
-      sessionStorage.setItem('ModelId', this.chooseId);
-      this.$router.push('./trainConfig');
-    },
+    // onSubmit() {
+    //   if (this.chooseId === 0) {
+    //     this.$message.error('请先选择模型');
+    //     return;
+    //   }
+    //   sessionStorage.setItem('ModelId', this.chooseId);
+    //   this.$router.push('./trainConfig');
+    // },
     getModel() {
-      let query = `/model/list?database_id=${this.databaseId}&page=${this.page -
-        1}&page_size=${this.pageSize}`;
-      this.filterForm.forEach((item) => {
-        if (item.value !== '') {
-          query += `&${item.prop}= ${item.value}`;
-        }
-      });
-      this.$axios.get(query).then((res) => {
-        this.modelData = res.data_list;
-        this.total = res.total_number;
+      this.$axios.get('/task').then((res) => {
+        this.taskData = res;
       });
     },
   },

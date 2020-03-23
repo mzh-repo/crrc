@@ -7,7 +7,7 @@
     <el-menu router
              @select="handleSelect">
       <template v-for="(menu, index) in routerList">
-        <template v-if="index < 4">
+        <template v-if="index < 5">
           <el-menu-item :index="menu.path"
                         :key="menu.name"
                         @click="showMy">
