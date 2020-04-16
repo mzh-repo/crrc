@@ -40,18 +40,23 @@ export default {
     //     predict_data_list: ['2', '2', '2', '2', '2'],
     //   }),
     // },
-    nowData: {
+    nowValue: {
       type: String,
-      default: '12',
+    },
+    threshold: {
+      type: String,
+    },
+    update: {
+      type: Date,
     },
   },
   data() {
     return {
       chart: '',
       lineData: {
-        date_list: ['0', '1', '2', '3', '5'],
-        data_list: ['6', '-1', '2', '3', '2'],
-        predict_data_list: ['2', '2', '2', '2', '2'],
+        time: [],
+        value: [],
+        threshold: [],
       },
     };
   },
@@ -88,6 +93,9 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+          },
         },
         legend: {
           data: this.legend,
@@ -95,9 +103,9 @@ export default {
           right: '20',
         },
         xAxis: {
-          name: '时间',
+          name: '实时',
           type: 'category',
-          data: this.$data.lineData.date_list,
+          data: this.update,
           splitLine: { show: false },
           axisTick: {
             show: false,
@@ -133,7 +141,7 @@ export default {
           {
             name: this.legend[0],
             type: 'line',
-            data: this.$data.lineData.predict_data_list,
+            data: this.$data.lineData.threshold,
             lineStyle: {
               type: 'dashed',
             },
@@ -142,7 +150,7 @@ export default {
           {
             name: this.legend[1],
             type: 'line',
-            data: this.$data.lineData.data_list,
+            data: this.$data.lineData.value,
             symbol: 'none',
           },
         ],
@@ -155,14 +163,23 @@ export default {
     //   this.drawChart();
     // },
     nowData(val) {
-      if (this.$data.lineData.data_list.length > 5) {
-        this.$data.lineData.data_list.shift();
-        this.$data.lineData.date_list.shift();
-        this.$data.lineData.predict_data_list.shift();
+      // if (this.$data.lineData.data_list.length > 5) {
+      //   this.$data.lineData.data_list.shift();
+      //   this.$data.lineData.date_list.shift();
+      //   this.$data.lineData.predict_data_list.shift();
+      // }
+      // this.$data.lineData.data_list.push(val);
+      // this.$data.lineData.date_list.push(new Date());
+      // this.$data.lineData.predict_data_list.push('2');
+      // this.drawChart();
+    },
+    update() {
+      if (this.$data.lineData.value.length > 5) {
+        this.$data.lineData.value.shift();
+        this.$data.lineData.threshold.shift();
       }
-      this.$data.lineData.data_list.push(val);
-      this.$data.lineData.date_list.push(new Date());
-      this.$data.lineData.predict_data_list.push('2');
+      this.$data.lineData.value.push(this.nowValue);
+      this.$data.lineData.threshold.push(this.threshold);
       this.drawChart();
     },
   },

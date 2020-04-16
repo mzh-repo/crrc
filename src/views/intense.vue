@@ -33,26 +33,31 @@
                     :header-row-style="{ color: '#333' }"
                     height="576px"
                     style="width: 100%"
-                    highlight-current-row
-                    @current-change="handleCurrentChange">
-            <!-- <el-table-column width="50"
-                             label="选择">
-              <template slot-scope="scope">
-                <svg-icon :icon-class="scope.row.id === chooseId ? 'choose' : 'unchoose'" />
-              </template>
-            </el-table-column> -->
+                    highlight-current-row>
             <el-table-column type="index"
                              width="50"
                              label="序号"> </el-table-column>
             <template v-for="item in modelTagList">
               <el-table-column :prop="item.prop"
                                :label="item.label"
-                               :key="item.prop">
+                               :key="item.prop"
+                               :width="limitWidth(item.prop)">
                 <template slot-scope="scope">
                   <div v-if="item.prop === 'name' || item.prop === 'introduction'"
                        class="limit-column"
                        :title="scope.row[item.prop]">
                     {{ scope.row[item.prop] }}
+                  </div>
+                  <div v-else-if="item.prop === 'time'">
+                    <el-date-picker v-model="scope.row[item.prop]"
+                                    align="right"
+                                    type="datetimerange"
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    :picker-options="pickerOptions"
+                                    value-format="timestamp">
+                    </el-date-picker>
                   </div>
                   <span v-else>{{ scope.row[item.prop] }}</span>
                 </template>
@@ -82,10 +87,6 @@
         </el-row> -->
       </div>
     </div>
-    <!-- <el-row class="train-btn">
-      <el-button type="primary"
-                 @click="onSubmit">下一步</el-button>
-    </el-row> -->
   </div>
 </template>
 
@@ -107,17 +108,21 @@ const modelTagList = [
     prop: 'route_name',
     label: '路线信息',
   },
+  // {
+  //   prop: 'create_time',
+  //   label: '创建时间',
+  // },
+  // {
+  //   prop: 'algorithm_name',
+  //   label: '使用算法',
+  // },
+  // {
+  //   prop: 'update_number',
+  //   label: '新增数据条数',
+  // },
   {
-    prop: 'create_time',
-    label: '创建时间',
-  },
-  {
-    prop: 'algorithm_name',
-    label: '使用算法',
-  },
-  {
-    prop: 'update_number',
-    label: '新增数据条数',
+    prop: 'time',
+    label: '数据集时间范围',
   },
 ];
 export default {
@@ -143,6 +148,37 @@ export default {
           arr: [],
         },
       ],
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            },
+          },
+          {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            },
+          },
+          {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            },
+          },
+        ],
+      },
       taskData: [],
       modelTagList,
       page: 1,
@@ -179,8 +215,25 @@ export default {
           this.filterForm[2].arr = res;
         });
     },
+    limitWidth(prop) {
+      if (prop === 'time') {
+        return '500px';
+      }
+      return 'auto';
+    },
     handleTrain(row) {
-      // TODO 选择时间
+      if (!row.time) {
+        this.$message.error('请先选择数据集时间范围');
+      } else {
+        this.$confirm('是否对该模型进行强化训练?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info',
+        });
+        // TODO 选择时间
+        // eslint-disable-next-line no-console
+        console.log(row.time);
+      }
     },
     submitForm() {
       this.getModel();
@@ -196,17 +249,6 @@ export default {
       this.page = e;
       this.getModel();
     },
-    handleCurrentChange(val) {
-      this.chooseId = val.id;
-    },
-    // onSubmit() {
-    //   if (this.chooseId === 0) {
-    //     this.$message.error('请先选择模型');
-    //     return;
-    //   }
-    //   sessionStorage.setItem('ModelId', this.chooseId);
-    //   this.$router.push('./trainConfig');
-    // },
     getModel() {
       this.$axios.get('/task').then((res) => {
         this.taskData = res;
@@ -246,16 +288,6 @@ export default {
   text-align: right;
   font-size: 13px;
   margin-top: 30px;
-}
-
-.train-btn {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 66px;
-  background: #fff;
-  padding: 10px 30px;
-  text-align: right;
 }
 
 .filter {

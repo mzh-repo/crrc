@@ -39,8 +39,6 @@
       </el-row>
       <el-row class="tips">
         预测能耗为<span> {{ precit2 }} </span>kwh
-        <!-- <el-button type="primary"
-                   @click="$router.push('/upload')">强化训练</el-button> -->
       </el-row>
     </template>
     <template v-else>
@@ -305,81 +303,81 @@ export default {
       for (let i = 0; i < dataIndex; i += 1) {
         this.time[i] = setTimeout(() => {
           this.current = Math.ceil(((i + 1) / (dataIndex + 1)) * 100);
-          if (i > 200) {
-            this.dynasticDataOne.data_list.shift();
-            this.dynasticDataOne.predict_data_list.shift();
-            this.dynasticDataTwo.data_list.shift();
-            this.dynasticDataTwo.predict_data_list.shift();
-            if (this.type === 2) {
-              this.dynasticDataTwo.green.shift();
-            }
-            const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
+          // if (i > 200) {
+          //   this.dynasticDataOne.data_list.shift();
+          //   this.dynasticDataOne.predict_data_list.shift();
+          //   this.dynasticDataTwo.data_list.shift();
+          //   this.dynasticDataTwo.predict_data_list.shift();
+          //   if (this.type === 2) {
+          //     this.dynasticDataTwo.green.shift();
+          //   }
+          //   const data = {
+          //     data_list: [
+          //       ...this.dynasticDataOne.data_list,
+          //       val.level.data_list[i],
+          //     ],
+          //     predict_data_list: [
+          //       ...this.dynasticDataOne.predict_data_list,
+          //       val.level.predict_data_list[i],
+          //     ],
+          //   };
+          //   const powerData = {
+          //     data_list: [
+          //       ...this.dynasticDataTwo.data_list,
+          //       val.energy_consumption.data_list[i],
+          //     ],
+          //     predict_data_list: [
+          //       ...this.dynasticDataTwo.predict_data_list,
+          //       val.energy_consumption.predict_data_list[i],
+          //     ],
+          //     // green: [
+          //     //   ...this.dynasticDataTwo.green,
+          //     //   val.energy_consumption.green[i],
+          //     // ],
+          //   };
+          //   if (this.type === 2) {
+          //     Object.assign(powerData, {
+          //       green: [
+          //         ...this.dynasticDataTwo.green,
+          //         val.energy_consumption.green[i],
+          //       ],
+          //     });
+          //   }
+          //   this.dynasticDataOne = data;
+          //   this.dynasticDataTwo = powerData;
+          // } else {
+          const data = {
+            data_list: [
+              ...this.dynasticDataOne.data_list,
+              val.level.data_list[i],
+            ],
+            predict_data_list: [
+              ...this.dynasticDataOne.predict_data_list,
+              val.level.predict_data_list[i],
+            ],
+          };
+          const powerData = {
+            data_list: [
+              ...this.dynasticDataTwo.data_list,
+              val.energy_consumption.data_list[i],
+            ],
+            predict_data_list: [
+              ...this.dynasticDataTwo.predict_data_list,
+              val.energy_consumption.predict_data_list[i],
+            ],
+            // green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
+          };
+          if (this.type === 2) {
+            Object.assign(powerData, {
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption.green[i],
               ],
-              predict_data_list: [
-                ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i],
-              ],
-            };
-            const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
-              predict_data_list: [
-                ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i],
-              ],
-              // green: [
-              //   ...this.dynasticDataTwo.green,
-              //   val.energy_consumption.green[i],
-              // ],
-            };
-            if (this.type === 2) {
-              Object.assign(powerData, {
-                green: [
-                  ...this.dynasticDataTwo.green,
-                  val.energy_consumption.green[i],
-                ],
-              });
-            }
-            this.dynasticDataOne = data;
-            this.dynasticDataTwo = powerData;
-          } else {
-            const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
-              ],
-              predict_data_list: [
-                ...this.dynasticDataOne.predict_data_list,
-                val.level.predict_data_list[i],
-              ],
-            };
-            const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
-              predict_data_list: [
-                ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption.predict_data_list[i],
-              ],
-              // green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
-            };
-            if (this.type === 2) {
-              Object.assign(powerData, {
-                green: [
-                  ...this.dynasticDataTwo.green,
-                  val.energy_consumption.green[i],
-                ],
-              });
-            }
-            this.dynasticDataOne = data;
-            this.dynasticDataTwo = powerData;
+            });
           }
+          this.dynasticDataOne = data;
+          this.dynasticDataTwo = powerData;
+          // }
         }, 100 * i);
       }
     },
@@ -464,78 +462,78 @@ export default {
       for (let i = 0; i < val.level.data_list.length; i += 1) {
         this.timer[i] = setTimeout(() => {
           this.current = Math.ceil(((i + 1) / (dataIndex + 1)) * 100);
-          if (i > 200) {
-            this.dynasticDataOne.data_list.shift();
-            this.dynasticDataOne.predict_data_list.shift();
-            this.dynasticDataTwo.data_list.shift();
-            this.dynasticDataTwo.predict_data_list.shift();
-            if (this.type === 2) {
-              this.dynasticDataTwo.green.shift();
-            }
-            const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level_speed.data_list[i],
+          // if (i > 200) {
+          //   this.dynasticDataOne.data_list.shift();
+          //   this.dynasticDataOne.predict_data_list.shift();
+          //   this.dynasticDataTwo.data_list.shift();
+          //   this.dynasticDataTwo.predict_data_list.shift();
+          //   if (this.type === 2) {
+          //     this.dynasticDataTwo.green.shift();
+          //   }
+          //   const data = {
+          //     data_list: [
+          //       ...this.dynasticDataOne.data_list,
+          //       val.level_speed.data_list[i],
+          //     ],
+          //     predict_data_list: [
+          //       ...this.dynasticDataOne.predict_data_list,
+          //       val.level_speed.predict_data_list[i],
+          //     ],
+          //   };
+          //   const powerData = {
+          //     data_list: [
+          //       ...this.dynasticDataTwo.data_list,
+          //       val.energy_consumption_speed.data_list[i],
+          //     ],
+          //     predict_data_list: [
+          //       ...this.dynasticDataTwo.predict_data_list,
+          //       val.energy_consumption_speed.predict_data_list[i],
+          //     ],
+          //     // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
+          //   };
+          //   if (this.type === 2) {
+          //     Object.assign(powerData, {
+          //       green: [
+          //         ...this.dynasticDataTwo.green,
+          //         val.energy_consumption.green[i],
+          //       ],
+          //     });
+          //   }
+          //   this.dynasticDataOne = data;
+          //   this.dynasticDataTwo = powerData;
+          // } else {
+          const data = {
+            data_list: [
+              ...this.dynasticDataOne.data_list,
+              val.level_speed.data_list[i],
+            ],
+            predict_data_list: [
+              ...this.dynasticDataOne.predict_data_list,
+              val.level_speed.predict_data_list[i],
+            ],
+          };
+          const powerData = {
+            data_list: [
+              ...this.dynasticDataTwo.data_list,
+              val.energy_consumption_speed.data_list[i],
+            ],
+            predict_data_list: [
+              ...this.dynasticDataTwo.predict_data_list,
+              val.energy_consumption_speed.predict_data_list[i],
+            ],
+            // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
+          };
+          if (this.type === 2) {
+            Object.assign(powerData, {
+              green: [
+                ...this.dynasticDataTwo.green,
+                val.energy_consumption.green[i],
               ],
-              predict_data_list: [
-                ...this.dynasticDataOne.predict_data_list,
-                val.level_speed.predict_data_list[i],
-              ],
-            };
-            const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption_speed.data_list[i],
-              ],
-              predict_data_list: [
-                ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption_speed.predict_data_list[i],
-              ],
-              // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
-            };
-            if (this.type === 2) {
-              Object.assign(powerData, {
-                green: [
-                  ...this.dynasticDataTwo.green,
-                  val.energy_consumption.green[i],
-                ],
-              });
-            }
-            this.dynasticDataOne = data;
-            this.dynasticDataTwo = powerData;
-          } else {
-            const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level_speed.data_list[i],
-              ],
-              predict_data_list: [
-                ...this.dynasticDataOne.predict_data_list,
-                val.level_speed.predict_data_list[i],
-              ],
-            };
-            const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption_speed.data_list[i],
-              ],
-              predict_data_list: [
-                ...this.dynasticDataTwo.predict_data_list,
-                val.energy_consumption_speed.predict_data_list[i],
-              ],
-              // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
-            };
-            if (this.type === 2) {
-              Object.assign(powerData, {
-                green: [
-                  ...this.dynasticDataTwo.green,
-                  val.energy_consumption.green[i],
-                ],
-              });
-            }
-            this.dynasticDataOne = data;
-            this.dynasticDataTwo = powerData;
+            });
           }
+          this.dynasticDataOne = data;
+          this.dynasticDataTwo = powerData;
+          // }
         }, 100 * i);
       }
     },

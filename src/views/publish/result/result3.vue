@@ -9,30 +9,12 @@
         <div class="status-box">
           <Chart :title="item.name+ ':'+item.value"
                  :yTitle="item.name.substr(5)"
-                 :nowData="item.value" />
+                 :nowValue="item.value"
+                 :threshold="item.threshold"
+                 :update="new Date()" />
         </div>
       </el-col>
     </el-row>
-    <!-- <el-row class="sub-title">储能电源2原始指标</el-row>
-    <el-row :gutter="20">
-      <el-col v-for="(item,index) in 3"
-              :key="index"
-              :span="8">
-        <div class="status-box">
-          <Chart />
-        </div>
-      </el-col>
-    </el-row>
-    <el-row class="sub-title">储能电源3原始指标</el-row>
-    <el-row :gutter="20">
-      <el-col v-for="(item,index) in 3"
-              :key="index"
-              :span="8">
-        <div class="status-box">
-          <Chart />
-        </div>
-      </el-col>
-    </el-row> -->
     <el-row :gutter="20">
       <el-col :span="18"
               class="sub-title">
@@ -41,7 +23,6 @@
           <el-col v-for="(item,index) in healthList"
                   :key="index"
                   :span="8">
-
             <div class="gauge-box">
               <el-row class="gauge-title">{{item.name}}</el-row>
               <Gauge :dataSet="item" />
@@ -66,21 +47,19 @@
       <el-col :span="6">
         <div class="error">
           <el-row>故障概率</el-row>
-          <div class="error-box">{{ type === 0 ? '11.85' : '5.63' }}<span>(%)</span></div>
+          <div class="error-box">{{errorProbably}}<span>(%)</span></div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="error">
           <el-row>检修里程</el-row>
-          <div class="error-box">{{ type === 0 ? '264.45' : '283.11' }}<span>(km)</span></div>
+          <div class="error-box">{{ errorDistance }}<span>(km)</span></div>
         </div>
       </el-col>
       <el-col :span="12">
         <div class="error">
           <el-row>检修策略</el-row>
-          <div v-if="type === 0"
-               class="strategy-box">
-            <!-- <el-row v-html="strategy"></el-row> -->
+          <div class="strategy-box">
             {{strategy}}
           </div>
         </div>
@@ -98,7 +77,6 @@
 import Gauge from '@/components/dashboardChart.vue';
 import Chart from '../components/statusChart.vue';
 
-
 export default {
   components: {
     Chart,
@@ -106,7 +84,6 @@ export default {
   },
   data() {
     return {
-      strategy: '',
       newsList: [],
       earlyList: [],
       healthList: [],
@@ -118,7 +95,6 @@ export default {
         validation_list: [],
         record_list: [],
       },
-      number: [],
       type: 0, // 模型类型: 0 间歇式, 1 非接触式
       time: null, // 定时器
       recordList: [
@@ -131,6 +107,9 @@ export default {
           time: '2020.1.10',
         },
       ],
+      errorProbably: '', // 故障概率
+      errorDistance: '', // 检修里程
+      strategy: '', // 检修策略
     };
   },
   mounted() {
@@ -140,9 +119,6 @@ export default {
     const dataBase = sessionStorage.getItem('dataBaseId');
     if (Number(dataBase) === 1) {
       this.type = 0;
-      // this.getStrategy();
-      this.strategy =
-        '某个电芯温度比其他电芯高20℃，则该电芯内阻过大需要更换电池模组';
     } else {
       this.type = 1;
     }
@@ -163,8 +139,10 @@ export default {
     },
     getData() {
       this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
-        this.number = res.probably;
         this.earlyList = res.monitor;
+        this.errorProbably = res.error_probability;
+        this.errorDistance = res.error_distance;
+        this.strategy = res.maintenance_strategy;
         this.healthList = res.healthy;
       });
     },
@@ -181,11 +159,6 @@ export default {
          ${this.convertNum(date.getHours())}:
          ${this.convertNum(date.getMinutes())}:
          ${this.convertNum(date.getSeconds())}`;
-    },
-    // 检修策略对应 Map
-    // TODO
-    getStrategy() {
-      this.$axios.get('/maintenance_policy').then();
     },
     convertNum(val) {
       if (val >= 10) {
