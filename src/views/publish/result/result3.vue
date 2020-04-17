@@ -37,8 +37,8 @@
           <el-row v-for="(item,index) in recordList"
                   :key="index"
                   class="record-box">
-            <el-col :span="16">{{item.name}}</el-col>
-            <el-col :span="8">{{item.time}}</el-col>
+            <el-col :span="14">{{item.name}}</el-col>
+            <el-col :span="10">{{item.time}}</el-col>
           </el-row>
         </el-row>
       </el-col>
@@ -97,16 +97,7 @@ export default {
       },
       type: 0, // 模型类型: 0 间歇式, 1 非接触式
       time: null, // 定时器
-      recordList: [
-        {
-          name: '储能电源1温度异常',
-          time: '2020.2.10',
-        },
-        {
-          name: '储能电源2温度异常',
-          time: '2020.1.10',
-        },
-      ],
+      recordList: [],
       errorProbably: '', // 故障概率
       errorDistance: '', // 检修里程
       strategy: '', // 检修策略
@@ -144,6 +135,17 @@ export default {
         this.errorDistance = res.error_distance;
         this.strategy = res.maintenance_strategy;
         this.healthList = res.healthy;
+
+        const date = new Date();
+        res.monitor.forEach((item) => {
+          if (item.abnormal === '2') {
+            const data = {};
+            data.name = `${item.name} 异常`;
+            data.time = this.covertDate(date);
+            this.recordList.unshift(data);
+          }
+        });
+        this.recordList = this.recordList.splice(0, 8);
       });
     },
     round() {
@@ -223,7 +225,7 @@ export default {
 .record-box {
   display: flex;
   padding: 10px 0;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 25px;
   border-bottom: 1px solid #d8d8d8;
 
@@ -234,7 +236,7 @@ export default {
     padding: 0;
 
     &:last-child {
-      font-size: 14px;
+      font-size: 12px;
       color: #999;
       display: flex;
       justify-content: flex-end;

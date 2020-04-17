@@ -32,14 +32,6 @@ export default {
       type: String,
       default: '电流（A）',
     },
-    // lineData: {
-    //   type: Object,
-    //   default: () => ({
-    //     date_list: ['0', '1', '2', '3', '5'],
-    //     data_list: ['6', '-1', '2', '3', '2'],
-    //     predict_data_list: ['2', '2', '2', '2', '2'],
-    //   }),
-    // },
     nowValue: {
       type: String,
     },
@@ -159,20 +151,6 @@ export default {
     },
   },
   watch: {
-    // lineData() {
-    //   this.drawChart();
-    // },
-    nowData(val) {
-      // if (this.$data.lineData.data_list.length > 5) {
-      //   this.$data.lineData.data_list.shift();
-      //   this.$data.lineData.date_list.shift();
-      //   this.$data.lineData.predict_data_list.shift();
-      // }
-      // this.$data.lineData.data_list.push(val);
-      // this.$data.lineData.date_list.push(new Date());
-      // this.$data.lineData.predict_data_list.push('2');
-      // this.drawChart();
-    },
     update() {
       if (this.$data.lineData.value.length > 5) {
         this.$data.lineData.value.shift();
