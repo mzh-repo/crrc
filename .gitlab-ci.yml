@@ -46,4 +46,4 @@ deploy:
     - chmod 600 ~/.ssh/id_dsa
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - rsync -rav --delete dist/ deploy@47.110.156.186:/home/deploy/www-crrc/
+    - rsync -rav --delete dist/ deploy@47.110.156.186:/home/deploy/www-crrc-un/
