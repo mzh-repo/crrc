@@ -131,19 +131,19 @@ export default {
       filterForm: [
         {
           label: '应用场景',
-          prop: 'scene_id',
+          prop: 'application_scene',
           value: '',
           arr: [],
         },
         {
           label: '列车信息',
-          prop: 'train_id',
+          prop: 'train_tag',
           value: '',
           arr: [],
         },
         {
           label: '列车线路',
-          prop: 'route_id',
+          prop: 'route_tag',
           value: '',
           arr: [],
         },
@@ -250,7 +250,13 @@ export default {
       this.getModel();
     },
     getModel() {
-      this.$axios.get('/task').then((res) => {
+      let query = '/task?page=0';
+      this.filterForm.forEach((item) => {
+        if (item.value !== '') {
+          query += `&${item.prop}=${item.value}`;
+        }
+      });
+      this.$axios.get(query).then((res) => {
         this.taskData = res;
       });
     },
