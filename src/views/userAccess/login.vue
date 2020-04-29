@@ -63,7 +63,7 @@ export default {
         },
       ],
       title: '间歇式',
-      type: 1,
+      type: 2,
     };
   },
   mounted() {
