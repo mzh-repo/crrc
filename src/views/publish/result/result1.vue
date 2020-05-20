@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="showLoading">
     <!-- <el-row class="train-btn">
       <el-button type="primary"
                  @click="$router.push('/upload')">强化训练</el-button>
@@ -115,17 +115,8 @@
         </div>
       </el-col>
     </el-row>
-    <!-- <el-row class="progress"
-            v-html="explain"> </el-row>
-    <el-row :gutter="30"
-            class="progress-img">
-      <el-image :src="srcList[0]"
-                :preview-src-list="[srcList[0]]" />
-    </el-row> -->
     <el-row id="scroll-1"
             style="margin-top: 30px">
-      <!-- <el-button type="primary"
-                 @click="goStatics">查看统计信息</el-button> -->
       <el-button @click="goDynastic">实时运行图表</el-button>
       <el-button @click="goCase">查看实例报告</el-button>
     </el-row>
@@ -176,11 +167,6 @@ export default {
   },
   data() {
     return {
-      explain:
-        '&nbsp;&nbsp;&nbsp;&nbsp;使用深度 FCNN（Fully Connected Neural Network）模型来解决系统优化设计模型的问题。首先构建神经网络结构，确定网络层数、神经元个数、激活函数等超参数；其次结合均方误差函数确认损失函数；最后利用反向传播算法训练数据，从而调整神经网络权重参数降低损失函数，得到确定的网络模型。相较于传统规划求解的方式，其多层的神经网络结构有更加强大的表征能力，通过逐层深入的方式用较少参数来对无法认为构建的复杂函数进行逼近，从而使其模型更符合实际问题。',
-      // eslint-disable-next-line global-require
-      // eslint-disable-next-line import/no-unresolved
-      srcList: [require('@/assets/images/optimize.png')],
       limitList: [],
       lineData: {
         force: {},
@@ -266,10 +252,12 @@ export default {
           name: '线圈长度m',
         },
       ],
+      showLoading: false,
     };
   },
   mounted() {
     // const { dataBase } = this.$store.state;
+    this.showLoading = true;
     const dataBase = Number(sessionStorage.getItem('dataBaseId'));
     if (dataBase === 1) {
       this.type = 2;
@@ -471,6 +459,7 @@ export default {
           }`,
         )
         .then((res) => {
+          this.showLoading = false;
           if (this.type === 3) {
             this.lineData.battery = res.battery;
           }

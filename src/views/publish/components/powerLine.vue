@@ -115,7 +115,8 @@ export default {
             // formatter: (value) => Math.floor(value * 10) / 10,
             // formatter: (value, index) =>
             //   Math.floor(((index + 1) / this.lineData.date_list.length) * 100),
-            // eslint-disable-next-line arrow-parens
+            showMinLabel: true,
+            showMaxLabel: true,
             formatter: (value) => value * 100,
             // showMaxLabel: true,
           },

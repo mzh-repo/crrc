@@ -111,7 +111,7 @@ export default {
           },
         },
         yAxis: {
-          name: this.yTitle,
+          // name: this.yTitle,
           nameTextStyle: {
             fontWeight: 400,
           },

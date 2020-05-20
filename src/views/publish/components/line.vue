@@ -151,7 +151,8 @@ export default {
           },
           axisLabel: {
             show: true,
-            // eslint-disable-next-line arrow-parens
+            showMinLabel: true,
+            showMaxLabel: true,
             formatter: (value) => value * 100,
           },
           axisLine: {
