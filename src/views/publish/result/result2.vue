@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="showLoading">
     <template v-if="resultType === 2">
       <el-row class="result-tab">
         <el-tabs v-model="resultId"
@@ -79,32 +79,6 @@
         </div>
       </el-col>
     </el-row>
-    <!-- <template v-if="resultType === 1">
-      <el-row class="progress"
-              v-html="explain1"> </el-row>
-      <el-row :gutter="30"
-              class="progress-img">
-        <el-col :span="12">
-          <el-image fit="fill"
-                    :src="srcList1[0]"
-                    :preview-src-list="[srcList1[0]]" />
-        </el-col>
-        <el-col :span="12">
-          <el-image fit="fill"
-                    :src="srcList1[1]"
-                    :preview-src-list="[srcList1[1]]" />
-        </el-col>
-      </el-row>
-    </template>
-    <template v-else>
-      <el-row class="progress"
-              v-html="explain2"> </el-row>
-      <el-row :gutter="30"
-              class="progress-img">
-        <el-image :src="srcList2[0]"
-                  :preview-src-list="[srcList2[0]]" />
-      </el-row>
-    </template> -->
     <el-button id="scroll"
                @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>
@@ -162,22 +136,6 @@ export default {
   data() {
     return {
       percent: [60, 90],
-      // explain:
-      //   '利用长短期记忆网络求解列车运行过程多目标方程函数，搭建我们的LSTM（Long ShortTerm Memory Network)',
-      // model: '```AsciiMath\nF_(t+1)=h(S_(t-l+1),S_(t-l+2),⋯,S_t )\n```',
-      // targetFuc:
-      //   '```AsciiMath\nL= ||F_{t+1}-\\tilde{F}_{t+1}||^2-α||F_(t+1)||-β||F_(t+1)||^2\n```',
-      // speed: 10,
-      // energy: 10,
-      explain1:
-        '&nbsp;&nbsp;&nbsp;&nbsp;对多目标优化问题设计函数映射并使用LSTM（Long Short Term Memory Network）模型求解列车运行过程多目标方程函数：定义为每个时刻 𝑡 的信息状态，每个时刻的信息状态包含该时刻下的驾驶信息和环境信息，即 = [驾驶信息, 环境信息]，定义一个列车信息序列为，这个列车信息序列包括列车前 𝑙 时刻内的信息状态。LSTM模型解决序列相关的问题，其特别之处是其输入不仅仅考虑了当前时刻的输入，也考虑了上一时刻的输出，从而捕获到了序列之间的关联信息。它通过增加多一个单元状态解决了普通 RNN 无法捕获长期依赖的问题，而且巧妙地提出了遗忘门办法来对长期单元状态进行控制，将重要特征保留下来，保证了在长期传播的过程中不会丢失数据中重要的时序信息。',
-      srcList1: [
-        require('@/assets/images/model1.png'),
-        require('@/assets/images/model2.png'),
-      ],
-      explain2:
-        '&nbsp;&nbsp;&nbsp;&nbsp;基于多目标优化列车运行控制模型，使用长短期记忆网络，修改数据预处理部分，对劣化条件下的静态和动态车载储能系统数据进行参数化。其中：将静态劣化条件下的储能系统数据参数化为 𝑊；将动态劣化条件下的储能系统数据参数化为 𝑄。在列车运行控制模型的基础上加入劣化条件，将储能系统中劣化条件下的静态与动态数据结合输入到长短期记忆网络中，可以使得网络模型更加有效地捕获到其运行策略中与劣化储能系统相关的状态信息，以及长短期变化依赖，更具鲁棒性。',
-      srcList2: [require('@/assets/images/model3.png')],
       lineData: {
         force: {},
         power: {},
@@ -218,9 +176,11 @@ export default {
       precit: null, // 预测能耗 / 预测旅行时间
       precit2: null, // 劣化预测能耗值
       dataSource: '', // 数据源
+      showLoading: false,
     };
   },
   mounted() {
+    this.showLoading = true;
     if (this.resultType === 2) {
       this.resultList = [
         {
@@ -297,6 +257,7 @@ export default {
             this.renderData(res);
           });
       }
+      this.showLoading = false;
     },
     renderData(val) {
       const dataIndex = val.level.data_list.length;

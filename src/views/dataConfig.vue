@@ -73,33 +73,33 @@ export default {
         {
           title: 'GPU型号',
           value: 'RTX2080',
-          arr: [],
+          arr: ['RTX2080'],
         },
         {
           title: 'GPU数量',
           value: '2',
-          arr: [],
+          arr: ['1', '2', '4', '8'],
         },
 
         {
           title: '最大内存',
           value: '32GB',
-          arr: [],
+          arr: ['32GB', '128GB', '256GB'],
         },
         {
           title: '并发线程',
           value: '24',
-          arr: [],
+          arr: ['12', '24', '36'],
         },
         {
           title: '训练轮次',
           value: '1000',
-          arr: [],
+          arr: ['800', '1000'],
         },
         {
           title: '最长训练时间',
           value: '24小时',
-          arr: [],
+          arr: ['12小时', '24小时', '48小时'],
         },
       ],
     };

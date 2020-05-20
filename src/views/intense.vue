@@ -229,7 +229,29 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'info',
-        });
+        })
+          .then(() => {
+            this.$axios
+              .post('/task/enhance', [row.id])
+              .then(() => {
+                this.$message({
+                  type: 'success',
+                  message: '模型强化训练中',
+                });
+                this.getModel();
+              })
+              .catch(() => {
+                this.$message({
+                  message: '训练失败,请稍后重试',
+                  type: 'error',
+                });
+              });
+          })
+          .catch(() => {
+            this.$message({
+              message: '操作取消',
+            });
+          });
         // TODO 选择时间
         // eslint-disable-next-line no-console
         console.log(row.time);

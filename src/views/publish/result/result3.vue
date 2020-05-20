@@ -1,5 +1,6 @@
 <template>
-  <div class="status-container">
+  <div class="status-container"
+       v-loading="showLoading">
     <el-row class="title">状态监测</el-row>
     <el-row class="sub-title">原始指标</el-row>
     <el-row :gutter="20">
@@ -8,7 +9,6 @@
               :span="8">
         <div class="status-box">
           <Chart :title="item.name+ ':'+item.value"
-                 :yTitle="item.name.substr(5)"
                  :nowValue="item.value"
                  :threshold="item.threshold"
                  :update="new Date()" />
@@ -101,6 +101,7 @@ export default {
       errorProbably: '', // 故障概率
       errorDistance: '', // 检修里程
       strategy: '', // 检修策略
+      showLoading: false,
     };
   },
   mounted() {
@@ -113,6 +114,7 @@ export default {
     } else {
       this.type = 1;
     }
+    this.showLoading = true;
     this.round();
   },
   methods: {
@@ -130,6 +132,7 @@ export default {
     },
     getData() {
       this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+        this.showLoading = false;
         this.earlyList = res.monitor;
         this.errorProbably = res.error_probability;
         this.errorDistance = res.error_distance;
