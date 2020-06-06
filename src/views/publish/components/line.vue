@@ -51,6 +51,11 @@ export default {
       type: String,
       default: '',
     },
+    // 1,2 map [静态, 动态]  UPDATE:2020/06/06
+    moveType: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
@@ -153,7 +158,7 @@ export default {
             show: true,
             showMinLabel: true,
             showMaxLabel: true,
-            formatter: (value) => value * 100,
+            formatter: (value) => (value * 100).toFixed(1),
           },
           axisLine: {
             // show: false,
@@ -183,6 +188,13 @@ export default {
           },
         ],
       };
+      if (this.moveType === 2) {
+        Object.assign(option, {
+          animation: true,
+          animationEasing: 'elasticIn',
+          animationDuration: 100000,
+        });
+      }
       if (this.lineData.green) {
         Object.assign(option, {
           series: [

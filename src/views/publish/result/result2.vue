@@ -86,26 +86,36 @@
       <template v-if="showAgain">
         <move-train :current="current"
                     :lineType="type === 2 ? 0 : 1" />
-      </template>
-      <el-row :gutter="19"
-              class="chart-container">
-        <el-col :span="24">
-          <div class="chart-box">
-            <mzh-line title="手柄级位(预测)"
+        <el-row :gutter="19"
+                class="chart-container">
+          <el-col :span="24">
+            <div class="chart-box">
+              <!-- <mzh-line title="手柄级位(预测)"
                       :yArea="yArea"
                       :lineData="dynasticDataOne"
-                      :chartType="resultType === 2 ? 'precit' : ''" />
-          </div>
-        </el-col>
-        <el-col :span="24">
-          <div class="chart-box">
-            <power-line title="能耗(预测) kW·h"
+                      :chartType="resultType === 2 ? 'precit' : ''" /> -->
+              <mzh-line title="手柄级位(预测)"
+                        :moveType="2"
+                        :yArea="yArea"
+                        :lineData="lineData.force"
+                        :chartType="resultType === 2 ? 'precit' : ''" />
+            </div>
+          </el-col>
+          <el-col :span="24">
+            <div class="chart-box">
+              <!-- <power-line title="能耗(预测) kW·h"
                         :legend="legend"
                         :lineData="dynasticDataTwo"
-                        :chartType="resultType === 2 ? 'precit' : ''" />
-          </div>
-        </el-col>
-      </el-row>
+                        :chartType="resultType === 2 ? 'precit' : ''" /> -->
+              <power-line title="能耗(预测) kW·h"
+                          :moveType="2"
+                          :legend="legend"
+                          :lineData="lineData.power"
+                          :chartType="resultType === 2 ? 'precit' : ''" />
+            </div>
+          </el-col>
+        </el-row>
+      </template>
     </template>
   </div>
 </template>
@@ -243,7 +253,7 @@ export default {
             if (this.type === 3) {
               delete this.lineData.power.green;
             }
-            this.renderData(res);
+            // this.renderData(res);
           });
       } else {
         this.$axios
@@ -254,7 +264,7 @@ export default {
             ).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
-            this.renderData(res);
+            // this.renderData(res);
           });
       }
       this.showLoading = false;
@@ -345,21 +355,26 @@ export default {
     // 不同结果集
     chooseResult() {
       this.showAgain = false;
-      for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
-        clearTimeout(this.time[i]);
-        clearTimeout(this.timer[i]);
-      }
-      this.dynasticDataOne = {
-        date_list: [],
-        data_list: [],
-        predict_data_list: [],
+      // for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
+      //   clearTimeout(this.time[i]);
+      //   clearTimeout(this.timer[i]);
+      // }
+      // this.dynasticDataOne = {
+      //   date_list: [],
+      //   data_list: [],
+      //   predict_data_list: [],
+      // };
+      // this.dynasticDataTwo = {
+      //   date_list: [],
+      //   data_list: [],
+      //   predict_data_list: [],
+      //   green: [],
+      // };
+      this.lineData = {
+        force: {},
+        power: {},
       };
-      this.dynasticDataTwo = {
-        date_list: [],
-        data_list: [],
-        predict_data_list: [],
-        green: [],
-      };
+
       if (this.resultType === 2) {
         // 间歇式
         if (this.type === 2) {
@@ -415,7 +430,7 @@ export default {
           if (this.type === 3) {
             delete this.lineData.power.green;
           }
-          this.renderDataOther(res);
+          // this.renderDataOther(res);
         });
     },
     renderDataOther(val) {
