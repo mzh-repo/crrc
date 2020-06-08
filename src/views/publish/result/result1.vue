@@ -441,22 +441,22 @@ export default {
       this.$router.push('/report');
     },
     chooseResult() {
-      for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
-        clearTimeout(this.time[i]);
-      }
-      this.dynasticDataOne = {
-        date_list: [],
-        data_list: [],
-        predict_data_list: [],
-      };
-      this.dynasticDataTwo = {
-        date_list: [],
-        data_list: [],
-        predict_data_list: [],
-        green: [],
-      };
+      // for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
+      //   clearTimeout(this.time[i]);
+      // }
+      // this.dynasticDataOne = {
+      //   date_list: [],
+      //   data_list: [],
+      //   predict_data_list: [],
+      // };
+      // this.dynasticDataTwo = {
+      //   date_list: [],
+      //   data_list: [],
+      //   predict_data_list: [],
+      //   green: [],
+      // };
       this.showDynastic = false;
-      this.showStatics = false;
+      // this.showStatics = false;
       this.getData();
     },
     getData() {
