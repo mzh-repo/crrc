@@ -83,25 +83,33 @@
                @click="goDynastic">实时运行图表</el-button>
     <el-button @click="goCase">查看实例报告</el-button>
     <template v-if="showDynastic">
-      <template v-if="showAgain">
-        <move-train :current="current"
-                    :lineType="type === 2 ? 0 : 1" />
-      </template>
+      <move-train :current="current"
+                  :lineType="type === 2 ? 0 : 1" />
       <el-row :gutter="19"
               class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <mzh-line title="手柄级位(预测)"
+            <!-- <mzh-line title="手柄级位(预测)"
                       :yArea="yArea"
                       :lineData="dynasticDataOne"
+                      :chartType="resultType === 2 ? 'precit' : ''" /> -->
+            <mzh-line title="手柄级位(预测)"
+                      :moveType="2"
+                      :yArea="yArea"
+                      :lineData="lineData.force"
                       :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <power-line title="能耗(预测) kW·h"
+            <!-- <power-line title="能耗(预测) kW·h"
                         :legend="legend"
                         :lineData="dynasticDataTwo"
+                        :chartType="resultType === 2 ? 'precit' : ''" /> -->
+            <power-line title="能耗(预测) kW·h"
+                        :moveType="2"
+                        :legend="legend"
+                        :lineData="lineData.power"
                         :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
@@ -166,7 +174,6 @@ export default {
         { name: '最佳能耗', id: 1 },
         { name: '最小旅行时间', id: 2 },
       ],
-      showAgain: true,
       yArea: [],
       dataSetId: 1,
       curent: 0,
@@ -243,7 +250,7 @@ export default {
             if (this.type === 3) {
               delete this.lineData.power.green;
             }
-            this.renderData(res);
+            // this.renderData(res);
           });
       } else {
         this.$axios
@@ -254,7 +261,7 @@ export default {
             ).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
-            this.renderData(res);
+            // this.renderData(res);
           });
       }
       this.showLoading = false;
@@ -344,22 +351,27 @@ export default {
     },
     // 不同结果集
     chooseResult() {
-      this.showAgain = false;
-      for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
-        clearTimeout(this.time[i]);
-        clearTimeout(this.timer[i]);
-      }
-      this.dynasticDataOne = {
-        date_list: [],
-        data_list: [],
-        predict_data_list: [],
-      };
-      this.dynasticDataTwo = {
-        date_list: [],
-        data_list: [],
-        predict_data_list: [],
-        green: [],
-      };
+      this.showDynastic = false;
+      // for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
+      //   clearTimeout(this.time[i]);
+      //   clearTimeout(this.timer[i]);
+      // }
+      // this.dynasticDataOne = {
+      //   date_list: [],
+      //   data_list: [],
+      //   predict_data_list: [],
+      // };
+      // this.dynasticDataTwo = {
+      //   date_list: [],
+      //   data_list: [],
+      //   predict_data_list: [],
+      //   green: [],
+      // };
+      // this.lineData = {
+      //   force: {},
+      //   power: {},
+      // };
+
       if (this.resultType === 2) {
         // 间歇式
         if (this.type === 2) {
@@ -402,9 +414,6 @@ export default {
         ).toFixed(2);
         this.getDataOther();
       }
-      this.$nextTick(() => {
-        this.showAgain = true;
-      });
     },
     getDataOther() {
       this.$axios
@@ -415,7 +424,7 @@ export default {
           if (this.type === 3) {
             delete this.lineData.power.green;
           }
-          this.renderDataOther(res);
+          // this.renderDataOther(res);
         });
     },
     renderDataOther(val) {

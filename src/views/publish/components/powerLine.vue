@@ -47,6 +47,11 @@ export default {
       type: String,
       default: '',
     },
+    // 1,2 map [静态, 动态]  UPDATE:2020/06/06
+    moveType: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
@@ -112,13 +117,9 @@ export default {
           },
           axisLabel: {
             show: true,
-            // formatter: (value) => Math.floor(value * 10) / 10,
-            // formatter: (value, index) =>
-            //   Math.floor(((index + 1) / this.lineData.date_list.length) * 100),
             showMinLabel: true,
             showMaxLabel: true,
-            formatter: (value) => value * 100,
-            // showMaxLabel: true,
+            formatter: (value) => (value * 100).toFixed(1),
           },
           axisLine: {
             // show: false,
@@ -148,40 +149,13 @@ export default {
           },
         ],
       };
-      // if (this.lineData.green) {
-      //   Object.assign(option, {
-      //     series: [
-      //       {
-      //         name: this.legend[0],
-      //         type: 'line',
-      //         data: this.lineData.predict_data_list,
-      //         symbol: 'none',
-      //       },
-      //       {
-      //         name: this.legend[1],
-      //         type: 'line',
-      //         data: this.lineData.data_list,
-      //         symbol: 'none',
-      //       },
-      //       {
-      //         name: this.legend[2],
-      //         type: 'line',
-      //         data: this.lineData.green,
-      //         symbol: 'none',
-      //       },
-      //     ],
-      //   });
-      //   if (this.lineData.ratio) {
-      //     Object.assign(option, {
-      //       title: {
-      //         text: this.title,
-      //         subtext: `预测能耗(实际级位)与实际能耗(实际级位)平均差异：${
-      //           this.lineData.ratio
-      //         }`,
-      //       },
-      //     });
-      //   }
-      // }
+      if (this.moveType === 2) {
+        Object.assign(option, {
+          animation: true,
+          animationEasing: 'elasticIn',
+          animationDuration: 100000,
+        });
+      }
       if (this.chartType === 'precit') {
         Object.assign(option, {
           tooltip: {

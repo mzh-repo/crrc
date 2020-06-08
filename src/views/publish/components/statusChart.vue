@@ -98,7 +98,7 @@ export default {
           name: '实时',
           type: 'category',
           data: this.update,
-          splitLine: { show: false },
+          splitLine: { show: true },
           axisTick: {
             show: false,
           },
@@ -152,10 +152,10 @@ export default {
   },
   watch: {
     update() {
-      if (this.$data.lineData.value.length > 5) {
-        this.$data.lineData.value.shift();
-        this.$data.lineData.threshold.shift();
-      }
+      // if (this.$data.lineData.value.length > 5) {
+      //   this.$data.lineData.value.shift();
+      //   this.$data.lineData.threshold.shift();
+      // }
       this.$data.lineData.value.push(this.nowValue);
       this.$data.lineData.threshold.push(this.threshold);
       this.drawChart();

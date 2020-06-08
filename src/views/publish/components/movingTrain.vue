@@ -100,9 +100,9 @@ const otherLine = [
 
 export default {
   props: {
-    current: {
-      type: Number,
-    },
+    // current: {
+    //   type: Number,
+    // },
     // 0 间歇式  1 非接触式
     lineType: {
       type: Number,
@@ -112,15 +112,27 @@ export default {
   data() {
     return {
       pointList: line,
+      current: 0,
+      timer: null,
     };
   },
   mounted() {
+    if (this.current <= 100) {
+      this.timer = setInterval(() => {
+        this.current += 1;
+      }, 1000);
+    } else {
+      clearInterval(this.timer);
+    }
     this.dataBaseId = Number(this.$store.state.reportData.dataBaseId);
     if (this.lineType === 0) {
       this.pointList = otherLine;
     } else {
       this.pointList = line;
     }
+  },
+  beforeDestory() {
+    clearInterval(this.timer);
   },
   methods: {
     getData(val) {
