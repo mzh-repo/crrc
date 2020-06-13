@@ -47,13 +47,17 @@
       <el-col :span="6">
         <div class="error">
           <el-row>故障概率</el-row>
-          <div class="error-box">{{errorProbably}}<span>(%)</span></div>
+          <!-- <div class="error-box">{{errorProbably}}<span>(%)</span></div> -->
+          <div class="error-box">A级故障概率: 0.00%</div>
+          <div class="error-box">B级故障概率: 0.00%</div>
+          <div class="error-box">C级故障概率: 0.03%</div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="error">
           <el-row>检修里程</el-row>
-          <div class="error-box">{{ errorDistance }}<span>(km)</span></div>
+          <!-- <div class="error-box">{{ errorDistance }}<span>(km)</span></div> -->
+          <div class="error-instance">35329km</div>
         </div>
       </el-col>
       <el-col :span="12">
@@ -260,15 +264,21 @@ export default {
 }
 
 .error-box {
-  margin-top: 30px;
-  font-size: 30px;
+  // margin-top: 10px;
+  font-size: 20px;
   display: flex;
   align-items: baseline;
   justify-content: center;
 
-  span {
-    font-size: 16px;
-  }
+  // span {
+  //   font-size: 16px;
+  // }
+}
+
+.error-instance {
+  margin-top: 30px;
+  font-size: 28px;
+  text-align: center;
 }
 
 .strategy-box {
