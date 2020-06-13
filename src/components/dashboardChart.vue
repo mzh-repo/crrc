@@ -30,6 +30,19 @@ export default {
       };
     },
     initChart(myChart, data) {
+      let colorList = [
+        [0.5, '#FF5B59'],
+        [0.75, '#FFCB33'],
+        [1, '#97E9D5'],
+      ];
+
+      if (this.dataSet.value < 50) {
+        colorList = [
+          [0.5, '#97E9D5'],
+          [0.75, '#FFCB33'],
+          [1, '#FF5B59'],
+        ];
+      }
       const options = {
         tooltip: {
           formatter: '{a} <br/>{b} : {c}',
@@ -40,21 +53,17 @@ export default {
             type: 'gauge',
             startAngle: 180,
             endAngle: 0,
-            // detail: { formatter: '{value}%' },
+            detail: { formatter: (value) => value.toFixed(2) },
             title: {
               show: false,
             },
             data: [{ value: data.value, name: data.name }],
             radius: '90%',
-            min: 60,
+            // min: 60,
             splitNumber: 8,
             axisLine: {
               lineStyle: {
-                color: [
-                  [0.5, '#FF5B59'],
-                  [0.75, '#FFCB33'],
-                  [1, ' #97E9D5'],
-                ],
+                color: colorList,
                 width: 10,
               },
             },
