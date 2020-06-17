@@ -28,28 +28,18 @@ export default {
       type: String,
       default: '当前电流: -7A',
     },
-    yTitle: {
-      type: String,
-      default: '电流（A）',
-    },
     nowValue: {
-      type: String,
+      type: Array,
     },
     threshold: {
-      type: String,
-    },
-    update: {
-      type: Date,
+      type: Array,
     },
   },
   data() {
     return {
       chart: '',
-      lineData: {
-        time: [],
-        value: [],
-        threshold: [],
-      },
+      nowValueList: [],
+      thresholdList: [],
     };
   },
   mounted() {
@@ -79,25 +69,27 @@ export default {
       const option = {
         title: {
           text: this.title,
-          // textAlign: 'auto',
           left: '30%',
-          top: '16',
+          top: '5',
         },
         tooltip: {
           trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
+          formatter(params) {
+            return `
+               ${params[0].marker} ${params[0].seriesName}：
+               ${Number(params[0].value[1])}<br/>
+                ${params[1].marker} ${params[1].seriesName}：
+                ${Number(params[1].value[1])}<br/>
+               `;
           },
         },
         legend: {
           data: this.legend,
-          top: '20',
-          right: '20',
+          top: '30',
+          right: '5',
         },
         xAxis: {
           name: '实时',
-          type: 'category',
-          data: this.update,
           splitLine: { show: true },
           axisTick: {
             show: false,
@@ -111,12 +103,9 @@ export default {
           },
         },
         yAxis: {
-          // name: this.yTitle,
           nameTextStyle: {
             fontWeight: 400,
           },
-          // nameGap: 30,
-          type: 'value',
           splitLine: { show: false },
           boundaryGap: [0, '100%'],
           axisLabel: {
@@ -133,7 +122,7 @@ export default {
           {
             name: this.legend[0],
             type: 'line',
-            data: this.$data.lineData.threshold,
+            data: this.thresholdList,
             lineStyle: {
               type: 'dashed',
             },
@@ -142,7 +131,7 @@ export default {
           {
             name: this.legend[1],
             type: 'line',
-            data: this.$data.lineData.value,
+            data: this.nowValueList,
             symbol: 'none',
           },
         ],
@@ -151,13 +140,9 @@ export default {
     },
   },
   watch: {
-    update() {
-      // if (this.$data.lineData.value.length > 5) {
-      //   this.$data.lineData.value.shift();
-      //   this.$data.lineData.threshold.shift();
-      // }
-      this.$data.lineData.value.push(this.nowValue);
-      this.$data.lineData.threshold.push(this.threshold);
+    nowValue(val) {
+      this.nowValueList.push(val);
+      this.thresholdList.push(this.threshold);
       this.drawChart();
     },
   },
