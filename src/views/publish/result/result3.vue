@@ -9,9 +9,8 @@
               :span="8">
         <div class="status-box">
           <Chart :title="item.name+ ':'+item.value"
-                 :nowValue="item.value"
-                 :threshold="item.threshold"
-                 :update="new Date()" />
+                 :nowValue="formatData(item.value)"
+                 :threshold="formatData(item.threshold)" />
         </div>
       </el-col>
     </el-row>
@@ -34,12 +33,17 @@
               class="sub-title">
         <el-row class="sub-title">告警记录</el-row>
         <el-row class="record">
-          <el-row v-for="(item,index) in recordList"
-                  :key="index"
-                  class="record-box">
-            <el-col :span="14">{{item.name}}</el-col>
-            <el-col :span="10">{{item.time}}</el-col>
-          </el-row>
+          <template v-if="recordList.length > 0">
+            <el-row v-for="(item,index) in recordList"
+                    :key="index"
+                    class="record-box">
+              <el-col :span="14">{{item.name}}</el-col>
+              <el-col :span="10">{{item.time}}</el-col>
+            </el-row>
+          </template>
+          <template v-else>
+            暂无数据
+          </template>
         </el-row>
       </el-col>
     </el-row>
@@ -106,6 +110,7 @@ export default {
       errorDistance: '', // 检修里程
       strategy: '', // 检修策略
       showLoading: false,
+      initTime: null,
     };
   },
   mounted() {
@@ -122,6 +127,12 @@ export default {
     this.round();
   },
   methods: {
+    formatData(val) {
+      if (!this.initTime) {
+        this.initTime = new Date().valueOf();
+      }
+      return [new Date().valueOf() % this.initTime, Number(val)];
+    },
     getColor(index) {
       switch (index) {
         case 0:
@@ -225,7 +236,7 @@ export default {
   background: #fff;
   border-radius: 6px;
   height: 456px;
-  padding: 30px;
+  padding: 30px 10px;
   overflow: scroll;
 }
 
@@ -264,15 +275,11 @@ export default {
 }
 
 .error-box {
-  // margin-top: 30px;
+  margin-top: 10px;
   font-size: 20px;
   display: flex;
   align-items: baseline;
   justify-content: center;
-
-  span {
-    font-size: 16px;
-  }
 }
 
 .error-instance {
