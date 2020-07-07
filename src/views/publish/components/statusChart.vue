@@ -90,6 +90,7 @@ export default {
         },
         xAxis: {
           name: '实时',
+          type: 'time',
           splitLine: { show: true },
           axisTick: {
             show: false,
