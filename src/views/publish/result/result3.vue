@@ -131,7 +131,8 @@ export default {
       if (!this.initTime) {
         this.initTime = new Date().valueOf();
       }
-      return [new Date().valueOf() % this.initTime, Number(val)];
+      // return [new Date().valueOf() % this.initTime, Number(val)];
+      return [new Date().valueOf(), Number(val)];
     },
     getColor(index) {
       switch (index) {

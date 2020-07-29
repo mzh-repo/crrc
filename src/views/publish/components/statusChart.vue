@@ -6,6 +6,14 @@
 <script>
 import echarts from 'echarts'; // echarts theme
 
+const initData = () => {
+  const arr = [];
+  for (let i = 0; i < 60; i += 1) {
+    arr.unshift([new Date().valueOf() - 1000 * i, null]);
+  }
+  return arr;
+};
+
 export default {
   props: {
     className: {
@@ -38,8 +46,8 @@ export default {
   data() {
     return {
       chart: '',
-      nowValueList: [],
-      thresholdList: [],
+      nowValueList: initData(),
+      thresholdList: initData(),
     };
   },
   mounted() {
@@ -92,6 +100,9 @@ export default {
           name: '实时',
           type: 'time',
           splitLine: { show: true },
+          minorSplitLine: {
+            show: true,
+          },
           axisTick: {
             show: false,
           },
@@ -107,7 +118,7 @@ export default {
           nameTextStyle: {
             fontWeight: 400,
           },
-          splitLine: { show: false },
+          splitLine: { show: true },
           boundaryGap: [0, '100%'],
           axisLabel: {
             formatter: '{value}',
@@ -142,6 +153,10 @@ export default {
   },
   watch: {
     nowValue(val) {
+      if (this.nowValueList.length === 60) {
+        this.nowValueList.shift();
+        this.thresholdList.shift();
+      }
       this.nowValueList.push(val);
       this.thresholdList.push(this.threshold);
       this.drawChart();
