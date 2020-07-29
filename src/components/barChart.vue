@@ -10,8 +10,8 @@ export default {
     dataSet: {
       type: Object,
       default: () => ({
-        data_list: [0.1, 0.3, 0.6, 0.2, 0.5, 0.7, 0.38, 0.2, 0.4],
-        predict_data_list: [0.2, 0.5, 0.7, 0.6, 0.2, 0.46, 0.1, 0.3, 0.6],
+        data_list: [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
+        predict_data_list: [0.18, 0.17, 0.16, 0.2, 0.18, 0.17, 0.19, 0.24],
         // id_list: [1, 2, 3, 4, 5, 6, 7, 8, 9],
         name: [],
       }),
@@ -34,10 +34,10 @@ export default {
     // 标题内容
     title: {
       type: String,
-      // default: '近期训练',
     },
     xName: {
       type: String,
+      default: '训练轮数',
     },
     yName: {
       type: String,
@@ -48,7 +48,7 @@ export default {
     },
     tooltipList: {
       type: Array,
-      default: () => ['预测loss', '实际loss'],
+      default: () => ['实际Loss', '预测Loss'],
     },
   },
   data() {
@@ -71,8 +71,10 @@ export default {
     },
     initChart(myChart, data, colors) {
       const options = {
-        legend: {},
-
+        legend: {
+          top: 20,
+          right: 20,
+        },
         title: {
           text: this.title || '',
           textStyle: {
@@ -86,10 +88,10 @@ export default {
         xAxis: {
           type: 'category',
           show: this.showXAxis,
-          // data: data.id_list,
           data: data.name,
           axisLine: { show: true },
-          axisTick: { show: false },
+          axisTick: { show: true },
+          axisLable: { show: true },
           name: this.xName,
         },
         yAxis: {
@@ -100,14 +102,16 @@ export default {
         },
         series: [
           {
-            type: 'bar',
+            name: this.tooltipList[0],
+            type: data.type,
             data: data.data_list,
             color: colors[0],
             barGap: 0,
             barWidth: '20%',
           },
           {
-            type: 'bar',
+            name: this.tooltipList[1],
+            type: data.type,
             data: data.predict_data_list,
             color: colors[1],
             barWidth: '20%',
@@ -122,14 +126,6 @@ export default {
             axisPointer: {
               // 坐标轴指示器，坐标轴触发有效
               type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
-            },
-            // formatter: '{b} <br/>  预测loss: {c0} <br/> 实际loss: {c1} ',
-            /* eslint-disable indent */
-            formatter: value => `名称:${value[0].name}<br>${this.tooltipList[0]}: ${
-                value[0].value
-              }<br>${this.tooltipList[1]}: ${value[1].value}`,
-            textStyle: {
-              align: 'left',
             },
           },
           grid: {

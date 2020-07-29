@@ -12,7 +12,6 @@
       <el-col :span="6"> 列车: {{ model.car_type }} </el-col>
       <el-col :span="6"> 线路: {{ model.route }} </el-col>
       <el-col :span="12"> 适用场景: {{ model.applicable_scene }} </el-col>
-      <!-- <el-col :span="6"> 部署实例总次数: {{ reportData.total }} 次 </el-col> -->
     </el-row>
     <el-row class="describe"> 简介: {{ model.introduction }} </el-row>
     <el-row :gutter="16"
@@ -21,41 +20,23 @@
         <div class="chart">
           <bar-chart title="近期训练"
                      :dataSet="trainData"
-                     :tooltipList="['训练Loss', '测试Loss']"
                      :showTip="true"
-                     :showXAxis="false"
-                     xName="id"
+                     :showXAxis="true"
                      yName="Loss" />
         </div>
       </el-col>
       <el-col :span="12">
         <div class="chart">
-          <bar-chart title="近期应用"
-                     :colors="colors"
+          <bar-chart title="差异曲线"
+                     :colors="[]"
+                     :tooltipList="['差异值']"
                      :dataSet="appData"
                      :showTip="true"
-                     :showXAxis="false"
-                     xName="id"
-                     yName="Loss" />
+                     :showXAxis="true"
+                     yName="数值" />
         </div>
       </el-col>
     </el-row>
-    <!-- <el-row class="model-example">相关实例</el-row>
-    <el-row class="model-control">
-      <template v-for="(item, index) in modelList">
-        <div :key="index" class="model-box" @click="getForecast(item.dataset_id, item.status)">
-          <instance
-            :chose="false"
-            :status="item.status"
-            :title="item.name"
-            :lately="item.loss"
-            :traning="item.training_time"
-            :datasetName="item.dataset_name"
-            :estimate="item.estimated_deployment_time"
-          />
-        </div>
-      </template>
-    </el-row> -->
   </el-container>
 </template>
 
@@ -70,9 +51,7 @@ export default {
     return {
       appData: {},
       trainData: {},
-      // reportData: this.$store.state.reportData,
       model: {},
-      colors: ['#00C4C0', '#8FD866'],
       total: 100,
       size: 34.2,
       frame: 'keras',
@@ -80,7 +59,6 @@ export default {
     };
   },
   mounted() {
-    // this.reportData = this.$store.state.reportData;
     const data = JSON.parse(sessionStorage.getItem('Result'));
     this.modelId = data.id;
     this.getModel();
@@ -93,24 +71,29 @@ export default {
       });
     },
     getdata() {
-      this.$axios.get(`/form/recent?id=${this.modelId}`).then((res) => {
-        this.appData = res.application;
-        this.trainData = res.train;
-      });
+      // this.$axios.get(`/form/recent?id=${this.modelId}`).then((res) => {
+      // this.appData = res.application;
+      // this.trainData = res.train;
+      // });
+      this.trainData = {
+        data_list: [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
+        predict_data_list: [0.18, 0.17, 0.16, 0.2, 0.2, 0.21, 0.23, 0.24],
+        name: [1, 2, 3, 4, 5, 6, 7, 8],
+        type: 'bar',
+      };
+
+      this.appData = {
+        data_list: [0.07, 0.08, 0.09, 0.05, 0.05, 0.04, 0.02, 0.01],
+        name: [1, 2, 3, 4, 5, 6, 7, 8],
+        type: 'line',
+      };
+
       // this.$axios.get(`model/instance/list?model_id=${this.modelId}`).then((res) => {
       //   this.modelList = res;
       // });
     },
     unitConvert(data) {
       return (data / 1024 / 1024).toFixed(1);
-    },
-    getForecast(id, status) {
-      if (status === 1) {
-        this.$store.commit('setModelDatasetId', id);
-        this.$router.push({
-          path: `/modelPublish/modelPublishForecast?id=${this.modelId}`,
-        });
-      }
     },
   },
 };
