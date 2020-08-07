@@ -42,6 +42,10 @@ export default {
     threshold: {
       type: Array,
     },
+    warning: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -79,6 +83,9 @@ export default {
           text: this.title,
           left: '30%',
           top: '5',
+          textStyle: {
+            color: this.warning ? '#ca2418' : '#333',
+          },
         },
         tooltip: {
           trigger: 'axis',

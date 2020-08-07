@@ -127,6 +127,17 @@
               class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
+            <!-- <power-line chartType="precit"
+                        title="能耗(预测) kW·h"
+                        :lineData="dynasticDataTwo" /> -->
+            <power-line chartType="precit"
+                        title="能耗(预测) kW·h"
+                        :moveType="2"
+                        :lineData="lineData.power" />
+          </div>
+        </el-col>
+         <el-col :span="24">
+          <div class="chart-box">
             <!-- <mzh-line chartType="precit"
                       title="手柄级位(预测)"
                       :yArea="yArea"
@@ -136,17 +147,6 @@
                       :moveType="2"
                       :yArea="yArea"
                       :lineData="lineData.force" />
-          </div>
-        </el-col>
-        <el-col :span="24">
-          <div class="chart-box">
-            <!-- <power-line chartType="precit"
-                        title="能耗(预测) kW·h"
-                        :lineData="dynasticDataTwo" /> -->
-            <power-line chartType="precit"
-                        title="能耗(预测) kW·h"
-                        :moveType="2"
-                        :lineData="lineData.power" />
           </div>
         </el-col>
       </el-row>

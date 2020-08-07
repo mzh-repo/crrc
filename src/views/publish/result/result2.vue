@@ -89,19 +89,6 @@
               class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <!-- <mzh-line title="手柄级位(预测)"
-                      :yArea="yArea"
-                      :lineData="dynasticDataOne"
-                      :chartType="resultType === 2 ? 'precit' : ''" /> -->
-            <mzh-line title="手柄级位(预测)"
-                      :moveType="2"
-                      :yArea="yArea"
-                      :lineData="lineData.force"
-                      :chartType="resultType === 2 ? 'precit' : ''" />
-          </div>
-        </el-col>
-        <el-col :span="24">
-          <div class="chart-box">
             <!-- <power-line title="能耗(预测) kW·h"
                         :legend="legend"
                         :lineData="dynasticDataTwo"
@@ -111,6 +98,19 @@
                         :legend="legend"
                         :lineData="lineData.power"
                         :chartType="resultType === 2 ? 'precit' : ''" />
+          </div>
+        </el-col>
+        <el-col :span="24">
+          <div class="chart-box">
+            <!-- <mzh-line title="手柄级位(预测)"
+                      :yArea="yArea"
+                      :lineData="dynasticDataOne"
+                      :chartType="resultType === 2 ? 'precit' : ''" /> -->
+            <mzh-line title="手柄级位(预测)"
+                      :moveType="2"
+                      :yArea="yArea"
+                      :lineData="lineData.force"
+                      :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
       </el-row>
