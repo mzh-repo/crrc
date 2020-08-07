@@ -9,6 +9,7 @@
               :span="8">
         <div class="status-box">
           <Chart :title="item.name+ ':'+item.value"
+                 :warning="Number(item.value) > Number(item.threshold)"
                  :nowValue="formatData(item.value)"
                  :threshold="formatData(item.threshold)" />
         </div>
