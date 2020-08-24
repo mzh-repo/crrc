@@ -474,7 +474,7 @@ export default {
       this.getInstance();
     },
     getTask() {
-      this.$axios.get('/task').then((res) => {
+      this.$axios.get(`/task?database_id=${this.databaseId}`).then((res) => {
         this.taskData = res;
       });
     },
