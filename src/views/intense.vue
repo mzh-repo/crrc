@@ -272,7 +272,7 @@ export default {
       this.getModel();
     },
     getModel() {
-      let query = '/task?page=0';
+      let query = `/task?page=0&database_id=${this.databaseId}`;
       this.filterForm.forEach((item) => {
         if (item.value !== '') {
           query += `&${item.prop}=${item.value}`;
