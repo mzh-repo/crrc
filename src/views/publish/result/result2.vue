@@ -52,12 +52,32 @@
           </template>
         </el-tabs>
       </el-row>
-      <el-row class="tips">
-        预测{{ tip }}: <span>{{ precit }}</span> {{ tip == '时间' ? 's' : 'kwh' }}, &nbsp;&nbsp;
-        实际{{ tip }}: <span>{{ actual }}</span> {{ tip == '时间' ? 's' : 'kwh' }}, &nbsp;&nbsp;
-        预测{{ tip }}为实际<span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
-        <!-- <el-button type="primary"
-                   @click="$router.push('/upload')">强化训练</el-button> -->
+      <el-row :gutter="19"
+              class="tips-box">
+        <el-col :span="12">
+          <div class="limit-box">
+            <el-row>约束条件</el-row>
+            <el-row v-for="(item, index) in limitList"
+                    :key="index"
+                    class="limit-item">
+              <el-col :span="20">{{ item }}</el-col>
+              <el-col :span="4">
+                <svg-icon icon-class="满足约束条件" />
+              </el-col>
+            </el-row>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="tip-content">
+            <div>
+              预测{{ tip }}: <span>{{ precit }}</span> {{ tip == '时间' ? 's' : 'kwh' }}</div>
+            <div>
+              实际{{ tip }}: <span>{{ actual }}</span> {{ tip == '时间' ? 's' : 'kwh' }}</div>
+            <div>
+              预测{{ tip }}为实际 <span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
+            </div>
+          </div>
+        </el-col>
       </el-row>
     </template>
     <el-row :gutter="19"
@@ -184,6 +204,13 @@ export default {
       precit2: null, // 劣化预测能耗值
       dataSource: '', // 数据源
       showLoading: false,
+      limitList: [
+        'AW2下平均初始加速度（m/s2）：1',
+        'AW2下平均加速度（m/s2）：0.6',
+        'AW3下常用制动平均减速度（m/s2）：1.1',
+        '车辆最低电压（V）：500',
+        '车辆最高电压（V）：900',
+      ],
     };
   },
   mounted() {
@@ -651,6 +678,54 @@ export default {
 
   .el-button {
     float: right;
+  }
+}
+
+.tips-box {
+  font-size: 30px;
+  height: 340px;
+
+  .el-col {
+    height: 100%;
+  }
+
+  .tip-content {
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    div {
+      margin-bottom: 10px;
+    }
+
+    span {
+      color: $primary-color;
+    }
+  }
+}
+
+.limit-box {
+  background: rgba(255, 255, 255, 1);
+  border-radius: 8px;
+  padding: 20px 30px;
+  text-align: left;
+
+  .el-row:first-child {
+    font-size: 24px;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    margin-bottom: 30px;
+  }
+
+  .limit-item {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 24px;
+    font-weight: 400;
+    font-size: 18px;
+    color: rgba(51, 51, 51, 1);
   }
 }
 
