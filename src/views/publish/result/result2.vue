@@ -38,7 +38,7 @@
         </el-col>
       </el-row>
       <el-row class="tips">
-        预测能耗为<span> {{ precit2 }} </span>kwh
+        预测能耗为<span> {{ precit2 }} </span>kWh
       </el-row>
     </template>
     <template v-else>
@@ -55,27 +55,21 @@
       <el-row :gutter="19"
               class="tips-box">
         <el-col :span="12">
-          <div class="limit-box">
-            <el-row>约束条件</el-row>
-            <el-row v-for="(item, index) in limitList"
-                    :key="index"
-                    class="limit-item">
-              <el-col :span="20">{{ item }}</el-col>
-              <el-col :span="4">
-                <svg-icon icon-class="满足约束条件" />
-              </el-col>
-            </el-row>
-          </div>
-        </el-col>
-        <el-col :span="12">
           <div class="tip-content">
             <div>
-              预测{{ tip }}: <span>{{ precit }}</span> {{ tip == '时间' ? 's' : 'kwh' }}</div>
+              预测{{ tip }}: <span>{{ precit }}</span> {{ tip == '时间' ? 's' : 'kWh' }}</div>
             <div>
-              实际{{ tip }}: <span>{{ actual }}</span> {{ tip == '时间' ? 's' : 'kwh' }}</div>
+              实际{{ tip }}: <span>{{ actual }}</span> {{ tip == '时间' ? 's' : 'kWh' }}</div>
             <div>
               预测{{ tip }}为实际 <span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
             </div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="limit-box">
+            <mzh-line title="运行速度 （km/h）"
+                      :lineData="lineData.speed"
+                      :chartType="resultType === 2 ? 'precit' : ''" />
           </div>
         </el-col>
       </el-row>
@@ -92,7 +86,7 @@
       </el-col>
       <el-col :span="12">
         <div class="chart-box">
-          <power-line title="能耗 kW·h"
+          <power-line title="能耗 (kWh)"
                       :legend="legend"
                       :lineData="lineData.power"
                       :chartType="resultType === 2 ? 'precit' : ''" />
@@ -109,11 +103,7 @@
               class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <!-- <power-line title="能耗(预测) kW·h"
-                        :legend="legend"
-                        :lineData="dynasticDataTwo"
-                        :chartType="resultType === 2 ? 'precit' : ''" /> -->
-            <power-line title="能耗(预测) kW·h"
+            <power-line title="能耗 (kWh)"
                         :moveType="2"
                         :legend="legend"
                         :lineData="lineData.power"
@@ -122,11 +112,15 @@
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <!-- <mzh-line title="手柄级位(预测)"
-                      :yArea="yArea"
-                      :lineData="dynasticDataOne"
-                      :chartType="resultType === 2 ? 'precit' : ''" /> -->
-            <mzh-line title="手柄级位(预测)"
+            <mzh-line title="运行速度 (km/h)"
+                      :moveType="2"
+                      :lineData="lineData.speed"
+                      :chartType="resultType === 2 ? 'precit' : ''" />
+          </div>
+        </el-col>
+        <el-col :span="24">
+          <div class="chart-box">
+            <mzh-line title="手柄级位"
                       :moveType="2"
                       :yArea="yArea"
                       :lineData="lineData.force"
@@ -167,6 +161,7 @@ export default {
       lineData: {
         force: {},
         power: {},
+        speed: {}, // 运行速度
       },
       dynasticDataOne: {
         date_list: [],
@@ -274,6 +269,7 @@ export default {
             ).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
+            this.lineData.speed = res.speed;
             if (this.type === 3) {
               delete this.lineData.power.green;
             }
@@ -288,6 +284,7 @@ export default {
             ).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
+            this.lineDate.speed = res.speed;
             // this.renderData(res);
           });
       }
@@ -448,6 +445,7 @@ export default {
         .then((res) => {
           this.lineData.force = res.level_speed;
           this.lineData.power = res.energy_consumption_speed;
+          this.lineData.speed = res.speed_speed;
           if (this.type === 3) {
             delete this.lineData.power.green;
           }

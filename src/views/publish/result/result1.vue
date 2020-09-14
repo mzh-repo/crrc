@@ -110,7 +110,7 @@
       <el-col :span="12">
         <div class="chart-box">
           <power-line chartType="precit"
-                      title="能耗kW·h"
+                      title="能耗 (kWh)"
                       :lineData="lineData.power" />
         </div>
       </el-col>
@@ -127,23 +127,20 @@
               class="chart-container">
         <el-col :span="24">
           <div class="chart-box">
-            <!-- <power-line chartType="precit"
-                        title="能耗(预测) kW·h"
-                        :lineData="dynasticDataTwo" /> -->
             <power-line chartType="precit"
-                        title="能耗(预测) kW·h"
+                        title="能耗预测 (kWh)"
                         :moveType="2"
                         :lineData="lineData.power" />
           </div>
         </el-col>
-         <el-col :span="24">
+        <el-col :span="24">
           <div class="chart-box">
             <!-- <mzh-line chartType="precit"
                       title="手柄级位(预测)"
                       :yArea="yArea"
                       :lineData="dynasticDataOne" /> -->
             <mzh-line chartType="precit"
-                      title="手柄级位(预测)"
+                      title="手柄级位 (预测)"
                       :moveType="2"
                       :yArea="yArea"
                       :lineData="lineData.force" />
@@ -222,7 +219,7 @@ export default {
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>17.45</strong> kwh<br/> 成本为：<strong>293</strong> 万元',
+            '运行能耗为：<strong>17.45</strong> kWh<br/> 成本为：<strong>293</strong> 万元',
         },
       ],
       configListOther: [
@@ -236,7 +233,7 @@ export default {
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>14.36</strong> kwh<br/> 成本为：<strong>315 </strong> 万元',
+            '运行能耗为：<strong>14.36</strong> kWh<br/> 成本为：<strong>315 </strong> 万元',
         },
       ],
       tagList: [
@@ -391,7 +388,7 @@ export default {
         {
           tag: '成本最优结果',
           source:
-            '运行能耗为：<strong>35.83</strong> kwh<br/> 成本为：<strong>245</strong> 万元',
+            '运行能耗为：<strong>35.83</strong> kWh<br/> 成本为：<strong>245</strong> 万元',
         },
       ];
       this.configListOther = [
@@ -404,7 +401,7 @@ export default {
         {
           tag: '能耗最优结果',
           source:
-            '运行能耗为：<strong>31.72</strong> kwh<br/> 成本为：<strong>268.5 </strong> 万元',
+            '运行能耗为：<strong>31.72</strong> kWh<br/> 成本为：<strong>268.5 </strong> 万元',
         },
       ];
     } else {
