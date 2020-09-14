@@ -24,7 +24,8 @@
               <el-row v-for="(item, index) in limitList"
                       :key="index"
                       class="limit-item">
-                <el-col :span="20">{{ item }}</el-col>
+                <el-col :span="20"
+                        v-html="item"></el-col>
                 <el-col :span="4">
                   <svg-icon icon-class="满足约束条件" />
                 </el-col>
@@ -372,9 +373,9 @@ export default {
     if (this.type === 3) {
       this.limitList = [
         'AW2下最高运行速度（km/h）：50',
-        'AW2下平均初始加速度（m/s2）：1',
-        'AW2下平均加速度（m/s2）：0.6',
-        'AW3下常用制动平均减速度（m/s2）：1.1',
+        'AW2下平均初始加速度（m/s&sup2;）：1',
+        'AW2下平均加速度（m/s&sup2;）：0.6',
+        'AW3下常用制动平均减速度（m/s&sup2;）：1.1',
         '车辆最低电压（V）：500',
         '车辆最高电压（V）：900',
       ];
@@ -407,9 +408,9 @@ export default {
     } else {
       this.limitList = [
         '车辆最高运行速度（km/h）：70',
-        '平均最小启动加速度（m/s2）：1',
-        '平均最小加速度（m/s2）：0.6',
-        '常用制动平均减速度（m/s2）：1.1',
+        '平均最小启动加速度（m/s&sup2;）：1',
+        '平均最小加速度（m/s&sup2;）：0.6',
+        '常用制动平均减速度（m/s&sup2;）：1.1',
         '车辆最低电压（V）：500',
         '车辆最高电压（V）：900',
       ];

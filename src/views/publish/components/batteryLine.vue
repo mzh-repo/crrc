@@ -83,7 +83,7 @@ export default {
         //   data: this.legend,
         // },
         xAxis: {
-          name: '路程(m)',
+          name: '行驶路程(%)',
           nameLocation: 'center',
           nameTextStyle: {
             padding: [20, 0, 0, 0],

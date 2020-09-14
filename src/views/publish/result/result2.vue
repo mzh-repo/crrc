@@ -112,7 +112,8 @@
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <mzh-line title="运行速度 (km/h)"
+            <mzh-line v-if="resultType === 1"
+                      title="运行速度 (km/h)"
                       :moveType="2"
                       :lineData="lineData.speed"
                       :chartType="resultType === 2 ? 'precit' : ''" />
