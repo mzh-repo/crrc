@@ -53,16 +53,16 @@
         <div class="error">
           <el-row>故障概率</el-row>
           <!-- <div class="error-box">{{errorProbably}}<span>(%)</span></div> -->
-          <div class="error-box">A级故障概率: 0.00%</div>
-          <div class="error-box">B级故障概率: 0.01%</div>
-          <div class="error-box">C级故障概率: 需检修</div>
+          <div class="error-box">A级故障概率: {{rateList[0]}}</div>
+          <div class="error-box">B级故障概率: {{rateList[1]}}</div>
+          <div class="error-box">C级故障概率: {{rateList[2]}}</div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="error">
           <el-row>检修里程</el-row>
           <!-- <div class="error-box">{{ errorDistance }}<span>(km)</span></div> -->
-          <div class="error-instance">需检修</div>
+          <div class="error-instance">{{fixTip}}</div>
         </div>
       </el-col>
       <el-col :span="12">
@@ -112,6 +112,8 @@ export default {
       strategy: '', // 检修策略
       showLoading: false,
       initTime: null,
+      rateList: [],
+      fixTip: '',
     };
   },
   mounted() {
@@ -121,8 +123,12 @@ export default {
     const dataBase = sessionStorage.getItem('dataBaseId');
     if (Number(dataBase) === 1) {
       this.type = 0;
+      this.rateList = ['0.00%', '0.01%', '需检修'];
+      this.fixTip = '需检修';
     } else {
       this.type = 1;
+      this.rateList = ['0.00%', '0.00%', '0.03%'];
+      this.fixTip = '35329km';
     }
     this.showLoading = true;
     this.round();
