@@ -153,6 +153,7 @@ export default {
         Object.assign(option, {
           animation: true,
           animationEasing: 'elasticIn',
+          animationThreshold: 100000,
           animationDuration: 100000,
         });
       }
