@@ -1,84 +1,145 @@
 <template>
   <div class="status-container"
        v-loading="showLoading">
-    <el-row class="title">状态监测</el-row>
-    <el-row class="sub-title">原始指标</el-row>
-    <el-row :gutter="20">
-      <el-col v-for="(item,index) in earlyList"
-              :key="index"
-              :span="8">
-        <div class="status-box">
-          <Chart :title="item.name+ ':'+item.value"
-                 :warning="Number(item.value) > Number(item.threshold)"
-                 :nowValue="formatData(item.value)"
-                 :threshold="formatData(item.threshold)" />
-        </div>
-      </el-col>
+    <el-row class="result-tab">
+      <el-tabs v-model="resultId">
+        <template v-for="(item, index) in resultList">
+          <el-tab-pane :key="index"
+                       :label="item"
+                       :name="index.toString()"> </el-tab-pane>
+        </template>
+      </el-tabs>
     </el-row>
-    <el-row :gutter="20">
-      <el-col :span="18"
-              class="sub-title">
-        <el-row class="sub-title">健康评估指标</el-row>
-        <el-row :gutter="20">
-          <el-col v-for="(item,index) in healthList"
-                  :key="index"
-                  :span="8">
-            <div class="gauge-box">
-              <el-row class="gauge-title">{{item.name}}</el-row>
-              <Gauge :dataSet="item" />
-            </div>
-          </el-col>
-        </el-row>
-      </el-col>
-      <el-col :span="6"
-              class="sub-title">
-        <el-row class="sub-title">告警记录</el-row>
-        <el-row class="record">
-          <template v-if="recordList.length > 0">
-            <el-row v-for="(item,index) in recordList"
-                    :key="index"
-                    class="record-box">
-              <el-col :span="14">{{item.name}}</el-col>
-              <el-col :span="10">{{item.time}}</el-col>
-            </el-row>
-          </template>
-          <template v-else>
-            暂无数据
-          </template>
-        </el-row>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <div class="error">
-          <el-row>故障概率</el-row>
-          <!-- <div class="error-box">{{errorProbably}}<span>(%)</span></div> -->
-          <div class="error-box">A级故障概率: {{rateList[0]}}</div>
-          <div class="error-box">B级故障概率: {{rateList[1]}}</div>
-          <div class="error-box">C级故障概率: {{rateList[2]}}</div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="error">
-          <el-row>检修里程</el-row>
-          <!-- <div class="error-box">{{ errorDistance }}<span>(km)</span></div> -->
-          <div class="error-instance">{{fixTip}}</div>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="error">
-          <el-row>检修策略</el-row>
-          <div class="strategy-box">
-            {{strategy}}
+    <template v-if="resultId === '0'">
+      <el-row class="sub-title">原始指标</el-row>
+      <el-row :gutter="20">
+        <el-col v-for="(item,index) in earlyList"
+                :key="index"
+                :span="8">
+          <div class="status-box">
+            <Chart :title="item.name+ ':'+item.value"
+                   :warning="Number(item.value) > Number(item.threshold)"
+                   :nowValue="formatData(item.value)"
+                   :threshold="formatData(item.threshold)" />
           </div>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row type="flex"
-            justify="center"
-            style="padding-top: 40px">
-      <el-button @click="goCase">查看实例报告</el-button>
-    </el-row>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="18"
+                class="sub-title">
+          <el-row class="sub-title">健康评估指标</el-row>
+          <el-row :gutter="20">
+            <el-col v-for="(item,index) in healthList"
+                    :key="index"
+                    :span="8">
+              <div class="gauge-box">
+                <el-row class="gauge-title">{{item.name}}</el-row>
+                <Gauge :dataSet="item" />
+              </div>
+            </el-col>
+          </el-row>
+        </el-col>
+        <el-col :span="6"
+                class="sub-title">
+          <el-row class="sub-title">告警记录</el-row>
+          <el-row class="record">
+            <template v-if="recordList.length > 0">
+              <el-row v-for="(item,index) in recordList"
+                      :key="index"
+                      class="record-box">
+                <el-col :span="14">{{item.name}}</el-col>
+                <el-col :span="10">{{item.time}}</el-col>
+              </el-row>
+            </template>
+            <template v-else>
+              暂无数据
+            </template>
+          </el-row>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="error">
+            <el-row>故障概率</el-row>
+            <!-- <div class="error-box">{{errorProbably}}<span>(%)</span></div> -->
+            <div class="error-box">A级故障概率: {{rateList[0]}}</div>
+            <div class="error-box">B级故障概率: {{rateList[1]}}</div>
+            <div class="error-box">C级故障概率: {{rateList[2]}}</div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="error">
+            <el-row>检修里程</el-row>
+            <!-- <div class="error-box">{{ errorDistance }}<span>(km)</span></div> -->
+            <div class="error-instance">{{fixTip}}</div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="error">
+            <el-row>检修策略</el-row>
+            <div class="strategy-box">
+              {{strategy}}
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row type="flex"
+              justify="center"
+              style="padding-top: 40px">
+        <el-button @click="goCase">查看实例报告</el-button>
+      </el-row>
+    </template>
+    <template v-else>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="status-box">
+            <Chart :title="speedData.name+':'+speedData.value"
+                   :warning="Number(speedData.value) > Number(speedData.threshold)"
+                   :nowValue="formatData(speedData.value)"
+                   :threshold="formatData(speedData.threshold)" />
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="status-box">
+            <Chart title="构架温度"
+                   :warning="Number(tempData1.value) > Number(tempData1.threshold)"
+                   :nowValue="formatData(tempData1.value)"
+                   :nowValue2="formatData(tempData2.value)"
+                   :nowValue3="formatData(tempData3.value)"
+                   :nowValue4="formatData(tempData4.value)"
+                   :threshold="formatData(tempData1.threshold)"
+                   :legend="['阈值',
+                      tempData1.name, tempData2.name, tempData3.name, tempData4.name]" />
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20"
+              class="temp-box">
+        <el-col v-for="(item,index) in tempList"
+                :key="index"
+                :span="6">
+          <div class="gauge-box">
+            <el-row class="gauge-title">{{item.name}}</el-row>
+            <Gauge :dataSet="item"
+                   :max="200" />
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="error">
+            <el-row>线圈位置</el-row>
+            <div class="error-instance">{{tempTitle}}</div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="error">
+            <el-row>列车运行控制建议</el-row>
+            <div class="error-instance">{{tempTip}}</div>
+          </div>
+        </el-col>
+      </el-row>
+    </template>
   </div>
 </template>
 
@@ -114,6 +175,9 @@ export default {
       initTime: null,
       rateList: [],
       fixTip: '',
+      resultId: '0', // 劣化tab 初始值   activeTb must be string
+      resultList: [],
+      speedData: {},
     };
   },
   mounted() {
@@ -122,10 +186,12 @@ export default {
     }
     const dataBase = sessionStorage.getItem('dataBaseId');
     if (Number(dataBase) === 1) {
+      this.resultList = ['状态监测'];
       this.type = 0;
       this.rateList = ['0.00%', '0.01%', '需检修'];
       this.fixTip = '需检修';
     } else {
+      this.resultList = ['供电系统故障预警', '转向架异常温升监测及预警'];
       this.type = 1;
       this.rateList = ['0.00%', '0.00%', '0.03%'];
       this.fixTip = '35329km';
@@ -174,9 +240,31 @@ export default {
         this.recordList = this.recordList.splice(0, 8);
       });
     },
+    getOther() {
+      this.$axios.get('form/graph?model_type=10').then((res) => {
+        /* eslint-disable prefer-destructuring */
+        this.speedData = res.data[0];
+        this.tempData1 = res.data[2];
+        this.tempData2 = res.data[4];
+        this.tempData3 = res.data[6];
+        this.tempData4 = res.data[8];
+        this.tempList = [res.data[3], res.data[5], res.data[7], res.data[9]];
+        if (Number(res.data[10].value) === 0) {
+          this.tempTitle = '当前无感应线圈';
+        } else {
+          this.tempTitle = `到线圈终点的距离${res.data[1].value}km`;
+        }
+        const tipMap = ['无', '加速通过感应供电区段', '降低感应供电线圈功率'];
+        this.tempTip = tipMap[res.data[11].value];
+      });
+    },
     round() {
       this.time = setTimeout(() => {
-        this.getData();
+        if (this.resultId === '0') {
+          this.getData();
+        } else {
+          this.getOther();
+        }
         this.round();
       }, 1000);
     },
@@ -301,5 +389,24 @@ export default {
   font-size: 18px;
   display: flex;
   justify-content: flex-start;
+}
+
+.result-tab {
+  text-align: left;
+  height: 50px;
+  font-size: 24px;
+
+  /deep/ .el-tabs {
+    display: flex;
+    justify-content: space-between;
+
+    .el-tabs__item {
+      font-size: 24px;
+    }
+  }
+}
+
+.temp-box {
+  margin: 16px 0;
 }
 </style>

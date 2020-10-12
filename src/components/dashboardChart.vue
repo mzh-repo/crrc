@@ -13,6 +13,10 @@ export default {
         // name: '电量',
       }),
     },
+    max: {
+      type: Number,
+      default: 100,
+    },
   },
   data() {
     return {};
@@ -35,11 +39,18 @@ export default {
         [0.75, '#FFCB33'],
         [1, '#97E9D5'],
       ];
-
-      if (this.dataSet.value < 50) {
+      if (this.max === 100) {
+        if (this.dataSet.value < 50) {
+          colorList = [
+            [0.5, '#97E9D5'],
+            [0.75, '#FFCB33'],
+            [1, '#FF5B59'],
+          ];
+        }
+      } else {
         colorList = [
           [0.5, '#97E9D5'],
-          [0.75, '#FFCB33'],
+          [0.6, '#FFCB33'],
           [1, '#FF5B59'],
         ];
       }
@@ -53,6 +64,7 @@ export default {
             type: 'gauge',
             startAngle: 180,
             endAngle: 0,
+            max: this.max,
             detail: { formatter: (value) => value.toFixed(2) },
             title: {
               show: false,
