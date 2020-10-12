@@ -39,6 +39,15 @@ export default {
     nowValue: {
       type: Array,
     },
+    nowValue2: {
+      type: Array,
+    },
+    nowValue3: {
+      type: Array,
+    },
+    nowValue4: {
+      type: Array,
+    },
     threshold: {
       type: Array,
     },
@@ -56,6 +65,11 @@ export default {
   },
   mounted() {
     this.drawChart();
+    if (this.nowValue2) {
+      this.nowValueList2 = initData();
+      this.nowValueList3 = initData();
+      this.nowValueList4 = initData();
+    }
   },
   beforeDestroy() {
     this.chart.clear();
@@ -81,7 +95,7 @@ export default {
       const option = {
         title: {
           text: this.title,
-          left: '30%',
+          // left: '30%',
           top: '5',
           textStyle: {
             color: this.warning ? '#ca2418' : '#333',
@@ -90,12 +104,25 @@ export default {
         tooltip: {
           trigger: 'axis',
           formatter(params) {
-            return `
+            if (params[2]) {
+              return `
                ${params[0].marker} ${params[0].seriesName}：
                ${Number(params[0].value[1])}<br/>
                 ${params[1].marker} ${params[1].seriesName}：
                 ${Number(params[1].value[1])}<br/>
+                ${params[2].marker} ${params[1].seriesName}：
+                ${Number(params[2].value[1])}<br/>
+                ${params[3].marker} ${params[3].seriesName}：
+                ${Number(params[3].value[1])}<br/>
+                ${params[4].marker} ${params[4].seriesName}：
+                ${Number(params[4].value[1])}<br/>
                `;
+            }
+            return `
+               ${params[0].marker} ${params[0].seriesName}：
+               ${Number(params[0].value[1])}<br/>
+                ${params[1].marker} ${params[1].seriesName}：
+                ${Number(params[1].value[1])}<br/>`;
           },
         },
         legend: {
@@ -153,6 +180,24 @@ export default {
             data: this.nowValueList,
             symbol: 'none',
           },
+          {
+            name: this.legend[2],
+            type: 'line',
+            data: this.nowValueList2,
+            symbol: 'none',
+          },
+          {
+            name: this.legend[3],
+            type: 'line',
+            data: this.nowValueList3,
+            symbol: 'none',
+          },
+          {
+            name: this.legend[4],
+            type: 'line',
+            data: this.nowValueList4,
+            symbol: 'none',
+          },
         ],
       };
       this.chart.setOption(option, true);
@@ -162,9 +207,19 @@ export default {
     nowValue(val) {
       if (this.nowValueList.length === 60) {
         this.nowValueList.shift();
+        if (this.nowValue2) {
+          this.nowValueList2.shift();
+          this.nowValueList3.shift();
+          this.nowValueList4.shift();
+        }
         this.thresholdList.shift();
       }
       this.nowValueList.push(val);
+      if (this.nowValue2) {
+        this.nowValueList2.push(this.nowValue2);
+        this.nowValueList3.push(this.nowValue3);
+        this.nowValueList4.push(this.nowValue4);
+      }
       this.thresholdList.push(this.threshold);
       this.drawChart();
     },
