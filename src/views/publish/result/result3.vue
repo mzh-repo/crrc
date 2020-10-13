@@ -93,7 +93,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <div class="status-box">
-            <Chart :title="speedData.name+':'+speedData.value"
+            <Chart :title="'列车速度(km/h)'+':'+speedData.value"
                    :warning="Number(speedData.value) > Number(speedData.threshold)"
                    :nowValue="formatData(speedData.value)"
                    :threshold="formatData(speedData.threshold)" />
