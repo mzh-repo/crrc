@@ -21,8 +21,10 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.drawBar();
+  watch: {
+    dataSet() {
+      this.drawBar();
+    },
   },
   methods: {
     drawBar() {

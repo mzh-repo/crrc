@@ -107,9 +107,7 @@
                    :nowValue2="formatData(tempData2.value)"
                    :nowValue3="formatData(tempData3.value)"
                    :nowValue4="formatData(tempData4.value)"
-                   :threshold="formatData(tempData1.threshold)"
-                   :legend="['阈值',
-                      tempData1.name, tempData2.name, tempData3.name, tempData4.name]" />
+                   :legend="[tempData1.name, tempData2.name, tempData3.name, tempData4.name]" />
           </div>
         </el-col>
       </el-row>
