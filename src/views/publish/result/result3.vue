@@ -118,7 +118,8 @@
                 :span="6">
           <div class="gauge-box">
             <el-row class="gauge-title">{{item.name}}</el-row>
-            <Gauge :dataSet="item"
+            <Gauge name="预测"
+                   :dataSet="item"
                    :max="200" />
           </div>
         </el-col>
