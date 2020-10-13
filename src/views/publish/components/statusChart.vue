@@ -66,6 +66,7 @@ export default {
   mounted() {
     this.drawChart();
     if (this.nowValue2) {
+      this.nowValueList = initData();
       this.nowValueList2 = initData();
       this.nowValueList3 = initData();
       this.nowValueList4 = initData();
@@ -161,6 +162,7 @@ export default {
           axisLine: {
             show: false,
           },
+          min: (val) => (this.nowValue2 ? '80' : val.min),
         },
         series: [
           {
@@ -168,7 +170,7 @@ export default {
             type: 'line',
             data: this.nowValue2 ? this.nowValueList : this.thresholdList,
             lineStyle: {
-              type: 'dashed',
+              type: this.nowValue2 ? 'solid' : 'dashed',
             },
             symbol: 'none',
           },
@@ -209,18 +211,16 @@ export default {
           this.nowValueList2.shift();
           this.nowValueList3.shift();
           this.nowValueList4.shift();
-        } else {
-          this.thresholdList.shift();
         }
+        this.thresholdList.shift();
       }
       this.nowValueList.push(val);
       if (this.nowValue2) {
         this.nowValueList2.push(this.nowValue2);
         this.nowValueList3.push(this.nowValue3);
         this.nowValueList4.push(this.nowValue4);
-      } else {
-        this.thresholdList.push(this.threshold);
       }
+      this.thresholdList.push(this.threshold);
       this.drawChart();
     },
   },
