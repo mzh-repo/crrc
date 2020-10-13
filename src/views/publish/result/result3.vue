@@ -252,7 +252,7 @@ export default {
         if (Number(res.data[10].value) === 0) {
           this.tempTitle = '当前无感应线圈';
         } else {
-          this.tempTitle = `到线圈终点的距离${res.data[1].value}km`;
+          this.tempTitle = `到线圈终点的距离${res.data[1].value}m`;
         }
         const tipMap = ['无', '加速通过感应供电区段', '降低感应供电线圈功率'];
         this.tempTip = tipMap[res.data[11].value];
