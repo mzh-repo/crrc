@@ -17,6 +17,10 @@ export default {
       type: Number,
       default: 100,
     },
+    name: {
+      type: String,
+      default: '实时',
+    },
   },
   data() {
     return {};
@@ -62,7 +66,7 @@ export default {
         },
         series: [
           {
-            name: '实时',
+            name: this.name,
             type: 'gauge',
             startAngle: 180,
             endAngle: 0,
