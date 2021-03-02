@@ -1,9 +1,5 @@
 <template>
   <div v-loading="showLoading">
-    <!-- <el-row class="train-btn">
-      <el-button type="primary"
-                 @click="$router.push('/upload')">强化训练</el-button>
-    </el-row> -->
     <el-row class="result-tab">
       <el-tabs v-model="resultName"
                @tab-click="chooseResult">
@@ -87,7 +83,7 @@
               <el-table-column :key="index"
                                :prop="item.prop"
                                :label="item.name"
-                               :width="item.prop === 'area' ? '300px' : 'auto'"></el-table-column>
+                               :width="item.prop === 'area' ? '200px' : 'auto'"></el-table-column>
             </template>
           </el-table>
         </el-col>
@@ -193,14 +189,9 @@ export default {
       },
       type: 3, // 2 间歇式, 3 非接触式
       time: [],
-      legend: [
-        '预测能耗(预测级位)',
-        '实际能耗(实际级位)',
-        '预测能耗(实际级位)',
-      ],
+      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
       legendone: ['预测', '实际'],
       yArea: [],
-      dataSetId: 1,
       showDynastic: false,
       resultName: '列车系统配置能耗最优',
       resultList: [
@@ -219,8 +210,7 @@ export default {
         },
         {
           tag: '成本最优结果',
-          source:
-            '运行能耗为：<strong>17.45</strong> kWh<br/> 成本为：<strong>293</strong> 万元',
+          source: '运行能耗为：<strong>17.45</strong> kWh<br/> 成本为：<strong>293</strong> 万元',
         },
       ],
       configListOther: [
@@ -233,8 +223,7 @@ export default {
         },
         {
           tag: '能耗最优结果',
-          source:
-            '运行能耗为：<strong>14.36</strong> kWh<br/> 成本为：<strong>315 </strong> 万元',
+          source: '运行能耗为：<strong>14.36</strong> kWh<br/> 成本为：<strong>315 </strong> 万元',
         },
       ],
       tagList: [
@@ -388,8 +377,7 @@ export default {
         },
         {
           tag: '成本最优结果',
-          source:
-            '运行能耗为：<strong>35.83</strong> kWh<br/> 成本为：<strong>245</strong> 万元',
+          source: '运行能耗为：<strong>35.83</strong> kWh<br/> 成本为：<strong>245</strong> 万元',
         },
       ];
       this.configListOther = [
@@ -421,50 +409,26 @@ export default {
       this.showDynastic = false;
       this.showStatics = true;
       this.$nextTick(() => {
-        document
-          .getElementById('scroll-1')
-          .scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document.getElementById('scroll-1').scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goDynastic() {
       this.showStatics = false;
       this.showDynastic = true;
       this.$nextTick(() => {
-        document
-          .getElementById('scroll-1')
-          .scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document.getElementById('scroll-1').scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goCase() {
       this.$router.push('/report');
     },
     chooseResult() {
-      // for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
-      //   clearTimeout(this.time[i]);
-      // }
-      // this.dynasticDataOne = {
-      //   date_list: [],
-      //   data_list: [],
-      //   predict_data_list: [],
-      // };
-      // this.dynasticDataTwo = {
-      //   date_list: [],
-      //   data_list: [],
-      //   predict_data_list: [],
-      //   green: [],
-      // };
       this.showDynastic = false;
-      // this.showStatics = false;
       this.getData();
     },
     getData() {
-      // this.dataSetId = this.$store.state.reportData.dataSetId;
       this.$axios
-        .get(
-          `form/graph?model_type=${this.type === 2 ? '4' : '5'}&dataset_id=${
-            this.dataSetId
-          }`,
-        )
+        .get(`form/graph?model_type=${this.type === 2 ? '4' : '5'}`)
         .then((res) => {
           this.showLoading = false;
           if (this.type === 3) {
@@ -477,7 +441,6 @@ export default {
             this.lineData.force = res.level_speed;
             this.lineData.power = res.energy_consumption_speed;
           }
-          // this.renderData(res);
         });
     },
     renderData(val) {
@@ -491,20 +454,14 @@ export default {
             this.dynasticDataTwo.data_list.shift();
             this.dynasticDataTwo.predict_data_list.shift();
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
             };
             const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
+              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],
@@ -514,20 +471,14 @@ export default {
             this.dynasticDataTwo = powerData;
           } else {
             const data = {
-              data_list: [
-                ...this.dynasticDataOne.data_list,
-                val.level.data_list[i],
-              ],
+              data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataOne.predict_data_list,
                 val.level.predict_data_list[i],
               ],
             };
             const powerData = {
-              data_list: [
-                ...this.dynasticDataTwo.data_list,
-                val.energy_consumption.data_list[i],
-              ],
+              data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
               predict_data_list: [
                 ...this.dynasticDataTwo.predict_data_list,
                 val.energy_consumption.predict_data_list[i],

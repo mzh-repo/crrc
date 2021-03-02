@@ -1,5 +1,6 @@
 <template>
-  <div :class="className" :style="{ height: height, width: width }" />
+  <div :class="className"
+       :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -30,13 +31,13 @@ export default {
       default: '预测',
     },
     lineData: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => ({
+        date_list: [],
+        data_list: [],
+        predict_data_list: [],
+      }),
     },
-    // legend: {
-    //   type: Array,
-    //   default: () => ['预测', '实际'],
-    // },
   },
   data() {
     return {
@@ -79,9 +80,6 @@ export default {
                `;
           },
         },
-        // legend: {
-        //   data: this.legend,
-        // },
         xAxis: {
           name: '行驶路程(%)',
           nameLocation: 'center',
@@ -90,44 +88,35 @@ export default {
           },
           type: 'category',
           boundaryGap: false,
-          data: this.lineData,
+          data: this.lineData.date_list,
           splitLine: { show: false },
           axisTick: {
             show: false,
           },
           axisLabel: {
-            show: false,
-            // rotate: 50,
-            formatter: value => Math.floor(value * 10) / 10,
+            show: true,
+            showMinLabel: true,
+            showMaxLabel: true,
+            formatter: (value) => (value * 100).toFixed(1),
           },
           axisLine: {
-            show: false,
+            symbol: ['none', 'arrow'],
           },
         },
         yAxis: {
           type: 'value',
           name: '百分比(%)',
           axisLabel: {
-            formatter: value => value * 100,
+            formatter: (value) => value * 100,
           },
           splitLine: { show: false },
-          axisTick: {
-            // y轴刻度线
-            show: false,
-          },
-          axisLine: {
-            // y轴
-            show: false,
-          },
-          // max: 40,
-          // min: 0,
+          min: 0,
         },
         series: [
           {
-            // name: this.legend[0],
             name: this.title,
             type: 'line',
-            data: this.lineData,
+            data: this.lineData.data_list,
             symbol: 'none',
           },
         ],

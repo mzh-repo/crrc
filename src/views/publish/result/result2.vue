@@ -135,7 +135,6 @@
 
 <script>
 /* eslint-disable import/no-unresolved */
-/* eslint-disable global-require */
 // AsciiMath 转换
 // import MarkdownItVue from 'markdown-it-vue';
 import Line from '../components/line.vue';
@@ -179,11 +178,7 @@ export default {
       type: 3, // 2 间歇式, 3 非接触式
       time: [],
       timer: [],
-      legend: [
-        '预测能耗(预测级位)',
-        '实际能耗(实际级位)',
-        '预测能耗(实际级位)',
-      ],
+      legend: ['预测能耗(预测级位)', '实际能耗(实际级位)', '预测能耗(实际级位)'],
       resultName: '最佳能耗',
       resultId: '1', // 劣化tab 初始值   activeTb must be string
       resultList: [
@@ -191,7 +186,6 @@ export default {
         { name: '最小旅行时间', id: 2 },
       ],
       yArea: [],
-      dataSetId: 1,
       curent: 0,
       showDynastic: false,
       tip: '能耗',
@@ -227,7 +221,6 @@ export default {
         },
       ];
     }
-    // const { dataBase } = this.$store.state;
     const dataBase = Number(sessionStorage.getItem('dataBaseId'));
     if (dataBase === 1) {
       this.type = 2;
@@ -244,49 +237,34 @@ export default {
     goDynastic() {
       this.showDynastic = true;
       this.$nextTick(() => {
-        document
-          .getElementById('scroll')
-          .scrollIntoView({ block: 'start', behavior: 'smooth' });
+        document.getElementById('scroll').scrollIntoView({ block: 'start', behavior: 'smooth' });
       });
     },
     goCase() {
       this.$router.push('/report');
     },
     getData() {
-      // this.dataSetId = this.$store.state.reportData.dataSetId;
       // 劣化对应的结果集
       if (this.resultType === 1) {
-        this.$axios
-          .get(
-            `form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`,
-          )
-          .then((res) => {
-            this.dataSource = res;
-            this.actual = Number(
-              res.energy_consumption.data_list.pop(),
-            ).toFixed(2);
-            this.precit = Number(
-              res.energy_consumption.predict_data_list.pop(),
-            ).toFixed(2);
-            this.lineData.force = res.level;
-            this.lineData.power = res.energy_consumption;
-            this.lineData.speed = res.speed;
-            if (this.type === 3) {
-              delete this.lineData.power.green;
-            }
-            // this.renderData(res);
-          });
+        this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+          this.dataSource = res;
+          this.actual = Number(res.energy_consumption.data_list.pop()).toFixed(2);
+          this.precit = Number(res.energy_consumption.predict_data_list.pop()).toFixed(2);
+          this.lineData.force = res.level;
+          this.lineData.power = res.energy_consumption;
+          this.lineData.speed = res.speed;
+          if (this.type === 3) {
+            delete this.lineData.power.green;
+          }
+        });
       } else {
         this.$axios
           .get(`form/graph?model_type=${this.type}&tab_id=${this.resultId}`)
           .then((res) => {
-            this.precit2 = Number(
-              res.energy_consumption.predict_data_list.pop(),
-            ).toFixed(2);
+            this.precit2 = Number(res.energy_consumption.predict_data_list.pop()).toFixed(2);
             this.lineData.force = res.level;
             this.lineData.power = res.energy_consumption;
             this.lineDate.speed = res.speed;
-            // this.renderData(res);
           });
       }
       this.showLoading = false;
@@ -296,106 +274,33 @@ export default {
       for (let i = 0; i < dataIndex; i += 1) {
         this.time[i] = setTimeout(() => {
           this.current = Math.ceil(((i + 1) / (dataIndex + 1)) * 100);
-          // if (i > 200) {
-          //   this.dynasticDataOne.data_list.shift();
-          //   this.dynasticDataOne.predict_data_list.shift();
-          //   this.dynasticDataTwo.data_list.shift();
-          //   this.dynasticDataTwo.predict_data_list.shift();
-          //   if (this.type === 2) {
-          //     this.dynasticDataTwo.green.shift();
-          //   }
-          //   const data = {
-          //     data_list: [
-          //       ...this.dynasticDataOne.data_list,
-          //       val.level.data_list[i],
-          //     ],
-          //     predict_data_list: [
-          //       ...this.dynasticDataOne.predict_data_list,
-          //       val.level.predict_data_list[i],
-          //     ],
-          //   };
-          //   const powerData = {
-          //     data_list: [
-          //       ...this.dynasticDataTwo.data_list,
-          //       val.energy_consumption.data_list[i],
-          //     ],
-          //     predict_data_list: [
-          //       ...this.dynasticDataTwo.predict_data_list,
-          //       val.energy_consumption.predict_data_list[i],
-          //     ],
-          //     // green: [
-          //     //   ...this.dynasticDataTwo.green,
-          //     //   val.energy_consumption.green[i],
-          //     // ],
-          //   };
-          //   if (this.type === 2) {
-          //     Object.assign(powerData, {
-          //       green: [
-          //         ...this.dynasticDataTwo.green,
-          //         val.energy_consumption.green[i],
-          //       ],
-          //     });
-          //   }
-          //   this.dynasticDataOne = data;
-          //   this.dynasticDataTwo = powerData;
-          // } else {
           const data = {
-            data_list: [
-              ...this.dynasticDataOne.data_list,
-              val.level.data_list[i],
-            ],
+            data_list: [...this.dynasticDataOne.data_list, val.level.data_list[i]],
             predict_data_list: [
               ...this.dynasticDataOne.predict_data_list,
               val.level.predict_data_list[i],
             ],
           };
           const powerData = {
-            data_list: [
-              ...this.dynasticDataTwo.data_list,
-              val.energy_consumption.data_list[i],
-            ],
+            data_list: [...this.dynasticDataTwo.data_list, val.energy_consumption.data_list[i]],
             predict_data_list: [
               ...this.dynasticDataTwo.predict_data_list,
               val.energy_consumption.predict_data_list[i],
             ],
-            // green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
           };
           if (this.type === 2) {
             Object.assign(powerData, {
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
             });
           }
           this.dynasticDataOne = data;
           this.dynasticDataTwo = powerData;
-          // }
         }, 100 * i);
       }
     },
     // 不同结果集
     chooseResult() {
       this.showDynastic = false;
-      // for (let i = 0; i < this.lineData.force.data_list.length; i += 1) {
-      //   clearTimeout(this.time[i]);
-      //   clearTimeout(this.timer[i]);
-      // }
-      // this.dynasticDataOne = {
-      //   date_list: [],
-      //   data_list: [],
-      //   predict_data_list: [],
-      // };
-      // this.dynasticDataTwo = {
-      //   date_list: [],
-      //   data_list: [],
-      //   predict_data_list: [],
-      //   green: [],
-      // };
-      // this.lineData = {
-      //   force: {},
-      //   power: {},
-      // };
 
       if (this.resultType === 2) {
         // 间歇式
@@ -422,87 +327,33 @@ export default {
         }
       } else if (this.resultName === '最佳能耗') {
         this.tip = '能耗';
-        this.actual = Number(
-          this.dataSource.energy_consumption.data_list.pop(),
-        ).toFixed(2);
-        this.precit = Number(
-          this.dataSource.energy_consumption.predict_data_list.pop(),
-        ).toFixed(2);
+        this.actual = Number(this.dataSource.energy_consumption.data_list.pop()).toFixed(2);
+        this.precit = Number(this.dataSource.energy_consumption.predict_data_list.pop()).toFixed(2);
         this.getData();
       } else {
         this.tip = '时间';
-        this.actual = Number(
-          this.dataSource.travel_time.data_list.pop(),
-        ).toFixed(2);
-        this.precit = Number(
-          this.dataSource.travel_time.predict_data_list.pop(),
-        ).toFixed(2);
+        this.actual = Number(this.dataSource.travel_time.data_list.pop()).toFixed(2);
+        this.precit = Number(this.dataSource.travel_time.predict_data_list.pop()).toFixed(2);
         this.getDataOther();
       }
     },
     getDataOther() {
-      this.$axios
-        .get(`form/graph?model_type=${this.type}&dataset_id=${this.dataSetId}`)
-        .then((res) => {
-          this.lineData.force = res.level_speed;
-          this.lineData.power = res.energy_consumption_speed;
-          this.lineData.speed = res.speed_speed;
-          if (this.type === 3) {
-            delete this.lineData.power.green;
-          }
-          // this.renderDataOther(res);
-        });
+      this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+        this.lineData.force = res.level_speed;
+        this.lineData.power = res.energy_consumption_speed;
+        this.lineData.speed = res.speed_speed;
+        if (this.type === 3) {
+          delete this.lineData.power.green;
+        }
+      });
     },
     renderDataOther(val) {
       const dataIndex = val.level.data_list.length;
       for (let i = 0; i < val.level.data_list.length; i += 1) {
         this.timer[i] = setTimeout(() => {
           this.current = Math.ceil(((i + 1) / (dataIndex + 1)) * 100);
-          // if (i > 200) {
-          //   this.dynasticDataOne.data_list.shift();
-          //   this.dynasticDataOne.predict_data_list.shift();
-          //   this.dynasticDataTwo.data_list.shift();
-          //   this.dynasticDataTwo.predict_data_list.shift();
-          //   if (this.type === 2) {
-          //     this.dynasticDataTwo.green.shift();
-          //   }
-          //   const data = {
-          //     data_list: [
-          //       ...this.dynasticDataOne.data_list,
-          //       val.level_speed.data_list[i],
-          //     ],
-          //     predict_data_list: [
-          //       ...this.dynasticDataOne.predict_data_list,
-          //       val.level_speed.predict_data_list[i],
-          //     ],
-          //   };
-          //   const powerData = {
-          //     data_list: [
-          //       ...this.dynasticDataTwo.data_list,
-          //       val.energy_consumption_speed.data_list[i],
-          //     ],
-          //     predict_data_list: [
-          //       ...this.dynasticDataTwo.predict_data_list,
-          //       val.energy_consumption_speed.predict_data_list[i],
-          //     ],
-          //     // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
-          //   };
-          //   if (this.type === 2) {
-          //     Object.assign(powerData, {
-          //       green: [
-          //         ...this.dynasticDataTwo.green,
-          //         val.energy_consumption.green[i],
-          //       ],
-          //     });
-          //   }
-          //   this.dynasticDataOne = data;
-          //   this.dynasticDataTwo = powerData;
-          // } else {
           const data = {
-            data_list: [
-              ...this.dynasticDataOne.data_list,
-              val.level_speed.data_list[i],
-            ],
+            data_list: [...this.dynasticDataOne.data_list, val.level_speed.data_list[i]],
             predict_data_list: [
               ...this.dynasticDataOne.predict_data_list,
               val.level_speed.predict_data_list[i],
@@ -517,19 +368,14 @@ export default {
               ...this.dynasticDataTwo.predict_data_list,
               val.energy_consumption_speed.predict_data_list[i],
             ],
-            // green: [...this.dynasticDataTwo.green, val.energy_consumption_speed.green[i]],
           };
           if (this.type === 2) {
             Object.assign(powerData, {
-              green: [
-                ...this.dynasticDataTwo.green,
-                val.energy_consumption.green[i],
-              ],
+              green: [...this.dynasticDataTwo.green, val.energy_consumption.green[i]],
             });
           }
           this.dynasticDataOne = data;
           this.dynasticDataTwo = powerData;
-          // }
         }, 100 * i);
       }
     },

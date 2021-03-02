@@ -61,7 +61,6 @@
         <el-col :span="6">
           <div class="error">
             <el-row>故障概率</el-row>
-            <!-- <div class="error-box">{{errorProbably}}<span>(%)</span></div> -->
             <div class="error-box">A级故障概率: {{rateList[0]}}</div>
             <div class="error-box">B级故障概率: {{rateList[1]}}</div>
             <div class="error-box">C级故障概率: {{rateList[2]}}</div>
@@ -69,16 +68,23 @@
         </el-col>
         <el-col :span="6">
           <div class="error">
-            <el-row>检修里程</el-row>
-            <!-- <div class="error-box">{{ errorDistance }}<span>(km)</span></div> -->
-            <div class="error-instance">{{fixTip}}</div>
+            <el-row>故障现象</el-row>
+            <div class="strategy-box">{{error[0]}}</div>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="6">
           <div class="error">
-            <el-row>检修策略</el-row>
+            <el-row>检修排查</el-row>
             <div class="strategy-box">
-              {{strategy}}
+              {{error[1]}}
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="error">
+            <el-row>故障处理</el-row>
+            <div class="strategy-box">
+              {{error[2]}}
             </div>
           </div>
         </el-col>
@@ -173,7 +179,6 @@ export default {
       showLoading: false,
       initTime: null,
       rateList: [],
-      fixTip: '',
       resultId: '0', // 劣化tab 初始值   activeTb must be string
       resultList: [],
       speedData: {},
@@ -185,15 +190,19 @@ export default {
     }
     const dataBase = sessionStorage.getItem('dataBaseId');
     if (Number(dataBase) === 1) {
-      this.resultList = ['状态监测'];
+      this.resultList = ['储能系统状态监测'];
       this.type = 0;
       this.rateList = ['0.00%', '0.01%', '需检修'];
-      this.fixTip = '需检修';
+      this.error = [
+        '储能电源单体温度差异过大',
+        '储能电源3电芯温度比其他电芯高20℃',
+        '该电芯内阻过大需要更换电池模组',
+      ];
     } else {
       this.resultList = ['供电系统故障预警', '转向架异常温升监测及预警'];
       this.type = 1;
       this.rateList = ['0.00%', '0.00%', '0.03%'];
-      this.fixTip = '35329km';
+      this.error = ['无', '无', '无'];
     }
     this.showLoading = true;
     this.round();
@@ -268,9 +277,9 @@ export default {
       }, 1000);
     },
     covertDate(date) {
-      return `${date.getFullYear()}/${this.convertNum(
-        date.getMonth() + 1,
-      )}/${this.convertNum(date.getDate())}
+      return `${date.getFullYear()}/${this.convertNum(date.getMonth() + 1)}/${this.convertNum(
+        date.getDate(),
+      )}
          ${this.convertNum(date.getHours())}:
          ${this.convertNum(date.getMinutes())}:
          ${this.convertNum(date.getSeconds())}`;
