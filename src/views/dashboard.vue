@@ -101,12 +101,10 @@
                         class="train-text">训练中...</span>
                   <span v-else>已完成</span>
                 </div>
-                <div v-else-if="item.prop === 'dataset_id'"
-                     class="limit-column">
+                <div v-else-if="item.prop === 'dataset_id'">
                   {{ scope.row[item.prop] ? '已完成': '--' }}
                 </div>
                 <div v-else-if="item.prop === 'model_name'"
-                     class="limit-column"
                      :title="scope.row[item.prop]">
                   {{ scope.row[item.prop] }}
                 </div>
