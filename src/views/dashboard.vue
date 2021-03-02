@@ -85,7 +85,7 @@
       <el-row>
         <el-table :data="instanceData"
                   :header-row-style="{ color: '#333' }"
-                  height="288px"
+                  height="350px"
                   style="width: 100%">
           <el-table-column type="index"
                            width="50"
@@ -93,12 +93,17 @@
           <template v-for="item in instanceTagList">
             <el-table-column :prop="item.prop"
                              :label="item.label"
+                             :width="limitWitdh(item.prop)"
                              :key="item.prop">
               <template slot-scope="scope">
                 <div v-if="item.prop === 'status'">
                   <span v-if="scope.row.status === 1"
                         class="train-text">训练中...</span>
                   <span v-else>已完成</span>
+                </div>
+                <div v-else-if="item.prop === 'dataset_id'"
+                     class="limit-column">
+                  {{ scope.row[item.prop] ? '已完成': '--' }}
                 </div>
                 <div v-else-if="item.prop === 'model_name'"
                      class="limit-column"
@@ -131,11 +136,6 @@
         </el-pagination>
       </el-row>
     </div>
-    <!-- <el-row class="statistics"
-      >{{ statistics.training }}个模型正在训练, {{ statistics.complete }}个模型已完成训练,累计使用{{
-        statistics.number
-      }}条数据</el-row
-    > -->
   </div>
 </template>
 
@@ -202,6 +202,10 @@ const instanceTagList = [
   {
     prop: 'status',
     label: '状态',
+  },
+  {
+    prop: 'dataset_id',
+    label: '强化训练',
   },
 ];
 export default {
@@ -273,11 +277,6 @@ export default {
       page: 1,
       pageSize: 5,
       total: 20,
-      statistics: {
-        training: 23,
-        complete: 45,
-        number: 123,
-      },
       databaseId: 1,
       showAllLoading: false,
       statusList: [
@@ -416,29 +415,23 @@ export default {
       });
     },
     getTrain() {
-      this.$axios
-        .get(`/tag/train?database_id=${this.databaseId}`)
-        .then((res) => {
-          this.filterForm[1].arr = res;
-        });
+      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[1].arr = res;
+      });
     },
     getRoute() {
-      this.$axios
-        .get(`/tag/route?database_id=${this.databaseId}`)
-        .then((res) => {
-          this.filterForm[2].arr = res;
-        });
+      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[2].arr = res;
+      });
     },
     getSysStatus() {
-      this.$axios
-        .get(`/system/status?database_id=${this.databaseId}`)
-        .then((res) => {
-          this.statusList[0].value = res.model_train_finished;
-          this.statusList[1].value = res.model_training;
-          this.statusList[2].value = res.data_used_number;
-          this.statusList[3].value = res.memory_used;
-          this.statusList[4].value = res.resource_used;
-        });
+      this.$axios.get(`/system/status?database_id=${this.databaseId}`).then((res) => {
+        this.statusList[0].value = res.model_train_finished;
+        this.statusList[1].value = res.model_training;
+        this.statusList[2].value = res.data_used_number;
+        this.statusList[3].value = res.memory_used;
+        this.statusList[4].value = res.resource_used;
+      });
     },
     goDetail(row) {
       if (row.status === 1) {
@@ -452,6 +445,7 @@ export default {
           route: row.route_info,
           id: row.model_id, // 模型id ,查看实例报告
           scene: row.scene_name,
+          learning: row.dataset_id, // 是否强化训练
         };
         sessionStorage.setItem('Result', JSON.stringify(data));
         this.$router.push({
@@ -472,6 +466,13 @@ export default {
     handleChange(e) {
       this.page = e;
       this.getInstance();
+    },
+
+    limitWitdh(prop) {
+      if (['dataset_id', 'status'].includes(prop)) {
+        return '100px';
+      }
+      return 'auto';
     },
     getTask() {
       this.$axios.get(`/task?database_id=${this.databaseId}`).then((res) => {
@@ -495,12 +496,10 @@ export default {
           });
         }
       });
-      this.$axios
-        .post(`/model/instance/list?database_id=${this.databaseId}`, obj)
-        .then((res) => {
-          this.instanceData = res.data_list;
-          this.total = res.total_number;
-        });
+      this.$axios.post(`/model/instance/list?database_id=${this.databaseId}`, obj).then((res) => {
+        this.instanceData = res.data_list;
+        this.total = res.total_number;
+      });
     },
   },
 };
@@ -571,17 +570,12 @@ export default {
   }
 }
 
-.statistics {
-  font-size: 14px;
-  color: #999999;
-}
-
 .train-text {
   color: $primary-color;
 }
 
 .limit-column {
-  width: 180px;
+  width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
