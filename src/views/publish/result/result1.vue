@@ -9,6 +9,16 @@
                        :name="item.name"> </el-tab-pane>
         </template>
       </el-tabs>
+      <el-select v-if="resultName !== '感应线圈布署策略'"
+                 v-model="selectName"
+                 placeholder="请选择"
+                 @change="chooseResult">
+        <el-option v-for="item in options"
+                   :key="item"
+                   :label="item"
+                   :value="item">
+        </el-option>
+      </el-select>
     </el-row>
     <template v-if="resultName !== '感应线圈布署策略'">
       <el-row :gutter="19"
@@ -29,7 +39,7 @@
             </el-col>
           </div>
         </el-col>
-        <el-col v-if="resultName === '列车系统配置成本最优'"
+        <el-col v-if="selectName === '列车系统配置成本最优'"
                 :span="12">
           <el-row v-for="(item, index) in configList"
                   :key="index"
@@ -127,10 +137,6 @@
         </el-col>
         <el-col :span="24">
           <div class="chart-box">
-            <!-- <mzh-line chartType="precit"
-                      title="手柄级位(预测)"
-                      :yArea="yArea"
-                      :lineData="dynasticDataOne" /> -->
             <mzh-line chartType="precit"
                       title="手柄级位 (预测)"
                       :moveType="2"
@@ -139,7 +145,6 @@
           </div>
         </el-col>
       </el-row>
-      <!-- <dashboard-chart /> -->
     </template>
     <system-optimize v-if="showStatics" />
   </div>
@@ -188,10 +193,12 @@ export default {
       legendone: ['预测', '实际'],
       yArea: [],
       showDynastic: false,
-      resultName: '列车系统配置能耗最优',
+      resultName: '储能系统优化设计',
+      options: ['列车系统配置成本最优', '列车系统配置能耗最优'],
+      selectName: '列车系统配置成本最优',
       resultList: [
-        { name: '列车系统配置能耗最优', id: 2 },
-        { name: '列车系统配置成本最优', id: 1 },
+        { name: '储能系统优化设计', id: 2 },
+        // { name: '列车系统配置成本最优', id: 1 },
         { name: '感应线圈布署策略', id: 3 },
       ],
       energyData: [],
@@ -288,8 +295,8 @@ export default {
         },
       ];
       this.resultList = [
-        { name: '列车系统配置能耗最优', id: 2 },
-        { name: '列车系统配置成本最优', id: 1 },
+        { name: '储能系统优化设计', id: 2 },
+        // { name: '列车系统配置成本最优', id: 1 },
       ];
     } else {
       this.yArea = ['8', '-8'];
@@ -427,7 +434,7 @@ export default {
         if (this.type === 3) {
           this.lineData.battery = res.battery;
         }
-        if (this.resultName === '列车系统配置能耗最优') {
+        if (this.selectName === '列车系统配置能耗最优') {
           this.lineData.force = res.level;
           this.lineData.power = res.energy_consumption;
         } else {
@@ -685,6 +692,7 @@ export default {
   text-align: left;
   height: 50px;
   font-size: 24px;
+  display: flex;
   // margin-bottom: 30px;
 
   /deep/ .el-tabs {
@@ -694,6 +702,11 @@ export default {
     .el-tabs__item {
       font-size: 24px;
     }
+  }
+
+  .el-select {
+    position: absolute;
+    right: 0;
   }
 }
 

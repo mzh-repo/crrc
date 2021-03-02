@@ -231,7 +231,12 @@ export default {
       this.percent = [60, 90];
       this.yArea = ['7', '-7'];
     }
-    this.getData();
+    const { learning } = JSON.parse(sessionStorage.getItem('Result'));
+    if (learning) {
+      this.getData(true);
+    } else {
+      this.getData();
+    }
   },
   methods: {
     goDynastic() {
@@ -243,10 +248,13 @@ export default {
     goCase() {
       this.$router.push('/report');
     },
-    getData() {
-      // 劣化对应的结果集
+    getData(val) {
       if (this.resultType === 1) {
-        this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
+        let query = `form/graph?model_type=${this.type}`;
+        if (val) {
+          query += '&reinforcement_learning=true';
+        }
+        this.$axios.get(query).then((res) => {
           this.dataSource = res;
           this.actual = Number(res.energy_consumption.data_list.pop()).toFixed(2);
           this.precit = Number(res.energy_consumption.predict_data_list.pop()).toFixed(2);
@@ -258,6 +266,7 @@ export default {
           }
         });
       } else {
+        // 劣化对应的结果集
         this.$axios
           .get(`form/graph?model_type=${this.type}&tab_id=${this.resultId}`)
           .then((res) => {
