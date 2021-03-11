@@ -9,21 +9,11 @@
                        :name="item.name"> </el-tab-pane>
         </template>
       </el-tabs>
-      <el-select v-if="resultName !== '感应线圈布署策略'"
-                 v-model="selectName"
-                 placeholder="请选择"
-                 @change="chooseResult">
-        <el-option v-for="item in options"
-                   :key="item"
-                   :label="item"
-                   :value="item">
-        </el-option>
-      </el-select>
     </el-row>
     <template v-if="resultName !== '感应线圈布署策略'">
       <el-row :gutter="19"
               class="limit-container">
-        <el-col :span="12">
+        <el-col :span="24">
           <div class="limit-box">
             <el-col :span="24">
               <el-row>约束条件</el-row>
@@ -39,40 +29,23 @@
             </el-col>
           </div>
         </el-col>
-        <el-col v-if="selectName === '列车系统配置成本最优'"
-                :span="12">
-          <el-row v-for="(item, index) in configList"
-                  :key="index"
-                  class="grid-other">
-            <el-row class="grid-tag">
-              <el-col>
-                <el-tag>{{ item.tag }}</el-tag>
-              </el-col>
-              <el-col>
-                {{ item.name }}
-              </el-col>
-            </el-row>
-            <el-row class="grid-source"
-                    v-html="item.source"> </el-row>
+      </el-row>
+      <el-row>
+        <el-row v-for="(item, index) in configList"
+                :key="index"
+                class="grid-other">
+          <el-row class="grid-tag">
+            <el-col>
+              <el-tag>{{ item.tag }}</el-tag>
+            </el-col>
+            <el-col>
+              成本： <strong>{{ item.pay }}</strong> 万元
+            </el-col>
           </el-row>
-        </el-col>
-        <el-col v-else
-                :span="12">
-          <el-row v-for="(item, index) in configListOther"
-                  :key="index"
-                  class="grid-other">
-            <el-row class="grid-tag">
-              <el-col>
-                <el-tag>{{ item.tag }}</el-tag>
-              </el-col>
-              <el-col>
-                {{ item.name }}
-              </el-col>
-            </el-row>
-            <el-row class="grid-source"
-                    v-html="item.source"> </el-row>
+          <el-row class="grid-source"
+                  v-html="item.source">
           </el-row>
-        </el-col>
+        </el-row>
       </el-row>
     </template>
     <template v-else>
@@ -99,6 +72,21 @@
         </el-col>
       </el-row>
     </template>
+    <el-row v-if="resultName !== '感应线圈布署策略'"
+            style="text-align:left; font-size: 18px;">
+      选择配置：
+      <el-select v-if="resultName !== '感应线圈布署策略'"
+                 v-model="selectName"
+                 placeholder="请选择"
+                 @change="chooseResult">
+        <el-option v-for="item in options"
+                   :key="item"
+                   :label="item"
+                   :value="item">
+        </el-option>
+      </el-select>
+      &nbsp;能耗: <strong>{{energy}}</strong> kWh
+    </el-row>
     <el-row :gutter="19"
             class="chart-container chart-1">
       <el-col :span="12">
@@ -194,8 +182,8 @@ export default {
       yArea: [],
       showDynastic: false,
       resultName: '储能系统优化设计',
-      options: ['列车系统配置成本最优', '列车系统配置能耗最优'],
-      selectName: '列车系统配置成本最优',
+      options: ['配置1', '配置2'],
+      selectName: '配置1',
       resultList: [
         { name: '储能系统优化设计', id: 2 },
         // { name: '列车系统配置成本最优', id: 1 },
@@ -206,13 +194,17 @@ export default {
       showStatics: false, // 显示统计信息
       configList: [
         {
-          tag: '成本最优配置',
+          tag: '配置1',
           name: '储能',
-          source: '2组20Ah钛酸锂电池+1组3000F超级电容储能电源',
+          source: '2组20Ah钛酸锂电池+1组3000F超级电容储能电源。',
+          pay: 293,
         },
         {
-          tag: '成本最优结果',
-          source: '运行能耗为：<strong>17.45</strong> kWh<br/> 成本为：<strong>293</strong> 万元',
+          tag: '配置2',
+          // source: '运行能耗为：<strong>17.45</strong> kWh<br/> 成本为：<strong>293</strong> 万元',
+          source:
+            '1组动力电池箱, 每组: 采用25Ah单体, 144串4并。<br/> &nbsp;2组超级电容箱, 每组: 采用9500F模组, 344串2并。',
+          pay: 315,
         },
       ],
       configListOther: [
@@ -251,6 +243,7 @@ export default {
         },
       ],
       showLoading: false,
+      energy: null,
     };
   },
   mounted() {
@@ -372,25 +365,25 @@ export default {
       ];
       this.configList = [
         {
-          tag: '成本最优配置',
-          name: '储能',
-          // source: '电池串联数392、电池并联数5'
+          tag: '配置1',
+          // name: '储能',
           source: '采用25Ah单体, 电池串联数392, 并联数5',
+          pay: 245,
         },
         {
-          tag: '成本最优结果',
-          source: '运行能耗为：<strong>35.83</strong> kWh<br/> 成本为：<strong>245</strong> 万元',
+          tag: '配置2',
+          // source: '运行能耗为：<strong>35.83</strong> kWh<br/> 成本为：<strong>245</strong> 万元',
+          source: '采用25Ah单体, 电池串联数358, 并联数6',
+          pay: 268.5,
         },
       ];
       this.configListOther = [
         {
-          tag: '能耗最优配置',
-          name: '储能',
-          // source: '电池串联数358、电池并联数6'
+          tag: '配置1',
           source: '采用25Ah单体, 电池串联数358, 并联数6',
         },
         {
-          tag: '能耗最优结果',
+          tag: '配置2',
           source:
             '运行能耗为：<strong>31.72</strong> kWh<br/> 成本为：<strong>268.5 </strong> 万元',
         },
@@ -434,13 +427,16 @@ export default {
         if (this.type === 3) {
           this.lineData.battery = res.battery;
         }
-        if (this.selectName === '列车系统配置能耗最优') {
+        if (this.selectName === '配置2') {
           this.lineData.force = res.level;
           this.lineData.power = res.energy_consumption;
         } else {
           this.lineData.force = res.level_speed;
           this.lineData.power = res.energy_consumption_speed;
         }
+        this.energy = this.lineData.power.data_list[this.lineData.power.data_list.length - 1];
+        // console.log('this.lineData.power: ', this.lineData.power);
+        // console.log('this.energy: ', this.energy);
       });
     },
     renderData(val) {
@@ -543,7 +539,7 @@ export default {
 
 .limit-container {
   height: 390px;
-  // margin-bottom: 60px;
+  margin-bottom: 30px;
   padding-bottom: 40px;
 
   .el-col {
@@ -638,6 +634,7 @@ export default {
 
   .el-col:nth-child(2) {
     text-align: right;
+    font-size: 18px;
   }
 }
 
@@ -693,7 +690,6 @@ export default {
   height: 50px;
   font-size: 24px;
   display: flex;
-  // margin-bottom: 30px;
 
   /deep/ .el-tabs {
     display: flex;

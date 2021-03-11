@@ -13,7 +13,7 @@
       </el-row>
       <el-row v-if="type === 2"
               class="progress">
-        <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mR</el-col>
+        <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mΩ</el-col>
         <el-col :span="8"
                 class="percentage-num">
           电池额定容量: &nbsp;
@@ -29,7 +29,7 @@
       </el-row>
       <el-row v-else
               class="progress">
-        <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mR</el-col>
+        <el-col :span="4">电池欧姆内阻: &nbsp;{{ percent[0] }} mΩ</el-col>
         <el-col :span="8"
                 class="percentage-num">
           电池额定容量: &nbsp;
