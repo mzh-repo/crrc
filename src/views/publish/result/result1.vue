@@ -13,7 +13,7 @@
     <template v-if="resultName !== '感应线圈布署策略'">
       <el-row :gutter="19"
               class="limit-container">
-        <el-col :span="24">
+        <el-col :span="12">
           <div class="limit-box">
             <el-col :span="24">
               <el-row>约束条件</el-row>
@@ -29,23 +29,23 @@
             </el-col>
           </div>
         </el-col>
-      </el-row>
-      <el-row>
-        <el-row v-for="(item, index) in configList"
-                :key="index"
-                class="grid-other">
-          <el-row class="grid-tag">
-            <el-col>
-              <el-tag>{{ item.tag }}</el-tag>
-            </el-col>
-            <el-col>
-              成本： <strong>{{ item.pay }}</strong> 万元
-            </el-col>
+        <el-col :span="12">
+          <el-row v-for="(item, index) in configList"
+                  :key="index"
+                  class="grid-other">
+            <el-row class="grid-tag">
+              <el-col>
+                <el-tag>{{ item.tag }}</el-tag>
+              </el-col>
+              <el-col>
+                成本： <strong>{{ item.pay }}</strong> 万元
+              </el-col>
+            </el-row>
+            <el-row class="grid-source"
+                    v-html="item.source">
+            </el-row>
           </el-row>
-          <el-row class="grid-source"
-                  v-html="item.source">
-          </el-row>
-        </el-row>
+        </el-col>
       </el-row>
     </template>
     <template v-else>
