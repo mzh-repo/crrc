@@ -1,6 +1,6 @@
 <template>
   <el-row class="train-container">
-    <el-row class="trace-point energy">
+    <!-- <el-row class="trace-point energy">
       <div v-for="(item, index) in pointList"
            :key="index"
            :style="{ left: item.left }"
@@ -8,20 +8,22 @@
         <div class="energy-content">{{ item.charge }}</div>
         <div class="energy-content">{{ item.energy }}</div>
       </div>
-    </el-row>
+    </el-row> -->
     <div class="trace-line"></div>
     <el-row class="point-line">
-      <div v-for="(item, index) in 26"
+      <div v-for="(item, index) in (pointList.length - 1) * 5 + 1"
            :key="index">
         <template v-if="index % 5 === 0">
           <div class="point station"
-               :style="{ left: `${4 * index}%`, background: current / 4 >= index ? 'red' : '' }">
+               :style="{ left: `${(20/ (pointList.length - 1)) * index}%`,
+               background: current / (20/ (pointList.length - 1)) >= index ? 'red' : '' }">
             <div class="station-name">{{ pointList[index / 5].name }}</div>
           </div>
         </template>
         <template v-else>
           <div class="point"
-               :style="{ left: `${4 * index}%`, background: current / 4 >= index
+               :style="{ left: `${(20/ (pointList.length - 1)) * index}%`,
+               background: current / (20/ (pointList.length - 1)) >= index
                ? 'red' : '' }"></div>
         </template>
       </div>
@@ -30,38 +32,26 @@
 </template>
 
 <script>
+import { setInterval, clearInterval } from 'timers';
+
 const primaryColor = '#FF2020';
 const otherColor = '#00C4C0';
 const line = [
   {
-    name: '香山站',
+    name: '磁悬浮站',
     color: otherColor,
-    left: '0%',
   },
   {
-    name: '植物园站',
+    name: '动检站',
     color: otherColor,
-    left: '20%',
   },
   {
-    name: '万安公墓站',
+    name: '东区列调站',
     color: otherColor,
-    left: '40%',
   },
   {
-    name: '玉泉郊野公园',
+    name: '试验中心',
     color: otherColor,
-    left: '60%',
-  },
-  {
-    name: '颐和园西门',
-    color: otherColor,
-    left: '80%',
-  },
-  {
-    name: '颐和园南门',
-    color: otherColor,
-    left: '100%',
   },
 ];
 
