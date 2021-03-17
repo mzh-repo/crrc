@@ -186,7 +186,6 @@ export default {
       selectName: '配置1',
       resultList: [
         { name: '储能系统优化设计', id: 2 },
-        // { name: '列车系统配置成本最优', id: 1 },
         { name: '感应线圈布署策略', id: 3 },
       ],
       energyData: [],
@@ -253,103 +252,50 @@ export default {
     if (dataBase === 1) {
       this.type = 2;
       this.yArea = ['100', '-100'];
-      this.energyData = [
-        {
-          id: '0',
-          area: '植物园~万安公墓',
-          distance: '1310',
-          start: '912',
-          end: '1310',
-          length: '398',
-        },
-        {
-          id: '1',
-          area: '万安公墓~玉泉郊野公园',
-          distance: '1107',
-          start: '0',
-          end: '295',
-          length: '295',
-        },
-        {
-          id: '2',
-          area: '玉泉郊野公园~颐和园西门',
-          distance: '1320',
-          start: '797',
-          end: '1320',
-          length: '523',
-        },
-        {
-          id: '3',
-          area: '颐和园西门~颐和园南门',
-          distance: '1256',
-          start: '0',
-          end: '293',
-          length: '293',
-        },
-      ];
-      this.resultList = [
-        { name: '储能系统优化设计', id: 2 },
-        // { name: '列车系统配置成本最优', id: 1 },
-      ];
+      this.resultList = [{ name: '储能系统优化设计', id: 2 }];
     } else {
       this.yArea = ['8', '-8'];
       this.type = 3;
       this.energyData = [
         {
           id: '0',
-          area: '香山~植物园',
-          distance: '1669',
+          area: '磁浮站~动检站',
+          distance: '1655',
           start: '1422',
           end: '1499',
           length: '77',
         },
         {
           id: '1',
-          area: '植物园~万安公墓',
-          distance: '1310',
+          area: '动检站~东区列调站',
+          distance: '1155',
           start: '13',
           end: '488',
           length: '475',
         },
         {
           id: '2',
-          area: '植物园~万安公墓',
-          distance: '1310',
-          start: '1239',
-          end: '1310',
+          area: '动检站~东区列调站',
+          distance: '1155',
+          start: '1039',
+          end: '1110',
           length: '71',
         },
         {
           id: '3',
-          area: '万安公墓~玉泉郊野公园',
-          distance: '1107',
+          area: '东区列调站~试验中心站',
+          distance: '1680',
           start: '142',
           end: '666',
           length: '524',
         },
         {
           id: '4',
-          area: '万安公墓~玉泉郊野公园',
-          distance: '1107',
+          area: '东区列调站~试验中心站',
+          distance: '1680',
           start: '1012',
           end: '1107',
           length: '95',
-        },
-        {
-          id: '5',
-          area: '玉泉郊野公园~颐和园西门',
-          distance: '1320',
-          start: '876',
-          end: '1320',
-          length: '444',
-        },
-        {
-          id: '6',
-          area: '颐和园西门~颐和园南门',
-          distance: '1256',
-          start: '0',
-          end: '224',
-          length: '224',
         },
       ];
     }
@@ -367,20 +313,20 @@ export default {
         {
           tag: '配置1',
           // name: '储能',
-          source: '采用25Ah单体, 电池串联数392, 并联数5',
+          source: '采用20Ah单体, 电池串联数392, 并联数5',
           pay: 245,
         },
         {
           tag: '配置2',
           // source: '运行能耗为：<strong>35.83</strong> kWh<br/> 成本为：<strong>245</strong> 万元',
-          source: '采用25Ah单体, 电池串联数358, 并联数6',
+          source: '采用20Ah单体, 电池串联数358, 并联数6',
           pay: 268.5,
         },
       ];
       this.configListOther = [
         {
           tag: '配置1',
-          source: '采用25Ah单体, 电池串联数358, 并联数6',
+          source: '采用20Ah单体, 电池串联数358, 并联数6',
         },
         {
           tag: '配置2',
