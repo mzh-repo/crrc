@@ -319,14 +319,14 @@ export default {
         {
           tag: '配置2',
           // source: '运行能耗为：<strong>35.83</strong> kWh<br/> 成本为：<strong>245</strong> 万元',
-          source: '采用20Ah单体, 电池串联数358, 并联数6',
+          source: '采用20Ah单体, 电池串联数360, 并联数6',
           pay: 268.5,
         },
       ];
       this.configListOther = [
         {
           tag: '配置1',
-          source: '采用20Ah单体, 电池串联数358, 并联数6',
+          source: '采用20Ah单体, 电池串联数360, 并联数6',
         },
         {
           tag: '配置2',

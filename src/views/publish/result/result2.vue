@@ -56,12 +56,30 @@
               class="tips-box">
         <el-col :span="12">
           <div class="tip-content">
-            <div>
+            <!-- <div>
               预测{{ tip }}: <span>{{ precit }}</span> {{ tip == '时间' ? 's' : 'kWh' }}</div>
             <div>
               实际{{ tip }}: <span>{{ actual }}</span> {{ tip == '时间' ? 's' : 'kWh' }}</div>
             <div>
               预测{{ tip }}为实际 <span>{{ ((precit / actual) * 100).toFixed(2) }}%</span>
+            </div> -->
+            <div>
+              <el-table :data="tableData"
+                        border>
+                <el-table-column prop="mode"
+                                 label="-">
+                </el-table-column>
+                <el-table-column prop="actual"
+                                 label="实际值">
+                </el-table-column>
+                <el-table-column prop="precit"
+                                 label="预测值">
+                </el-table-column>
+              </el-table>
+            </div>
+            <div>
+              预测{{ tip }}为实际 <span>{{ energyPercent}}%</span>,
+              {{tip === '时间' ? '节约时间' : '降低能耗'}}<span> {{(100 - energyPercent).toFixed(2)}}%</span>
             </div>
           </div>
         </el-col>
@@ -201,6 +219,20 @@ export default {
         '车辆最低电压（V）：500',
         '车辆最高电压（V）：900',
       ],
+      learning: false,
+      energyPercent: 0,
+      tableData: [
+        {
+          mode: '旅行时间（s）',
+          actual: '401.85',
+          precit: '373.05',
+        },
+        {
+          mode: '运行能耗（kWh）',
+          actual: '16.5',
+          precit: '14.36',
+        },
+      ],
     };
   },
   mounted() {
@@ -233,6 +265,7 @@ export default {
     }
     const { learning } = JSON.parse(sessionStorage.getItem('Result'));
     if (learning) {
+      this.learning = true;
       this.getData(true);
     } else {
       this.getData();
@@ -253,11 +286,69 @@ export default {
         let query = `form/graph?model_type=${this.type}`;
         if (val) {
           query += '&reinforcement_learning=true';
+          if (this.type === 2) {
+            this.tableData = [
+              {
+                mode: '旅行时间（s）',
+                actual: '401.85',
+                precit: '361.64',
+              },
+              {
+                mode: '运行能耗（kWh）',
+                actual: '16.5',
+                precit: '13.67',
+              },
+            ];
+            this.energyPercent = 82.85;
+          } else {
+            this.tableData = [
+              {
+                mode: '旅行时间（s）',
+                actual: '163.90',
+                precit: '149.29',
+              },
+              {
+                mode: '运行能耗（kWh）',
+                actual: '37.00',
+                precit: '32.00',
+              },
+            ];
+            this.energyPercent = 86.47;
+          }
+        } else if (this.type === 2) {
+          this.tableData = [
+            {
+              mode: '旅行时间（s）',
+              actual: '401.85',
+              precit: '373.05',
+            },
+            {
+              mode: '运行能耗（kWh）',
+              actual: '16.5',
+              precit: '14.36',
+            },
+          ];
+          this.energyPercent = 87.03;
+        } else {
+          this.tableData = [
+            {
+              mode: '旅行时间（s）',
+              actual: '163.90',
+              precit: '153.54',
+            },
+            {
+              mode: '运行能耗（kWh）',
+              actual: '37.00',
+              precit: '33.01',
+            },
+          ];
+          this.energyPercent = 89.22;
         }
         this.$axios.get(query).then((res) => {
           this.dataSource = res;
           this.actual = Number(res.energy_consumption.data_list.pop()).toFixed(2);
           this.precit = Number(res.energy_consumption.predict_data_list.pop()).toFixed(2);
+
           this.lineData.force = res.level;
           this.lineData.power = res.energy_consumption;
           this.lineData.speed = res.speed;
@@ -347,6 +438,65 @@ export default {
       }
     },
     getDataOther() {
+      if (this.learning) {
+        if (this.type === 2) {
+          this.tableData = [
+            {
+              mode: '旅行时间（s）',
+              actual: '401.85',
+              precit: '308.78',
+            },
+            {
+              mode: '运行能耗（kWh）',
+              actual: '16.5',
+              precit: '18.97',
+            },
+          ];
+          this.energyPercent = 76.84;
+        } else {
+          this.tableData = [
+            {
+              mode: '旅行时间（s）',
+              actual: '163.90',
+              precit: '136.35',
+            },
+            {
+              mode: '运行能耗（kWh）',
+              actual: '37.00',
+              precit: '38.80',
+            },
+          ];
+          this.energyPercent = 83.19;
+        }
+      } else if (this.type === 2) {
+        this.tableData = [
+          {
+            mode: '旅行时间（s）',
+            actual: '401.85',
+            precit: '330.38',
+          },
+          {
+            mode: '运行能耗（kWh）',
+            actual: '16.5',
+            precit: '17.61',
+          },
+        ];
+        this.energyPercent = 82.21;
+      } else {
+        this.tableData = [
+          {
+            mode: '旅行时间（s）',
+            actual: '163.90',
+            precit: '139.59',
+          },
+          {
+            mode: '运行能耗（kWh）',
+            actual: '37.00',
+            precit: '37.31',
+          },
+        ];
+        this.energyPercent = 85.17;
+      }
       this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
         this.lineData.force = res.level_speed;
         this.lineData.power = res.energy_consumption_speed;
