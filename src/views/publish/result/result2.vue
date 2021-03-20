@@ -67,12 +67,14 @@
               <el-table :data="tableData"
                         border>
                 <el-table-column prop="mode"
-                                 label="-">
+                                 label="">
                 </el-table-column>
-                <el-table-column prop="actual"
+                <el-table-column align="center"
+                                 prop="actual"
                                  label="实际值">
                 </el-table-column>
-                <el-table-column prop="precit"
+                <el-table-column align="center"
+                                 prop="precit"
                                  label="预测值">
                 </el-table-column>
               </el-table>
@@ -313,7 +315,7 @@ export default {
                 precit: '26.31',
               },
             ];
-            this.energyPercent = 87.70;
+            this.energyPercent = 87.7;
           }
         } else if (this.type === 2) {
           this.tableData = [
@@ -699,6 +701,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    .el-table {
+      font-size: 20px;
+    }
 
     div {
       margin-bottom: 10px;
