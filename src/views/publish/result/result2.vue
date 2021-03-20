@@ -290,8 +290,8 @@ export default {
             this.tableData = [
               {
                 mode: '旅行时间（s）',
-                actual: '401.85',
-                precit: '361.64',
+                actual: '412.30',
+                precit: '369.81',
               },
               {
                 mode: '运行能耗（kWh）',
@@ -304,23 +304,23 @@ export default {
             this.tableData = [
               {
                 mode: '旅行时间（s）',
-                actual: '163.90',
-                precit: '149.29',
+                actual: '725.93',
+                precit: '652.03',
               },
               {
                 mode: '运行能耗（kWh）',
-                actual: '37.00',
-                precit: '32.00',
+                actual: '30.00',
+                precit: '26.31',
               },
             ];
-            this.energyPercent = 86.47;
+            this.energyPercent = 87.70;
           }
         } else if (this.type === 2) {
           this.tableData = [
             {
               mode: '旅行时间（s）',
-              actual: '401.85',
-              precit: '373.05',
+              actual: '412.30',
+              precit: '378.42',
             },
             {
               mode: '运行能耗（kWh）',
@@ -333,16 +333,16 @@ export default {
           this.tableData = [
             {
               mode: '旅行时间（s）',
-              actual: '163.90',
-              precit: '153.54',
+              actual: '725.93',
+              precit: '641.03',
             },
             {
               mode: '运行能耗（kWh）',
-              actual: '37.00',
-              precit: '33.01',
+              actual: '30.00',
+              precit: '27.43',
             },
           ];
-          this.energyPercent = 89.22;
+          this.energyPercent = 91.43;
         }
         this.$axios.get(query).then((res) => {
           this.dataSource = res;
@@ -443,8 +443,8 @@ export default {
           this.tableData = [
             {
               mode: '旅行时间（s）',
-              actual: '401.85',
-              precit: '308.78',
+              actual: '412.30',
+              precit: '314.06',
             },
             {
               mode: '运行能耗（kWh）',
@@ -452,28 +452,28 @@ export default {
               precit: '18.97',
             },
           ];
-          this.energyPercent = 76.84;
+          this.energyPercent = 76.17;
         } else {
           this.tableData = [
             {
               mode: '旅行时间（s）',
-              actual: '163.90',
-              precit: '136.35',
+              actual: '725.93',
+              precit: '583.09',
             },
             {
               mode: '运行能耗（kWh）',
-              actual: '37.00',
-              precit: '38.80',
+              actual: '30.00',
+              precit: '31.15',
             },
           ];
-          this.energyPercent = 83.19;
+          this.energyPercent = 80.32;
         }
       } else if (this.type === 2) {
         this.tableData = [
           {
             mode: '旅行时间（s）',
-            actual: '401.85',
-            precit: '330.38',
+            actual: '412.30',
+            precit: '336.13',
           },
           {
             mode: '运行能耗（kWh）',
@@ -481,21 +481,21 @@ export default {
             precit: '17.61',
           },
         ];
-        this.energyPercent = 82.21;
+        this.energyPercent = 81.53;
       } else {
         this.tableData = [
           {
             mode: '旅行时间（s）',
-            actual: '163.90',
-            precit: '139.59',
+            actual: '725.93',
+            precit: '596.76',
           },
           {
             mode: '运行能耗（kWh）',
-            actual: '37.00',
-            precit: '37.31',
+            actual: '30.00',
+            precit: '29.88',
           },
         ];
-        this.energyPercent = 85.17;
+        this.energyPercent = 82.21;
       }
       this.$axios.get(`form/graph?model_type=${this.type}`).then((res) => {
         this.lineData.force = res.level_speed;
