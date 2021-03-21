@@ -125,18 +125,14 @@ export default {
       });
     },
     getTrain() {
-      this.$axios
-        .get(`/tag/train?database_id=${this.databaseId}`)
-        .then((res) => {
-          this.filterForm[1].arr = res;
-        });
+      this.$axios.get(`/tag/train?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[1].arr = res;
+      });
     },
     getRoute() {
-      this.$axios
-        .get(`/tag/route?database_id=${this.databaseId}`)
-        .then((res) => {
-          this.filterForm[2].arr = res;
-        });
+      this.$axios.get(`/tag/route?database_id=${this.databaseId}`).then((res) => {
+        this.filterForm[2].arr = res;
+      });
     },
     handleCurrentChange(val) {
       this.chooseId = val.id;
@@ -182,8 +178,10 @@ export default {
         this.staticForm[0].value = res.car_type;
         this.staticForm[1].value = res.route;
         this.staticForm[2].value = [
-          res.data_date_lower_bound,
-          res.data_date_upper_bound,
+          // res.data_date_lower_bound,
+          // res.data_date_upper_bound,
+          '2021-01-21',
+          '2021-02-22',
         ];
       });
     },
