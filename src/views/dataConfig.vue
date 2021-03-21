@@ -180,8 +180,8 @@ export default {
         this.staticForm[2].value = [
           // res.data_date_lower_bound,
           // res.data_date_upper_bound,
-          '2021-01-21',
           '2021-02-22',
+          '2021-03-22',
         ];
       });
     },
